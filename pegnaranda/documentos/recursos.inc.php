@@ -1,5 +1,6 @@
 <?php
 //require_once ("usuarios/usuarios.aux.inc.php");
+
 require_once('media.inc.php');
 
 	function render_admin_addrsc($param)

@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.1, created on 2004-04-03 21:49:49
+<?php /* Smarty version 2.6.1, created on 2004-09-13 15:49:18
          compiled from error.tpl */ ?>
 <table border="0" cellspacing="0" cellpadding="0" width="588">
 	<tr valign="middle">
@@ -10,7 +10,7 @@
 				</tr>
 				<tr>
 					<td width="72" ></td>
-					<td align="center" class="error">
+					<td align="center" style="align: center; background-color: #ff0000; color: #000000; font-size: 14px; font-weight: 900; text-align: center;	border-width: 1px;	border-color: black;	margin: 3px;display: block;">
 						<?php echo $this->_tpl_vars['mensaje']; ?>
 
 					</td>

@@ -1,4 +1,5 @@
 <?php
+require_once ("event.inc.php");
 require_once ("usuarios/usuarios.aux.inc.php");
 
 	function render_usuario($accion,$sujeto,$param)
@@ -143,6 +144,7 @@ require_once ("usuarios/usuarios.aux.inc.php");
 						$cols_usuarios['clave']=>"'".md5($clave)."'",
 						$cols_usuarios['nombre']=>"'".htmlentities($nombre,ENT_QUOTES)."'",
 						$cols_usuarios['apellidos']=>"'".htmlentities($apellidos,ENT_QUOTES)."'",
+						$cols_usuarios['email']=>"'".htmlentities($email,ENT_QUOTES)."'",
 						$cols_usuarios['calle']=>"'".htmlentities($calle,ENT_QUOTES)."'",
 						$cols_usuarios['poblacion']=>"'".htmlentities($poblacion,ENT_QUOTES)."'",
 						$cols_usuarios['provincia']=>"'".htmlentities($provincia,ENT_QUOTES)."'",
@@ -151,7 +153,7 @@ require_once ("usuarios/usuarios.aux.inc.php");
 						$cols_usuarios['actividad']=>"'".htmlentities($actividad,ENT_QUOTES)."'",
 						$cols_usuarios['nivel']=>"100");
 		array_walk($usuario,'fixCode');
-		$resultado=$db->Replace($tblusuarios,$usuario,array());
+		$resultado=$db->Replace($tblusuarios,$usuario,array());		
 		if ($resultado !=2)
 			{
 			$param['ruta']="error";
@@ -170,12 +172,12 @@ require_once ("usuarios/usuarios.aux.inc.php");
 			render($param);
 			die();
 			}
-		$usuario=$resultado->FetchRow();
+		$mi_usuario=$resultado->FetchRow();
+		$usuario['uid']=$mi_usuario['uid'];
+		/*$usuario=$resultado->FetchRow();*/
 		$uid=$usuario['uid'];
-
-		return render_msg("El usuario ha sido a&ntilde;adido correctamente en el sistema.",5,"index.php");
-
-
+		eventoUsuarios($usuario,"registro");
+		return render_msg("El usuario ha sido a&ntilde;adido correctamente en el sistema.",5,"index.php");		
 	}
 
 	function render_usuario_editar($param)
@@ -268,6 +270,7 @@ require_once ("usuarios/usuarios.aux.inc.php");
 					// Si se ha cambiado la clave obligamos a que vuelva a iniciar la sesion
 					vwSessionVarsClean();
 				}
+			eventoUsuarios($usuario,"editar");
 			$mensaje="Los datos del usuario han sido cambiados correctamente";
 			}
 
@@ -488,6 +491,7 @@ require_once ("usuarios/usuarios.aux.inc.php");
 			}
 		else
 			{
+			eventoUsuarios($usuario,"editar");
 			$mensaje="Los datos del usuario han sido cambiados correctamente";
 			}
 
@@ -506,7 +510,7 @@ require_once ("usuarios/usuarios.aux.inc.php");
 		$resultado= SmartyInit();
 		$plantilla="usuarios/admdelcheck.tpl";
 		$id=$param['uid'];
-		$resultado->assign("confirmadelurl","index?actor=usuarios&accion=delusr&id=$id");
+		$resultado->assign("confirmadelurl","index.php?actor=usuarios&accion=delusr&id=$id");
 		$resultado->assign("rechazadelurl","index.php?actor=usuarios&accion=listar");
 		$resultado->assign("mensaje",$param['mensaje']);
 		$salida=$resultado->fetch($plantilla);
@@ -577,7 +581,7 @@ require_once ("usuarios/usuarios.aux.inc.php");
 		$resultado= SmartyInit();
 		$plantilla="usuarios/admpromocheck.tpl";
 		$id=$param['uid'];
-		$resultado->assign("confpromocion","index?actor=usuarios&accion=okpromote&id=$id");
+		$resultado->assign("confpromocion","index.php?actor=usuarios&accion=okpromote&id=$id");
 		$resultado->assign("rechazarpromocionurl","index.php?actor=usuarios&accion=listar");
 		$resultado->assign("mensaje",$param['mensaje']);
 		$salida=$resultado->fetch($plantilla);
@@ -619,7 +623,7 @@ require_once ("usuarios/usuarios.aux.inc.php");
 		$resultado= SmartyInit();
 		$plantilla="usuarios/admrelevcheck.tpl";
 		$id=$param['uid'];
-		$resultado->assign("confirmrelev","index?actor=usuarios&accion=okrelevar&id=$id");
+		$resultado->assign("confirmrelev","index.php?actor=usuarios&accion=okrelevar&id=$id");
 		$resultado->assign("rechazrelev","index.php?actor=usuarios&accion=listar");
 		$resultado->assign("mensaje",$param['mensaje']);
 		$salida=$resultado->fetch($plantilla);
@@ -702,6 +706,7 @@ require_once ("usuarios/usuarios.aux.inc.php");
 						$cols_usuarios['clave']=>"'".md5($clave)."'",
 						$cols_usuarios['nombre']=>"'".htmlentities($nombre,ENT_QUOTES)."'",
 						$cols_usuarios['apellidos']=>"'".htmlentities($apellidos,ENT_QUOTES)."'",
+						$cols_usuarios['email']=>"'".htmlentities($email,ENT_QUOTES)."'",
 						$cols_usuarios['calle']=>"'".htmlentities($calle,ENT_QUOTES)."'",
 						$cols_usuarios['poblacion']=>"'".htmlentities($poblacion,ENT_QUOTES)."'",
 						$cols_usuarios['provincia']=>"'".htmlentities($provincia,ENT_QUOTES)."'",
@@ -730,15 +735,19 @@ require_once ("usuarios/usuarios.aux.inc.php");
 			die();
 			}
 		else
-			{
-				$mensaje="El usuario ha sido registrado correctamente";}
+			{	
+				
+				$mensaje="El usuario ha sido registrado correctamente";
+				}
 
-		$usuario=$resultado->FetchRow();
+		$mi_usuario=$resultado->FetchRow();
 		/* $resultado= SmartyInit();
 		$resultado->assign("mensaje",$mensaje);
 		$plantilla="mensaje.tpl";
 		$salida=$resultado->fetch($plantilla);
 		return $salida; */
+		$usuario['uid']=$mi_usuario['uid'];
+		eventoUsuarios($usuario,"registro");
 		$url=vwSessionGetVar('urlantigua');
 		vwSessionDelVar('urlantigua');
 		return render_msg($mensaje,3,$url);
@@ -793,4 +802,9 @@ function render_usuario_showprefs($param)
 function render_usuario_fixprefs($param)
 	{
 		list($notify,$items,$uid)=vwVarFromInput('notify','items','uid');}
+		
+function eventoUsuarios($param,$accion){	
+		$msg=eventToMsg($accion,$param);
+		addLogEntry($msg);
+	}
 ?>

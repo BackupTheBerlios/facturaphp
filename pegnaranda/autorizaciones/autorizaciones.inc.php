@@ -1,5 +1,7 @@
 <?php
+
 require_once ("autorizaciones/autorizaciones.aux.inc.php");
+require_once ("event.inc.php");
 
 	function render_autorizaciones($accion,$sujeto,$param)
 	{
@@ -125,12 +127,13 @@ require_once ("autorizaciones/autorizaciones.aux.inc.php");
 			$param['mensaje']="Ha ocurrido un error al introducir la solicitud de autorizacion en la bbdd.";
 			render($param);
 			die();
-			}
-
+			}		
+		eventoAutorizacion($autorizacion,"solicitud");
 		$mensaje="La secci&oacute;n ha sido introducida correctamente.";
 
 		$url=vwSessionGetVar('urlantigua');
 		vwSessionDelVar('urlantigua');
+		addLogEntry(eventToMsg('solicitud',$param));
 		return render_msg($mensaje,3,$url);
 
 		/*$resultado= SmartyInit();
@@ -224,7 +227,7 @@ require_once ("autorizaciones/autorizaciones.aux.inc.php");
 		$plantilla="mensaje.tpl";
 		$salida=$resultado->fetch($plantilla);
 		return $salida; */
-
+		addLogEntry(eventToMsg('solicitud',$param));
 		$url=vwSessionGetVar('urlantigua');
 		vwSessionDelVar('urlantigua');
 		return render_msg($mensaje,3,$url);
@@ -471,6 +474,16 @@ require_once ("autorizaciones/autorizaciones.aux.inc.php");
 		{
 			$autid=$param['autid'];
 			$result=_conceder($autid);
+			// cogemos el id del usuario y del documento
+			$table=GetTable('autorizaciones');
+			$cols=GetCols('autorizaciones');
+			list($conn)=Getdb();
+			$sql="SELECT * FROM $table WHERE $cols[autid]=$autid;";
+			$rs=$conn->Execute($sql);
+			$evento["uid"]=$rs->fields[$cols["uid"]];
+			$evento["rid"]=$rs->fields[$cols["rid"]];
+			$conn->close();
+			
 			switch($result)
 				{
 					case 0:
@@ -480,7 +493,8 @@ require_once ("autorizaciones/autorizaciones.aux.inc.php");
 							die();
 							break;
 					case 1:
-							$mensaje="La autorizacion ha sido introducida en el sistema correctamente";
+							eventoAutorizacion($evento,"conceder");
+							$mensaje="La autorizacion ha sido introducida en el sistema correctamente";							
 							break;
 					case 2:
 							$param['ruta']="error";
@@ -494,7 +508,7 @@ require_once ("autorizaciones/autorizaciones.aux.inc.php");
 			$resultado->assign("mensaje",$mensaje);
 			$salida=$resultado->fetch($plantilla);
 			return $salida;*/
-
+			addLogEntry(eventToMsg('conceder',$param));
 			$url=vwSessionGetVar('urlantigua');
 			vwSessionDelVar('urlantigua');
 			return render_msg($mensaje,3,$url);
@@ -611,5 +625,9 @@ require_once ("autorizaciones/autorizaciones.aux.inc.php");
 	function cbautorizacionUsrEditar ($key,$valor)
 		{
 			return array("etiqueta"=>"Editar","url"=>"index.php?actor=autorizaciones&accion=editar&id=$key");};
-
+	function eventoAutorizacion ($param,$acicon)
+		{
+			$msg=eventToMsg($accion,$param);
+			addLogEntry($msg);
+		}
 ?>

@@ -3,6 +3,7 @@ require_once ("documentos/documentos.aux.inc.php");
 require_once ("documentos/recursos.inc.php");
 require_once ("db.inc.php");
 require_once ("media.inc.php");
+require_once ("event.inc.php");
 
 	function render_documentos($accion,$sujeto,$param)
 	{
@@ -107,7 +108,7 @@ require_once ("media.inc.php");
 				};
 		return $salida;
 		}
-	function render_admin_titulos($param)
+	/*function render_admin_titulos($param)
 	{
 			list($db)=Getdb();
 			$tbl=GetTable('documentos');
@@ -121,7 +122,7 @@ require_once ("media.inc.php");
 					$rs->MoveNext();}
 			die();
 		}
-		
+		*/
 	function render_admin_listardocumentos($param)
 		{
 			require_once("lister.php");
@@ -349,6 +350,7 @@ require_once ("media.inc.php");
 		$salida=$resultado->fetch($plantilla);
 		return $salida;  */
 
+
 		$url=vwSessionGetVar('urlantigua');
 		vwSessionDelVar('urlantigua');
 		return render_msg($mensaje,3,$url);
@@ -488,6 +490,10 @@ require_once ("media.inc.php");
 			else
 				{
 					$resultado->assign('admin',false);}
+			$params=array("uid"=>vwSessionGetVar("uid"),
+			"did"=>$param["did"]);
+			
+			eventoRecursos($params,"verdoc");
 			$salida=$resultado->fetch($plantilla);
 			return $salida;
 			}
@@ -619,6 +625,7 @@ require_once ("media.inc.php");
 			$recurso=$rs->FetchRow();
 			$recurso=fromdbtocms($recurso,'recursos');
 			$ul=vwSessionGetVar('UserLevel');
+			$recurso["uid"]=vwSessionGetVar("uid");			
 			if ($ul<1)
 				{
 					$param['ruta']="error";
@@ -630,8 +637,10 @@ require_once ("media.inc.php");
 				{
 					if ($ul<500)
 						{
+
 							if ($recurso['restringido']=="S")
-								{
+								{	
+									
 									$tbl=GetTable('autorizaciones');
 									$col=GetCols('autorizaciones');
 									list($db)=Getdb();
@@ -654,14 +663,20 @@ require_once ("media.inc.php");
 											render($param);
 											die();
 											}
+									
 									}
 							}
+
+						eventoRecursos($recurso,"verrsc");
 						outputFile($recurso['archivo'],$recurso['did']);
 						die();
 						}
 			die();
 		}
-
-
+		
+	function eventoRecursos($param,$accion)	{
+		$msg=eventToMsg($accion,$param);
+		addLogEntry($msg);
+	}
 
 ?>

@@ -5,23 +5,21 @@
 	
 	$comandos=array( 
 						array ( "accion" => "solicitud",
-								"parametros" => array( "rid","uid","msg")),
+								"parametros" => array( "rid","uid","razon")),
 						array ( "accion" => "verdoc",
-								"parametros" => array( "did","uid")),
+								"parametros" => array( "did")),
 						array ( "accion" => "verrsc",
 								"parametros" => array( "rid","uid","restringido")),
 						array ( "accion" => "conceder",
 								"parametros" => array( "rid","uid")),
 						array ( "accion" => "registro",
-								"parametros" => array ( 'uid','uname','clave','email','nombre',
-														'apellidos','calle','poblacion','provincia',
-														'pais','cpostal','actividad','nivel',
-														'preferencias')),
+								"parametros" => array ( 'uid','txtUName','txtClave','txtEmail','txtNombre',
+														'txtApellidos','txtCalle','txtPoblacion','txtProvincia',
+														'txtPais','txtCPostal','txtActividad','intNivel')),
 						array ( "accion" => "editar",
-								"parametros" => array ( 'uid','uname','clave','email','nombre',
-														'apellidos','calle','poblacion','provincia',
-														'pais','cpostal','actividad','nivel',
-														'preferencias'))
+								"parametros" => array ( 'uid','txtClave','txtEmail','txtNombre',
+														'txtApellidos','txtCalle','txtPoblacion','txtProvincia',
+														'txtPais','txtCPostal','txtActividad'))
 						
 						);
 	
@@ -110,11 +108,13 @@
 								{
 									if (!isset($param[$par]))
 										{
+											echo "error<br>";
 											$implod=false;
 											break;
 											}
 									else
 										{ //Asi garantizamos el orden de los parametros
+											echo $param[$par];
 											$parm[$par]=base64_encode($par."#".$param[$par]);} 
 									}
 							if ($implod)
@@ -155,6 +155,5 @@
 			return $event;
 			}
 			
-	/* lo q falta es insertar las instrucciones para q se inserten los eventos
-	*/
+	
 ?>

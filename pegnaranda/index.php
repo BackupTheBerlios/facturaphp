@@ -510,8 +510,7 @@
 							die();
 							break;
 						}
-				break;		
-				
+				break;								
 			}
 	
 ?>
