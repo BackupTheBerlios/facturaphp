@@ -13,7 +13,7 @@ $month = array('Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'O
 <head>
 <title>Calendario</title>
 <link rel="stylesheet" href="calendar.css" type="text/css">
-<script type="text/javascript" src="tbl_change.js"></script>
+<script type="text/javascript" src="calendar.js"></script>
 
 <script type="text/javascript">
 <!--

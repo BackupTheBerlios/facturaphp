@@ -132,9 +132,10 @@ var clock_set = 0;
  * @param   string      field name
  * @param   string      edit type - date/timestamp
  */
-function openCalendar(params, form, field, type) {
+function openCalendar(params, form, field, changed, type) {
     window.open("inc/calendar.php?" + params, "calendar", "width=400,height=200,status=yes");
     dateField = eval("document." + form + "." + field);	
+	dateChanged = eval("document." + form + "." + changed);	
     dateType = type;
 }
 
@@ -284,15 +285,17 @@ function initCalendar() {
 
         if (window.opener.dateType == 'datetime' || window.opener.dateType == 'date') {
             actVal = formatNum4(year) + "-" + formatNum2(dispmonth, 'month') + "-" + formatNum2(i, 'day');
+			actVal2 = formatNum2(i, 'day') + "-" + formatNum2(dispmonth, 'month') + "-" + formatNum4(year);
         } else {
             actVal = "" + formatNum4(year) + formatNum2(dispmonth, 'month') + formatNum2(i, 'day');
+			actVal2 = "" + formatNum2(i, 'day') +  + formatNum2(dispmonth, 'month') + formatNum4(year);
         }
         if (i == day) {
             style = ' class="selected"';
         } else {
             style = '';
         }
-        str += "<td" + style + "><a href='#' onclick='returnDate(\"" + actVal + "\");'>" + i + "</a></td>"
+        str += "<td" + style + "><a href='#' onclick='returnDate(\"" + actVal + "\",\"" + actVal2 + "\");'>" + i + "</a></td>"
         dayInWeek++;
     }
     for (i = dayInWeek; i < 7; i++) {
@@ -330,22 +333,26 @@ function initCalendar() {
  * Returns date from calendar.
  *
  * @param   string     date text
+ * @param	string	   date text changed
  */
-function returnDate(d) {
+function returnDate(d,d2) {
     txt = d;
+	txt2 = d2;
     if (window.opener.dateType != 'date') {
         // need to get time
         h = parseInt(document.getElementById('hour').value);
         m = parseInt(document.getElementById('minute').value);
         s = parseInt(document.getElementById('second').value);
-        if (window.opener.dateType == 'datetime') {
+        if (window.opener.dateType == 'datetime') {			
             txt += ' ' + formatNum2(h, 'hour') + ':' + formatNum2(m, 'minute') + ':' + formatNum2(s, 'second');
+			txt2 += ' ' + formatNum2(h, 'hour') + ':' + formatNum2(m, 'minute') + ':' + formatNum2(s, 'second');
         } else {
             // timestamp
             txt += formatNum2(h, 'hour') + formatNum2(m, 'minute') + formatNum2(s, 'second');
+			txt2 += formatNum2(h, 'hour') + formatNum2(m, 'minute') + formatNum2(s, 'second');
         }
     }
-
+    window.opener.dateChanged.value = txt2;
     window.opener.dateField.value = txt;
     window.close();
 }
