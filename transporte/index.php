@@ -119,8 +119,7 @@ if(!isset($_SESSION['user']))
 		//Al iniciar sesión no ha podido expirar esta aún
 		$_SESSION['expire']=0;
 		
-		//Se crea el menú de usuario	
-		$_SESSION['modules_list'] = $menu->table_modules(-2);
+		
 		
 		$permisos = new permissions();
 		$_SESSION['permisos_group_methods'] = $permisos->get_per_group_methods();
@@ -142,6 +141,9 @@ if(!isset($_SESSION['user']))
 		que recorra los identificadores y compruebe si está o no en la lista y su valor
 		*/
 
+		//Se crea el menú de usuario	
+		$_SESSION['modules_list'] = $menu->table_modules(-2);
+		
 		//como el usuario esta validado asigna su nombre a la plantilla
 		$tpl->assign('user_name',$_SESSION['user']);
 		$tpl->assign('login',0);

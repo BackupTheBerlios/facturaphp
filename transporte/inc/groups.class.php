@@ -204,7 +204,8 @@ class groups{
 			
 		
 			$this->per_modules[$modulo_num]->inicializar_base_datos();
-			$result = $this->per_modules[$modulo_num]->validate_per_group_module($id_group,$this->modules->modules_list[$modulo_num]['id_module'] );
+		//	$result = $this->per_modules[$modulo_num]->validate_per_group_module($id_group,$this->modules->modules_list[$modulo_num]['id_module'] );
+			$result = $_SESSION['permisos_group_modules'][$id_group][$this->modules->modules_list[$modulo_num]['id_module']];
 		
 			if($result == true)
 				$this->per_modules[$modulo_num]->per =  1;
@@ -223,7 +224,10 @@ class groups{
 				{	
 					$this->per_modules[$modulo_num]->per_methods[$metodo_num]->inicializar_base_datos();
 					$this->per_modules[$modulo_num]->per_methods[$metodo_num]->per = 0;
-					$result = $this->per_modules[$modulo_num]->per_methods[$metodo_num]->validate_per_group_method($id_group, $this->per_modules[$modulo_num]->per_methods[$metodo_num]->id_method);
+	//				$result = $this->per_modules[$modulo_num]->per_methods[$metodo_num]->validate_per_group_method($id_group, $this->per_modules[$modulo_num]->per_methods[$metodo_num]->id_method);
+					$result = $$_SESSION['permisos_group_methods'][$id_grupo][$this->per_modules[$modulo_num]->per_methods[$metodo_num]->id_method];
+					
+					
 					if($result == true)
 						$this->per_modules[$modulo_num]->per_methods[$metodo_num]->per =  1;
 				}

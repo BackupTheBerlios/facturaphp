@@ -125,6 +125,7 @@ class permissions{
 			$id_user = $user->get_id($_SESSION['user']);
 			$user->validate_per_user_module($id_user, $module);
 			
+			
 			$k=0;
 			for($i=0; $i<$user->permission->num_methods;$i++)
 			{

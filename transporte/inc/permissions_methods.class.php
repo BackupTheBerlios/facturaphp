@@ -145,7 +145,8 @@ class permissions_methods{
 		$num = 0;		
 		$per = false;
 	
-		$result = $this->validate_per_user_method($id_user,$id_method);
+		//$result = $this->validate_per_user_method($id_user,$id_method);
+		$result = $_SESSION['permisos_user_methods'][$id_user][$id_method];
 		
 		if($result == true)
 		{
@@ -162,7 +163,8 @@ class permissions_methods{
 			{
 				$id_grupo = $users_list->groups_list[$num]['id_group'];
 				
-				$result = $this->validate_per_group_method($id_grupo, $id_method);
+			//	$result = $this->validate_per_group_method($id_grupo, $id_method);
+				$result = $_SESSION['permisos_group_methods'][$id_grupo][$id_method];
 			
 				if($result == true)//$this->validate_per_group_method($this->groups_list[$this->num]['id_group'], $id_method)==true)
 				{
@@ -195,7 +197,8 @@ class permissions_methods{
 		$num = 0;		
 		$per = false;
 	
-		$result = $this->validate_per_user_method($id_user,$id_method);
+		//$result = $this->validate_per_user_method($id_user,$id_method);
+		$result = $_SESSION['permisos_user_methods'][$id_user][$id_method];
 		
 		if($result == true)
 		{
@@ -217,7 +220,8 @@ class permissions_methods{
 		//print "USUARIO -> ".$id_user.".....";
 		//$this->inicializar_base_datos();
 	
-				$result = $this->validate_per_group_method($id_group, $id_method);
+				//$result = $this->validate_per_group_method($id_group, $id_method);
+				$result = $_SESSION['permisos_group_methods'][$id_grupo][$id_method];
 			
 				if($result == true)//$this->validate_per_group_method($this->groups_list[$this->num]['id_group'], $id_method)==true)
 				{

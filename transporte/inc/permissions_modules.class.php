@@ -185,8 +185,8 @@ class permissions_modules{
 		
 		
 		//Se comprueba si el usuario tiene permisos en el módulo
-		$per = $this->validate_per_user_module($id_user, $id_module);
-
+		//$per = $this->validate_per_user_module($id_user, $id_module);
+		$per = $_SESSION['permisos_user_modules'][$id_user][$id_module];
 
 		
 		if($per == true)//Si ya hay permiso no hace falta seguir
@@ -199,7 +199,8 @@ class permissions_modules{
 			}
 			//Si hay metodo se busca el permiso del usuario en él
 			$method = new permissions_methods();
-			$per = $method->validate_per_user_method($id_user, $id_method);
+			//$per = $method->validate_per_user_method($id_user, $id_method);
+			$per = $_SESSION['permisos_user_methods'][$id_user][$id_method];
 			
 			if($per == true)
 			{
@@ -212,7 +213,9 @@ class permissions_modules{
 			
 			while(($per == false) && ($num < $num_groups))
 			{
-				$per = $method->validate_per_group_method ($users->groups_list[$num]['id_group'], $id_method);
+				//$per = $method->validate_per_group_method ($users->groups_list[$num]['id_group'], $id_method);
+				$result = $_SESSION['permisos_group_methods'][$users->groups_list[$num]['id_group']][$id_method];
+				
 				if($per == true)
 				{
 					//print "Usuario con permisos de usuario y en metodo de grupo";
@@ -232,7 +235,9 @@ class permissions_modules{
 			while(($per == false) && ($num < $num_groups))
 			{
 
-				$per = $this->validate_per_group_module ($users->groups_list[$num]['id_group'], $id_module);
+			//	$per = $this->validate_per_group_module ($users->groups_list[$num]['id_group'], $id_module);
+				$per = $_SESSION['permisos_group_modules'][$users->groups_list[$num]['id_group']][$id_module];
+			
 				if($per == true)
 				{
 				
@@ -245,7 +250,8 @@ class permissions_modules{
 					}
 					//Si hay metodo se busca el permiso del usuario en él
 					$method = new permissions_methods();
-					$per = $method->validate_per_user_method($id_user, $id_method);
+				//	$per = $method->validate_per_user_method($id_user, $id_method);
+					$per = $_SESSION['permisos_user_methods'][$id_user][$id_method];
 					
 					if($per == true)
 					{
@@ -259,7 +265,9 @@ class permissions_modules{
 					while(($per == false) && ($num < $num_groups))
 					{
 		
-						$per = $method->validate_per_group_method ($users->groups_list[$num]['id_group'], $id_method);
+						//$per = $method->validate_per_group_method ($users->groups_list[$num]['id_group'], $id_method);
+						$result = $_SESSION['permisos_group_methods'][$users->groups_list[$num]['id_group']][$id_method];
+						
 						if($per == true)
 						{
 							//print "Usuario con permisos de grupo y en metodo de grupo";
@@ -305,8 +313,9 @@ class permissions_modules{
 
 		
 		//Se comprueba si el usuario tiene permisos en el módulo
-		$result = $this->validate_per_user_module($id_user, $this->id_module);
-	
+		//$result = $this->validate_per_user_module($id_user, $this->id_module);
+		$result = $_SESSION['permisos_user_modules'][$id_user][$this->id_module];
+		
 		if($result == true)
 		{
 			$per = true;
@@ -317,7 +326,8 @@ class permissions_modules{
 		{	
 			while((!$per) && ($num < $num_groups))
 			{
-				$result = $this->validate_per_group_module ($user->groups_list[$num]['id_group'], $this->id_module);
+			//	$result = $this->validate_per_group_module ($user->groups_list[$num]['id_group'], $this->id_module);
+				$result = $_SESSION['permisos_group_modules'][$users->groups_list[$num]['id_group']][$this->id_module];
 				if($result == true)
 				{
 					$per=true;
@@ -370,7 +380,8 @@ class permissions_modules{
 		
 		//Se comprueba si el usuario tiene permisos en el módulo
 			
-		$result = $this->validate_per_user_module($id_user, $this->id_module);
+		//$result = $this->validate_per_user_module($id_user, $this->id_module);
+		$result = $_SESSION['permisos_user_modules'][$id_user][$this->id_module];
 
 		if($result == true)
 		{
@@ -419,7 +430,8 @@ class permissions_modules{
 		$this->per = 0;
 		$num = 0;
 	
-		$result = $this->validate_per_group_module ($id_group, $this->id_module);
+	//	$result = $this->validate_per_group_module ($id_group, $this->id_module);
+		$result = $_SESSION['permisos_group_modules'][$id_group][$this->id_module];
 		if($result == true){
 			$per=true;
 			$this->per = 1;
@@ -469,7 +481,8 @@ class permissions_modules{
 	
 		
 		//Se comprueba si el usuario tiene permisos en el módulo
-		$result = $this->validate_per_user_module($id_user, $id_module);
+		//$result = $this->validate_per_user_module($id_user, $id_module);
+		$result = $_SESSION['permisos_user_modules'][$id_user][$id_module];
 	
 		if($result == true)
 		{
@@ -481,7 +494,8 @@ class permissions_modules{
 		{	
 			while((!$per) && ($num < $num_groups))
 			{
-				$result = $this->validate_per_group_module ($user->groups_list[$num]['id_group'], $id_module);
+				$result = $_SESSION['permisos_group_modules'][$user->groups_list[$num]['id_group']][$id_module];
+				
 				if($result == true)
 				{
 					$per=true;
