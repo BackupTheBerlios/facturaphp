@@ -21,21 +21,7 @@ var $num_corps;
 	{
 		
 	}
-	
-	
-	
-	/*		
-	function calculate_tpl($method, $tpl)
-	{
-			
-			$tpl=$this->listar($tpl);
-			
-			$tpl->assign('plantilla','emps_'.$method.'.tpl');	
-			$tpl->assign('plantilla', 'user_corps_list.tpl');								
-	
-		return $tpl;
-	}*/
-	
+
 	
 	function calculate_tpl($method, $tpl)
 	{
@@ -43,7 +29,6 @@ var $num_corps;
 		switch($method)
 		{
 				case 'select':	
-								
 								$tpl->assign('plantilla','corps_view.tpl');	
 								break;
 				default:
@@ -51,7 +36,7 @@ var $num_corps;
 								$tpl=$this->listar($tpl);
 
 								if($this->num_corps == 1)
-									$tpl->assign('plantilla','resuival.tpl');	
+									$tpl->assign('plantilla','corps_view.tpl');	
 								else
 									$tpl->assign('plantilla','user_corps_'.$method.'.tpl');	
 								break;

@@ -120,8 +120,8 @@ class emps{
 		$this->db->close();
 		
 		/*******************************/
-		$id = 1;
-		return $this->get_list_emps($id);	 
+		
+		return $this->get_list_emps($session_corp);	 
 		
 	}
 	
@@ -276,7 +276,7 @@ class emps{
 	}
 	
 	function read($id){
-	print "Empleado ".$id;
+
 		//se puede acceder a los usuarios por numero de campo o por nombre de campo
 		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
 		//crea una nueva conexi—n con una bbdd (mysql)
@@ -543,7 +543,7 @@ class emps{
 	
 	function listar($tpl)
 	{
-		$this->get_list_emps(1);
+		$this->get_list_emps($session_corp);
 
 		$tabla_listado = new table(true);
 		$cadena=''.$tabla_listado->make_tables('emps',$this->emps_list,array('Nombre',20,'Primer Apellido',20,'Segundo Apellido',20),array($this->ddbb_id_emp, $this->ddbb_name,$this->ddbb_last_name,$this->ddbb_last_name2),10,array('view','modify','delete'),true);
