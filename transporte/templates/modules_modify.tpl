@@ -46,7 +46,8 @@
 				<tr>
 						<td width="125px" align="right" class="CampoFormulario">Depende de:</td>
 						<td><select class="textoMenu"  name="{$objeto->ddbb_parent}" id="{$objeto->ddbb_parent}">
-							<option value="0" {if $objeto->parent==0}selected{/if}>Ninguno</option>
+							<option value="-2" {if $objeto->parent==-2}selected{/if}>Ninguno (sin enlace)</option>
+							<option value="0" {if $objeto->parent==0}selected{/if}>Ninguno (con enlace)</option>
 							{section name="indice" loop="$padres"}
 								{if $padres[indice].id_module != $objeto->id_module}
 								<option value="{$padres[indice].id_module}" {if $objeto->parent==$padres[indice].id_module}selected{/if} >{$padres[indice].name_web}</option>

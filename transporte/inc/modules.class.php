@@ -1054,13 +1054,13 @@ class modules{
 		$h=0;
 		for ($i=0;$i<count($formulario);$i++){
 			$result=false;
-			for ($j=0;$j<count($this->module_meth);$j++){
+			for ($j=0;$j<count($this->module_meth)&&$this->module_meth!="";$j++){
 				if($formulario[$i]["name"]==$this->module_meth[$j]["name"]){
 					$result=true;
 					break;
 				}
 			}
-			if(!$result){
+			if(!$result && $formulario!=""){
 				$nuevos[$h]["name"]=$formulario[$i]["name"];
 				$nuevos[$h]["name_web"]=$formulario[$i]["name_web"];
 				$h++;

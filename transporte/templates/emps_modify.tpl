@@ -183,10 +183,9 @@ function enableDisable(value){
 		<tr>
 		<td colspan="2">
 		
-		
-		
-		
-		<table width="250px" align="center">
+		<br>
+		<table width="100%" align="center" border="0"><tr><td>
+		<table width="50%" align="center">
 			<input type="hidden" name="{$usuarios->ddbb_id_user}" id="{$usuarios->ddbb_id_user}" value="{$usuarios->id_user}">
 					<tr>
 					  <td colspan="2" class="cabeceraCampoFormulario">Datos de Login:</td>
@@ -224,10 +223,10 @@ function enableDisable(value){
 				  	</td>
 				  </tr>
 
-				 <tr>
-		<td valign="top" colspan="2">
-			<br>
-			<table width="100%" align="center" border="0">
+				
+		</table>
+		</td><td>
+		<table width="100%" align="center" border="0">
 			 <tr>
 					  <td colspan="2" class="cabeceraCampoFormulario">Grupos: </td>
 			</tr>
@@ -269,9 +268,7 @@ function enableDisable(value){
 			{/section}
 			<tr class="cabeceraMultilinea"><td colspan="2">&nbsp</td></tr>
 			</table>
-		</td>
-		</tr>	
-		</table>
+		</td></tr></table>
 			<br>
 			<br>    
 			
