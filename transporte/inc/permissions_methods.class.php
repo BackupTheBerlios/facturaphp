@@ -126,7 +126,7 @@ class permissions_methods{
 		} 
 		 
 		$this->db->close();
-
+		
 		return $this->result->fields['per'];
 		
 	}
@@ -184,7 +184,7 @@ class permissions_methods{
 			}			
 		}
 	}
-	
+		
 	function validate_per_method_without_groups($id_user, $id_method)
 	{
 		//print "USUARIO -> ".$id_user.".....";

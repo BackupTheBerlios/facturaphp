@@ -181,7 +181,6 @@ class emps{
 	
 	function add(){
 		if(!isset($_POST['add_adduser'])){
-			
 			$this->obj_user=new users();
 			$this->obj_user->add();
 		}
@@ -191,7 +190,6 @@ class emps{
 			//pasarle a la plantilla los modulos y grupos con sus respectivos checkbox a checked false
 			//Modulos
 			$this->cat_emps=new cat_emps();
-			
 			return 0;
 		}
 		//en el caso de que SI este definido submit_add
@@ -599,7 +597,14 @@ class emps{
 			$this->read($id);
 			$tpl->assign('objeto',$this);
 			
-			//			
+			//	
+			
+			//Se comprueba si hay permiso para borrar o modificar
+			$permisos_mod_del = new permissions();
+			$permisos_mod_del->get_permissions_modify_delete();
+			
+			$tpl->assign('acciones',$permisos_mod_del->per_mod_del);
+					
 			return $tpl;
 				
 	}
@@ -685,8 +690,7 @@ class emps{
 		echo "<br>";
 		echo "hola2<br>";
 		return 0;
-	}	
-	
+	}
 
 	function bar($method,$corp){		
 		if ($corp != ""){

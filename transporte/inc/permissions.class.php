@@ -14,6 +14,7 @@ class permissions{
 	var $id_method;
 	var $per;
 	var $permissions_module;
+	var $per_mod_del;
 	var $add;
 
 
@@ -96,6 +97,44 @@ class permissions{
 		
 		}
 	
+	}
+	
+	function get_permissions_modify_delete()
+	{
+		if(!$_SESSION['super'] && !$_SESSION['admin'])
+		{
+			$user= new users(); 
+			$id_user = $user->get_id($_SESSION['user']);
+			$user->validate_per_user_module($id_user, 'users');
+			
+			$k=0;
+			for($i=0; $i<$user->permission->num_methods;$i++)
+			{
+				if($user->permission->per_methods[$i]->method_name == 'modify')
+				{
+					if($user->permission->per_methods[$i]->per == 1)
+					{
+						$this->per_mod_del[$k] = 'modify';
+						$k++;
+					}
+				}
+				else
+				if($user->permission->per_methods[$i]->method_name == 'delete')
+				{
+					if($user->permission->per_methods[$i]->per == 1)
+					{
+						$this->per_mod_del[$k] = 'delete';
+						$k++;
+					}
+				}
+			}
+		}
+		else
+		{
+			$this->per_mod_del[0] = 'modify';
+			$this->per_mod_del[1] = 'delete';
+		}
+
 	}
 	
 }

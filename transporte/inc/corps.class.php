@@ -445,7 +445,8 @@ class corps{
 	
 	}
 	
-	function view ($id,$tpl){
+	function view ($id,$tpl)
+	{
 	/*
 		Cosas que faltan por hacer:
 			De forma general, mirar los permisos del usuario que vaya a acceder aqui, para saber si tiene permisos de borrar editar ver etc...
@@ -484,30 +485,22 @@ class corps{
 			
 			
 			
-			//$tpl->assign('list_modules', $this->list_modules_availables($id))
-			//listado de permisos por modulos
-			/*$tabla_grupos = new table(false);
-			//listado de grupos
-			if ($this->get_groups($id)==0){
-				$cadena=$cadena.$tabla_grupos->tabla_vacia('group_users');
-				$variables_grupos=$tabla_grupos->nombres_variables;
-			}
-			else{					
-				$cadena=$cadena.$tabla_grupos->make_tables('group_users',$this->groups_list,array('Nombre de grupo',75),array('id_group','name_web'),10,array('delete'),true);
-				$variables_grupos=$tabla_grupos->nombres_variables;
-			}*/
 			$i=0;
-			while($i<(count($variables_empleados)/*+count($variables_modulos)*/)){
+			while($i<(count($variables_empleados)))
+			{
 				for($j=0;$j<count($variables_empleados);$j++)
 				{
 					$variables[$i]=$variables_empleados[$j];
 					$i++;
 				}
-				/*for($k=0;$k<count($variables_modulos);$k++){
-					$variables[$i]=$variables_modulos[$k];
-					$i++;
-				}*/
+				
 			}
+			
+			//Se comprueba si hay permiso para borrar o modificar
+			$permisos_mod_del = new permissions();
+			$permisos_mod_del->get_permissions_modify_delete();
+			
+			$tpl->assign('acciones',$permisos_mod_del->per_mod_del);
 			
 			$tpl->assign('variables',$variables);
 			$tpl->assign('cadena',$cadena);

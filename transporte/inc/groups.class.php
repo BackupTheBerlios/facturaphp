@@ -197,6 +197,7 @@ class groups{
 			$this->per_modules[$modulo_num] = new permissions_modules();
 			$this->per_modules[$modulo_num]->id_module = $this->modules->modules_list[$modulo_num]['id_module'];
 			$this->per_modules[$modulo_num]->module_name = $this->modules->modules_list[$modulo_num]['name'];
+			$this->per_modules[$modulo_num]->web_name = $this->modules->modules_list[$modulo_num]['name_web'];
 			
 			$this->per_modules[$modulo_num]->per =  0;
 			
@@ -214,7 +215,8 @@ class groups{
 			{
 				$this->per_modules[$modulo_num]->per_methods[$metodo_num] = new permissions_methods();
 				$this->per_modules[$modulo_num]->per_methods[$metodo_num]->id_method = $this->modules->module_methods[$metodo_num]['id_method'];
-				$this->per_modules[$modulo_num]->per_methods[$metodo_num]->method_name = $this->modules->module_methods[$metodo_num]['name'];				
+				$this->per_modules[$modulo_num]->per_methods[$metodo_num]->method_name = $this->modules->module_methods[$metodo_num]['name'];	
+				$this->per_modules[$modulo_num]->per_methods[$metodo_num]->method_name_web = $this->modules->module_methods[$metodo_num]['name_web'];
 				
 					
 				if($this->per_modules[$modulo_num]->per == true)
@@ -260,6 +262,10 @@ class groups{
 			$this->name_web=$this->result->fields[$this->ddbb_name_web];
 			$this->descrip=$this->result->fields[$this->ddbb_descrip];
 			$this->belong=0;//Variable para los checkbox, por defecto a 0.
+			
+			//Una vez sabído el identificador de grupo, se puede pedir que realice su lista de permisos
+			$this->get_permissions($this->id_group);
+			
 			$this->db->close();
 			return 1;
 		}
@@ -462,41 +468,7 @@ class groups{
 		}	
 	}
 	  
-	/*function validate_user($user, $passwd){
-		//se puede acceder a los usuarios por numero de campo o por nombre de campo
-		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
-		//crea una nueva conexi—n con una bbdd (mysql)
-		$this->db = NewADOConnection($this->db_type);
-		//le dice que no salgan los errores de conexi—n de la ddbb por pantalla
-		$this->db->debug=false;
-		//realiza una conexi—n permanente con la bbdd
-		$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
-		//mete la consulta
-		$this->sql="SELECT * FROM ".$this->table_prefix.$this->table_name." WHERE ".$this->ddbb_login."=\"".$user."\"";
-		//printf($this->sql);
-		//la ejecuta y guarda los resultados
-		$this->result = $this->db->Execute($this->sql);
-		//si falla
-		//printf($this); 
-		if ($this->result === false){
-			//printf('no existe usuario o contrase–a');
-			$error=1;
-			$this->db->close();
-			return 0;
-		}else{  
-		//la contrase–a es correcta
-			if($passwd==$this->result->fields[$this->ddbb_passwd]){
-			//printf('existe usuario o contrase–a');
-			$this->db->close();
-			return 1;
-			}
-		}
-		$this->db->close();
-		return 0;
-		
-		
 	
-	}*/
 	
 	function view ($id,$tpl)
 	{
@@ -508,11 +480,109 @@ class groups{
 			Busquedas
 	*/
 			$cadena='';			
-			// Leemos el empleado y se lo pasamos a la plantilla
+			// Leemos el usuario y se lo pasamos a la plantilla
 			$this->read($id);
 			$tpl->assign('objeto',$this);
+				
+			$user = new users();
+			$user->validate_per_user($_SESSION['user']);
 			
-			//			
+			if(!$_SESSION['super'] || !$_SESSION['admin'])
+			{	
+				$modules = false;
+			
+				$i=0;
+				while($i!=$user->num_modules)
+				{
+			
+					if(($user->per_modules[$i]->per == 1)&&($user->per_modules[$i]->module_name=='modules'))
+					{
+					//Se comprueba si se tiene permiso para ver
+						$j=0;
+						while(($j<$user->per_modules[$i]->num_methods))
+						{
+							if(($user->per_modules[$i]->per_methods[$j]->per == 1)&&($user->per_modules[$i]->per_methods[$j]->method_name == 'view'))
+							{
+								$modules = true;
+							}
+							$j++;
+						}
+					}
+					$i++;
+					
+				}
+
+			}
+			else
+			{
+				$modules = true;
+			}
+			
+		
+			$mensaje = null;
+			$mensaje[0]['id_mensaje'] = 1;
+			$mensaje[0]['mes'] = "Sentimos informarle de que no tiene permiso para acceder a esta información";
+			
+			//listado de modulos
+			$tabla_modulos = new table(false);
+		
+			
+			if($modules)
+			{
+				if ($this->num_modules==0)
+				{
+	
+					$cadena=$cadena.$tabla_modulos->tabla_vacia('modules');
+					$variables_modulos=$tabla_modulos->nombres_variables;
+				}
+				else{	
+					//Se prepara el array de permisos
+					$k=0;
+					for($i = 0;$i<$this->num_modules;$i++)
+					{
+						if(($this->per_modules[$i]->per == 1)&&($this->per_modules[$i]->module_name != 'error'))
+						{
+							$permissions[$k]['id_module']=$this->per_modules[$i]->id_module;
+							$permissions[$k]['name']=$this->per_modules[$i]->web_name;
+							$permissions[$k]['methods'] = "";
+							for($j=0;$j<$this->per_modules[$i]->num_methods;$j++)
+								if($this->per_modules[$i]->per_methods[$j]->per ==1)
+								{
+									$permissions[$k]['methods'] = $permissions[$k]['methods'].' '.$this->per_modules[$i]->per_methods[$j]->method_name_web;
+								}
+								$k++;
+						}
+					}
+					
+						
+					$cadena=$cadena.$tabla_modulos->make_tables('modules',$permissions,array('Nombre del modulo',20,'Métodos en los que se tiene permiso',120),array('id_module','name', 'methods'),10,null,false);
+					$variables_modulos=$tabla_modulos->nombres_variables;
+				}
+			}
+			else
+			{
+				$cadena=$cadena.$tabla_modulos->make_tables('modules',$mensaje,array('ACCION NO PERMITIDA',50),array('id_mensaje','mes'),10,null,false);
+				$variables_modulos=$tabla_modulos->nombres_variables;
+			}
+			
+			$i=0;
+			while($i<count($variables_modulos)){
+				
+				for($k=0;$k<count($variables_modulos);$k++){
+					$variables[$i]=$variables_modulos[$k];
+					$i++;
+				}
+			}
+
+			//Se comprueba si hay permiso para borrar o modificar
+			$permisos_mod_del = new permissions();
+			$permisos_mod_del->get_permissions_modify_delete();
+			
+			$tpl->assign('acciones',$permisos_mod_del->per_mod_del);
+			
+			$tpl->assign('variables',$variables);
+			$tpl->assign('cadena',$cadena);
+					
 			return $tpl;
 				
 	}
@@ -530,7 +600,7 @@ class groups{
 		$tpl->assign('cadena',$cadena);		
 		return $tpl;
 	}
-	
+
 		function calculate_tpl($method, $tpl){
 				$this->method = $method;
 				switch($method){

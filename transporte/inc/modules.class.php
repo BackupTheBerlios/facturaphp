@@ -554,7 +554,6 @@ class modules{
 
 			}}
 	}
-	
 		function view ($id,$tpl){
 	/*
 		Cosas que faltan por hacer:
@@ -721,10 +720,16 @@ class modules{
 					$variables[$i]=$variables_modulos[$k];
 					$i++;
 				}
-			}
+			}*/
+
+			//Se comprueba si hay permiso para borrar o modificar
+			$permisos_mod_del = new permissions();
+			$permisos_mod_del->get_permissions_modify_delete();
+			
+			$tpl->assign('acciones',$permisos_mod_del->per_mod_del);
 
 			$tpl->assign('variables',$variables);
-			$tpl->assign('cadena',$cadena);*/
+			$tpl->assign('cadena',$cadena);
 			//			
 		
 			return $tpl;

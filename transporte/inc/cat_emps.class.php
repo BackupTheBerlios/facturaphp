@@ -198,7 +198,7 @@ class cat_emps{
 			}
 			else{
 				//Si todo es correcto si meten los datos
-				
+
 		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
 		//crea una nueva conexi—n con una bbdd (mysql)
 		$this->db = NewADOConnection($this->db_type);
@@ -240,7 +240,7 @@ class cat_emps{
 			return 0;
 		}	
 		}
-		}		
+		}				
 	}
 	
 	function remove($id){
@@ -277,8 +277,6 @@ class cat_emps{
 			}
 	}
 	
-	
-	
 	function modify(){
 	if (!isset($_POST['submit_modify'])){
 			//Mostrar plantilla vacía		
@@ -314,7 +312,6 @@ class cat_emps{
 		//la ejecuta y guarda los resultados
 		$this->result = $this->db->Execute($this->sql);
 		//si falla 
-
 		if ($this->result === false){
 			$this->error=1;
 			$this->db->close();
@@ -355,14 +352,20 @@ class cat_emps{
 		return $tpl;
 	}
 	
-	function view ($id,$tpl){
-		$this->read($id);
+	function view ($id){
+	$this->read($id);
 		$tpl->assign('objeto',$this);
-		return $tpl;
 	
+			//Se comprueba si hay permiso para borrar o modificar
+			$permisos_mod_del = new permissions();
+			$permisos_mod_del->get_permissions_modify_delete();
+			
+			$tpl->assign('acciones',$permisos_mod_del->per_mod_del);
+
+	return $tpl;
 	}
 	
-		function get_fields_from_post(){
+	function get_fields_from_post(){
 		
 		//Cogemos los campos principales
 		$this->name=$_POST[$this->ddbb_name];
@@ -569,8 +572,7 @@ class cat_emps{
 		}
 		return $localice;
 	}
-	
-	
+
 	function admin ($id){
 	
 	}

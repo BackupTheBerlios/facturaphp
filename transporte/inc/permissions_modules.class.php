@@ -354,7 +354,7 @@ class permissions_modules{
 		}
 		
 	}
-			
+	
 	function validate_per_module_without_groups($id_user)
 	{
 		$this->inicializar_base_datos();
