@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.3, created on 2004-09-24 17:07:34
+<?php /* Smarty version 2.6.3, created on 2004-11-16 20:07:59
          compiled from bottom.tpl */ ?>
 <tr>
 	  <td colspan="2" height="100px" class="piePagina">
@@ -8,7 +8,7 @@
 	  	</tr>
 	  	<tr align="center"> 
 	  		<td><a href="#"><img src="pics/EclipseBannerPic.jpg" border="0" width="94" height="50"><br>Eclipse</a></td>
-	  		<td><a href="#"><img src="pics/24_apache.jpg" border="0" width="94" height="50"><br>Eclipse</a></td>
+	  		<td><a href="#"><img src="pics/24_apache.jpg" border="0" width="94" height="50"><br>Apache</a></td>
 	  		<td><a href="#"><img src="pics/php.gif" border="0" width="94" height="50"><br>PHP</a></td>
 	  		<td><a href="#"><img src="pics/mysql.png" border="0" width="94" height="50"><br>MySQL</a></td>
 	  		<td></td>

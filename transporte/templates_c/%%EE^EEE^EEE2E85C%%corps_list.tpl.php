@@ -1,7 +1,10 @@
-<?php /* Smarty version 2.6.3, created on 2004-11-15 17:54:43
-         compiled from users_list.tpl */ ?>
+<?php /* Smarty version 2.6.3, created on 2004-11-30 13:28:11
+         compiled from corps_list.tpl */ ?>
 <td valign="top">
-<?php echo $this->_tpl_vars['cadena']; ?>
+
+	<?php 
+		echo $this->_tpl_vars['cadena'];
+	 ?>
 
 <?php $_smarty_tpl_vars = $this->_tpl_vars;
 $this->_smarty_include(array('smarty_include_tpl_file' => "capas.tpl", 'smarty_include_vars' => array()));
@@ -16,39 +19,41 @@ unset($_smarty_tpl_vars);
                           <!--<img src="pics/usuariosico.png" width="32" height="32">-->
 						</td>
 						<td width="93%" valign="middle"  nowrap>
-						  Buscar usuarios </td>
+						  Buscar empresas </td>
 				</tr>
 			  </table>
 			  <table width="100%">
-			  <tr><td class="message" align="center"><?php echo $this->_tpl_vars['message']; ?>
+			   <tr><td class="message" align="center"><?php echo $this->_tpl_vars['message']; ?>
 </td></tr>
-			  <tr><td valign="top"><form method="post" action="index.php?module=users&method=list">
+			  <tr><td valign="top"><form method="post" action="index.php?module=corps&method=list">
 			  	<table width="250px" align="center">
 				 <tr>
 					  <td colspan="2" class="cabeceraCampoFormulario">Criterios de b&uacute;squeda:</td>
 				  </tr>
 					 <tr>
-						<td width="125px" class="CampoFormulario">Login:</td>
-						<td > <input type="text" id="<?php echo $this->_tpl_vars['objeto']->ddbb_login; ?>
-" name="<?php echo $this->_tpl_vars['objeto']->ddbb_login; ?>
+						<td width="125px" class="CampoFormulario">Nombre:</td>
+						<td > <input type="text" id="<?php echo $this->_tpl_vars['objeto']->ddbb_name; ?>
+" name="<?php echo $this->_tpl_vars['objeto']->ddbb_name; ?>
 " class="textoMenu"></td>
 				  </tr>
 				  <tr>
-						<td width="125px" align="right" class="CampoFormulario">Nombre:</td>
-						<td> <input type="text" id="<?php echo $this->_tpl_vars['objeto']->ddbb_name; ?>
-" name="<?php echo $this->_tpl_vars['objeto']->ddbb_name; ?>
+					
+				  <tr>
+						<td width="125px" align="right" class="CampoFormulario">Nombre completo:</td>
+						<td> <input type="text" id="<?php echo $this->_tpl_vars['objeto']->ddbb_full_name; ?>
+" name="<?php echo $this->_tpl_vars['objeto']->ddbb_full_name; ?>
 " class="textoMenu"></td>
 				</tr>
 					<tr>
-						<td width="125px" class="CampoFormulario" >Primer apellido:</td>
-						<td > <input type="text" id="<?php echo $this->_tpl_vars['objeto']->ddbb_last_name; ?>
-" name="<?php echo $this->_tpl_vars['objeto']->ddbb_last_name; ?>
+						<td width="125px" class="CampoFormulario" >CIF/NIF:</td>
+						<td > <input type="text" id="<?php echo $this->_tpl_vars['objeto']->ddbb_cif_nif; ?>
+" name="<?php echo $this->_tpl_vars['objeto']->ddbb_cif_nif; ?>
 " class="textoMenu"></td>
 				  </tr>
 				  <tr>
-						<td width="125px" class="CampoFormulario" >Segundo apellido:</td>
-						<td > <input type="text" id="<?php echo $this->_tpl_vars['objeto']->ddbb_last_name2; ?>
-" name="<?php echo $this->_tpl_vars['objeto']->ddbb_last_name2; ?>
+						<td width="125px" class="CampoFormulario" >Telefono:</td>
+						<td > <input type="text" id="<?php echo $this->_tpl_vars['objeto']->ddbb_phone; ?>
+" name="<?php echo $this->_tpl_vars['objeto']->ddbb_phone; ?>
 " class="textoMenu"></td>
 				  </tr>
 				    <tr>
@@ -68,7 +73,7 @@ unset($_smarty_tpl_vars);
 						
 					</div>	
 					 <script>	
-					  	document.getElementById("divMostrar").innerHTML = users_1;
+					  	document.getElementById("divMostrar").innerHTML = corps_1;
 					  </script>
 				  
 			  </td></tr></table>

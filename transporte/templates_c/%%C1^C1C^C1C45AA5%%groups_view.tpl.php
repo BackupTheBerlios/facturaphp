@@ -1,5 +1,5 @@
-<?php /* Smarty version 2.6.3, created on 2004-11-30 23:30:43
-         compiled from users_view.tpl */ ?>
+<?php /* Smarty version 2.6.3, created on 2004-11-24 16:17:43
+         compiled from groups_view.tpl */ ?>
 <td valign="top">
 <?php echo $this->_tpl_vars['cadena']; ?>
 
@@ -16,13 +16,13 @@ unset($_smarty_tpl_vars);
 						<img src="pics/clientesico.png" width="32" height="32">
 						 <!--<img src="pics/usuariosico.png" width="32" height="32">-->
 						</td>
-						<td width="93%" valign="middle" nowrap>Detalle de usuarios </td>
+						<td width="93%" valign="middle" nowrap>Detalle de grupo </td>
 				</tr>
 			  </table>
 				<br>
 				<TABLE width="95%" align="center">
 					<tr class="cabeceraMultiLinea">
-						<td width="50%" height="23" nowrap>Identificador de Usuario: <?php echo $this->_tpl_vars['objeto']->id_user; ?>
+						<td width="50%" height="23" nowrap>Identificador de Grupo: <?php echo $this->_tpl_vars['objeto']->id_group; ?>
 
 						</td>
 						<td nowrap width="50%">&nbsp;</td>
@@ -31,30 +31,18 @@ unset($_smarty_tpl_vars);
 						<td colspan="2">
 							<table width="90%" align="center">
                               <tr height="15px">
-                                <td width="25%"  nowrap class="camposVistas">Login:</td>
-                                <td nowrap width="25%" class="datosVista"><?php echo $this->_tpl_vars['objeto']->login; ?>
+                                <td width="25%"  nowrap class="camposVistas">Nombre:</td>
+                                <td nowrap width="25%" class="datosVista"><?php echo $this->_tpl_vars['objeto']->name; ?>
 </td>
-								<td height="21" nowrap class="camposVistas">Contrase&ntilde;a:</td>
-                                <td nowrap class="datosVista"> <!--<?php echo $this->_tpl_vars['objeto']->passwd; ?>
--->********</td>
-                                
-                              </tr>
-                              
-                              <tr height="15px">
-                                <td width="25%" nowrap class="camposVistas">Nombre:</td>
-                                <td width="25%" nowrap class="datosVista"><?php echo $this->_tpl_vars['objeto']->name; ?>
-</td>
-								 <td width="25%"  nowrap class="camposVistas">Primer Apellido: </td>
-                                 <td width="25%" class="datosVista"><?php echo $this->_tpl_vars['objeto']->last_name; ?>
+								<td height="21" nowrap class="camposVistas">Nombre Web:</td>
+                                <td nowrap class="datosVista"> <?php echo $this->_tpl_vars['objeto']->name_web; ?>
 </td>
                                 
-                              </tr>
+                              </tr>                              
+                           
                               <tr height="15px">                               
-                               <td height="21" nowrap class="camposVistas">Segundo Apellido: </td>
-                                <td nowrap class="datosVista"><?php echo $this->_tpl_vars['objeto']->last_name2; ?>
-</td>
-								<td><table align="center"><tr>
-
+                               <td height="21" nowrap class="camposVistas">Descripción: </td><td>&nbsp;</td>
+								<td><table align="center"><tr><td></td>
 				<?php unset($this->_sections['indice']);
 $this->_sections['indice']['name'] = 'indice';
 $this->_sections['indice']['loop'] = is_array($_loop=$this->_tpl_vars['acciones']) ? count($_loop) : max(0, (int)$_loop); unset($_loop);
@@ -82,37 +70,39 @@ $this->_sections['indice']['last']       = ($this->_sections['indice']['iteratio
 				
 				<td>
 				<?php if ($this->_tpl_vars['acciones'][$this->_sections['indice']['index']] == 'modify'): ?>
-				<a href="index.php?module=users&method=<?php echo $this->_tpl_vars['acciones'][$this->_sections['indice']['index']]; ?>
-&id=<?php echo $this->_tpl_vars['objeto']->id_user; ?>
+				<a href="index.php?module=groups&method=<?php echo $this->_tpl_vars['acciones'][$this->_sections['indice']['index']]; ?>
+&id=<?php echo $this->_tpl_vars['objeto']->id_group; ?>
 ">
 				<img src="pics/btn<?php echo $this->_tpl_vars['acciones'][$this->_sections['indice']['index']]; ?>
 .gif" border="0"></a></td>
 				<?php else: ?>
 				<td><a href="index.php?module=users&method=<?php echo $this->_tpl_vars['acciones'][$this->_sections['indice']['index']]; ?>
-&id=<?php echo $this->_tpl_vars['objeto']->id_user; ?>
+&id=<?php echo $this->_tpl_vars['objeto']->id_group; ?>
 ">
 				<img src="pics/btn<?php echo $this->_tpl_vars['acciones'][$this->_sections['indice']['index']]; ?>
-.gif" border="0" ></a></td>
+.gif" border="0" onClick="confirm('¿Desea borrar este registro?\nSi pulsa Sí se borrarán tambien los registros relacionados con este cliente (p.ej: datos de usuario)')"></a></td>
 				<?php endif; ?>
 				
 				<?php endfor; endif; ?>
-								
-							</tr>	</table></td>
+
+							</tr>	</table>
+							</td>
 								<td></td>
                               </tr>
                             </table>
+                       <table class="cajaMenu" width="90%" align="center">
+								<tr class="multiLinea1" ><td><?php echo $this->_tpl_vars['objeto']->descrip; ?>
+</td></tr>
+					  </table>
 							<br>
-							<p align="center" class="cabeceraCampoFormulario">Listados de permisos por m&oacute;dulos y grupos</p>
+							<p align="center" class="cabeceraCampoFormulario">Listados de permisos por m&oacute;dulos</p>
 							<br>
 					<a name="listado">
 					  <table align="center" width="400" cellspacing="0" cellpadding="0">
 					  <tr>
-					  	<td width="50%" align="center">
-					<img src="pics/pestagna-modulessobre.gif" width="71" height="23"  name="boton" id="modules" onClick="Ocultar(this,'modules_1')"> 					</td>
-					  	<td width="50%"  align="center">
-					<img src="pics/pestagna-group_users.gif" width="71" height="23" id="group_users" name="boton" onClick="Ocultar(this,'group_users_1')">
-						</td>
-					  	
+					  	<td width="100%" align="center">
+					<img src="pics/pestagna-modulessobre.gif" width="71" height="23"  name="boton" id="modules" onClick="Ocultar(this,'modules_1')"> 					
+					</td>					  	
 					  </tr>
 					  	<td align="center" colspan="2"><img src="pics/barra.gif"></td>
 					  </table>

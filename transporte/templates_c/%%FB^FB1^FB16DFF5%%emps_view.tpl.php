@@ -1,5 +1,5 @@
-<?php /* Smarty version 2.6.3, created on 2004-11-30 23:30:43
-         compiled from users_view.tpl */ ?>
+<?php /* Smarty version 2.6.3, created on 2004-11-30 21:40:26
+         compiled from emps_view.tpl */ ?>
 <td valign="top">
 <?php echo $this->_tpl_vars['cadena']; ?>
 
@@ -22,7 +22,7 @@ unset($_smarty_tpl_vars);
 				<br>
 				<TABLE width="95%" align="center">
 					<tr class="cabeceraMultiLinea">
-						<td width="50%" height="23" nowrap>Identificador de Usuario: <?php echo $this->_tpl_vars['objeto']->id_user; ?>
+						<td width="50%" height="23" nowrap>Identificador de Usuario: <?php echo $this->_tpl_vars['objeto']->id_emp; ?>
 
 						</td>
 						<td nowrap width="50%">&nbsp;</td>
@@ -35,8 +35,8 @@ unset($_smarty_tpl_vars);
                                 <td nowrap width="25%" class="datosVista"><?php echo $this->_tpl_vars['objeto']->login; ?>
 </td>
 								<td height="21" nowrap class="camposVistas">Contrase&ntilde;a:</td>
-                                <td nowrap class="datosVista"> <!--<?php echo $this->_tpl_vars['objeto']->passwd; ?>
--->********</td>
+                                <td nowrap class="datosVista"> <?php echo $this->_tpl_vars['objeto']->passwd; ?>
+</td>
                                 
                               </tr>
                               
@@ -54,7 +54,6 @@ unset($_smarty_tpl_vars);
                                 <td nowrap class="datosVista"><?php echo $this->_tpl_vars['objeto']->last_name2; ?>
 </td>
 								<td><table align="center"><tr>
-
 				<?php unset($this->_sections['indice']);
 $this->_sections['indice']['name'] = 'indice';
 $this->_sections['indice']['loop'] = is_array($_loop=$this->_tpl_vars['acciones']) ? count($_loop) : max(0, (int)$_loop); unset($_loop);
@@ -82,55 +81,34 @@ $this->_sections['indice']['last']       = ($this->_sections['indice']['iteratio
 				
 				<td>
 				<?php if ($this->_tpl_vars['acciones'][$this->_sections['indice']['index']] == 'modify'): ?>
-				<a href="index.php?module=users&method=<?php echo $this->_tpl_vars['acciones'][$this->_sections['indice']['index']]; ?>
-&id=<?php echo $this->_tpl_vars['objeto']->id_user; ?>
+				<a href="index.php?module=emps&method=<?php echo $this->_tpl_vars['acciones'][$this->_sections['indice']['index']]; ?>
+&id=<?php echo $this->_tpl_vars['objeto']->id_emp; ?>
 ">
 				<img src="pics/btn<?php echo $this->_tpl_vars['acciones'][$this->_sections['indice']['index']]; ?>
 .gif" border="0"></a></td>
 				<?php else: ?>
-				<td><a href="index.php?module=users&method=<?php echo $this->_tpl_vars['acciones'][$this->_sections['indice']['index']]; ?>
-&id=<?php echo $this->_tpl_vars['objeto']->id_user; ?>
+				<td><a href="index.php?module=emps&method=<?php echo $this->_tpl_vars['acciones'][$this->_sections['indice']['index']]; ?>
+&id=<?php echo $this->_tpl_vars['objeto']->id_emp; ?>
 ">
 				<img src="pics/btn<?php echo $this->_tpl_vars['acciones'][$this->_sections['indice']['index']]; ?>
 .gif" border="0" ></a></td>
 				<?php endif; ?>
 				
 				<?php endfor; endif; ?>
-								
+
 							</tr>	</table></td>
 								<td></td>
                               </tr>
                             </table>
 							<br>
-							<p align="center" class="cabeceraCampoFormulario">Listados de permisos por m&oacute;dulos y grupos</p>
+							<p align="center" class="cabeceraCampoFormulario">Listados Altas-Bajas</p>
 							<br>
-					<a name="listado">
-					  <table align="center" width="400" cellspacing="0" cellpadding="0">
-					  <tr>
-					  	<td width="50%" align="center">
-					<img src="pics/pestagna-modulessobre.gif" width="71" height="23"  name="boton" id="modules" onClick="Ocultar(this,'modules_1')"> 					</td>
-					  	<td width="50%"  align="center">
-					<img src="pics/pestagna-group_users.gif" width="71" height="23" id="group_users" name="boton" onClick="Ocultar(this,'group_users_1')">
-						</td>
-					  	
-					  </tr>
-					  	<td align="center" colspan="2"><img src="pics/barra.gif"></td>
-					  </table>
-
-					  <br>
-					 
-					  <div name="divMostrar" id="divMostrar" >
+					   <div name="divMostrar" id="divMostrar" >
 						
 					</div>					
 					 <script>	
-					  	document.getElementById("divMostrar").innerHTML = modules_1;
+					  	document.getElementById("divMostrar").innerHTML = holydays_1;
 					  </script>
-					  <br>
-					  <table align="center" width="400" cellpadding="0" cellspacing="0">
-						  <tr><td><img src="pics/barra.gif"></td></tr>
-					  </table>
-					  <br>
-					  
   					  </td>
 						
 					</tr>

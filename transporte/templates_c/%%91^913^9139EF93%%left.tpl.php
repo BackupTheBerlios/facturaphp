@@ -1,5 +1,8 @@
-<?php /* Smarty version 2.6.3, created on 2004-07-07 00:59:02
+<?php /* Smarty version 2.6.3, created on 2004-11-22 17:05:02
          compiled from left.tpl */ ?>
+
+
+
 <tr>
 	  <td width="150px" valign="top">
 		<?php $_smarty_tpl_vars = $this->_tpl_vars;
@@ -7,15 +10,49 @@ $this->_smarty_include(array('smarty_include_tpl_file' => "users.tpl", 'smarty_i
 $this->_tpl_vars = $_smarty_tpl_vars;
 unset($_smarty_tpl_vars);
  ?>
-		<?php $_smarty_tpl_vars = $this->_tpl_vars;
+		
+		<?php 
+			if(!isset($_SESSION['user']))
+			{//Usuario sin logear
+				 ?>
+					<?php $_smarty_tpl_vars = $this->_tpl_vars;
 $this->_smarty_include(array('smarty_include_tpl_file' => "menu.tpl", 'smarty_include_vars' => array()));
 $this->_tpl_vars = $_smarty_tpl_vars;
 unset($_smarty_tpl_vars);
  ?>
+				<?php 
+			}
+			else
+			{
+				if($_SESSION['ident_corp'] == 0)
+				{//Se va a elegir empresa
+					 ?>
+						<?php $_smarty_tpl_vars = $this->_tpl_vars;
+$this->_smarty_include(array('smarty_include_tpl_file' => "menu_corp.tpl", 'smarty_include_vars' => array()));
+$this->_tpl_vars = $_smarty_tpl_vars;
+unset($_smarty_tpl_vars);
+ ?>
+					<?php 
+
+				}
+				else
+				{//Usuario logeado y eligió empresa
+					 ?>
+						<?php $_smarty_tpl_vars = $this->_tpl_vars;
+$this->_smarty_include(array('smarty_include_tpl_file' => "menu_user.tpl", 'smarty_include_vars' => array()));
+$this->_tpl_vars = $_smarty_tpl_vars;
+unset($_smarty_tpl_vars);
+ ?>
+					<?php 
+				}
+			}
+		 ?>
+				
 		<?php $_smarty_tpl_vars = $this->_tpl_vars;
 $this->_smarty_include(array('smarty_include_tpl_file' => "sessions.tpl", 'smarty_include_vars' => array()));
 $this->_tpl_vars = $_smarty_tpl_vars;
 unset($_smarty_tpl_vars);
  ?>
 	  </td>
+	  
 	  
