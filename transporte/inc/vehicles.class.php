@@ -607,17 +607,135 @@ class vehicles{
 			Busquedas
 	*/
 			$cadena='';			
-			// Leemos el usuario y se lo pasamos a la plantilla
+			// Leemos el vehículo y se lo pasamos a la plantilla
 			$this->read($id);
 			$tpl->assign('objeto',$this);	
-			//Se comprueba si hay permiso para borrar o modificar
-			$permisos_mod_del = new permissions();
-			$permisos_mod_del->get_permissions_modify_delete('vehicles');
 			
-			$tpl->assign('acciones',$permisos_mod_del->per_mod_del);
+			$user = new users();
+			$id_user = $user->get_id($_SESSION['user']);
+			$user->validate_per_user($id_user);
+			
+			if(!$_SESSION['super'] || !$_SESSION['admin'])
+			{	
+				$drivers = false;
+				$laborers = false;
+			
+				$i=0;
+				while($i!=$user->num_modules)
+				{
+			
+					if(($user->per_modules[$i]->per == 1)&&($user->per_modules[$i]->module_name=='drivers'))
+					{
+					//Se comprueba si se tiene permiso para ver
+						$j=0;
+						while(($j<$user->per_modules[$i]->num_methods))
+						{
+							if(($user->per_modules[$i]->per_methods[$j]->per == 1)&&($user->per_modules[$i]->per_methods[$j]->method_name == 'view'))
+							{
+								$drivers = true;
+							}
+							$j++;
+						}
+					}
+					else 
+					if(($user->per_modules[$i]->per == 1)&&($user->per_modules[$i]->module_name=='laborers'))
+					{
+						//Se comprueba si se tiene permiso para ver
+						$j=0;
+						while(($j<$user->per_modules[$i]->num_methods))
+						{
+							if(($user->per_modules[$i]->per_methods[$j]->per == 1)&&($user->per_modules[$i]->per_methods[$j]->method_name == 'view'))
+							{
+								$laborers = true;
+							}
+							$j++;
+						}
+					}
+					
+					$i++;
+					
+				}
 
+			}
+			else
+			{
+				$drivers = true;
+				$laborers = true;
+			}
+			
+			$mensaje = null;
+			$mensaje[0]['id_mensaje'] = 1;
+			$mensaje[0]['mes'] = "Sentimos informarle de que no tiene permiso para acceder a esta información";
+			
+			//listado de conductores
+			$tabla_listado_drivers = new table(false);
+			if($drivers)
+			{
+				$conductor = new drivers();
+				$num_drivers = $conductor->get_list_drivers_vehicle($_GET['id']);
+	print ("Nombre ".$conductor->dri);	
+				if ($num_drivers==0)
+				{
+					$cadena=$cadena.$cadena.$tabla_listado_drivers->tabla_vacia('drivers', false);
+					$variables_drivers=$tabla_listado_drivers->nombres_variables;
+				}
+				else
+				{	
+					$cadena=$cadena.$tabla_listado_drivers->make_tables('drivers',$conductor->drivers_list,array('Nombre',20,'Primer Apellido',20,'Segundo Apellido',20),array($conductor->ddbb_id_driver, $conductor->ddbb_name, $conductor->ddbb_last_name, $conductor->ddbb_last_name2),10,array(),false);
+					$variables_drivers=$tabla_listado_drivers->nombres_variables;	
+				}				
+			}
+			else
+			{
+				$cadena=$cadena.$tabla_modulos->make_tables('drivers',$mensaje,array('ACCION NO PERMITIDA',50),array('id_mensaje','mes'),10,null,false);
+				$variables_drivers=$tabla_modulos->nombres_variables;
+			}
+			
+			
+			//listado de permisos por modulos
+			$tabla_listado_laborers = new table(false);
+			if($laborers)
+			{
+				
+				$peon = new laborers();
+				$num_laborers = $peon->get_list_laborers_vehicle($_GET['id']);
+	print("numero de laborers ".$num_laborers);
+						
+				if ($num_laborers==0)
+				{
+					$cadena=$cadena.$cadena.$tabla_listado_laborers->tabla_vacia('laborers', false);
+					print ("Cadena".$cadena);
+					$variables_laborers=$tabla_listado_laborers->nombres_variables;
+				}
+				else
+				{	
+					$cadena=$cadena.$tabla_listado_laborers->make_tables('laborers',$peon->laborers_list,array('Nombre',20,'Primer Apellido',20,'Segundo Apellido',20),array($peon->ddbb_id_laborer, $peon->ddbb_name, $peon->ddbb_last_name, $peon->ddbb_last_name2),10,array(),false);
+					$variables_laborers=$tabla_listado_laborers->nombres_variables;	
+				}	
+			}
+			else
+			{
+				$cadena=$cadena.$tabla_grupos->make_tables('laborers',$mensaje,array('ACCION NO PERMITIDA',50),array('id_mensaje','mes'),10,null,false);
+				$variables_laborers=$tabla_grupos->nombres_variables;
+			}
+			
+			
+			
+			$i=0;
+			while($i<(count($variables_grupos)+count($variables_modulos))){
+				for($j=0;$j<count($variables_drivers);$j++){
+					$variables[$i]=$variables_drivers[$j];
+					$i++;
+				}
+				for($k=0;$k<count($variables_laborers);$k++){
+					$variables[$i]=$variables_laborers[$k];
+					$i++;
+				}
+			}
+						
 			$tpl->assign('variables',$variables);
-			$tpl->assign('cadena',$cadena);
+			$tpl->assign('cadena',$cadena);	
+
 			//			
 			return $tpl;
 				
