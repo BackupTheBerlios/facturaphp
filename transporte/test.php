@@ -1,9 +1,8 @@
 <?php
 //includes
-require_once('inc/includes.php');
-echo "<html><body>";
 echo "<p>antes de objeto</p>";
-$object= new users();
+require_once('inc/users.class.php');
+echo "<p>antes de objeto</p>";
+$object=new users();
 echo "despues de objeto";
-echo "</body></html>";
 ?>

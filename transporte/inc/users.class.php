@@ -2,7 +2,7 @@
 //clase que da soporte a los usuarios del programa
 //enlaza con la bbdd 
 require_once ('config.inc.php');
-require_once ($ADODB_DIRECTORY."/adodb.inc.php");
+require_once ("/Users/david/Sites/transporte/inc/adodb/adodb.class.php");
 class users{
 //internal vars
 	var $id_user;
@@ -34,6 +34,7 @@ class users{
   	var $users_list;
   	//constructor
 	function users(){
+		echo "<br>en el objeto<br>";
 		$this->db_type=$DDBB_TYPE;
 		$this->db_name=$DDBB_NAME;
 		$this->db_ip=$IP_DDBB;

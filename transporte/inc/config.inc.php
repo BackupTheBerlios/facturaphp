@@ -6,7 +6,7 @@
  * @version $Id$
  * @copyright 2003 
  **/
- 	
+ 	/*
 	define('INSTALL_DIRECTORY', '/Users/david/Sites/transporte/');
 	define('INSTALL_IS_WINDOWS',TRUE);
 	define('SMARTY_DIRECTORY', $INSTALL_DIRECTORY . 'inc/smarty');
@@ -18,5 +18,5 @@
 	define('DDBB_PREFIX','');
 	define('DDBB_TYPE','mysql');
 	define('DDBB_PORT','3306');
-	
+	*/
 ?>
