@@ -294,6 +294,67 @@ class products{
 		return 0;
 	}
 	
+	function modify_categories(){
+		$rel_prods_cats=new rel_prods_cats();
+		
+		//Leemos las categorias que estan en bbdd;
+		$cats_in_bbdd=$rel_prods_cats->get_rel_prod_cat($this->id_product);
+		/**
+		Las categorias que estan en el formulario ya se han leido 
+		y estan en $this->prod_cat_list
+		Se crearan 2 arrays nuevos $nuevas y $borradas
+		Las categorias que esten en la bbdd y no esten en el formulario
+		seran las borradas, y las que esten en el formulario y no en la
+		bbdd son las nuevas
+		*/
+		//Vemos los borrados
+		$k=0;
+		for ($i=0;$i<count($cats_in_bbdd);$i++){
+			$result=false;
+			for ($j=0;$j<count($this->prod_cat_list);$j++){
+				if ($cats_in_bbdd[$i]['id_cat_prod']==$this->prod_cat_list[$j]['id_cat_prod']){
+					$result=true;
+					break;
+				}
+			}		
+			if (!$result){
+				$borrados[$k]['id_cat_prod']=$cats_in_bbdd[$i]['id_cat_prod'];
+				$borrados[$k]['id_rel_prod_cat']=$cats_in_bbdd[$i]['id_rel_prod_cat'];
+				$k++;
+			}
+		}
+		
+		//Ahora vemos los nuevos
+		$k=0;
+		for ($i=0;$i<count($this->prod_cat_list);$i++){
+			$result=false;
+			for ($j=0;$j<count($cats_in_bbdd);$j++){
+				if ($cats_in_bbdd[$i]['id_cat_prod']==$this->prod_cat_list[$j]['id_cat_prod']){
+					$result=true;
+					break;
+				}
+			}		
+			if (!$result){
+				$nuevos[$k]=$this->prod_cat_list[$i]['id_cat_prod'];
+				$k++;
+			}
+		}
+		//Borramos los que supuestamente se han borrado
+		for ($i=0;$i<count($borrados);$i++){
+			$rel_prods_cats->remove($borrados[$i]['id_rel_prod_cat']);			
+		}
+		//Añadimos los nuevos
+		for ($i=0;$i<count($nuevos);$i++){
+			$rel_prods_cats->id_product=$this->id_product;
+			$rel_prods_cats->id_cat_prod=$nuevos[$i];
+			$rel_prods_cats->add();
+		}
+		if ((count($nuevos)==0)&&(count($borrados)==0))
+			return 0;
+		else
+			return 1;
+	}
+	
 	
 	function modify_photo($id_cat_prod)
 	{
@@ -382,10 +443,11 @@ class products{
 		//realiza una conexin permanente con la bbdd
 		$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
 		//mete la consulta para coger los campos de la bbdd
-		$this->sql="SELECT * FROM ".$this->table_prefix.$this->table_name. " WHERE ".$this->ddbb_id_cat_prod." = \"".$this->id_cat_prod."\"" ;
+		$this->sql="SELECT * FROM ".$this->table_prefix.$this->table_name. " WHERE ".$this->ddbb_id_product." = \"".$this->id_product."\"";
 		//la ejecuta y guarda los resultados
 		$this->result = $this->db->Execute($this->sql);
 		//si falla 
+		
 		if ($this->result === false){
 			$this->error=1;
 			$this->db->close();
@@ -393,22 +455,27 @@ class products{
 		}
 		//rellenamos el array con los datos de los atributos de la clase
 		$record = array();
-		$record[$this->ddbb_id_cat_prod]=$this->id_product;
+		$record[$this->ddbb_id_product]=$this->id_product;
 		$record[$this->ddbb_id_corp] = $this->id_corp;
 		$record[$this->ddbb_name]=$this->name;
 		$record[$this->ddbb_name_web]=$this->name_web;
 		$record[$this->ddbb_pvp]=$this->pvp;
 		$record[$this->ddbb_tax] = $this->tax;
 		$record[$this->ddbb_pvp_tax]=$this->pvp_tax;
-		$record[$this->ddbb_minimum_stock]=$this->minimum_stock;
+		$record[$this->ddbb_minimun_stock]=$this->minimun_stock;
 		//calculamos la sql de insercin respecto a los atributos
 		$this->sql = $this->db->GetUpdateSQL($this->result, $record);
-		//insertamos el registro
+		//insertamos el registro		
 		$this->db->Execute($this->sql);
 		//si se ha insertado una fila
-		if($this->db->Affected_Rows()==1){
+		$Affected_Rows=$this->db->Affected_Rows();
+		
+		$return_categories=$this->modify_categories();
+		echo $return_categories;
+		if(($Affected_Rows==1)||($this->sql=="")||$return_categories==1){
 			//capturammos el id de la linea insertada
 			$this->db->close();
+			
 			//devolvemos el id de la tabla ya que todo ha ido bien
 			return $this->id_product;
 		}else {
@@ -597,6 +664,19 @@ class products{
 		$tpl->assign('objeto', $this);
 		return $tpl;
 	}
+	
+	function view ($id, $tpl){
+	$this->read($id);
+		$tpl->assign('objeto',$this);
+	
+			//Se comprueba si hay permiso para borrar o modificar
+			$permisos_mod_del = new permissions();
+			$permisos_mod_del->get_permissions_modify_delete('products');
+			
+			$tpl->assign('acciones',$permisos_mod_del->per_mod_del);
+
+	return $tpl;
+	}
 
 	function calculate_tpl($method, $tpl)
 	{
@@ -621,6 +701,7 @@ class products{
 										$tpl=$this->listar($tpl);
 										$tpl->assign("message","&nbsp;<br>Producto modificado correctamente<br>&nbsp;");
 									}
+									$tpl->assign("tabla_checkbox",$this->table_categories(false));
 									$tpl->assign("objeto",$this);
 									break;
 						case 'delete':

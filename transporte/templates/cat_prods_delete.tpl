@@ -14,7 +14,7 @@
 			  
 			  <br>
 			  <p>Se va a proceder al borrado de la categor&iacute;a: {$objeto->name}</p>
-			  <p>Todas las categor$iacute;as que puedan tener a &eacute;sta como categor&iacute;a padre, no se borrar&aacute;n.
+			  <p>Todas las categor&iacute;as que puedan tener a &eacute;sta como categor&iacute;a padre, no se borrar&aacute;n.
 			  {$message}
   			  <br>
 			  <table align="center"><tr><td align="center"><input type="submit" name="submit_delete" value="Borrar" class="botones"></td></tr></table>

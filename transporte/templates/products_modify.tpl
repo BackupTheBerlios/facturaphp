@@ -55,7 +55,7 @@
 				</tr>
 				<tr>
 					<td width="125px" align="right" class="CampoFormulario">Stock M&iacute;nimo:</td>
-					<td> <input type="text" id="{$objeto->ddbb_minimun_stock}" name="{$objeto->ddbb_minimun_stock}" class="textoMenu"></td>
+					<td> <input type="text" id="{$objeto->ddbb_minimun_stock}" name="{$objeto->ddbb_minimun_stock}" value="{$objeto->minimun_stock}" class="textoMenu"></td>
 				</tr>
 		</table>
 		</td>
