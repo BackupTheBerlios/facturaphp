@@ -4,7 +4,7 @@
 	  	<tr>
 	  		<td colspan="7" class="piePagina" align="center" valign="middle">Programa realizado con</td>
 	  	</tr>
-	  	<tr align="center"> 
+	  	<tr align="center">
 	  		<td><a href="#"><img src="pics/EclipseBannerPic.jpg" border="0" width="94" height="50"><br>Eclipse</a></td>
 	  		<td><a href="#"><img src="pics/24_apache.jpg" border="0" width="94" height="50"><br>Eclipse</a></td>
 	  		<td><a href="#"><img src="pics/php.gif" border="0" width="94" height="50"><br>PHP</a></td>
