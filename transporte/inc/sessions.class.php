@@ -124,7 +124,7 @@ class sessions{
 	}
 	
 	function preparar_datos($id_user)
-	{
+	{/*
 		$usuario = new users();
 		$usuario->read($id_user);
 		$this->sessions_list[$this->num][$this->ddbb_name] = $usuario->name." ".$usuario->last_name." ".$usuario->last_name2;
@@ -168,7 +168,7 @@ class sessions{
 			$this->sessions_list[$this->num][$this->ddbb_down]="00-00-0000 00:00:00";
 		}
 			
-		
+		*/
 	}
 	
 	function get_add_form(){
@@ -435,7 +435,7 @@ class sessions{
 	
 	function preparar_datos_conectados($id_user)
 	{
-		$usuario = new users();
+	/*	$usuario = new users();
 		$usuario->read($id_user);
 		$this->conectados_list[$this->num][$this->ddbb_name] = $usuario->name." ".$usuario->last_name." ".$usuario->last_name2;
 
@@ -454,7 +454,7 @@ class sessions{
 			if($segundos < 10)
 				$segundos = "0".$segundos;
 				
-			$this->conectados_list[$this->num][$this->ddbb_up]="$dia-$mes-$anno $hora:$minutos:$segundos";
+			$this->conectados_list[$this->num][$this->ddbb_up]="$dia-$mes-$anno $hora:$minutos:$segundos";*/
 		
 	}
 	
