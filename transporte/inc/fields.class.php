@@ -62,6 +62,12 @@ class fields{
 								$error=false;
 							}							
 							break;
+				case "decimal": $return=$this->validate_double($this->lista[$name_keys[$i]]["value"],$this->lista[$name_keys[$i]]["null"]);
+							if(!is_int($return)){
+								array_push($this->array_error,$name_keys[$i],$return);
+								$error=false;
+							}							
+							break;
 				case "varchar": $return=$this->validate_varchar($this->lista[$name_keys[$i]]["value"],$this->lista[$name_keys[$i]]["size"],$this->lista[$name_keys[$i]]["null"]);								
 							if(!is_int($return)){
 								array_push($this->array_error,$name_keys[$i],$return);
@@ -106,12 +112,13 @@ class fields{
 	}
 	
 	function validate_int($value,$null){
-		if($null==1 && ($value=="" || $value==null)){
+		if($null==1 && ($value=="" || $value==null)&& $value!=0){
 			return "* Este campo no puede estar vacio.";
 		}
+
 		if(is_numeric($value))
 			settype($value,"integer");
-		if (!is_double($value) && $value != "")
+		if (!is_integer($value) && $value != "")
 			return "* El valor introducido no es un entero.";
 		return 0;
 	}
@@ -126,6 +133,19 @@ class fields{
 	}
 	
 	function validate_double($value,$null){
+		if($null==1 && ($value=="" || $value==null)){
+			return "* Este campo no puede estar vacio.";
+		}
+		if (is_numeric($value)){
+			settype($value,"double");
+		}
+		if (!is_double($value) && $value != ""){
+			return "* El valor introducido no es un entero o decimal (Separacio&oacute;n de decimal con '.').";
+			}
+		return 0;
+	}
+	
+	function validate_decimal($value,$null){
 		if($null==1 && ($value=="" || $value==null)){
 			return "* Este campo no puede estar vacio.";
 		}

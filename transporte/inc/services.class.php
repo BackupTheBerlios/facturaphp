@@ -69,15 +69,15 @@ class services{
 		//este array de alguna manera aumatizada
 		************************/
 		$this->fields_list= new fields();
-		$this->fields_list->add($this->ddbb_id_service, $this->id_service, 'int', 11,0);
-		$this->fields_list->add($this->ddbb_id_corp, $this->id_corp, 'int', 11,0);
+		$this->fields_list->add($this->ddbb_id_service, $this->id_service, 'int', 11,0,1);
+		$this->fields_list->add($this->ddbb_id_corp, $this->id_corp, 'int', 11,0,1);
 		$this->fields_list->add($this->ddbb_name, $this->name, 'varchar', 50,0,1);
 		$this->fields_list->add($this->ddbb_name_web, $this->name_web, 'varchar', 50,0);
-		$this->fields_list->add($this->ddbb_pvp, $this->pvp, 'int', 11,0,1);
-		$this->fields_list->add($this->ddbb_tax, $this->tax, 'int', 11,0,1);
-		$this->fields_list->add($this->ddbb_pvp_tax, $this->pvp_tax, 'int', 11,0,1);
+		$this->fields_list->add($this->ddbb_pvp, $this->pvp, 'double', 11,0,1);
+		$this->fields_list->add($this->ddbb_tax, $this->tax, 'double', 11,0,1);
+		$this->fields_list->add($this->ddbb_pvp_tax, $this->pvp_tax, 'double', 11,0,1);
 		$this->fields_list->add($this->ddbb_path_photo, $this->path_photo, 'varchar', 255,0);
-		$this->fields_list->add($this->ddbb_minimun_stock, $this->minimun_stock, 'int', 11,0,1);
+		$this->fields_list->add($this->ddbb_minimun_stock, $this->minimun_stock, 'double', 11,0,1);
 		//print_r($this);
 		//se puede acceder a los grupos por numero de campo o por nombre de campo
 		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
@@ -216,7 +216,8 @@ class services{
 			//Modificamos los todos los valores del objeto fields con los nuevos datos del objeto product, exceptuando path_photo que eso se deberia hacer mediante la clase upload.
 			//Al id_product se le da 0 por quse neecesita un valor para que 
 			$this->id_service=0;
-			$this->fields_list->modify_value($this->ddbb_id_product,$this->id_product);
+			
+			$this->fields_list->modify_value($this->ddbb_id_service,$this->id_service);
 			$this->fields_list->modify_value($this->ddbb_id_corp,$this->id_corp);
 			$this->fields_list->modify_value($this->ddbb_minimun_stock,$this->minimun_stock);
 			$this->fields_list->modify_value($this->ddbb_name,$this->name);
