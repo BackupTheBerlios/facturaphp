@@ -8,7 +8,7 @@
 						<td width="7%">
 						 <img src="pics/usuariosico.png" width="32" height="32">
 						</td>
-						<td width="93%" valign="middle"  nowrap>A&ntilde;adir M&oacute;dulo</td>
+						<td width="93%" valign="middle"  nowrap>Modificar M&oacute;dulo</td>
 			  </tr>
 		  </table>
 						<br>
