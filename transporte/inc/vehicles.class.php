@@ -612,7 +612,7 @@ class vehicles{
 			$tpl->assign('objeto',$this);	
 			
 			$user = new users();
-			$id_user = $user->get_id($_SESSION['user']);
+			$id_user = $_SESSION['ident_user'];
 			$user->validate_per_user($id_user);
 			
 			if(!$_SESSION['super'] && !$_SESSION['admin'])
@@ -673,7 +673,7 @@ class vehicles{
 			{
 				$conductor = new drivers();
 				$num_drivers = $conductor->get_list_drivers_vehicle($_GET['id']);
-	print ("Nombre ".$conductor->dri);	
+
 				if ($num_drivers==0)
 				{
 					$cadena=$cadena.$cadena.$tabla_listado_drivers->tabla_vacia('drivers', false);
@@ -699,12 +699,11 @@ class vehicles{
 				
 				$peon = new laborers();
 				$num_laborers = $peon->get_list_laborers_vehicle($_GET['id']);
-	print("numero de laborers ".$num_laborers);
 						
 				if ($num_laborers==0)
 				{
 					$cadena=$cadena.$cadena.$tabla_listado_laborers->tabla_vacia('laborers', false);
-					print ("Cadena".$cadena);
+					//print ("Cadena".$cadena);
 					$variables_laborers=$tabla_listado_laborers->nombres_variables;
 				}
 				else
@@ -735,8 +734,7 @@ class vehicles{
 						
 			$tpl->assign('variables',$variables);
 			$tpl->assign('cadena',$cadena);	
-
-			//			
+		
 			return $tpl;
 				
 	}

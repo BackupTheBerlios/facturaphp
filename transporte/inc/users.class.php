@@ -116,7 +116,7 @@ class users{
 		}  
 		$this->db->close();
 		
-		return $this->get_list_users();	 
+		return $this/*->get_list_users()*/;	 
 		
 	}
 	
@@ -137,7 +137,7 @@ class users{
 		if ($this->result === false){
 			$this->error=1;
 			$this->db->close();
-			
+
 			return 0;
 		}  
 		
@@ -253,6 +253,7 @@ class users{
 			return 0;
 		}  
 		
+		$this->db->close();
 		return $this->result->fields['id_user'];
 	}
 	
@@ -311,16 +312,51 @@ class users{
 			$this->full_name=$this->result->fields[$this->ddbb_full_name];
 			$this->internal=$this->result->fields[$this->ddbb_internal];
 			$this->active=$this->result->fields[$this->ddbb_active];
-			$this->db->close();
 			
+			$this->db->close();
 			
 			//Una vez sabído el identificador de usuario, se puede pedir que realice su lista de permisos
 			$this->validate_per_user($this->id_user);
+
+			return 1;
+		}
+	}
+	
+	function read_fields($id)
+	{
+		//se puede acceder a los usuarios por numero de campo o por nombre de campo
+		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
+		//crea una nueva conexin con una bbdd (mysql)
+		$this->db = NewADOConnection($this->db_type);
+		//le dice que no salgan los errores de conexin de la ddbb por pantalla
+		$this->db->debug=false;
+		//realiza una conexin permanente con la bbdd
+		$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
+		//mete la consulta
+		$this->sql="SELECT * FROM ".$this->table_prefix.$this->table_name." WHERE ".$this->ddbb_id_user."= \"".$id."\"";
+		//la ejecuta y guarda los resultados
+		$this->result = $this->db->Execute($this->sql);
+		//si falla 
+		if ($this->result === false){
+			$error=1;
+			return 0;
+			$this->db->close();
+		}else{
+			
+			$this->id_user=$id;
+			$this->login=$this->result->fields[$this->ddbb_login];
+			$this->passwd=$this->result->fields[$this->ddbb_passwd];
+			$this->name=$this->result->fields[$this->ddbb_name];
+			$this->last_name=$this->result->fields[$this->ddbb_last_name];
+			$this->last_name2=$this->result->fields[$this->ddbb_last_name2];
+			$this->full_name=$this->result->fields[$this->ddbb_full_name];
+			$this->internal=$this->result->fields[$this->ddbb_internal];
+			$this->active=$this->result->fields[$this->ddbb_active];
+			
+			$this->db->close();
 			
 			return 1;
 		}
-		
-	
 	}
 	
 	function add(){
@@ -547,7 +583,7 @@ class users{
 			for($i=0;$i<$modules->num;$i++)
 			{
 				if($_SESSION['super'])
-				{   
+				{
 					$this->checkbox->per_modules[$i]=new permissions_modules;
 					$this->checkbox->per_modules[$i]->id_module=$modules->modules_list[$i]['id_module'];
 					$this->checkbox->per_modules[$i]->module_name=$modules->modules_list[$i]['name_web'];
@@ -577,7 +613,7 @@ class users{
 									$name_web = $this->checkbox->per_modules[$k]->per_methods[$j]->method_name_web;
 									$permiso = $this->checkbox->per_modules[$k]->per_methods[$j]->per;
 									
-									$this->checkbox->per_modules[$k]->per_methods = null;
+									$this->checkbox->per_modules[$k]->per_methods = null;								
 									$this->checkbox->per_modules[$k]->per_methods[0] = new permissions_methods();
 									$this->checkbox->per_modules[$k]->per_methods[0]->id_method = $id_method;
 									$this->checkbox->per_modules[$k]->per_methods[0]->method_name_web = $name_web;
