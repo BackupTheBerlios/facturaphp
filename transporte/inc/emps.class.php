@@ -651,7 +651,7 @@ class emps{
 									if ($this->add() !=0){
 										$this->method="list";
 										$tpl=$this->listar($tpl);										
-										$tpl->assign("message","&nbsp;<br>Usuario a&ntilde;adido correctamente<br>&nbsp;");
+										$tpl->assign("message","&nbsp;<br>Empleado a&ntilde;adido correctamente<br>&nbsp;");
 									}
 									$tpl->assign("objeto",$this);									
 									$tpl->assign("usuarios",$this->obj_user);
@@ -667,7 +667,7 @@ class emps{
 									if ($this->modify() !=0){
 										$this->method="list";
 										$tpl=$this->listar($tpl);										
-										$tpl->assign("message","&nbsp;<br>Usuario modificado correctamente<br>&nbsp;");
+										$tpl->assign("message","&nbsp;<br>Empleado modificado correctamente<br>&nbsp;");
 									}
 									$tpl->assign("objeto",$this);
 									$tpl->assign("modulos",$this->checkbox);
@@ -682,7 +682,7 @@ class emps{
 										$this->emps_list="";
 										$method="list";
 										$tpl=$this->listar($tpl);
-										$tpl->assign("message","&nbsp;<br>Usuario borrado correctamente<br>&nbsp;");
+										$tpl->assign("message","&nbsp;<br>Empleado borrado correctamente<br>&nbsp;");
 									}
 									$tpl->assign("objeto",$this);
 									break;
@@ -712,7 +712,7 @@ class emps{
 		if ($corp != ""){
 			$corp='<a href="index.php">'.$corp.' ::';
 		}
-		$nav_bar = '<a href="index.php">Zona privada</a> :: '.$corp.' <a href="index.php?module=users">Empleados</a>';
+		$nav_bar = '<a href="index.php">Zona privada</a> :: '.$corp.' <a href="index.php?module=emps">Empleados</a>';
 		$nav_bar=$nav_bar.$this->localice($method);
 		return $nav_bar;
 	}	

@@ -6,12 +6,18 @@ function enableDisable(value){
 		action=true;
 	else
 		action=false;
-	//document.getElementById("user_login").disabled = not(action);
+	//Deshabilitamos/Habilitamos la lista desplegable
+	document.getElementById("existUser").disabled = !(action);
+	//Deshabilitamos/Habilitamos los campos de texto de usuarios
 	document.getElementById("user_login").disabled = action;
 	document.getElementById("user_passwd").disabled = action;
 	document.getElementById("user_name").disabled = action;
 	document.getElementById("user_last_name").disabled = action;
 	document.getElementById("user_last_name2").disabled = action;
+	//Deshabilitamos/Habilitamos los botones de las checkbox
+	document.getElementById("selectAll").disabled = action;
+	document.getElementById("unselectAll").disabled = action;
+	
 	for (var i=0;i<document.forms["form_central"].elements.length;i++){
 			if(document.forms["form_central"].elements[i].type=="checkbox"){
 				document.forms["form_central"].elements[i].disabled=action;
@@ -25,7 +31,7 @@ function hola(){
 
 {/literal}
 </script>
-
+{include file = checkbox.tpl}
 
 <form method="post" action="index.php?module=emps&method=add" name="form_central">
 <script src="inc/calendar.js" type="text/javascript" language="javascript"></script>
@@ -134,16 +140,16 @@ function hola(){
 			<br>
 			<table  width="250px" align="center">
 			<tr class="textoMenu" align="center"><td>
-				<input type="radio" checked name="user" id="user_exist" value="exist" onChange="alert(this.value)"> Escoger un usuario existente
+				<input type="radio" checked name="user" id="user_exist" value="exist" onChange="enableDisable(this.value)"> Escoger un usuario existente
 			</td></tr>
-			<tr class="class="textoMenu" align="center"><td><select name="category">
+			<tr class="class="textoMenu" align="center"><td><select name="existUser" id="existUser">
 						  <option>admin | David Vaquero Santiago</option>
 						  <option>admin2 | Daniel González Zaballos</option>
 						  <option>Elena | Elena Resuival.</option>
 						</select></td>
 			</tr>
 			<tr class="textoMenu" align="center"><td>
-				<input type="radio" name="user" id="new_user" value="new" onChange="alert(this.value)"> Crear un nuevo usuario
+				<input type="radio" name="user" id="new_user" value="new" onChange="enableDisable(this.value)"> Crear un nuevo usuario
 			</td></tr>
 			</table>
 			</td>
@@ -187,8 +193,8 @@ function hola(){
 				  </tr>
 				  <tr>
 				  	<td colspan="2">
-				  		<input type="button" Value="Seleccionar Todos" class="botones" onClick="selectAll();">
-					<input type="button" Value="Deseleccionar Todos" class="botones" onClick="unselectAll();">
+				  		<input type="button" Value="Seleccionar Todos" id="selectAll" class="botones" onClick="selectAll();">
+					<input type="button" Value="Deseleccionar Todos" id="unselectAll" class="botones" onClick="unselectAll();">
 				  	</td>
 				  </tr>
 
