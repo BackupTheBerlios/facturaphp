@@ -269,7 +269,7 @@ class emps{
 					//Introducimos categorias;
 					$this->add_category($this->id_emp);
 					//Introducimos fecha de alta.
-					$this->add_holiday($this->id_emp);
+					$this->add_holyday($this->id_emp);
 
 					
 					//print("<pre>::".$this->id_user."::</pre>");
@@ -297,7 +297,7 @@ class emps{
 		return $category->add();
 	}
 	
-	function add_holiday($id){
+	function add_holyday($id){
 		$holyday=new holydays();
 		$holyday->id_emp=$id;
 		$holyday->come=$this->come;
@@ -322,7 +322,7 @@ class emps{
 		}
 		if (!isset($_POST['submit_modify'])){
 			
-			
+			$this->cat_emps=new cat_emps();
 			return 0;
 		}
 		else{
@@ -375,21 +375,26 @@ class emps{
 				$record[$this->ddbb_mobile_phone]=$this->mobile_phone;
 				$record[$this->ddbb_fax]=$this->fax;
 				$record[$this->ddbb_mail]=$this->mail;		
+
+				if ($_POST["user"]=="new"){
+					$this->id_user=$this->obj_user->id_user;
+				}	
+				$record[$this->ddbb_id_user]=$this->id_user;	
 				//calculamos la sql de insercin respecto a los atributos
 				$this->sql = $this->db->GetUpdateSQL($this->result, $record);
 				//insertamos el registro				
 				$this->db->Execute($this->sql);
 				//si se ha insertado una fila
-
-				if(($this->db->Affected_Rows()==1)){
-					//capturammos el id de la linea insertada
 				
-					$this->modify_group_users();
-					$this->modify_module_methods();
-
+				$return_category=$this->modify_category($this->id_emp);
+				$return_holyday=$this->modify_holyday($this->id_emp);
+				
+				
+				if(($this->db->Affected_Rows()==1)||($user_changed!=0)||($this->sql=="")||($return_category!=0)||($return_holyday!=0)){
+					//capturammos el id de la linea insertada
 					$this->db->close();
 					//devolvemos el id de la tabla ya que todo ha ido bien
-					return $this->id_user;
+					return $this->id_emp;
 				}else {
 					//devolvemos 0 ya que no se ha insertado el registro
 					$this->error=-1;
@@ -398,6 +403,25 @@ class emps{
 				}
 			}
 		}	
+	}
+	
+	function modify_category($id){
+		$category=new rel_emps_cats();
+		$return=$category->read($category->get_rel_emp_cat($this->id_emp));
+		if ($return==0){
+			return $this->add_category($id);
+		}
+		$category->id_emp=$id;
+		$category->id_cat_emp=$this->category;
+		return $category->modify();
+	}
+	
+	function modify_holyday($id){
+		$holyday=new holydays();
+		$holyday->read($_POST["id_holy"]);
+		$holyday->id_emp=$id;
+		$holyday->come=$this->come;
+		return $holyday->modify();
 	}
 	
 	
@@ -765,6 +789,7 @@ class emps{
 							}
 							$vacaciones= new holydays();
 							
+							
 							$tpl->assign("holyday",$vacaciones);
 							$tpl->assign("categorias",$this->cat_emps->cat_emps_list);
 							$tpl->assign("objeto",$this);									
@@ -786,6 +811,21 @@ class emps{
 							}
 							$vacaciones=new holydays();
 							$vacaciones->get_come($this->id_emp);
+							if ($vacaciones->come!="0000-00-00"){
+								list($anno,$mes,$dia)=sscanf($vacaciones->come,"%d-%d-%d");
+								$tpl->assign("holycambiado","$dia-$mes-$anno");
+							}
+							else{
+								$tpl->assign("holycambiado","00-00-0000");
+							}
+							if ($this->birthday!="0000-00-00"){
+								list($anno,$mes,$dia)=sscanf($this->birthday,"%d-%d-%d");
+								$tpl->assign("cumplecambiado","$dia-$mes-$anno");
+							}
+							else{
+								$tpl->assign("cumplecambiado","00-00-0000");
+							}
+							
 							$tpl->assign("holyday",$vacaciones);
 							$tpl->assign("categorias",$this->cat_emps->cat_emps_list);
 							$tpl->assign("objeto",$this);									

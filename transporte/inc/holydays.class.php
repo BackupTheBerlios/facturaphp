@@ -323,23 +323,22 @@ class holydays{
 		$this->result = $this->db->Execute($this->sql);
 		if ($this->result === false){
 			$this->error=1;
-			$this->db->close();
-			echo "hola";
+			$this->db->close();			
 			return 0;
 		}  
 		
 		$this->num=0;
 		while (!$this->result->EOF) {
+
 			//cogemos los datos del usuario
-			$this->holydays_list[$this->num]['id_holyday']=$this->result->fields['id_holyday'];
+			$this->holydays_list[$this->num]['id_holy']=$this->result->fields['id_holy'];
 			$this->holydays_list[$this->num]['come']=$this->result->fields['come'];
 			//nos movemos hasta el siguiente registro de resultado de la consulta
 			$this->result->MoveNext();
 			$this->num++;
 		}
 		$this->db->close();
-		$this->read($this->holydays_list[0]['id_holyday']);
-		echo "<script>alert('".$this->come."');</script>";
+		$this->read($this->holydays_list[0]['id_holy']);
 		return $this->num;
 	
 	}

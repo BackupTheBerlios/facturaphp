@@ -25,6 +25,7 @@ function enableDisable(value){
 		}
 }
 
+	
 
 
 {/literal}
@@ -75,7 +76,7 @@ function enableDisable(value){
 				  <tr>
 						<td width="125" class="CampoFormulario" nowrap>Fecha de nacimiento:</td>
 						<td > <!--<input type="text" id="birthday"  name="fields[multi_edit][0][up]" class="textoMenu">-->						
-				 <input class="textoMenu" type="text" name="dateChanged" id="dateChanged" value="00-00-0000" "size="15" maxlength="99" class="textfield" onchange="alert(this.value)" id="dateChanged" readonly>
+				 <input class="textoMenu" type="text" name="dateChanged" id="dateChanged" value="{$cumplecambiado}" "size="15" maxlength="99" class="textfield" onchange="alert(this.value)" id="dateChanged" readonly>
 				 <input class="textoMenu" type="hidden" id="{$objeto->ddbb_birthday}" name="{$objeto->ddbb_birthday}"  value="{$objeto->birthday}" size="15" maxlength="99" class="textfield" onchange="alert(this.value)" id="{$objeto->ddbb_birthday}">
                                     <script type="text/javascript">
                                     
@@ -143,8 +144,8 @@ function enableDisable(value){
 				 <tr>
 						<td width="125" class="CampoFormulario" nowrap>Fecha de alta:</td>
 						<td > <!--<input type="text" id="come"  name="fields[multi_edit][0][up]" class="textoMenu">-->						
-				 <input class="textoMenu" type="text" name="comeChanged" value="00-00-0000" "size="15" maxlength="99" class="textfield" id="comeChanged" readonly>
-				 <input type="hidden" name="{$holyday->ddbb_id_holyday}" id="{$holyday->ddbb_id_holyday}" value="{$holyday->id_holyday}">
+				 <input class="textoMenu" type="text" name="comeChanged" value="{$holycambiado}" "size="15" maxlength="99" class="textfield" id="comeChanged" readonly>
+				 <input type="hidden" name="{$holyday->ddbb_id_holy}" id="{$holyday->ddbb_id_holyday}" value="{$holyday->id_holyday}">
 				 <input class="textoMenu" type="hidden" name="{$holyday->ddbb_come}" id="{$holyday->ddbb_come}" value="{$holyday->come}" size="15" maxlength="99" class="textfield" id="{$holyday->ddbb_come}"><!--{$holiday->ddbb_come}-->
                                     <script type="text/javascript">
                                     
@@ -163,10 +164,11 @@ function enableDisable(value){
 				<input type="radio" {if $usuarios->id_user==0 || $usuarios->id_user==""}checked {/if}name="user" id="user_exist" value="exist" onChange="enableDisable(this.value)"> Escoger un usuario existente
 			</td></tr>
 			<tr class="class="textoMenu" align="center"><td><select name="existUser" id="existUser">
-						{section name="indice" loop=$listado_usuarios}
-						 {if $usuarios->id_user==0 || $usuarios->id_user==""}
+			 {if $usuarios->id_user==0 || $usuarios->id_user==""}
 						 <option value="0">Sin Usuario</option>
 						 {/if}
+						{section name="indice" loop=$listado_usuarios}
+						
 						  <option {if $usuarios->id_user==$listado_usuarios[indice].id_user }selected{/if}  value="{$listado_usuarios[indice].id_user}">{$listado_usuarios[indice].login} :: {$listado_usuarios[indice].name} {$listado_usuarios[indice].last_name} {$listado_usuarios[indice].last_name2}</option>
 					  {/section}
 						</select></td>

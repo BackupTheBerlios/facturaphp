@@ -329,6 +329,41 @@ class rel_emps_cats{
 	function admin ($id){
 	
 	}
+	
+	function get_rel_emp_cat($id_emp){
+	
+		//se puede acceder a los usuarios por numero de campo o por nombre de campo
+		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
+		//crea una nueva conexin con una bbdd (mysql)
+		$this->db = NewADOConnection($this->db_type);
+		//le dice que no salgan los errores de conexin de la ddbb por pantalla
+		$this->db->debug=false;
+		//realiza una conexin permanente con la bbdd
+		$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
+		//mete la consulta
+		$this->sql='SELECT * FROM '.$this->table_name.'  WHERE `'.$this->ddbb_id_emp.'` = \''.$id_emp.'\' LIMIT 1';
+		//la ejecuta y guarda los resultados
+		$this->result = $this->db->Execute($this->sql);
+		if ($this->result === false){
+			$this->error=1;
+			$this->db->close();			
+			return 0;
+		}  
+		
+		$this->num=0;
+		while (!$this->result->EOF) {
+
+			//cogemos los datos del usuario
+			$this->rel_emps_cats_list[$this->num]['id_rel_emp_cat']=$this->result->fields['id_rel_emp_cat'];
+			//nos movemos hasta el siguiente registro de resultado de la consulta
+			$this->result->MoveNext();
+			$this->num++;
+		}
+		$this->db->close();		
+		return $this->rel_emps_cats_list[0]['id_rel_emp_cat'];
+	
+	}
+	
 }
 
 ?>
