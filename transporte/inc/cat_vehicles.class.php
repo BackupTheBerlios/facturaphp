@@ -54,8 +54,8 @@ class cat_vehicles{
 		//este array de alguna manera aumatizada
 		************************/
 		$this->fields_list= new fields();
-		$this->fields_list->add($this->ddbb_id_cat_vehicle, $this->id_cat_vehicle, 'int', 11,0);
-		$this->fields_list->add($this->ddbb_name, $this->name, 'varchar', 50,0);
+		$this->fields_list->add($this->ddbb_id_cat_vehicle, $this->id_cat_vehicle, 'int', 11,0,1);
+		$this->fields_list->add($this->ddbb_name, $this->name, 'varchar', 50,0,1);
 		$this->fields_list->add($this->ddbb_name_web, $this->name_web, 'varchar', 50,0);
 		$this->fields_list->add($this->ddbb_descrip, $this->descrip, 'varchar', 255,0);
 		
@@ -175,18 +175,24 @@ class cat_vehicles{
 				//Entramos porque hemos introducido datos y aún no hemos preguntado por la foto
 				//Introducir los datos de post.
 				$this->get_fields_from_post();	
-				
+				$this->id_cat_vehicle=0;
+				$this->fields_list->modify_value($this->ddbb_id_cat_vehicle,$this->id_cat_vehicle);
+				$this->fields_list->modify_value($this->ddbb_name,$this->name);
+				$this->fields_list->modify_value($this->ddbb_name_web,$this->name_web);
+				$this->fields_list->modify_value($this->ddbb_descrip,$this->descrip);
+				//validamos
+				$return=$this->fields_list->validate();	
 				//Validacion
 				//$return=validate_fields();
 				
 				//En caso de que la validacion haya sido fallida se muestra la plantilla
 				//con los campos erroneos marcados con un *
-				$return=true; //Para pruebas dejar esta linea sin comentar
+			
 				
 				if (!$return)
 				{
 					//Mostrar plantilla con datos erroneos
-					return 0;
+					return -1;
 				}
 				else
 				{
@@ -240,16 +246,10 @@ class cat_vehicles{
 	}
 	
 	function get_fields_from_post(){
-		//Cogemos los campos principales
-		//$this->id_vehicle=$_POST[$this->ddbb_id_vehicle];
-		$this->name=$_POST[$this->ddbb_name];
-		$this->name_web=$_POST[$this->ddbb_name_web];
-		$this->descrip=$_POST[$this->ddbb_descrip];			
-		//Cogemos los checkbox de grupos
-	//	$this->get_groups_from_post();
-		//Cogemos los checkboxn de modulos-grupos
-	//	$this->get_modules_methods_from_post();
-
+		//Cogemos los campos principales	
+		$this->name=htmlentities($_POST[$this->ddbb_name]);
+		$this->name_web=htmlentities($_POST[$this->ddbb_name_web]);
+		$this->descrip=htmlentities($_POST[$this->ddbb_descrip]);
 		return 0;
 	}
 	
@@ -340,17 +340,20 @@ class cat_vehicles{
 			//Introducir los datos de post.
 			$this->get_fields_from_post();
 			//$this->insert_post();
-			
+			$this->fields_list->modify_value($this->ddbb_id_cat_vehicle,$this->id_cat_vehicle);
+			$this->fields_list->modify_value($this->ddbb_name,$this->name);
+			$this->fields_list->modify_value($this->ddbb_name_web,$this->name_web);
+			$this->fields_list->modify_value($this->ddbb_descrip,$this->descrip);
+			//validamos
+			$return=$this->fields_list->validate();	
 			//Validacion
 			//$return=validate_fields();
 			
 			//En caso de que la validacion haya sido fallida se muestra la plantilla
-			//con los campos erroneos marcados con un *
-			$return=true; //Para pruebas dejar esta linea sin comentar
-			
+			//con los campos erroneos marcados con un *			
 			if (!$return){
 				//Mostrar plantilla con datos erroneos
-				
+				return -1;	
 			}
 			else{
 				$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
@@ -443,7 +446,7 @@ class cat_vehicles{
 		}
 		else
 		{
-			$cadena=''.$tabla_listado->make_tables('cat_vehicles',$this->cat_vehicles_list,array('Nombre',20),array($this->ddbb_id_cat_vehicle,$this->ddbb_name_web),10,$per->permissions_module,$per->add);
+			$cadena=''.$tabla_listado->make_tables('cat_vehicles',$this->cat_vehicles_list,array('Nombre',80),array($this->ddbb_id_cat_vehicle,$this->ddbb_name_web),10,$per->permissions_module,$per->add);
 			$variables=$tabla_listado->nombres_variables;
 		}		
 		$tpl->assign('variables',$variables);
@@ -455,33 +458,54 @@ class cat_vehicles{
 	function calculate_tpl($method, $tpl){
 		$this->method=$method;
 				switch($method){
-						case 'add':				
-									
-									if ($this->add() !=0)
-									{
-										$this->method="list";
-										$tpl=$this->listar($tpl);										
-										$tpl->assign("message","&nbsp;<br>Categor&iacute;a de veh&iacute;culo a&ntilde;adida correctamente<br>&nbsp;");
+						case 'add':	
+									$return=$this->add();
+									switch ($return){										
+										case 0: //por defecto												
+												break;
+										case -1: //Errores al intentar añadir datos
+												for ($i=0;$i<count($this->fields_list->array_error);$i+=2){
+													$tpl->assign("error_".$this->fields_list->array_error[$i],$this->fields_list->array_error[$i+1]);
+												}												
+												break;
+										default: //Si se ha añadido
+												$this->method="list";
+												$tpl=$this->listar($tpl);										
+												$tpl->assign("message","&nbsp;<br>Categor&iacute;a de veh&iacute;culo a&ntilde;adida correctamente<br>&nbsp;");
+												break;
 									}
-																
 									$tpl->assign("objeto",$this);
-								
-								//	$tpl->assign("modulos",$this->checkbox);
-								//	$tpl->assign("grupos",$this->checkbox_groups);
-									break;			
+									break;
 						case 'list':
 									$tpl=$this->listar($tpl);
 									break;
 						case 'modify':
+									/*
 									$this->read($_GET['id']);
 									if ($this->modify() !=0){
 										$this->method="list";
 										$tpl=$this->listar($tpl);										
 										$tpl->assign("message","&nbsp;<br>Categor&iacute;a de veh&iacute;culo modificada correctamente<br>&nbsp;");
 									}
+									$tpl->assign("objeto",$this);							
+									break;*/
+									$this->read($_GET['id']);									
+									$return=$this->modify();
+									switch ($return){										
+										case 0: //por defecto												
+												break;
+										case -1: //Errores al intentar añadir datos
+												for ($i=0;$i<count($this->fields_list->array_error);$i+=2){
+													$tpl->assign("error_".$this->fields_list->array_error[$i],$this->fields_list->array_error[$i+1]);
+												}												
+												break;
+										default: //Si se ha añadido
+												$this->method="list";
+												$tpl=$this->listar($tpl);										
+												$tpl->assign("message","&nbsp;<br>Categor&iacute;a de veh&iacute;culo modificada correctamente<br>&nbsp;");
+												break;
+									}
 									$tpl->assign("objeto",$this);
-							//		$tpl->assign("modulos",$this->checkbox);
-							//		$tpl->assign("grupos",$this->checkbox_groups);
 									break;
 						case 'delete':
 									$this->read($_GET['id']);

@@ -230,7 +230,6 @@ class fields{
 	function change_date($date,$format){
 		//La única validación de datos que se hace aquí es que 
 		//la fecha ya este en el formato especificado
-		echo $date." ".stripos($date,"-")."<br>";		
 		switch ($format){
 			case "es":
 						if (stripos($date,"-")!=2){

@@ -336,9 +336,7 @@ class laborers{
 		if (!isset($_POST['submit_add'])){
 			//Mostrar plantilla vacía	
 			//Buscar los empleados de la empresa en cuestión, que tengan categoría de conductores (transportistas)
-			$this->get_list_emps_trans();
-			$this->vehicles_corp = new vehicles();
-			$this->vehicles_corp->get_list_vehicles($_SESSION['ident_corp']);
+			
 			return 0;
 		}
 		//en el caso de que SI este definido submit_add
@@ -358,7 +356,7 @@ class laborers{
 			$this->fields_list->modify_value($this->ddbb_date,$this->date);
 			//validamos
 			$return=$this->fields_list->validate();	//Para pruebas dejar esta linea sin comentar
-			
+
 			if (!$return){
 				//Mostrar plantilla con datos erroneos
 				return -1;
@@ -416,12 +414,9 @@ class laborers{
 	
 	function modify(){	
 		if (!isset($_POST['submit_modify'])){
+			$this->date=$this->fields_list->change_date($this->date,"es");
+			//Mostrar plantilla vacía				
 			
-			//Mostrar plantilla vacía	
-			//Buscar los empleados de la empresa en cuestión, que tengan categoría de conductores (transportistas)
-			$this->get_list_emps_trans();
-			$this->vehicles_corp = new vehicles();
-			$this->vehicles_corp->get_list_vehicles($_SESSION['ident_corp']);
 			return 0;
 		}
 		else{
@@ -436,7 +431,7 @@ class laborers{
 			$this->fields_list->modify_value($this->ddbb_date,$this->date);
 			//validamos
 			$return=$this->fields_list->validate();	//Para pruebas dejar esta linea sin comentar
-			
+
 			if (!$return){
 				//Mostrar plantilla con datos erroneos
 				return -1;
@@ -469,7 +464,6 @@ class laborers{
 				//calculamos la sql de insercin respecto a los atributos
 				$this->sql = $this->db->GetUpdateSQL($this->result, $record);
 				//insertamos el registro
-				
 				$this->db->Execute($this->sql);
 				//si se ha insertado una fila
 				$Affected_Rows=$this->db->Affected_Rows();
@@ -645,7 +639,7 @@ class laborers{
 			}
 			else
 			{	
-				$cadena=''.$tabla_listado->make_tables('laborers',$this->vehicles_list,array('Identificador del peón',20,'Foto del vehículo', 20, 'Alias del vehículo',20,'Fecha de asignacion',20),array($this->ddbb_id_laborer, $this->ddbb_id_laborer, $this->ddbb_path_photo, $this->ddbb_alias, 'fecha_cambiada'),10,$permisos,$per->add);
+				$cadena=''.$tabla_listado->make_tables('laborers',$this->vehicles_list,array('Alias del vehículo',60,'Fecha de asignacion',20),array($this->ddbb_id_laborer, $this->ddbb_alias, 'fecha_cambiada'),10,$permisos,$per->add);
 				$variables=$tabla_listado->nombres_variables;	
 			}				
 			$tpl->assign('variables',$variables);
@@ -688,66 +682,62 @@ class laborers{
 	{
 		$this->method=$method;
 		switch($method){
-				case 'add':									
-							if ($this->add() !=0){
-								$this->method="list";
-								$tpl=$this->listar($tpl);										
-								$tpl->assign("message","&nbsp;<br>Pe&oacute;n a&ntilde;adido correctamente<br>&nbsp;");
-							}					
-							$tpl->assign("objeto",$this);									
-							$tpl->assign("empleados",$this->emps_trans);
-							$tpl->assign("vehiculos", $this->vehicles_corp->vehicles_list);
-							break;
-							/*
+				case 'add':
+							$this->get_list_emps_trans();
+							$this->vehicles_corp = new vehicles();
+							$this->vehicles_corp->get_list_vehicles($_SESSION['ident_corp']);
 							$return=$this->add();
-									switch ($return){										
-										case 0:
-											$tpl->assign("empleados",$this->emps_trans);
-											$tpl->assign("vehiculos", $this->vehicles_corp->vehicles_list);											
-												break;
-										case -1: //Errores al intentar añadir datos
-												for ($i=0;$i<count($this->fields_list->array_error);$i+=2){
-													$tpl->assign("error_".$this->fields_list->array_error[$i],$this->fields_list->array_error[$i+1]);
-												}												
-												break;
-										default: //Si se ha añadido
-												$this->method="emps_view";																				
-												$tpl->assign("message","&nbsp;<br>Baja a&ntilde;adida correctamente<br>&nbsp;");			
-												$tpl=$empleado->view($this->id_emp,$tpl);																	
-												$tpl->assign("plantilla","emps_view.tpl");
-												return $tpl;
-												break;
-									}
-									//esto se hace independientemetne del valor que se obtenga
-									$tpl->assign("objeto",$this);
-									break;
-							*/
+							switch ($return){										
+								case 0:
+										$tpl->assign("empleados",$this->emps_trans);
+										$tpl->assign("vehiculos", $this->vehicles_corp->vehicles_list);											
+										break;
+								case -1: //Errores al intentar añadir datos
+										for ($i=0;$i<count($this->fields_list->array_error);$i+=2){
+											$tpl->assign("error_".$this->fields_list->array_error[$i],$this->fields_list->array_error[$i+1]);
+										}												
+										$tpl->assign("empleados",$this->emps_trans);
+										$tpl->assign("vehiculos", $this->vehicles_corp->vehicles_list);
+										break;
+								default: //Si se ha añadido
+										$this->method="list";
+										$tpl=$this->listar($tpl);										
+										$tpl->assign("message","&nbsp;<br>Pe&oacute;n a&ntilde;adido correctamente<br>&nbsp;");										
+										break;
+								}
+							//esto se hace independientemetne del valor que se obtenga
+									
+							$tpl->assign("objeto",$this);
+							break;
 							
 				case 'list':
 							$tpl=$this->listar($tpl);
 							break;
 				case 'modify':
+							$this->get_list_emps_trans();
+							$this->vehicles_corp = new vehicles();
+							$this->vehicles_corp->get_list_vehicles($_SESSION['ident_corp']);
 							$this->read($_GET['id']);
-							if ($this->modify() !=0){
-								$this->method="list";
-								$tpl=$this->listar($tpl);										
-								$tpl->assign("message","&nbsp;<br>Pe&oacute;n modificado correctamente<br>&nbsp;");
+							$return=$this->modify();
+							switch ($return){										
+								case 0: //por defecto												
+										break;
+								case -1: //Errores al intentar añadir datos
+										for ($i=0;$i<count($this->fields_list->array_error);$i+=2){
+											$tpl->assign("error_".$this->fields_list->array_error[$i],$this->fields_list->array_error[$i+1]);
+										}												
+										break;
+								default: //Si se ha añadido
+										$this->method="list";
+										$tpl=$this->listar($tpl);										
+										$tpl->assign("message","&nbsp;<br>Pe&oacute;n modificado correctamente<br>&nbsp;");
+										break;
 							}
-						
-							//Se cambia el formato de la fecha
-							if ($this->date!="0000-00-00")
-							{
-								list($anno,$mes,$dia)=sscanf($this->date,"%d-%d-%d");
-								$this->fecha_cambiada="$dia-$mes-$anno";
-							}
-							else
-							{
-								$this->fecha_cambiada="00-00-0000";
-							}	
-							$tpl->assign("objeto",$this);									
 							$tpl->assign("empleados",$this->emps_trans);
 							$tpl->assign("vehiculos", $this->vehicles_corp->vehicles_list);
+							$tpl->assign("objeto",$this);
 							break;
+							
 				case 'delete':
 							$this->read($_GET['id']);
 							if ($this->remove($_GET['id'])==0){
@@ -787,7 +777,7 @@ class laborers{
 		//Cogemos la fecha de asignación
 		$this->date=$_POST["date"];
 		//Si el usuario ya estaba creado, se lo asignamos		
-		$this->id_emp=$_POST["empleados"];					
+		$this->id_emp=$_POST["empleados"];
 		//Cogemos el vehículo
 		$this->id_vehicle=$_POST["vehiculos"];
 	}
@@ -797,7 +787,7 @@ class laborers{
 			$method=$this->method;
 		}	
 		if ($corp != ""){
-			$corp='<a href="index.php?module=corps&method=view&id='.$_SESSION['ident_corp'].'">'.$corp.' ::';
+			$corp='<a href="index.php?module=corps&method=view&id='.$_SESSION['ident_corp'].'">'.$corp.'</a> ::';
 		}
 		$nav_bar = '<a href="index.php?module=user_corps">Zona privada</a> :: '.$corp.' <a href="index.php?module=laborers">Peones de carga</a>';
 		$nav_bar=$nav_bar.$this->localice($method);

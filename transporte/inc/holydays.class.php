@@ -453,15 +453,6 @@ class holydays{
 												return $tpl;
 												break;
 									}
-									
-									/*if ($this->modify() !=0){
-										$this->method="emps_view";																				
-										$tpl->assign("message","&nbsp;<br>Baja/Alta modificada correctamente<br>&nbsp;");			
-										$tpl=$empleado->view($this->id_emp,$tpl);		
-																	
-										$tpl->assign("plantilla","emps_view.tpl");
-										return $tpl;
-									}*/
 									$tpl->assign("objeto",$this);
 									
 									break;

@@ -20,15 +20,15 @@
 				  </tr>
 					<tr>
 						<td width="125px" align="right" class="CampoFormulario" nowrap>Nombre de la categor&iacute;a:</td>
-						<td > <input type="text" id="{$objeto->ddbb_name}" name="{$objeto->ddbb_name}" class="textoMenu" value="{$objeto->name}"></td>
+						<td > <input type="text" id="{$objeto->ddbb_name}" name="{$objeto->ddbb_name}" class="textoMenu" value="{$objeto->name}"><font class="error">{$error_name}</font></td>
 					</tr>
 					<tr>
 						<td width="125px" class="CampoFormulario">Nombre de la categor&iacute;a en la web:</td>
-						<td > <input type="text" id="{$objeto->ddbb_name_web}" name="{$objeto->ddbb_name_web}" class="textoMenu" value="{$objeto->name_web}"></td>
+						<td > <input type="text" id="{$objeto->ddbb_name_web}" name="{$objeto->ddbb_name_web}" class="textoMenu" value="{$objeto->name_web}"><font class="error">{$error_name_web}</font></td>
 				  </tr>
 				  <tr>
 						<td width="125px" align="right" class="CampoFormulario">Descripci&oacute;n:</td>
-						<td> <input type="text" id="{$objeto->ddbb_descrip}" name="{$objeto->ddbb_descrip}" class="textoMenu" value="{$objeto->descrip}"></td>
+						<td> <input type="text" id="{$objeto->ddbb_descrip}" name="{$objeto->ddbb_descrip}" class="textoMenu" value="{$objeto->descrip}"><font class="error">{$error_descrip}</font></td>
 				  </tr>
 				 
 		 

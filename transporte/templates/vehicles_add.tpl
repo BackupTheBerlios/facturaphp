@@ -13,29 +13,31 @@
 		    </table>
 		    <br>
 		    <table width="250px" align="center">
+				 
 				<tr>
-					<td colspan="2" class="cabeceraCampoFormulario">Datos del veh&iacute;culo:</td>
-				</tr> 
-				<tr>
-					<td width="125px" align="right" class="CampoFormulario">Matr&iacute;cula:</td>
-					<td> <input type="text" id="{$objeto->ddbb_number_plate}" name="{$objeto->ddbb_number_plate}" value = "{$objeto->number_plate}" class="textoMenu"></td>
-				</tr>
-				<tr>
-					<td width="125px" class="CampoFormulario" >Alias:</td>
-					<td > <input type="text" id="{$objeto->ddbb_alias}" name="{$objeto->ddbb_alias}" value = "{$objeto->alias}" class="textoMenu"></td>		
-				 </tr>
-				 <tr>
-						<td " class="CampoFormulario">Categor&iacute;a:</td>
-						<td width="125px"><select name="category">
+					  <td colspan="2" class="cabeceraCampoFormulario">Datos del veh&iacute;culo:</td>
+				  </tr>
+					<tr>
+						<td width="125px" class="CampoFormulario">Alias:</td>
+						<td > <input type="text" id="{$objeto->ddbb_alias}" name="{$objeto->ddbb_alias}" class="textoMenu" value="{$objeto->alias}"><font class="error">{$error_alias}</font></td>
+				  </tr>
+				  <tr>
+						<td width="125px" align="right" class="CampoFormulario">Matr&iacute;cula:</td>
+						<td> <input type="text" id="{$objeto->ddbb_number_plate}" name="{$objeto->ddbb_number_plate}" class="textoMenu" value="{$objeto->number_plate}"><font class="error">{$error_number_plate}</font></td>
+				  </tr>
+				  <tr>
+						<td width="125" class="CampoFormulario">Categor&iacute;a:</td>
+						<td><select name="category">
+						<input type="hidden" name="{$categoria->ddbb_id_cat_vehicle}" id="{$categoria->ddbb_id_cat_vehicle}" value="{$categoria->id_cat_vehicle}"}
 						{section name="indice" loop=$categorias}
-						  <option value="{$categorias[indice].id_cat_vehicle}">{$categorias[indice].name}</option>						 
+						  <option value="{$categorias[indice].id_cat_vehicle}"{if $objeto->id_cat_vehicle == $categorias[indice].id_cat_vehicle} selected{/if}>{$categorias[indice].name}</option>						 
 						  {/section}
 						</select></td>
 				 </tr>
-				 <tr>
-				 	<td width="125px" class="CampoFormulario" >Fotograf&iacute;a:</td>
-					<td><input type="file" name="{$objeto->ddbb_path_photo}"></input></td>	
-				</tr>		
+				  <tr>
+						<td width="125px" align="right" class="CampoFormulario">Fotograf&iacute;a:</td>						
+						<td><input type="file" name="{$objeto->ddbb_path_photo}"></input></td>	
+				  </tr>		
 			</table>
 		</td>
 		</tr>	

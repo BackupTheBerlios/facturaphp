@@ -57,9 +57,9 @@ class vehicles{
 		//este array de alguna manera aumatizada
 		************************/
 		$this->fields_list= new fields();
-		$this->fields_list->add($this->ddbb_id_vehicle, $this->id_vehicle, 'int', 11,0);
-		$this->fields_list->add($this->ddbb_id_corp, $this->id_corp, 'int', 11,0);
-		$this->fields_list->add($this->ddbb_number_plate, $this->number_plate, 'varchar', 10,0);
+		$this->fields_list->add($this->ddbb_id_vehicle, $this->id_vehicle, 'int', 11,0,1);
+		$this->fields_list->add($this->ddbb_id_corp, $this->id_corp, 'int', 11,0,1);
+		$this->fields_list->add($this->ddbb_number_plate, $this->number_plate, 'varchar', 10,0,1);
 		$this->fields_list->add($this->ddbb_alias, $this->alias, 'varchar', 255,0);
 		$this->fields_list->add($this->ddbb_path_photo, $this->path_photo, 'varchar', 255,0);
 	/*	
@@ -213,7 +213,7 @@ class vehicles{
 		{
 			//Mostrar plantilla vacía	
 			//pasarle a la plantilla las categorías de vehículos con sus respectivos checkbox a checked false
-			$this->cat_vehicles=new cat_vehicles();
+			
 			return 0;
 		}
 		else		//en el caso de que SI este definido submit_add
@@ -221,18 +221,25 @@ class vehicles{
 				//Entramos porque hemos introducido datos y aún no hemos preguntado por la foto
 				//Introducir los datos de post.
 				$this->get_fields_from_post();	
+				$this->id_vehicle=0;
+				$this->fields_list->modify_value($this->ddbb_id_vehicle,$this->id_vehicle);
+				$this->fields_list->modify_value($this->ddbb_id_corp,$this->id_corp);
+				$this->fields_list->modify_value($this->ddbb_number_plate,$this->number_plate);
+				$this->fields_list->modify_value($this->ddbb_alias,$this->alias);
+				//validamos
 				
+				$return=$this->fields_list->validate();	
 				//Validacion
 				//$return=validate_fields();
 				
 				//En caso de que la validacion haya sido fallida se muestra la plantilla
 				//con los campos erroneos marcados con un *
-				$return=true; //Para pruebas dejar esta linea sin comentar
+				
 				
 				if (!$return)
 				{
 					//Mostrar plantilla con datos erroneos
-					return 0;
+					return -1;
 				}
 				else
 				{
@@ -381,15 +388,13 @@ class vehicles{
 	
 	
 	function get_fields_from_post(){
-		
 		//Cogemos los campos principales
 		$this->id_corp=$_SESSION['ident_corp'];
-		$this->alias=$_POST[$this->ddbb_alias];
-		$this->number_plate=$_POST[$this->ddbb_number_plate];			
+		$this->alias=htmlentities($_POST[$this->ddbb_alias]);
+		$this->number_plate=htmlentities($_POST[$this->ddbb_number_plate]);
 		$this->path_photo = $_SESSION['ruta_photo'];	
 		//Cogemos la categoria
 		$this->category=$_POST["category"];
-
 		return 0;
 	}
 	
@@ -522,7 +527,7 @@ class vehicles{
 	function modify(){
 		if (!isset($_POST['submit_modify']))
 		{
-			$this->cat_vehicles=new cat_vehicles();
+			
 			return 0;
 		}
 		else{
@@ -536,17 +541,23 @@ class vehicles{
 			
 			$this->get_fields_from_post();
 			//$this->insert_post();
-			
+			$this->fields_list->modify_value($this->ddbb_id_vehicle,$this->id_vehicle);
+			$this->fields_list->modify_value($this->ddbb_id_corp,$this->id_corp);
+			$this->fields_list->modify_value($this->ddbb_number_plate,$this->number_plate);
+			$this->fields_list->modify_value($this->ddbb_alias,$this->alias);
+				//validamos
+				
+			$return=$this->fields_list->validate();	
 			//Validacion
 			//$return=validate_fields();
 			
 			//En caso de que la validacion haya sido fallida se muestra la plantilla
 			//con los campos erroneos marcados con un *
-			$return=true; //Para pruebas dejar esta linea sin comentar
+			
 			
 			if (!$return){
 				//Mostrar plantilla con datos erroneos
-				
+				return -1;
 			}
 			else{
 				$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
@@ -782,22 +793,31 @@ class vehicles{
 	function calculate_tpl($method, $tpl){
 		$this->method=$method;
 				switch($method){
-						case 'add':												
-									if ($this->add() != 0)
-									{
-										$this->vehicles_list = "";
-										$this->method="list";
-										$tpl=$this->listar($tpl);										
-										$tpl->assign("message","&nbsp;<br>Veh&iacute;culo a&ntilde;adido correctamente<br>&nbsp;");
+						case 'add':	
+									$return=$this->add();
+									switch ($return){										
+										case 0: //por defecto												
+												break;
+										case -1: //Errores al intentar añadir datos
+												for ($i=0;$i<count($this->fields_list->array_error);$i+=2){
+													$tpl->assign("error_".$this->fields_list->array_error[$i],$this->fields_list->array_error[$i+1]);
+												}												
+												break;
+										default: //Si se ha añadido
+												$this->vehicles_list = "";
+												$this->method="list";
+												$tpl=$this->listar($tpl);										
+												$tpl->assign("message","&nbsp;<br>Veh&iacute;culo a&ntilde;adido correctamente<br>&nbsp;");
+												break;
 									}
-																							
-									$tpl->assign("objeto",$this);
+									$this->cat_vehicles=new cat_vehicles();
 									$tpl->assign("categorias",$this->cat_vehicles->cat_vehicles_list);
-									break;		
+									$tpl->assign("objeto",$this);
+									break;
 						case 'list':
 									$tpl=$this->listar($tpl);
 									break;
-						case 'modify':
+						case 'modify':/*
 									$this->read($_GET['id']);
 									if ($this->modify() !=0)
 									{
@@ -808,6 +828,27 @@ class vehicles{
 									}
 									$tpl->assign("objeto",$this);
 									$tpl->assign("categorias",$this->cat_vehicles->cat_vehicles_list);
+									break;*/
+									$this->read($_GET['id']);									
+									$return=$this->modify();
+									switch ($return){										
+										case 0: //por defecto												
+												break;
+										case -1: //Errores al intentar añadir datos
+												for ($i=0;$i<count($this->fields_list->array_error);$i+=2){
+													$tpl->assign("error_".$this->fields_list->array_error[$i],$this->fields_list->array_error[$i+1]);
+												}												
+												break;
+										default: //Si se ha añadido
+												$this->vehicles_list = "";
+												$this->method="list";
+												$tpl=$this->listar($tpl);										
+												$tpl->assign("message","&nbsp;<br>Veh&iacute;culo modificado correctamente<br>&nbsp;");
+												break;
+									}
+									$this->cat_vehicles=new cat_vehicles();
+									$tpl->assign("categorias",$this->cat_vehicles->cat_vehicles_list);
+									$tpl->assign("objeto",$this);
 									break;
 						case 'delete':
 									$this->read($_GET['id']);

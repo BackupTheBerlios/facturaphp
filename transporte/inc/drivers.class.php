@@ -15,7 +15,7 @@ class drivers{
 	var $last_name;
 	var $last_name2;
 	var $num_vehicles;
-	var $date;
+	var $date="00-00-0000";
 //BBDD name vars
 	var $db_name;
 	var $db_ip;
@@ -368,9 +368,9 @@ class drivers{
 		if (!isset($_POST['submit_add'])){
 			//Mostrar plantilla vacía	
 			//Buscar los empleados de la empresa en cuestión, que tengan categoría de conductores (transportistas)
-			$this->get_list_emps_trans();
+			/*$this->get_list_emps_trans();
 			$this->vehicles_corp = new vehicles();
-			$this->vehicles_corp->get_list_vehicles($_SESSION['ident_corp']);
+			$this->vehicles_corp->get_list_vehicles($_SESSION['ident_corp']);*/
 			return 0;
 		}
 		//en el caso de que SI este definido submit_add
@@ -380,19 +380,26 @@ class drivers{
 			$this->get_fields_from_post();	
 						
 			//Validacion
+			$this->id_driver=0;
+			$this->fields_list->modify_value($this->ddbb_id_laborer,$this->id_driver);
+			$this->fields_list->modify_value($this->ddbb_id_emp,$this->id_emp);
+			$this->fields_list->modify_value($this->ddbb_id_vehicle,$this->id_vehicle);
+			$this->fields_list->modify_value($this->ddbb_date,$this->date);
+			//validamos
+			$return=$this->fields_list->validate();	//Para pruebas dejar esta linea sin comentar
 			//$return=validate_fields();
 			
 			//En caso de que la validacion haya sido fallida se muestra la plantilla
 			//con los campos erroneos marcados con un *
-			$return=true; //Para pruebas dejar esta linea sin comentar
+		
 			
 			if (!$return){
 				//Mostrar plantilla con datos erroneos
-				
+				return -1;		
 			}
 		    else{
 				//Si todo es correcto si meten los datos
-				
+				$this->date=$this->fields_list->change_date($this->date,"en");
 				$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
 				//crea una nueva conexin con una bbdd (mysql)
 				$this->db = NewADOConnection($this->db_type);
@@ -442,31 +449,30 @@ class drivers{
 	
 	function modify(){	
 		if (!isset($_POST['submit_modify'])){
-			
+			$this->date=$this->fields_list->change_date($this->date,"es");
 			//Mostrar plantilla vacía	
 			//Buscar los empleados de la empresa en cuestión, que tengan categoría de conductores (transportistas)
-			$this->get_list_emps_trans();
-			$this->vehicles_corp = new vehicles();
-			$this->vehicles_corp->get_list_vehicles($_SESSION['ident_corp']);
+			
 			return 0;
 		}
 		else{
 			//Introducir los datos de post.
-			$this->get_fields_from_post();
-			//$this->insert_post();
-			
-			//Validacion
-			//$return=validate_fields();
-			
+			$this->get_fields_from_post();			
 			//En caso de que la validacion haya sido fallida se muestra la plantilla
 			//con los campos erroneos marcados con un *
-			$return=true; //Para pruebas dejar esta linea sin comentar
+			$this->fields_list->modify_value($this->ddbb_id_driver,$this->id_driver);
+			$this->fields_list->modify_value($this->ddbb_id_emp,$this->id_emp);
+			$this->fields_list->modify_value($this->ddbb_id_vehicle,$this->id_vehicle);
+			$this->fields_list->modify_value($this->ddbb_date,$this->date);
+			//validamos
+			$return=$this->fields_list->validate();	//Para pruebas dejar esta linea sin comentar
 			
 			if (!$return){
 				//Mostrar plantilla con datos erroneos
-				
+				return -1;
 			}
 			else{
+				$this->date=$this->fields_list->change_date($this->date,"en");
 				$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
 				//crea una nueva conexin con una bbdd (mysql)
 				$this->db = NewADOConnection($this->db_type);
@@ -669,7 +675,7 @@ class drivers{
 			}
 			else
 			{	
-				$cadena=''.$tabla_listado->make_tables('drivers',$this->vehicles_list,array('Identificador del conductor',20,'Foto del vehículo', 20, 'Alias del vehículo',20,'Fecha de asignacion',20),array($this->ddbb_id_driver, $this->ddbb_id_driver, $this->ddbb_path_photo, $this->ddbb_alias, 'fecha_cambiada'),10,$permisos,$per->add);
+				$cadena=''.$tabla_listado->make_tables('drivers',$this->vehicles_list,array('Alias del vehículo',60,'Fecha de asignacion',20),array($this->ddbb_id_driver, $this->ddbb_alias, 'fecha_cambiada'),10,$permisos,$per->add);
 				$variables=$tabla_listado->nombres_variables;	
 			}				
 			$tpl->assign('variables',$variables);
@@ -713,7 +719,7 @@ class drivers{
 		$this->method=$method;
 		switch($method){
 				case 'add':									
-							if ($this->add() !=0){
+							/*if ($this->add() !=0){
 								$this->method="list";
 								$tpl=$this->listar($tpl);										
 								$tpl->assign("message","&nbsp;<br>Conductor a&ntilde;adido correctamente<br>&nbsp;");
@@ -721,13 +727,40 @@ class drivers{
 							$tpl->assign("objeto",$this);									
 							$tpl->assign("empleados",$this->emps_trans);
 							$tpl->assign("vehiculos", $this->vehicles_corp->vehicles_list);
+							break;*/
+							
+							$this->get_list_emps_trans();
+							$this->vehicles_corp = new vehicles();
+							$this->vehicles_corp->get_list_vehicles($_SESSION['ident_corp']);
+							$return=$this->add();
+							switch ($return){										
+								case 0:
+										$tpl->assign("empleados",$this->emps_trans);
+										$tpl->assign("vehiculos", $this->vehicles_corp->vehicles_list);											
+										break;
+								case -1: //Errores al intentar añadir datos
+										for ($i=0;$i<count($this->fields_list->array_error);$i+=2){
+											$tpl->assign("error_".$this->fields_list->array_error[$i],$this->fields_list->array_error[$i+1]);
+										}												
+										$tpl->assign("empleados",$this->emps_trans);
+										$tpl->assign("vehiculos", $this->vehicles_corp->vehicles_list);
+										break;
+								default: //Si se ha añadido
+										$this->method="list";
+										$tpl=$this->listar($tpl);										
+										$tpl->assign("message","&nbsp;<br>Conductor a&ntilde;adido correctamente<br>&nbsp;");
+										break;
+								}
+							//esto se hace independientemetne del valor que se obtenga
+									
+							$tpl->assign("objeto",$this);
 							break;
 							
 				case 'list':
 							$tpl=$this->listar($tpl);
 							break;
 				case 'modify':
-							$this->read($_GET['id']);
+							/*$this->read($_GET['id']);
 							if ($this->modify() !=0){
 								$this->method="list";
 								$tpl=$this->listar($tpl);										
@@ -747,6 +780,29 @@ class drivers{
 							$tpl->assign("objeto",$this);									
 							$tpl->assign("empleados",$this->emps_trans);
 							$tpl->assign("vehiculos", $this->vehicles_corp->vehicles_list);
+							break;*/
+							$this->get_list_emps_trans();
+							$this->vehicles_corp = new vehicles();
+							$this->vehicles_corp->get_list_vehicles($_SESSION['ident_corp']);
+							$this->read($_GET['id']);
+							$return=$this->modify();
+							switch ($return){										
+								case 0: //por defecto												
+										break;
+								case -1: //Errores al intentar añadir datos
+										for ($i=0;$i<count($this->fields_list->array_error);$i+=2){
+											$tpl->assign("error_".$this->fields_list->array_error[$i],$this->fields_list->array_error[$i+1]);
+										}												
+										break;
+								default: //Si se ha añadido
+										$this->method="list";
+										$tpl=$this->listar($tpl);										
+										$tpl->assign("message","&nbsp;<br>Conductor modificado correctamente<br>&nbsp;");
+										break;
+							}
+							$tpl->assign("empleados",$this->emps_trans);
+							$tpl->assign("vehiculos", $this->vehicles_corp->vehicles_list);
+							$tpl->assign("objeto",$this);
 							break;
 				case 'delete':
 							$this->read($_GET['id']);

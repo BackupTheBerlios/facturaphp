@@ -20,11 +20,11 @@
 				  </tr>
 					<tr>
 						<td width="125px" class="CampoFormulario">Alias:</td>
-						<td > <input type="text" id="{$objeto->ddbb_alias}" name="{$objeto->ddbb_alias}" class="textoMenu" value="{$objeto->alias}"></td>
+						<td > <input type="text" id="{$objeto->ddbb_alias}" name="{$objeto->ddbb_alias}" class="textoMenu" value="{$objeto->alias}"><font class="error">{$error_alias}</font></td>
 				  </tr>
 				  <tr>
 						<td width="125px" align="right" class="CampoFormulario">Matr&iacute;cula:</td>
-						<td> <input type="text" id="{$objeto->ddbb_number_plate}" name="{$objeto->ddbb_number_plate}" class="textoMenu" value="{$objeto->number_plate}"></td>
+						<td> <input type="text" id="{$objeto->ddbb_number_plate}" name="{$objeto->ddbb_number_plate}" class="textoMenu" value="{$objeto->number_plate}"><font class="error">{$error_number_plate}</font></td>
 				  </tr>
 				  <tr>
 						<td width="125" class="CampoFormulario">Categor&iacute;a:</td>

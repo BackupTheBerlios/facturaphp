@@ -25,8 +25,7 @@
 					 
 				  <tr>
 						<td width="125" class="CampoFormulario">Empleado:</td>
-						<td><select name="empleados">
-						<input type="hidden" name="{$empleado->ddbb_id_emp}" id="{$empleado->ddbb_id_emp}" value="{$empleado->id_emp}"}
+						<td><select name="empleados" id="empleados">						
 						{section name="indice" loop=$empleados}
 						  <option value="{$empleados[indice].id_emp}"{if $objeto->id_emp == $empleados[indice].id_emp} selected{/if}>{$empleados[indice].nombre_completo}</option>						 
 						  {/section}
@@ -35,15 +34,14 @@
 					
 					<tr>
 						<td width="125" class="CampoFormulario" nowrap>Fecha de asignación:</td>
-						<td > <!--<input type="text" id="date"  name="fields[multi_edit][0][up]" class="textoMenu">-->						
-				 <input class="textoMenu" type="text" name="dateChanged" id="dateChanged" value="{$objeto->fecha_cambiada}" "size="15" maxlength="99" class="textfield" onchange="alert(this.value)" id="dateChanged" readonly>
-				 <input class="textoMenu" type="hidden" id="{$objeto->ddbb_date}" name="{$objeto->ddbb_date}"  value="{$objeto->date}" size="15" maxlength="99" class="textfield" onchange="alert(this.value)" id="{$objeto->ddbb_date}">
+						<td > <input class="textoMenu" type="text" name="{$objeto->ddbb_date}" value="{$objeto->date}" "size="15" maxlength="99" class="textfield"  id="{$objeto->ddbb_date}">
+				 	
                                     <script type="text/javascript">
                                     
                     <!--
-                    document.write('<a title="Calendario" href="javascript:openCalendar(\'lang=es-utf-8&amp;server=1\', \'form_central\', \'{$objeto->ddbb_date}\', \'dateChanged\', \'date\')"><img class="calendar" valign="center" src="pics/calendar.png" alt="Calendario"/></a>');
+                    document.write('<a title="Calendario" href="javascript:openCalendar(\'lang=es-utf-8&amp;server=1\', \'form_central\', \'{$objeto->ddbb_date}\', \'date\')"><img class="calendar" valign="center" src="pics/calendar.png" alt="Calendario"/></a>');
                     //-->
-                    </script>
+                    </script><font class="error">{$error_date}</font>
 		    
 						
 						</td>
