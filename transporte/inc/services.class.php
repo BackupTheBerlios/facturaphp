@@ -311,7 +311,10 @@ class services{
 		$k=0;
 		for ($i=0;$i<count($cats_in_bbdd);$i++){
 			$result=false;
-			for ($j=0;$j<count($this->serv_cat_list);$j++){
+			for ($j=0;$j<count($this->serv_cat_list)&&$this->serv_cat_list!="";$j++){
+				print_r($this->serv_cat_list);
+				echo "**";
+				return 0;
 				if ($cats_in_bbdd[$i]['id_cat_serv']==$this->serv_cat_list[$j]['id_cat_serv']){
 					$result=true;
 					break;
@@ -328,13 +331,14 @@ class services{
 		$k=0;
 		for ($i=0;$i<count($this->serv_cat_list);$i++){
 			$result=false;
+			
 			for ($j=0;$j<count($cats_in_bbdd);$j++){
 				if ($cats_in_bbdd[$i]['id_cat_serv']==$this->serv_cat_list[$j]['id_cat_serv']){
 					$result=true;
 					break;
 				}
 			}		
-			if (!$result){
+			if (!$result && $this->serv_cat_list!=""){
 				$nuevos[$k]=$this->serv_cat_list[$i]['id_cat_serv'];
 				$k++;
 			}
@@ -637,11 +641,14 @@ class services{
 	function get_checkbox_categories($cats,$variable){
 		//Recorremos el array de categorias q hay en bbdd
 		//para coger los checkbox activados en el formulario
+		print_r($cats);
+		return 0;
 		for ($i=0;$i<count($cats);$i++){
 			//almacenamos el valor del checkbox
 			$checkbox=$_POST[$variable."_".$cats[$i]['id_cat_serv']];
 			if ($checkbox==1){
 				//Si es = a 1 entonces es que esta seleccionado.
+				echo "hola";
 				$this->serv_cat_list[$this->num]['id_cat_serv']=$cats[$i]['id_cat_serv'];
 				//incrementamos el valor de num
 				$this->num++;				
@@ -789,7 +796,7 @@ class services{
 		return $localice;
 	}
 
-	function verify_services($id){
+	/*function verify_services($id){
 		//se puede acceder a los usuarios por numero de campo o por nombre de campo
 		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
 		//crea una nueva conexin con una bbdd (mysql)
@@ -821,7 +828,7 @@ class services{
 		}
 		$this->db->close();
 		return $this->num;
-	}
+	}*/
 
 	function table_categories($new){
 		//Esta funcion hara el listado de checkbox de las categorias jerarquizadas
@@ -830,11 +837,11 @@ class services{
 		$array_cat=$this->get_categories(0,true);
 		
 
-		//Si no es para nuevo: Buscamos las categorias relacionadas con el servucto
+		//Si no es para nuevo: Buscamos las categorias relacionadas con el serviceo
 		if (!$new){
-			if ($this->id_servuct!="" && $this->id_servuct!=0){
+			if ($this->id_service!="" && $this->id_service!=0){
 				$rel = new rel_servs_cats();
-				$this->serv_cat_list=$rel->get_rel_serv_cat($this->id_servuct);
+				$this->serv_cat_list=$rel->get_rel_serv_cat($this->id_service);
 			}
 			else{
 				$new=true;
@@ -851,7 +858,7 @@ class services{
 	
 	function build_table($new,$array_cat){
 		//Con esta funcion hacemos la tabla de los checkbox
-		//de categorias de servucto.
+		//de categorias de serviceo.
 		//Hacemos las iniciaciones pertinentes para intentar
 		//aclarar un poco el codigo
 		$ini_fila="<tr>";
@@ -892,7 +899,7 @@ class services{
 	
 	function build_col($new,$array_cat,$tabulaciones,$variable){
 		//Con esta funcion construimos el contenido de la columna
-		//Del listado de checkbox de categorias de servucto
+		//Del listado de checkbox de categorias de serviceo
 		$espacios="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
 		$cadena="";
 			
@@ -904,7 +911,7 @@ class services{
 		//Insertamos el nombre
 		$cadena=$cadena.$array_cat['name'];
 		$cadena=$cadena.'<input type="checkbox" value="1" name="'.$variable.'_'.$array_cat['id_cat_serv'].'" id="'.$variable.'_'.$array_cat['id_cat_serv'].'" ';		
-		//Si no es nuevo es por que puede que haya alguna categoria que este asignada al servucto y hay que marcarla.
+		//Si no es nuevo es por que puede que haya alguna categoria que este asignada al serviceo y hay que marcarla.
 		if (!$new){
 			for($k=0;$k<count($this->serv_cat_list);$k++){
 				if ($array_cat['id_cat_serv']==$this->serv_cat_list[$k]['id_cat_serv']){

@@ -789,7 +789,7 @@ class products{
 		return $localice;
 	}
 
-	function verify_products($id){
+	/*function verify_products($id){
 		//se puede acceder a los usuarios por numero de campo o por nombre de campo
 		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
 		//crea una nueva conexin con una bbdd (mysql)
@@ -821,7 +821,7 @@ class products{
 		}
 		$this->db->close();
 		return $this->num;
-	}
+	}*/
 
 	function table_categories($new){
 		//Esta funcion hara el listado de checkbox de las categorias jerarquizadas
