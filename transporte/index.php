@@ -35,7 +35,7 @@ if(!isset($_SESSION['user'])){
 		$index_template="index.tpl";	
 		
 	}else{
-		//usuario no validado
+		//printf('usuario no validado');
 			if(isset($_POST['user'])){
 				//segundo intento
 				$tpl->assign('user_name', $_POST['user']);
@@ -122,4 +122,5 @@ $tpl->assign('nav_bar',$nav_bar);
 //elige la plantilla a presentar
 //presenta las plantillas
 $tpl->display($index_template);
+//print_r($post_user);
 ?>

@@ -326,6 +326,7 @@ class users{
 	}
 	  
 	function validate_user($user, $passwd){
+		if($user=='') return 0;
 		//se puede acceder a los usuarios por numero de campo o por nombre de campo
 		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
 		//crea una nueva conexi—n con una bbdd (mysql)
@@ -340,7 +341,7 @@ class users{
 		//la ejecuta y guarda los resultados
 		$this->result = $this->db->Execute($this->sql);
 		//si falla
-		//printf($this); 
+		//print_r($this->result); 
 		if ($this->result === false){
 			//printf('no existe usuario o contrase–a');
 			$error=1;
