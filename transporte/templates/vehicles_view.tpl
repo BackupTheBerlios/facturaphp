@@ -13,60 +13,46 @@
 				</tr>
 			  </table>
 				<br>
-				<TABLE width="95%" align="center">
-					<tr class="cabeceraMultiLinea">
-						<td width="50%" height="23" nowrap>Identificador de Veh&iacute;culo: {$objeto->id_vehicle}
-						</td>
-						<td nowrap width="50%">&nbsp;</td>
-					</tr>
+				<TABLE width="100%">			
 					<tr>
-						<td colspan="2">
-							<table width="100%" align="center">
+						<td valign="top">
+							<table width="100%">
+							<tr class="cabeceraMultiLinea">
+								<td colspan="2" height="23" nowrap>Identificador de Veh&iacute;culo: {$objeto->id_vehicle}</td>
+							</tr>
                               <tr height="15px">
                                 <td width="25%"  nowrap class="camposVistas">Alias:</td>
                                 <td nowrap width="25%" class="datosVista">{$objeto->alias}</td>
-								<td height="21" nowrap class="camposVistas">Identificador de Empresa:</td>
-                                <td nowrap class="datosVista">{$objeto->id_corp}</td>
+                              </tr>
+                              <tr>
+								<td height="21" nowrap class="camposVistas">Matr&iacute;cula:</td>
+                                <td nowrap class="datosVista">{$objeto->number_plate}</td>
                                 
                               </tr>
-                              
-                              <tr height="15px">
-                                <td width="25%" nowrap class="camposVistas">Fotograf&iacute;a:</td>
-                                <td width="25%" nowrap class="datosVista">{$objeto->path_photo}</td>
-                          				<td><table align="center"><tr>
-			      
-				{section name="indice" loop=$acciones}
-				
-				<td>
-				{if $acciones[indice]== 'modify'}
-				<a href="index.php?module=groups&method={$acciones[indice]}&id={$objeto->id_vehicle}">
-				<img src="pics/btn{$acciones[indice]}.gif" border="0"></a></td>
-				{else}
-				<td><a href="index.php?module=users&method={$acciones[indice]}&id={$objeto->id_vehicle}">
-				<img src="pics/btn{$acciones[indice]}.gif" border="0" onClick="confirm('¿Desea borrar este registro?\nSi pulsa Sí se borrarán tambien los registros relacionados con este vehículo (p.ej: datos de vehículo)')"></a></td>
-				{/if}
-				
-				{/section}
-
-							</tr>	</table></td>
-								<td></td>
-                              </tr>
-							 
-                            </table>
-					  <br>
-					  <table align="center" width="400" cellpadding="0" cellspacing="0">
-						  <tr><td><img src="pics/barra.gif"></td></tr>
-					  </table>
-					  <br>
-					  
-					  					  </td>
+                    		  <tr>      
+			      				<td align="center">
+									{section name="indice" loop=$acciones}			
+									{if $acciones[indice]== 'modify'}
+										<a href="index.php?module=vehicles&method={$acciones[indice]}&id={$objeto->id_vehicle}">
+											<img src="pics/btn{$acciones[indice]}.gif" border="0"></a>
+									{else}
+										<a href="index.php?module=vehicles&method={$acciones[indice]}&id={$objeto->id_vehicle}">
+											<img src="pics/btn{$acciones[indice]}.gif" border="0" onClick="confirm('¿Desea borrar este registro?\nSi pulsa Sí se borrarán tambien los registros relacionados con este vehículo (p.ej: datos de vehículo)')"></a>
+									{/if}	
+									{/section}
+								</td>
+							 </tr>
+							 <tr class="cabeceraMultiLinea">
+								<td colspan="2">&nbsp;</td>
+							</tr>	
+						 	</table>
+					   	</td>
+					   <td>
+                               <a href="index.php?module=vehicles&method=show&id={$objeto->id_vehicle}"><img src="{$objeto->path_photo}" height="120"></a>
+					   </td>
+					</tr>	
+			 </TABLE>
+</td>
 						
-					</tr>
 					
-					<tr class="cabeceraMultiLinea">
-						<td colspan="2">&nbsp;
-						</td>
-					</tr>
 					
-				</TABLE>
-			</td>

@@ -14,7 +14,7 @@
 			  
 			  <br>
 			  <p>Se va a proceder al borrado del veh&iacute;culo {$objeto->alias}</p>
-			  <p>Se borrar&aacute;n las relaciones con los grupos a los que pertenezca al igual que las categorías con las que esté relacionado</p>
+			  <p>Se borrar&aacute;n las relaciones con las empresas a las que pertenezca al igual que las categorías con las que esté relacionado</p>
 			  {$message}
   			  <br>
 			  <table align="center"><tr><td align="center"><input type="submit" name="submit_delete" value="Borrar" class="botones"></td></tr></table>

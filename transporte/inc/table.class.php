@@ -208,8 +208,7 @@
 						}
 						else
 						{
-							$ruta = $list_name[$registro][$nombre_campos[$col+1]];
-							$variable = $variable.'<img src=\\"'.$list_name[$registro][$nombre_campos[$col+1]].'\\" align=middle width=\\"120\\" height=\\"80\\">';
+							$variable = $variable.'<a href=\\"index.php?module='.$var_js.'&method=show&id='.$list_name[$registro][$nombre_campos[0]].'\\"><img src=\\"'.$list_name[$registro][$nombre_campos[$col+1]].'\\" align=middle width=\\"80\\" height=\\"80\\"></a>';
 							//print "******************Tabla hasta ahora: ".$variable."******************************";
 						}						
 						$variable=$variable.'</td>';
