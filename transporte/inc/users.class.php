@@ -375,10 +375,10 @@ class users{
 			//calcula la consulta de borrado.
 			$this->sql="DELETE FROM ".$this->table_prefix.$this->table_name. " WHERE ".$this->ddbb_id_user." = ".$id;
 			//la ejecuta y guarda los resultados		
-			echo $this->sql;
+
 			$this->result = $this->db->Execute($this->sql);
 			//si falla 
-			echo "**".$this->db->Affected_Rows();
+
 			if ($this->db->Affected_Rows() == 0){				
 				$this->error=1;
 				$this->db->close();
@@ -608,10 +608,6 @@ class users{
 	
 	
 	function calculate_tpl($method, $tpl){
-		//vemos si el usuario tiene el permiso para hacer la accion requerida
-		$result=true;
-	//	$result=validate_per($method,$_SESSION['user'],$module);
-		if ($result){
 				switch($method){
 						case 'add':									
 									if ($this->add() !=0){
@@ -644,6 +640,7 @@ class users{
 										$tpl->assign("message",$this->empleados);
 									}
 									else{
+										$this->users_list="";
 										$method="list";
 										$tpl=$this->listar($tpl);
 										$tpl->assign("message","&nbsp;<br>Usuario borrado correctamente<br>&nbsp;");
@@ -659,11 +656,7 @@ class users{
 									break;
 					}
 				$tpl->assign('plantilla','users_'.$method.'.tpl');					
-			}
-		else
-			{
-			$tpl->assign('plantilla', 'default.tpl');					
-			}
+		
 		return $tpl;
 	}
 	
@@ -795,6 +788,29 @@ class users{
 		return $title;
 	}		
 	
+	function localice($method){	
+		switch($method){
+						case 'add':
+									$localice=" :: A&ntilde;adir Usuarios";
+									break;
+						case 'list':
+									$localice=" :: Buscar Usuarios";
+									break;
+						case 'modify':
+									$localice=" :: Modificar Usuarios";
+									break;
+						case 'delete':
+									$localice=" :: Borrar Usuarios";
+									break;
+						case 'view':
+									$localice=" :: Ver Usuario";									
+									break;
+						default:
+									$localice=" :: Buscar Usuarios";
+									break;
+		}
+		return $localice;
+	}
 	
 	//Función que indicará para qué tiene permisos un usuario (ya sea por los grupos a los que pertenece o por él mísmo)
 	//Para ello se hará un listado de modulos_metodos_permiso en cada metodo de cada modulo
@@ -820,34 +836,7 @@ class users{
 		}
 	}
 	
-	
-	
-	
-	function localice($method){	
-		switch($method){
-						case 'add':
-									$localice=" :: A&ntilde;adir Usuarios";
-									break;
-						case 'list':
-									$localice=" :: Buscar Usuarios";
-									break;
-						case 'modify':
-									$localice=" :: Modificar Usuarios";
-									break;
-						case 'delete':
-									$localice=" :: Borrar Usuarios";
-									break;
-						case 'view':
-									$localice=" :: Ver Usuario";									
-									break;
-						default:
-									$localice=" :: Buscar Usuarios";
-									break;
-		}
-		return $localice;
-	}
-	
-	
+		
 	function add_group_users(){
 		$groups=new groups();
 		$group_users= new group_users();
@@ -1063,7 +1052,7 @@ class users{
 			$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
 			//mete la consulta para coger los campos de la bbdd
 			//calcula la consulta de borrado.
-			echo $table."<br>";
+
 			$this->sql="DELETE FROM ".$table. " WHERE id_user = ".$id;
 			//la ejecuta y guarda los resultados
 			$this->result = $this->db->Execute($this->sql);

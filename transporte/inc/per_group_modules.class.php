@@ -245,6 +245,41 @@ class per_group_modules{
 		
 	}
 	
+	function verify_group_module($id_group,$id_module){
+		//se puede acceder a los usuarios por numero de campo o por nombre de campo
+		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
+		//crea una nueva conexin con una bbdd (mysql)
+		$this->db = NewADOConnection($this->db_type);
+		//le dice que no salgan los errores de conexin de la ddbb por pantalla
+		$this->db->debug=false;
+		//realiza una conexin permanente con la bbdd
+		$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
+		//mete la consulta
+		$this->sql='SELECT * FROM `per_group_modules` WHERE `id_module` = \''.$id_module.'\' AND `id_group` = \''.$id_group.'\'';
+		//la ejecuta y guarda los resultados
+		$this->result = $this->db->Execute($this->sql);
+		if ($this->result === false){
+			$this->error=1;
+			$this->db->close();
+			return 0;
+		}  
+		
+		$this->num=0;
+		$id_permiso=0;
+		if (!$this->result->EOF) {//Solo debe de haber un registro
+			//cogemos los datos del usuario
+			$this->groups_list[$this->num]['id_group']=$this->result->fields['id_group'];
+			$this->groups_list[$this->num]['id_module']=$this->result->fields['id_module'];
+			$this->groups_list[$this->num]['id_per_group_module']=$this->result->fields['id_per_group_module'];			
+			$id_permiso=$this->groups_list[$this->num]['id_per_group_module'];
+			//nos movemos hasta el siguiente registro de resultado de la consulta
+		}
+		$this->db->close();
+
+		return $id_permiso;
+	
+	}
+	
 	function modify(){
 	
 		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;

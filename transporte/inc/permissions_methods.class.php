@@ -209,5 +209,34 @@ class permissions_methods{
 		}
 			
 	}
+	
+	//Esta función hace lo mismo que validate_per_method pero para grupos
+	
+	function validate_per_method_for_group($id_group, $id_method)
+	{
+		//print "USUARIO -> ".$id_user.".....";
+		//$this->inicializar_base_datos();
+	
+				$result = $this->validate_per_group_method($id_group, $id_method);
+			
+				if($result == true)//$this->validate_per_group_method($this->groups_list[$this->num]['id_group'], $id_method)==true)
+				{
+					$per=true;
+				}
+			
+			if(!$per)
+			{
+				$this->add_per(0);
+				//print "GRUPO-F: metodo ".$this->method_name." permisos ".$this->per."............";
+				
+			}
+			else
+			{	
+				$this->add_per(1);
+				//print "GRUPO-T: metodo ".$this->method_name." permisos ".$this->per."............";
+			}			
+	}
 }
+
+
 ?>

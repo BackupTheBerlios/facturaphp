@@ -32,7 +32,7 @@
 		
 	VARIABLES DE make_tables
 		$var_js ===>		es el nombre de el conjunto de variables de una pestaña en concreto. Sera el nombre de la clase/tabla/modulo al que estamos accediendo;
-		$list_name ===>		es el listdo que se nos pasa con la informacion, sera un array bidimesional con este formato: array[num][nombre] donde "num" sera un entero, y "nombre" el nombre del campo. Siempre el primer dato sera el id (pero no se mostrara en la tabla si no que sera utilizado para las acciones.)
+		$list_name ===>		es el listdo que se nos pasa con la informacion, sera un array bidimesional con este formato: array[num][nombre] donde "num" sera un entero, y "nombre" el nombre del campo (como por ejemplo el "users_list" del la clase users.class.php). Siempre el primer dato sera el id (pero no se mostrara en la tabla si no que sera utilizado para las acciones.)
 		$cabecera ===>		es el nombre que aparecera en las cabeceras, su formato sera $cabecera(nombre_columna1, ancho_columna1, nombre_columna2, ancho_columna2...) Si se van a incluir acciones (ver, editar y/o borrar), entonces el ancho total no debe ser = o superior al 100% de la tabla
 		$nombre_campos ==>	son los nombres de los campos que se utilizaran como segundo parametro en el array list_name (el primero sera al igual que en list_name, el id)	
 		$num_rows ===>		Numero de registros que habrá por pagina, si no se especifica se tomara el valor $this->default_num_rows

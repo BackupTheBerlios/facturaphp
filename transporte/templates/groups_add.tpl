@@ -1,5 +1,6 @@
 <td valign="top">
-<form method="post" action="index.php?module=users&method=add">
+{include file=checkbox.tpl}
+<form method="post" action="index.php?module=groups&method=add" name="form_central">
 	  	<table align="center" width="100%">
 		<tr>
 		<td valign="top">
@@ -23,14 +24,20 @@
 					</tr>
 					<tr>
 						<td width="125" class="CampoFormulario">Nombre web: </td>
-						<td > <input type="password" id="{$objeto->ddbb_name_web}" name="{$objeto->ddbb_name_web}" class="textoMenu"></td>
+						<td > <input type="text" id="{$objeto->ddbb_name_web}" name="{$objeto->ddbb_name_web}" class="textoMenu"></td>
 				  </tr>
 				  <tr>
 						<td width="125" align="right" class="CampoFormulario">Descripcion:</td>
 						<td rowspan="2" ><textarea name="{$objeto->ddbb_descrip}" class="textoMenu" id="{$objeto->ddbb_descrip}"></textarea> </td>
 					</tr>
-					<tr>						
-						<td >&nbsp;</td>
+					<tr>
+					  <td colspan="2" >&nbsp;</td>
+				  </tr>
+					 <tr>
+				  	<td colspan="2">
+				  		<input type="button" Value="Seleccionar Todos" class="botones" onClick="selectAll();">
+					<input type="button" Value="Deseleccionar Todos" class="botones" onClick="unselectAll();">
+				  	</td>
 				  </tr>
 				</table>
 </td>
@@ -39,81 +46,61 @@
 
 			<td valign="top">
 			<br>
-				<table width="75%" align="center" border="0">
-				<tr class="cabeceraMultiLinea">
-					<td width="40%">Nombre de Modulo
-					</td>
-					<td Colspan="4" width="60%">Permisos</td>
-				</tr>
+			<br>    
+			
+			<table width="90%" align="center" border="0">
+			 <tr>
+					  <td colspan="2" class="cabeceraCampoFormulario">Permisos por modulos-metodos: </td>
+			</tr>
+			<tr class="cabeceraMultiLinea">
+				<td width="30%">Nombre de Modulo</td>
+				<td Colspan="4" width="70%">Metodos</td>
+			</tr>
+			
 			{php}
-				$linea=0;
+				$linea = 0;
 			{/php}
-			{foreach from=$modules_list item=module_element}
-				{if $linea==0}
-				<tr class="multiLinea1">
-					{php}
-							$linea=1;
-					{/php}
+			{section name="indice" loop=$modulos->per_modules}
+				{php}
+				if ($linea==0){
+					$clase="multiLinea1";
+					$linea=1;
+				}				
+				else{
+					$clase="multiLinea2";	
+					$linea=0;
+				}				
+				print('<tr class="'.$clase.'">');
+				{/php}
+
+				{if $modulos->per_modules[indice]->per==1}
+					<td nowrap><input type="checkbox" name="modulo_{$modulos->per_modules[indice]->id_module}" value="1" onClick="selectRow()" checked> {$modulos->per_modules[indice]->module_name}</td> 
 				{else}
-				<tr class="multiLinea2">
-					{php}
-							$linea=0;
-					{/php}
+					<td nowrap><input type="checkbox" name="modulo_{$modulos->per_modules[indice]->id_module}" value="1" onClick="selectRow()"> {$modulos->per_modules[indice]->module_name}</td> 				
 				{/if}
-				
-					<td width="40%" nowrap><input type="checkbox" id="{$module_element->id_module}" name="{$module_element->name}" value="{$module_element->id_module}"> 
-					{$module_element->name_web} </td>
-
-				{foreach from=$methods_list item=method_element}
-					<td width="15%"  nowrap><input type="checkbox" id="{$method_element->id_method}" name="{$module_element->name}_{$method_element->name}" value="{$method_element->id_method}">
-			        Listar</td>
-				{/foreach}
-					<!--
-					<td width="15%"  nowrap><input type="checkbox" name="checkbox" value="checkbox"> A&ntilde;adir</td>
-					<td width="15%"  nowrap><input type="checkbox" name="checkbox" value="checkbox"> Modificar</td>
-
-					<td width="15%"  nowrap><input type="checkbox" name="checkbox" value="checkbox"> Borrar</td>
-					-->
-				</tr>
-			{/foreach}
-<!--
-				<tr class="multiLinea2">
-					<td width="40%" nowrap><input type="checkbox" name="checkbox" value="checkbox"> 
-					Camiones</td>
-					<td width="15%"  nowrap><input type="checkbox" name="checkbox" value="checkbox">
-				     Listar</td>
-
-					<td width="15%"  nowrap><input type="checkbox" name="checkbox" value="checkbox"> A&ntilde;adir</td>
-					<td width="15%"  nowrap><input type="checkbox" name="checkbox" value="checkbox"> Modificar</td>
-					<td width="15%"  nowrap><input type="checkbox" name="checkbox" value="checkbox"> Borrar</td>
-				</tr>			
-				<tr class="multiLinea1">
-					<td width="40%" nowrap><input type="checkbox" name="checkbox" value="checkbox"> 
-					Nominas </td>
-
-					<td width="15%"  nowrap><input type="checkbox" name="checkbox" value="checkbox">
-				     Listar</td>
-					<td width="15%"  nowrap><input type="checkbox" name="checkbox" value="checkbox"> A&ntilde;adir</td>
-					<td width="15%"  nowrap><input type="checkbox" name="checkbox" value="checkbox"> Modificar</td>
-					<td width="15%"  nowrap><input type="checkbox" name="checkbox" value="checkbox"> Borrar</td>
-
-				</tr>	
-				<tr class="multiLinea2">
-					<td width="40%" nowrap><input type="checkbox" name="checkbox" value="checkbox"> 
-					Clientes</td>
-					<td width="15%"  nowrap><input type="checkbox" name="checkbox" value="checkbox">
-				     Listar</td>
-					<td width="15%"  nowrap><input type="checkbox" name="checkbox" value="checkbox"> A&ntilde;adir</td>
-
-					<td width="15%"  nowrap><input type="checkbox" name="checkbox" value="checkbox"> Modificar</td>
-					<td width="15%"  nowrap><input type="checkbox" name="checkbox" value="checkbox"> Borrar</td>
-				</tr>		-->
-			</table>			</td>
+				<td nowrap>						
+					<table width="100%"><tr class="{php}print($clase);{/php}">				
+					 {section name="j" loop=$modulos->per_modules[indice]->per_methods}
+						{if $modulos->per_modules[indice]->per_methods[j]->per==1}
+							<td width="20%"><input type="checkbox" name="modulo_{$modulos->per_modules[indice]->id_module}_metodo_{$modulos->per_modules[indice]->per_methods[j]->id_method}" value="1" checked>{$modulos->per_modules[indice]->per_methods[j]->method_name_web}</td>
+						{else}
+							<td width="20%"><input type="checkbox" name="modulo_{$modulos->per_modules[indice]->id_module}_metodo_{$modulos->per_modules[indice]->per_methods[j]->id_method}" value="1">{$modulos->per_modules[indice]->per_methods[j]->method_name_web}</td>
+						{/if}
+					{/section}   
+					</tr></table>
+				</td>				
+				</tr>				
+			{/section}
+			<tr  class="cabeceraMultiLinea"><td colspan="2">&nbsp;</td></tr>
+			</table>
+		
+											
+		</td>
 		</tr>
 		<tr>
-			<td align="center"><br><br><input type="submit" name="enviar" value="A&ntilde;adir/Modificar" class="botones">
-
-			<input type="reset" Value="Borrar Datos" class="botones">
+			<td align="center"><br><br>
+			<input type="submit" name="submit_add" id =" name="submit_add" "value="A&ntilde;adir" class="botones">			
+			<input type="reset" Value="Limpiar Datos" class="botones">
 			</td>
 		</tr>
 	  	</table> 

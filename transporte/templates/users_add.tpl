@@ -16,7 +16,7 @@
 		<table width="250px" align="center">
 
 					<tr>
-					  <td colspan="2" class="cabeceraCampoFormulario">Datos de Empresa:</td>
+					  <td colspan="2" class="cabeceraCampoFormulario">Datos de Login:</td>
 				  </tr>
 					<tr>
 						<td width="125px" align="right" class="CampoFormulario" nowrap>Login:</td>
