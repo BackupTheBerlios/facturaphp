@@ -624,7 +624,7 @@ class corps{
 			{	
 				$per = new permissions();
 				$per->get_permissions_list('corps');							
-				$cadena=$cadena.$tabla_productos->make_tables('products',$products->products_list,array('Nombre',20,'Nombre Web',20,'Imagen',20),array('id_product', 'name','name_web','path_photo'),10,$per->permissions_module,$per->add);		
+				$cadena=$cadena.$tabla_productos->make_tables('products',$products->products_list,array('Nombre',20,'Nombre Web',40),array('id_product', 'name','name_web'),10,$per->permissions_module,$per->add);		
 				$variables_products=$tabla_productos->nombres_variables;
 			}
 			
@@ -642,7 +642,7 @@ class corps{
 			{	
 				$per = new permissions();
 				$per->get_permissions_list('corps');							
-				$cadena=$cadena.$tabla_servicios->make_tables('services',$services->services_list,array('Nombre',20,'Nombre Web',20,'Imagen',20),array('id_service', 'name','name_web','path_photo'),10,$per->permissions_module,$per->add);		
+				$cadena=$cadena.$tabla_servicios->make_tables('services',$services->services_list,array('Nombre',20,'Nombre Web',40),array('id_service', 'name','name_web'),10,$per->permissions_module,$per->add);		
 				$variables_services=$tabla_servicios->nombres_variables;
 			}
 						

@@ -26,22 +26,24 @@
                               <tr height="15px">
                                 <td width="25%" nowrap class="camposVistas">Nombre:</td>
                                 <td width="25%" nowrap class="datosVista">{$objeto->name}</td>
-								 <td width="25%"  nowrap class="camposVistas">Primer Apellido: </td>
-                                 <td width="25%" class="datosVista">{$objeto->last_name}</td>
-                                
-                              </tr>
-                              <tr height="15px">
-                               <td height="21" nowrap class="camposVistas">Segundo Apellido: </td>
-                                <td nowrap class="datosVista">{$objeto->last_name2}</td>
 								 <td width="25%"  nowrap class="camposVistas">Direcci&oacute;n: </td>
                                  <td width="25%" class="datosVista">{$objeto->address}</td>
                                 
                               </tr>
                               <tr height="15px">
+                               <td width="25%"  nowrap class="camposVistas">Primer Apellido: </td>
+                                 <td width="25%" class="datosVista">{$objeto->last_name}</td>
+                               <td width="25%"  nowrap class="camposVistas">Provincia: </td>
+                                 <td width="25%" class="datosVista">{$objeto->state}</td>
+								 
+                                
+                              </tr>
+                              <tr height="15px">
+                              <td height="21" nowrap class="camposVistas">Segundo Apellido: </td>
+                                <td nowrap class="datosVista">{$objeto->last_name2}</td>
                                <td height="21" nowrap class="camposVistas">Ciudad: </td>
                                 <td nowrap class="datosVista">{$objeto->city}</td>
-								 <td width="25%"  nowrap class="camposVistas">Provincia: </td>
-                                 <td width="25%" class="datosVista">{$objeto->state}</td>
+								 
                                 
                               </tr>
                               <tr height="15px">

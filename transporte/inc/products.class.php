@@ -157,7 +157,7 @@ class products{
 		}
 		else
 		{	
-			$cadena=''.$tabla_listado->make_tables('products',$this->products_list,array('Nombre',20,'Nombre Web',20,'Imagen',40),array($this->ddbb_id_product,$this->ddbb_name,$this->ddbb_name_web,$this->ddbb_path_photo),10,$per->permissions_module,$per->add);
+			$cadena=''.$tabla_listado->make_tables('products',$this->products_list,array('Nombre',40,'Nombre Web',40),array($this->ddbb_id_product,$this->ddbb_name,$this->ddbb_name_web),10,$per->permissions_module,$per->add);
 			$variables=$tabla_listado->nombres_variables;
 		}		
 		$tpl->assign('variables',$variables);

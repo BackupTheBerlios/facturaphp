@@ -156,7 +156,7 @@ class services{
 		}
 		else
 		{	
-			$cadena=''.$tabla_listado->make_tables('services',$this->services_list,array('Nombre',20,'Nombre Web',20,'Imagen',40),array($this->ddbb_id_service,$this->ddbb_name,$this->ddbb_name_web,$this->ddbb_path_photo),10,$per->permissions_module,$per->add);
+			$cadena=''.$tabla_listado->make_tables('services',$this->services_list,array('Nombre',40,'Nombre Web',40),array($this->ddbb_id_service,$this->ddbb_name,$this->ddbb_name_web),10,$per->permissions_module,$per->add);
 			$variables=$tabla_listado->nombres_variables;
 		}		
 		$tpl->assign('variables',$variables);
@@ -904,7 +904,7 @@ class services{
 		$fin_fila="</tr>";
 		$ini_col='<td valign="top" nowrap>';
 		$fin_col="</td>";
-		$NUM_MAX_COLS=5;
+		$NUM_MAX_COLS=1;
 		//Por cada columna un padre y sus hijos.
 		$cadena='<table border="0">';
 		$num_current_col=$NUM_MAX_COLS+1;		

@@ -1,34 +1,5 @@
 <td valign="top">
-{literal}
-<script>
-
-	function check_uncheck(obj){
-		if (obj.checked)
-			marca_arriba(obj);
-		else
-			desmarca_abajo(obj);		
-	}
-	
-	function marca_arriba(obj){
-		cadena=obj.name;
-		finCadena=cadena.substring(0,cadena.indexOf('_'));
-		while(finCadena!=cadena){			
-			document.getElementById(cadena).checked=true;			
-			cadena=cadena.substring(cadena.lastIndexOf('_'),0);			
-		}
-	}
-	
-	function desmarca_abajo(obj){
-		for(i=0;i<document.forms['form_central'].elements.length;i++){
-			element=document.forms['form_central'].elements[i];
-			if(element.name.substring(0,obj.name.length)==obj.name)	
-				element.checked=false;
-		}		
-	}
-	
-	
-</script>
-{/literal}
+{include file=checkbox.tpl}
 <form method="post" action="index.php?module=products&method=modify&id={$objeto->id_product}" name="form_central" enctype="multipart/form-data">
 	  	<table align="center" width="100%">
 		<tr>
@@ -58,11 +29,7 @@
 						<td> <input type="text" id="{$objeto->ddbb_name_web}" name="{$objeto->ddbb_name_web}" value="{$objeto->name_web}" class="textoMenu"><font class="error">{$error_name_web}</font></td>
 					</tr>
 					
-					<tr>
-						<td width="125px" align="right" class="CampoFormulario">Fotograf&iacute;a:</td>
-						<td><a href="index.php?module=products&method=show&id={$objeto->id_product}"><img src="{$objeto->path_photo}" width="80" height="80"></a>
-						<input type="file" name="{$objeto->ddbb_path_photo}"></input><font class="error">{$error_path_photo}</font></td>	
-				  </tr>	
+					
 				<tr>
 					<td width="125px" align="right" class="CampoFormulario">P.V.P.:</td>
 					<td> <input type="text" id="{$objeto->ddbb_pvp}" value="{$objeto->pvp}" name="{$objeto->ddbb_pvp}" class="textoMenu">&euro; <font class="error">{$error_pvp}</font></td>
@@ -79,6 +46,11 @@
 					<td width="125px" align="right" class="CampoFormulario">Stock M&iacute;nimo:</td>
 					<td> <input type="text" id="{$objeto->ddbb_minimun_stock}" name="{$objeto->ddbb_minimun_stock}" value="{$objeto->minimun_stock}" class="textoMenu"><font class="error">{$error_minimun_stock}</font></td>
 				</tr>
+				<tr>
+						<td width="125px" align="right" class="CampoFormulario">Fotograf&iacute;a:</td>
+						<td><a href="index.php?module=products&method=show&id={$objeto->id_product}"><img src="{$objeto->path_photo}" width="80" height="80"></a>
+						<input type="file" name="{$objeto->ddbb_path_photo}"></input><font class="error">{$error_path_photo}</font></td>	
+				  </tr>					
 		</table></td><td>
 		<table width="250px" align="center">
 

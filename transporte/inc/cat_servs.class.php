@@ -556,7 +556,7 @@ class cat_servs{
 		}
 		else
 		{	
-			$cadena=''.$tabla_listado->make_tables('cat_servs',$this->cat_servs_list,array('Nombre',20,'Imagen',20,'Descripci&oacute;n',40),array($this->ddbb_id_cat_serv,$this->ddbb_name,$this->ddbb_path_photo,$this->ddbb_descrip),10,$per->permissions_module,$per->add);
+			$cadena=''.$tabla_listado->make_tables('cat_servs',$this->cat_servs_list,array('Nombre',20,'Descripci&oacute;n',60),array($this->ddbb_id_cat_serv,$this->ddbb_name,$this->ddbb_descrip),10,$per->permissions_module,$per->add);
 			$variables=$tabla_listado->nombres_variables;
 		}		
 		$tpl->assign('variables',$variables);

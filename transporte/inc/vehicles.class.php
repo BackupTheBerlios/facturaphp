@@ -751,7 +751,7 @@ class vehicles{
 		}
 		else
 		{
-			$cadena=''.$tabla_listado->make_tables('vehicles',$this->vehicles_list,array('Alias',20,'Matr&iacute;cula',20,'Foto',20),array($this->ddbb_id_vehicle,$this->ddbb_alias,$this->ddbb_number_plate, $this->ddbb_path_photo),10,$per->permissions_module,$per->add);
+			$cadena=''.$tabla_listado->make_tables('vehicles',$this->vehicles_list,array('Alias',40,'Matr&iacute;cula',40),array($this->ddbb_id_vehicle,$this->ddbb_alias,$this->ddbb_number_plate),10,$per->permissions_module,$per->add);
 			$variables=$tabla_listado->nombres_variables;
 		}		
 		$tpl->assign('variables',$variables);

@@ -49,7 +49,7 @@
 
 		<tr>
 			<td align="center"><br><br>
-			<input type="submit" name="submit_modify" id="submit_modify" value="A&ntilde;adir" class="botones">			
+			<input type="submit" name="submit_modify" id="submit_modify" value="Modificar" class="botones">			
 			<input type="reset" Value="Limpiar Datos" class="botones">
 			</td>
 		</tr>
