@@ -44,9 +44,14 @@
 					  <td colspan="2" class="cabeceraCampoFormulario">Otros datos: </td>
 				  </tr>
 				  <tr>
+				  	<!--
+					Colocarlo de forma que quede igual que con los listados de permisos más abajo puestos
+					<td colspan="2"><table>
+						
+						</table></td>-->
 						<td width="125px" class="CampoFormulario">Grupo:</td>
 						<td > <select class="textoMenu" id="{$objeto->ddbb_id_group}" name="{$objeto->ddbb_id_group}">
-							{foreach from=$groups_list item=$group_element}
+							{foreach from=$groups_list item=group_element}
 								<option value="{$group_element->id_group}">{$group_element->name_web}</option>
 							/foreach}							
 						</select></td>
