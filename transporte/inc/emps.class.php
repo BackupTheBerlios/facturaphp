@@ -216,7 +216,7 @@ class emps{
 				//Mostrar plantilla con datos erroneos
 				
 			}
-			else{
+		    else{
 				//Si todo es correcto si meten los datos
 				
 				$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
@@ -295,7 +295,7 @@ class emps{
 		}
 	}
 	
-	function add_category($id){
+		function add_category($id){
 		$category=new rel_emps_cats();
 		$category->id_emp=$id;
 		$category->id_cat_emp=$this->category;
@@ -573,7 +573,6 @@ class emps{
 		return $this->emps_corp_list;
 		
 	}
-	
 	function get_user_corps($id_user)
 	{
 	
@@ -612,6 +611,7 @@ class emps{
 		
 		//Con el id_corp se podrá obtener el nombre de cada empresa en la trabaja id_user
 		$this->num_corps=0;
+		$i = 0;
 		while (!$this->result->EOF) 
 		{
 			$id_corp = $this->result->fields['id_corp'];
@@ -627,7 +627,25 @@ class emps{
 	
 				return 0;
 			}  
+/*		
+			//Si hay más de un empleado con mismo login en la empresa evitamos que salga más de una vez, 
+			//para ello por cada empresa nueva se incrementa en uno su contador
+			$temp[$this->num_corps][$this->ddbb_id_corp] = $id_corp;
+			$temp[$this->num_corps]['name'] = $this->result1->fields['name'];
 		
+			$empresas[$id_corp]['cont']++;
+
+			
+			if(($empresas[$id_corp]['cont'] == 1))
+			{
+				//Si aparece y cont es 1 entonces es la primera vez que aparece
+				$this->corps_list[$i][$this->ddbb_id_corp] = $temp[$this->num_corps][$this->ddbb_id_corp];
+				$this->corps_list[$i]['name'] = $temp[$this->num_corps]['name'];
+				$i++;
+				
+			}
+*/
+				
 			$this->corps_list[$this->num_corps][$this->ddbb_id_corp] = $id_corp;
 			$this->corps_list[$this->num_corps]['name'] = $this->result1->fields['name'];
 
@@ -637,6 +655,8 @@ class emps{
 		}
 	
 		$this->db->close();
+		//$this->num_corps = $i;
+		
 		return $this->num_corps;
 	}
 	
@@ -905,7 +925,7 @@ class emps{
 			$permisos_mod_del->get_permissions_modify_delete();
 			
 			$tpl->assign('acciones',$permisos_mod_del->per_mod_del);
-				
+					
 			
 			if(!$_SESSION['super'] || !$_SESSION['admin'])
 			{	
@@ -988,7 +1008,7 @@ class emps{
 			
 			$tpl->assign('variables',$variables);
 			$tpl->assign('cadena',$cadena);
-				
+						
 			return $tpl;
 				
 	}
@@ -1036,7 +1056,7 @@ class emps{
 		$this->db->close();
 		return $this->num;
 	}
-	
+
 	function listar($tpl)
 	{
 		$this->get_list_emps($_SESSION['ident_corp']);
@@ -1188,6 +1208,7 @@ class emps{
 		$title=$title.$this->localice($method);		
 		return $title;
 	}		
+	
 	
 	function localice($method){	
 		switch($method){
