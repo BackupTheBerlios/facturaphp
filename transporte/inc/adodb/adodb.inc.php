@@ -743,6 +743,7 @@
 	 */
 	function &Execute($sql,$inputarr=false) 
 	{
+		//echo $sql."<br>";
 		if ($this->fnExecute) {
 			$fn = $this->fnExecute;
 			$ret =& $fn($this,$sql,$inputarr);

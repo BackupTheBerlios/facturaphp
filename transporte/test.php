@@ -1,4 +1,102 @@
-<?php
+<?
+require_once('inc/includes.php');
+
+//Iniciacion de objetos y llamadas a bbdd
+echo "antes de users ";
+$object=new users();
+echo "despues de users<br>";
+echo "antes de corps ";
+$object=new corps();
+echo "despues de corps<br>";
+echo "antes de contact ";
+$object=new contact();
+echo "despues de contact<br>";
+echo "antes de clients ";
+$object=new clients();
+echo "despues de clients<br>";
+echo "antes de emps ";
+$object=new emps();
+echo "despues de emps<br>";
+echo "antes de user_corps ";
+$object=new user_corps();
+echo "despues de user_corps<br>";
+echo "antes de groups ";
+$object=new groups();
+echo "despues de groups<br>";
+echo "antes de group_users ";
+$object=new group_users();
+echo "despues de group_users<br>";
+echo "antes de per_group_modules ";
+$object=new per_group_modules();
+echo "despues de per_group_modules<br>";
+echo "antes de per_user_modules ";
+$object=new per_user_modules();
+echo "despues de per_user_modules<br>";
+echo "antes de per_group_methods ";
+$object=new per_group_methods();
+echo "despues de per_group_methods<br>";
+echo "antes de per_user_methods ";
+$object=new per_user_methods();
+echo "despues de per_user_methods<br>";
+echo "antes de permissionss ";
+$object=new permissions();
+echo "despues de permissions<br>";
+echo "antes de products ";
+$object=new products();
+echo "despues de products<br>";
+echo "antes de modules ";
+$object=new modules();
+echo "despues de modules<br>";
+echo "antes de sessions ";
+$object=new sessions();
+echo "despues de sessions<br>";
+echo "antes de methods ";
+$object=new methods();
+echo "despues de methods<br>";
+echo "antes de rel_emps_cats ";
+$object=new rel_emps_cats();
+echo "despues de rel_emps_cats<br>";
+echo "antes de services ";
+$object=new services();
+echo "despues de services<br>";
+echo "antes de cat_emps ";
+$object=new cat_emps();
+echo "despues de cat_emps<br>";
+echo "antes de holydays ";
+$object=new holydays();
+echo "despues de holydays<br>";
+echo "antes de cat_prods ";
+$object=new cat_prods();
+echo "despues de cat_prods<br>";
+echo "antes de vehicles ";
+$object=new vehicles();
+echo "despues de vehicles<br>";
+echo "antes de cat_vehicles ";
+$object=new cat_vehicles();
+echo "despues de cat_vehicles<br>";
+echo "antes de rel_vehicles_cats ";
+$object=new rel_vehicles_cats();
+echo "despues de rel_vehicles_cats<br>";
+echo "antes de drivers ";
+$object=new drivers();
+echo "despues de drivers<br>";
+echo "antes de laborers ";
+$object=new laborers();
+echo "despues de laborers<br>";
+echo "antes de vendors ";
+$object=new vendors();
+echo "despues de vendors<br>";
+echo "antes de rel_prods_cats ";
+$object=new rel_prods_cats();
+echo "despues de rel_prods_cats<br>";
+echo "antes de rel_servs_cats ";
+$object=new rel_servs_cats();
+echo "despues de rel_servs_cats<br>";
+echo "antes de cat_servs ";
+$object=new cat_servs();
+echo "despues de cat_servs<br>";
+
+/*php
 $variable1='pepe';
 $variable2=is_int($variable1);
 echo $variable1." ".$variable2;
@@ -1050,5 +1148,5 @@ echo "<font color='green'>Modificadas</font>";
 	echo "<p align='right'><font color='red'>No Modificadas</font></p>";
 }
 echo "</td></tr></table>";
-
+*/
 ?>

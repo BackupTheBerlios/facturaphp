@@ -2,10 +2,7 @@
 {literal}
 <script>
 	function setToCero(cad){
-		alert(cad);
-		alert(document.getElementById(cad).value);
 		document.getElementById(cad).value="0000-00-00";
-		alert(document.getElementById(cad).value);
 		document.getElementById(cad+"Changed").value="00-00-0000";
 	}
 </script>
@@ -33,27 +30,28 @@
 					
 				  <tr>
 						<td width="125px" align="right" class="CampoFormulario">Baja:</td>
-						<td> <input class="textoMenu" type="text" name="goneChanged" value="00-00-0000" "size="15" maxlength="99" class="textfield"  id="goneChanged" readonly>
-				 <input class="textoMenu" type="hidden" name="{$objeto->ddbb_gone}" value="0000-00-00" size="15" maxlength="99" class="textfield"  id="{$objeto->ddbb_gone}">
+						<td> <input class="textoMenu" type="text" name="{$objeto->ddbb_gone}" value="{$objeto->gone}" "size="15" maxlength="99" class="textfield"  id="{$objeto->ddbb_gone}">
+				 	<!--<input class="textoMenu" type="hidden" name="{$objeto->ddbb_gone}" value="0000-00-00" size="15" maxlength="99" class="textfield"  id="{$objeto->ddbb_gone}">-->
                                     <script type="text/javascript">
                                     
                     <!--
-                    document.write('<a title="Calendario" href="javascript:openCalendar(\'lang=es-utf-8&amp;server=1\', \'form_central\', \'{$objeto->ddbb_gone}\', \'goneChanged\', \'date\')"><img class="calendar" valign="center" src="pics/calendar.png" alt="Calendario"/></a>');
+                    document.write('<a title="Calendario" href="javascript:openCalendar2(\'lang=es-utf-8&amp;server=1\', \'form_central\', \'{$objeto->ddbb_gone}\', \'goneChanged\', \'date\')"><img class="calendar" valign="center" src="pics/calendar.png" alt="Calendario"/></a>');
                     //-->
-                    </script>
+                    </script><font class="error">{$error_gone}</font>
                     <input type="button" value="Poner a 0" class="botones" onclick="setToCero('gone');">
                     </td>
 					</tr>
 					<tr>
 						<td width="125px" align="right" class="CampoFormulario">Alta:</td>
-						<td> <input class="textoMenu" type="text" name="comeChanged" value="00-00-0000" "size="15" maxlength="99" class="textfield"  id="comeChanged" readonly>
-				 <input class="textoMenu" type="hidden" name="{$objeto->ddbb_come}" value="0000-00-00" size="15" maxlength="99" class="textfield"  id="{$objeto->ddbb_come}">
+						<td> <input class="textoMenu" type="text" name="{$objeto->ddbb_come}" value="{$objeto->come}" "size="15" maxlength="99" class="textfield"  id="{$objeto->ddbb_come}">
+				 <!--<input class="textoMenu" type="hidden" name="{$objeto->ddbb_come}" value="0000-00-00" size="15" maxlength="99" class="textfield"  id="{$objeto->ddbb_come}">-->
                                     <script type="text/javascript">
                                     
                     <!--
-                    document.write('<a title="Calendario" href="javascript:openCalendar(\'lang=es-utf-8&amp;server=1\', \'form_central\', \'{$objeto->ddbb_come}\', \'comeChanged\', \'date\')"><img class="calendar" valign="center" src="pics/calendar.png" alt="Calendario"/></a>');
+                    document.write('<a title="Calendario" href="javascript:openCalendar2(\'lang=es-utf-8&amp;server=1\', \'form_central\', \'{$objeto->ddbb_come}\', \'comeChanged\', \'date\')"><img class="calendar" valign="center" src="pics/calendar.png" alt="Calendario"/></a>');
                     //-->
-                    </script>                    <input type="button" value="Poner a 0" class="botones" onclick="setToCero('come');">
+                    </script><font class="error">{$error_come}</font>
+                    <input type="button" value="Poner a 0" class="botones" onclick="setToCero('come');">
                     </td>
 					</tr>
 					 <tr>
@@ -64,11 +62,12 @@
 						 <option value="1">Vacaciones</option>
 						 <option value="2" selected>Otros</option>
 						 </select></td>
+						 <font class="error">{$error_ill}</font>
 					</tr>					
 					
 					  <tr>
 						<td width="125" align="right" class="CampoFormulario">Descripci&oacute;n:</td>
-						<td rowspan="2" ><textarea name="{$objeto->ddbb_descrip}" class="textoMenu" id="{$objeto->ddbb_descrip}"></textarea> </td>
+						<td rowspan="2" ><textarea name="{$objeto->ddbb_descrip}" class="textoMenu" id="{$objeto->ddbb_descrip}"></textarea> <font class="error">{$error_descrip}</font></td>
 					</tr>				  
 		</table>
 		</td>

@@ -137,7 +137,7 @@ class users{
 		if ($this->result === false){
 			$this->error=1;
 			$this->db->close();
-
+			
 			return 0;
 		}  
 		
@@ -547,7 +547,7 @@ class users{
 			for($i=0;$i<$modules->num;$i++)
 			{
 				if($_SESSION['super'])
-				{
+				{   
 					$this->checkbox->per_modules[$i]=new permissions_modules;
 					$this->checkbox->per_modules[$i]->id_module=$modules->modules_list[$i]['id_module'];
 					$this->checkbox->per_modules[$i]->module_name=$modules->modules_list[$i]['name_web'];
@@ -578,7 +578,6 @@ class users{
 									$permiso = $this->checkbox->per_modules[$k]->per_methods[$j]->per;
 									
 									$this->checkbox->per_modules[$k]->per_methods = null;
-									
 									$this->checkbox->per_modules[$k]->per_methods[0] = new permissions_methods();
 									$this->checkbox->per_modules[$k]->per_methods[0]->id_method = $id_method;
 									$this->checkbox->per_modules[$k]->per_methods[0]->method_name_web = $name_web;

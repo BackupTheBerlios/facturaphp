@@ -1,11 +1,8 @@
 <td valign="top">
 {literal}
 <script>
-	function setToCero(cad){
-		alert(cad);
-		alert(document.getElementById(cad).value);
+	function setToCero(cad){	
 		document.getElementById(cad).value="0000-00-00";
-		alert(document.getElementById(cad).value);
 		document.getElementById(cad+"Changed").value="00-00-0000";
 	}
 </script>

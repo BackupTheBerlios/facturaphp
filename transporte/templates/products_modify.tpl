@@ -60,7 +60,7 @@
 					
 					<tr>
 						<td width="125px" align="right" class="CampoFormulario">Fotograf&iacute;a:</td>
-						<td><a href="index.php?module=cat_prods&method=show&id={$objeto->id_product}"><img src="{$objeto->path_photo}" width="80" height="80"></a>
+						<td><a href="index.php?module=products&method=show&id={$objeto->id_product}"><img src="{$objeto->path_photo}" width="80" height="80"></a>
 						<input type="file" name="{$objeto->ddbb_path_photo}"></input><font class="error">{$error_path_photo}</font></td>	
 				  </tr>	
 				<tr>

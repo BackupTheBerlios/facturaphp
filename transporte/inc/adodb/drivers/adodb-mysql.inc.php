@@ -313,7 +313,9 @@ class ADODB_mysql extends ADOConnection {
 	
 	// returns true or false
 	function _connect($argHostname, $argUsername, $argPassword, $argDatabasename)
-	{
+	{	/*static $i=1;
+		echo $i."  ";
+		$i++;*/
 		if (ADODB_PHPVER >= 0x4300)
 			$this->_connectionID = mysql_connect($argHostname,$argUsername,$argPassword,
 												$this->forceNewConnect,$this->clientFlags);

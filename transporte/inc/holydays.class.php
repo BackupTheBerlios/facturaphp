@@ -8,8 +8,8 @@ class holydays{
 //internal vars
 	var $id_holy;
 	var $id_emp;
-	var $gone;
-	var $come;
+	var $gone="00-00-0000";
+	var $come="00-00-0000";
 	var $ill;
 	var $descrip;
 	var $theme;
@@ -198,17 +198,31 @@ class holydays{
 			$this->get_fields_from_post();	
 						
 			//Validacion
-			//$return=validate_fields();
+			
+			//Modificamos los todos los valores del objeto fields con los nuevos datos del objeto product, exceptuando path_photo que eso se deberia hacer mediante la clase upload.
+			//Al id_product se le da 0 por quse neecesita un valor para que 
+			$this->id_holy=0;
+			$this->fields_list->modify_value($this->ddbb_id_holy,$this->id_holy);
+			$this->fields_list->modify_value($this->ddbb_id_emp,$this->id_emp);
+			$this->fields_list->modify_value($this->ddbb_gone,$this->gone);
+			$this->fields_list->modify_value($this->ddbb_come,$this->come);
+			$this->fields_list->modify_value($this->ddbb_ill,$this->ill);
+			$this->fields_list->modify_value($this->ddbb_descrip,$this->descrip);
+			//validamos
+			$return=$this->fields_list->validate();		
+
 			
 			//En caso de que la validacion haya sido fallida se muestra la plantilla
 			//con los campos erroneos marcados con un *
-			$return=true; //Para pruebas dejar esta linea sin comentar
+			//$return=true; //Para pruebas dejar esta linea sin comentar
 			
 			if (!$return){
 				//Mostrar plantilla con datos erroneos
-				
+				return -1;
 			}
 			else{
+				$this->gone=$this->fields->change_date($this->gone,"en");
+				$this->come=$this->fields->change_date($this->come,"en");
 		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
 		//crea una nueva conexi—n con una bbdd (mysql)
 		$this->db = NewADOConnection($this->db_type);
@@ -369,16 +383,34 @@ class holydays{
 									
 									$tpl->assign("empleado",$empleado);
 													
-									if ($this->add() !=0){
+								/*	if ($this->add() !=0){
 										$this->method="emps_view";																				
 										$tpl->assign("message","&nbsp;<br>Baja a&ntilde;adida correctamente<br>&nbsp;");			
 										$tpl=$empleado->view($this->id_emp,$tpl);		
 																	
 										$tpl->assign("plantilla","emps_view.tpl");
 										return $tpl;
+									}*/									
+									$return=$this->add();
+									switch ($return){										
+										case 0: //por defecto
+												//$tpl->assign("tabla_checkbox",$this->table_categories(true));
+												break;
+										case -1: //Errores al intentar añadir datos
+												for ($i=0;$i<count($this->fields_list->array_error);$i+=2){
+													$tpl->assign("error_".$this->fields_list->array_error[$i],$this->fields_list->array_error[$i+1]);
+												}
+												//$tpl->assign("tabla_checkbox",$this->table_categories(false));
+												break;
+										default: //Si se ha añadido
+												$this->method="emps_view";																				
+												$tpl->assign("message","&nbsp;<br>Baja a&ntilde;adida correctamente<br>&nbsp;");			
+												$tpl=$empleado->view($this->id_emp,$tpl);																	
+												$tpl->assign("plantilla","emps_view.tpl");
+												return $tpl;
+												break;
 									}
-
-									
+									//esto se hace independientemetne del valor que se obtenga
 									$tpl->assign("objeto",$this);
 									break;
 									
@@ -507,7 +539,7 @@ class holydays{
 		return $localice;
 	}
 	
-		function get_fields_from_post(){		
+	function get_fields_from_post(){
 			$this->id_emp=$_POST[$this->ddbb_id_emp];
 			$this->come=$_POST[$this->ddbb_come];
 			$this->ill=$_POST[$this->ddbb_ill];

@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.3, created on 2005-01-27 15:44:51
+<?php /* Smarty version 2.6.3, created on 2005-02-09 16:59:20
          compiled from users_add.tpl */ ?>
 <td valign="top">
 <?php $_smarty_tpl_vars = $this->_tpl_vars;
@@ -19,7 +19,8 @@ unset($_smarty_tpl_vars);
 			  </tr>
 		  </table>
 						<br>
-		<table width="250px" align="center">
+		<table width="90%" align="center" border="0"><tr><td>
+		<table width="50%" align="left">
 
 					<tr>
 					  <td colspan="2" class="cabeceraCampoFormulario">Datos de Login:</td>
@@ -67,10 +68,10 @@ unset($_smarty_tpl_vars);
 				  	</td>
 				  </tr>
 
-				 <tr>
-		<td valign="top" colspan="2">
-			<br>
-			<table width="100%" align="center" border="0">
+			
+		</table>
+		</td><td>
+		<table width="100%" align="center" border="0">
 			 <tr>
 					  <td colspan="2" class="cabeceraCampoFormulario">Grupos: </td>
 			</tr>
@@ -139,9 +140,8 @@ $this->_sections['indice']['last']       = ($this->_sections['indice']['iteratio
 			<?php endfor; endif; ?>
 			<tr class="cabeceraMultilinea"><td colspan="2">&nbsp</td></tr>
 			</table>
-		</td>
-		</tr>	
-		</table>
+		</td></tr></table>
+		
 		</td>
 		</tr>	
 		

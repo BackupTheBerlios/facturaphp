@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.3, created on 2005-01-26 17:08:35
+<?php /* Smarty version 2.6.3, created on 2005-02-14 19:32:37
          compiled from emps_add.tpl */ ?>
 <td valign="top">
 <script>
@@ -274,9 +274,9 @@ $this->_sections['indice']['last']       = ($this->_sections['indice']['iteratio
 		<td colspan="2">
 		
 		
-		
-		
-		<table width="250px" align="center">
+		<br>
+		<table width="100%" align="center" border="0"><tr><td>
+		<table width="50%" align="center">
 
 					<tr>
 					  <td colspan="2" class="cabeceraCampoFormulario">Datos de Login:</td>
@@ -317,12 +317,10 @@ $this->_sections['indice']['last']       = ($this->_sections['indice']['iteratio
 				  		<input type="button" Value="Seleccionar Todos" id="selectAll" class="botones" onClick="selectAll();">
 					<input type="button" Value="Deseleccionar Todos" id="unselectAll" class="botones" onClick="unselectAll();">
 				  	</td>
-				  </tr>
-
-				 <tr>
-		<td valign="top" colspan="2">
-			<br>
-			<table width="100%" align="center" border="0">
+				  </tr>			
+		</table>
+		</td><td>
+		<table width="100%" align="center" border="0">
 			 <tr>
 					  <td colspan="2" class="cabeceraCampoFormulario">Grupos: </td>
 			</tr>
@@ -391,9 +389,7 @@ $this->_sections['indice']['last']       = ($this->_sections['indice']['iteratio
 			<?php endfor; endif; ?>
 			<tr class="cabeceraMultilinea"><td colspan="2">&nbsp</td></tr>
 			</table>
-		</td>
-		</tr>	
-		</table>
+		</td></tr></table>
 			<br>
 			<br>    
 			

@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.3, created on 2005-01-18 18:35:35
+<?php /* Smarty version 2.6.3, created on 2005-02-09 01:29:43
          compiled from emps_modify.tpl */ ?>
 <td valign="top">
 <script>
@@ -301,10 +301,9 @@ $this->_sections['indice']['last']       = ($this->_sections['indice']['iteratio
 		<tr>
 		<td colspan="2">
 		
-		
-		
-		
-		<table width="250px" align="center">
+		<br>
+		<table width="100%" align="center" border="0"><tr><td>
+		<table width="50%" align="center">
 			<input type="hidden" name="<?php echo $this->_tpl_vars['usuarios']->ddbb_id_user; ?>
 " id="<?php echo $this->_tpl_vars['usuarios']->ddbb_id_user; ?>
 " value="<?php echo $this->_tpl_vars['usuarios']->id_user; ?>
@@ -355,10 +354,10 @@ $this->_sections['indice']['last']       = ($this->_sections['indice']['iteratio
 				  	</td>
 				  </tr>
 
-				 <tr>
-		<td valign="top" colspan="2">
-			<br>
-			<table width="100%" align="center" border="0">
+				
+		</table>
+		</td><td>
+		<table width="100%" align="center" border="0">
 			 <tr>
 					  <td colspan="2" class="cabeceraCampoFormulario">Grupos: </td>
 			</tr>
@@ -427,9 +426,7 @@ $this->_sections['indice']['last']       = ($this->_sections['indice']['iteratio
 			<?php endfor; endif; ?>
 			<tr class="cabeceraMultilinea"><td colspan="2">&nbsp</td></tr>
 			</table>
-		</td>
-		</tr>	
-		</table>
+		</td></tr></table>
 			<br>
 			<br>    
 			

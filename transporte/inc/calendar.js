@@ -134,8 +134,15 @@ var clock_set = 0;
  */
 function openCalendar(params, form, field, changed, type) {
     window.open("inc/calendar.php?" + params, "calendar", "width=400,height=200,status=yes");
-    dateField = eval("document." + form + "." + field);	
-	dateChanged = eval("document." + form + "." + changed);	
+    dateField = eval("document." + form + "." + field);
+	dateChanged = eval("document." + form + "." + changed);
+    dateType = type;
+}
+
+function openCalendar2(params, form, field, changed, type) {
+    window.open("inc/calendar.php?" + params, "calendar", "width=400,height=200,status=yes");
+    dateField = eval("document." + form + "." + changed);
+	dateChanged = eval("document." + form + "." + field);		
     dateType = type;
 }
 

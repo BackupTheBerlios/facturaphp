@@ -71,13 +71,13 @@ class services{
 		$this->fields_list= new fields();
 		$this->fields_list->add($this->ddbb_id_service, $this->id_service, 'int', 11,0);
 		$this->fields_list->add($this->ddbb_id_corp, $this->id_corp, 'int', 11,0);
-		$this->fields_list->add($this->ddbb_name, $this->name, 'varchar', 50,0);
+		$this->fields_list->add($this->ddbb_name, $this->name, 'varchar', 50,0,1);
 		$this->fields_list->add($this->ddbb_name_web, $this->name_web, 'varchar', 50,0);
-		$this->fields_list->add($this->ddbb_pvp, $this->pvp, 'int', 11,0);
-		$this->fields_list->add($this->ddbb_tax, $this->tax, 'int', 11,0);
-		$this->fields_list->add($this->ddbb_pvp_tax, $this->pvp_tax, 'int', 11,0);
+		$this->fields_list->add($this->ddbb_pvp, $this->pvp, 'int', 11,0,1);
+		$this->fields_list->add($this->ddbb_tax, $this->tax, 'int', 11,0,1);
+		$this->fields_list->add($this->ddbb_pvp_tax, $this->pvp_tax, 'int', 11,0,1);
 		$this->fields_list->add($this->ddbb_path_photo, $this->path_photo, 'varchar', 255,0);
-		$this->fields_list->add($this->ddbb_minimun_stock, $this->minimun_stock, 'int', 11,0);
+		$this->fields_list->add($this->ddbb_minimun_stock, $this->minimun_stock, 'int', 11,0,1);
 		//print_r($this);
 		//se puede acceder a los grupos por numero de campo o por nombre de campo
 		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
@@ -212,13 +212,28 @@ class services{
 			$this->get_fields_from_post();
 			//print_r($this->serv_cat_list);
 			//Validacion
+			
+			//Modificamos los todos los valores del objeto fields con los nuevos datos del objeto product, exceptuando path_photo que eso se deberia hacer mediante la clase upload.
+			//Al id_product se le da 0 por quse neecesita un valor para que 
+			$this->id_service=0;
+			$this->fields_list->modify_value($this->ddbb_id_product,$this->id_product);
+			$this->fields_list->modify_value($this->ddbb_id_corp,$this->id_corp);
+			$this->fields_list->modify_value($this->ddbb_minimun_stock,$this->minimun_stock);
+			$this->fields_list->modify_value($this->ddbb_name,$this->name);
+			$this->fields_list->modify_value($this->ddbb_name_web,$this->name_web);
+			$this->fields_list->modify_value($this->ddbb_pvp,$this->pvp);
+			$this->fields_list->modify_value($this->ddbb_tax,$this->tax);
+			$this->fields_list->modify_value($this->ddbb_pvp_tax,$this->pvp_tax);
+			//validamos
+			$return=$this->fields_list->validate();		
 			//$return=validate_fields();
 			//En caso de que la validacion haya sido fallida se muestra la plantilla
 			//con los campos erroneos marcados con un *
-			$return=true; //Para pruebas dejar esta linea sin comentar
+//			$return=true; //Para pruebas dejar esta linea sin comentar
 			
 			if (!$return){
 				//Mostrar plantilla con datos erroneos
+				return -1;
 			}
 			else{
 			$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
@@ -427,12 +442,23 @@ class services{
 			$this->get_fields_from_post();
 			//$this->insert_post();
 			
-			//Validacion
-			//$return=validate_fields();
+				//Validacion
+			
+			//Modificamos los todos los valores del objeto fields con los nuevos datos del objeto product, exceptuando path_photo que eso se deberia hacer mediante la clase upload.
+			$this->fields_list->modify_value($this->ddbb_id_product,$this->id_product);
+			$this->fields_list->modify_value($this->ddbb_id_corp,$this->id_corp);
+			$this->fields_list->modify_value($this->ddbb_minimun_stock,$this->minimun_stock);
+			$this->fields_list->modify_value($this->ddbb_name,$this->name);
+			$this->fields_list->modify_value($this->ddbb_name_web,$this->name_web);
+			$this->fields_list->modify_value($this->ddbb_pvp,$this->pvp);
+			$this->fields_list->modify_value($this->ddbb_tax,$this->tax);
+			$this->fields_list->modify_value($this->ddbb_pvp_tax,$this->pvp_tax);
+			//validamos
+			$return=$this->fields_list->validate();		
 			
 			//En caso de que la validacion haya sido fallida se muestra la plantilla
 			//con los campos erroneos marcados con un *
-			$return=true; //Para pruebas dejar esta linea sin comentar
+//			$return=true; //Para pruebas dejar esta linea sin comentar
 			
 			if (!$return){
 				//Mostrar plantilla con datos erroneos
@@ -601,24 +627,18 @@ class services{
 		//Cogemos los campos principales
 		$prefix="";
 		$this->id_corp=$_SESSION['ident_corp'];
-		$this->name=$_POST[$prefix.$this->ddbb_name];
-		$this->name_web=$_POST[$prefix.$this->ddbb_name_web];
+		$this->name=htmlentities($_POST[$prefix.$this->ddbb_name]);
+		$this->name_web=htmlentities($_POST[$prefix.$this->ddbb_name_web]);
 		$this->pvp=$_POST[$prefix.$this->ddbb_pvp];
 		$this->tax=$_POST[$prefix.$this->ddbb_tax];
 		$this->pvp_tax=$_POST[$prefix.$this->ddbb_pvp_tax];
 		$this->minimun_stock=$_POST[$prefix.$this->ddbb_minimun_stock];
 		$this->path_photo = $_SESSION['ruta_photo'];
-		//Colocar de manera provisional hasta que se haga la validacion de fields
-		//************Bloque
-		if ($this->name==""){
-			$this->name=" ";
-		}
-		if ($this->name_web==""){
-			$this->name_web=" ";
-		}
-		//************Fin Bloque
-		$this->get_categories_from_post();
 		
+
+		
+		$this->get_categories_from_post();
+
 		return 0;
 	}
 	
@@ -641,14 +661,11 @@ class services{
 	function get_checkbox_categories($cats,$variable){
 		//Recorremos el array de categorias q hay en bbdd
 		//para coger los checkbox activados en el formulario
-		print_r($cats);
-		return 0;
 		for ($i=0;$i<count($cats);$i++){
 			//almacenamos el valor del checkbox
 			$checkbox=$_POST[$variable."_".$cats[$i]['id_cat_serv']];
 			if ($checkbox==1){
 				//Si es = a 1 entonces es que esta seleccionado.
-				echo "hola";
 				$this->serv_cat_list[$this->num]['id_cat_serv']=$cats[$i]['id_cat_serv'];
 				//incrementamos el valor de num
 				$this->num++;				
@@ -657,9 +674,6 @@ class services{
 			
 			if ($cats[$i]['hijos']!=0)
 				$this->get_checkbox_categories($cats[$i]['hijos'],$variable."_".$cats[$i]['id_cat_serv']);
-			if ($i==100){
-				
-			}
 		}		
 		return 0;
 	}
@@ -689,12 +703,24 @@ class services{
 			$this->method=$method;
 				switch($method){
 						case 'add':
-									if ($this->add() !=0){
-										$this->method="list";
-										$tpl=$this->listar($tpl);
-										$tpl->assign("message","&nbsp;<br>Servicio a&ntilde;adido correctamente<br>&nbsp;");
+									$return=$this->add();
+									switch ($return){										
+										case 0: //por defecto
+												$tpl->assign("tabla_checkbox",$this->table_categories(true));
+												break;
+										case -1: //Errores al intentar añadir datos
+												for ($i=0;$i<count($this->fields_list->array_error);$i+=2){
+													$tpl->assign("error_".$this->fields_list->array_error[$i],$this->fields_list->array_error[$i+1]);
+												}
+												$tpl->assign("tabla_checkbox",$this->table_categories(false));
+												break;
+										default: //Si se ha añadido
+												$this->method="list";
+												$tpl=$this->listar($tpl);
+												$tpl->assign("message","&nbsp;<br>Servicio a&ntilde;adido correctamente<br>&nbsp;");									
+												break;
 									}
-									$tpl->assign("tabla_checkbox",$this->table_categories(true));
+									//esto se hace independientemetne del valor que se obtenga
 									$tpl->assign("objeto",$this);
 									break;
 						case 'list':
@@ -702,14 +728,27 @@ class services{
 									break;
 						case 'modify':
 									$this->read($_GET['id']);
-									if ($this->modify() !=0){
-										$this->method="list";
-										$tpl=$this->listar($tpl);
-										$tpl->assign("message","&nbsp;<br>Servicio modificado correctamente<br>&nbsp;");
+									$return=$this->modify();
+									switch ($return){										
+										case 0: //por defecto
+												$tpl->assign("tabla_checkbox",$this->table_categories(false));
+												break;
+										case -1: //Errores al intentar añadir datos
+												for ($i=0;$i<count($this->fields_list->array_error);$i+=2){
+													$tpl->assign("error_".$this->fields_list->array_error[$i],$this->fields_list->array_error[$i+1]);
+												}
+												$tpl->assign("tabla_checkbox",$this->table_categories(false));
+												break;
+										default: //Si se ha añadido
+												$this->method="list";
+												$tpl=$this->listar($tpl);
+												$tpl->assign("message","&nbsp;<br>Servicio modificado correctamente<br>&nbsp;");
+												break;
 									}
-									$tpl->assign("tabla_checkbox",$this->table_categories(false));
+									//esto se hace independientemetne del valor que se obtenga
 									$tpl->assign("objeto",$this);
 									break;
+									
 						case 'delete':
 									$this->read($_GET['id']);
 									if ($this->remove($_GET['id'])!=0){
@@ -838,7 +877,7 @@ class services{
 		
 
 		//Si no es para nuevo: Buscamos las categorias relacionadas con el serviceo
-		if (!$new){
+		if (!$new && (!is_array($this->serv_cat_list)||$this->serv_cat_list=="")){
 			if ($this->id_service!="" && $this->id_service!=0){
 				$rel = new rel_servs_cats();
 				$this->serv_cat_list=$rel->get_rel_serv_cat($this->id_service);

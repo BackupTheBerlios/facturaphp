@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.3, created on 2004-11-23 23:57:36
+<?php /* Smarty version 2.6.3, created on 2005-02-09 00:39:24
          compiled from modules_modify.tpl */ ?>
 <td valign="top">
 <form method="post" action="index.php?module=modules&method=modify&id=<?php echo $this->_tpl_vars['objeto']->id_module; ?>
@@ -64,7 +64,8 @@
 						<td><select class="textoMenu"  name="<?php echo $this->_tpl_vars['objeto']->ddbb_parent; ?>
 " id="<?php echo $this->_tpl_vars['objeto']->ddbb_parent; ?>
 ">
-							<option value="0" <?php if ($this->_tpl_vars['objeto']->parent == 0): ?>selected<?php endif; ?>>Ninguno</option>
+							<option value="-2" <?php if ($this->_tpl_vars['objeto']->parent == -2): ?>selected<?php endif; ?>>Ninguno (sin enlace)</option>
+							<option value="0" <?php if ($this->_tpl_vars['objeto']->parent == 0): ?>selected<?php endif; ?>>Ninguno (con enlace)</option>
 							<?php unset($this->_sections['indice']);
 $this->_sections['indice']['name'] = 'indice';
 $this->_sections['indice']['loop'] = is_array($_loop=($this->_tpl_vars['padres'])) ? count($_loop) : max(0, (int)$_loop); unset($_loop);

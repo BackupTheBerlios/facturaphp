@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.3, created on 2004-11-22 17:12:37
+<?php /* Smarty version 2.6.3, created on 2005-02-15 17:25:24
          compiled from users_modify.tpl */ ?>
 <td valign="top">
 <?php $_smarty_tpl_vars = $this->_tpl_vars;
@@ -20,7 +20,8 @@ unset($_smarty_tpl_vars);
 								</tr>
 						</table>
 						<br>
-		<table width="250px" align="center">
+		<table width="90%" align="center" border="0"><tr><td>
+		<table width="50%" align="center">
 
 					<tr>
 					  <td colspan="2" class="cabeceraCampoFormulario">Datos de Login:</td>
@@ -72,9 +73,9 @@ unset($_smarty_tpl_vars);
 					<input type="button" Value="Deseleccionar Todos" class="botones" onClick="unselectAll();">
 				  	</td>
 				  </tr>
-								 <tr>
-		<td valign="top" colspan="2">
-			<br>	
+		
+				</table>
+			</td><td>
 			<table width="100%" align="center" border="0">
 			 <tr>
 					  <td colspan="2" class="cabeceraCampoFormulario">Grupos: </td>
@@ -145,9 +146,7 @@ $this->_sections['indice']['last']       = ($this->_sections['indice']['iteratio
 			<?php endfor; endif; ?>
 			<tr class="cabeceraMultilinea"><td colspan="2">&nbsp</td></tr>
 			</table>
-		</td>
-		</tr>	 
-				</table>
+			</td></tr></table>
 		</td>
 		</tr>				
 			
@@ -156,10 +155,7 @@ $this->_sections['indice']['last']       = ($this->_sections['indice']['iteratio
 			<td valign="top">
 			<br>
 			<br>    
-		<?php 
-		if($_SESSION['super'] || $_SESSION['admin'])
-		{
-		 ?>
+		
 		
 			<table width="90%" align="center" border="0">
 			 <tr>
@@ -271,9 +267,7 @@ _metodo_<?php echo $this->_tpl_vars['modulos']->per_modules[$this->_sections['in
 			<input type="reset" Value="Borrar Datos" class="botones">
 			</td>
 		</tr>
-	<?php 
-	}
-	 ?>
+	
 	  	</table> 
 	</form>
 </td>

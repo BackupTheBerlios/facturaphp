@@ -1,12 +1,33 @@
-<?php /* Smarty version 2.6.3, created on 2005-02-02 17:40:04
+<?php /* Smarty version 2.6.3, created on 2005-02-23 12:21:16
          compiled from products_modify.tpl */ ?>
 <td valign="top">
 <?php echo '
 <script>
 
-	function comienza_por(){
-		
+	function check_uncheck(obj){
+		if (obj.checked)
+			marca_arriba(obj);
+		else
+			desmarca_abajo(obj);		
 	}
+	
+	function marca_arriba(obj){
+		cadena=obj.name;
+		finCadena=cadena.substring(0,cadena.indexOf(\'_\'));
+		while(finCadena!=cadena){			
+			document.getElementById(cadena).checked=true;			
+			cadena=cadena.substring(cadena.lastIndexOf(\'_\'),0);			
+		}
+	}
+	
+	function desmarca_abajo(obj){
+		for(i=0;i<document.forms[\'form_central\'].elements.length;i++){
+			element=document.forms[\'form_central\'].elements[i];
+			if(element.name.substring(0,obj.name.length)==obj.name)	
+				element.checked=false;
+		}		
+	}
+	
 	
 </script>
 '; ?>
@@ -25,7 +46,8 @@
 			  </tr>
 		  </table>
 						<br>
-		<table width="250px" align="center">
+		<table width="90%" align="center" border="0"><tr><td>
+		<table width="50%" align="center">
 
 					<tr>
 					  <td colspan="2" class="cabeceraCampoFormulario">Datos del producto:</td>
@@ -36,14 +58,16 @@
 						<td> <input type="text" id="<?php echo $this->_tpl_vars['objeto']->ddbb_name; ?>
 " name="<?php echo $this->_tpl_vars['objeto']->ddbb_name; ?>
 " value="<?php echo $this->_tpl_vars['objeto']->name; ?>
-" class="textoMenu"></td>
+" class="textoMenu"><font class="error"><?php echo $this->_tpl_vars['error_name']; ?>
+</font></td>
 					</tr>
 				  <tr>
 						<td width="125px" align="right" class="CampoFormulario">Nombre Web:</td>
 						<td> <input type="text" id="<?php echo $this->_tpl_vars['objeto']->ddbb_name_web; ?>
 " name="<?php echo $this->_tpl_vars['objeto']->ddbb_name_web; ?>
 " value="<?php echo $this->_tpl_vars['objeto']->name_web; ?>
-" class="textoMenu"></td>
+" class="textoMenu"><font class="error"><?php echo $this->_tpl_vars['error_name_web']; ?>
+</font></td>
 					</tr>
 					
 					<tr>
@@ -52,69 +76,59 @@
 "><img src="<?php echo $this->_tpl_vars['objeto']->path_photo; ?>
 " width="80" height="80"></a>
 						<input type="file" name="<?php echo $this->_tpl_vars['objeto']->ddbb_path_photo; ?>
-"></input></td>	
+"></input><font class="error"><?php echo $this->_tpl_vars['error_path_photo']; ?>
+</font></td>	
 				  </tr>	
 				<tr>
 					<td width="125px" align="right" class="CampoFormulario">P.V.P.:</td>
 					<td> <input type="text" id="<?php echo $this->_tpl_vars['objeto']->ddbb_pvp; ?>
 " value="<?php echo $this->_tpl_vars['objeto']->pvp; ?>
 " name="<?php echo $this->_tpl_vars['objeto']->ddbb_pvp; ?>
-" class="textoMenu"></td>
+" class="textoMenu">&euro; <font class="error"><?php echo $this->_tpl_vars['error_pvp']; ?>
+</font></td>
 				</tr>
 				<tr>
 					<td width="125px" align="right" class="CampoFormulario">Impuestos:</td>
 					<td> <input type="text" id="<?php echo $this->_tpl_vars['objeto']->ddbb_tax; ?>
 " name="<?php echo $this->_tpl_vars['objeto']->ddbb_tax; ?>
 " value="<?php echo $this->_tpl_vars['objeto']->tax; ?>
-" class="textoMenu"></td>
+" class="textoMenu">%<font class="error"><?php echo $this->_tpl_vars['error_tax']; ?>
+</font></td>
 				</tr>
 				<tr>
 					<td width="125px" align="right" class="CampoFormulario">PVP-TAX:</td>
 					<td> <input type="text" id="<?php echo $this->_tpl_vars['objeto']->ddbb_pvp_tax; ?>
 " name="<?php echo $this->_tpl_vars['objeto']->ddbb_pvp_tax; ?>
 " value="<?php echo $this->_tpl_vars['objeto']->pvp_tax; ?>
-" class="textoMenu"></td>
+" class="textoMenu"><font class="error"><?php echo $this->_tpl_vars['error_pvp_tax']; ?>
+</font></td>
 				</tr>
 				<tr>
 					<td width="125px" align="right" class="CampoFormulario">Stock M&iacute;nimo:</td>
 					<td> <input type="text" id="<?php echo $this->_tpl_vars['objeto']->ddbb_minimun_stock; ?>
 " name="<?php echo $this->_tpl_vars['objeto']->ddbb_minimun_stock; ?>
 " value="<?php echo $this->_tpl_vars['objeto']->minimun_stock; ?>
-" class="textoMenu"></td>
+" class="textoMenu"><font class="error"><?php echo $this->_tpl_vars['error_minimun_stock']; ?>
+</font></td>
 				</tr>
-		</table>
-		</td>
-		</tr>	
-		<tr>
-		<td>
-		<br>
+		</table></td><td>
 		<table width="250px" align="center">
 
 					<tr>
 					  <td class="cabeceraCampoFormulario" align="center">Categor&iacute;as:</td>
 				  </tr>
-		</table><br>
+		</table>
 		
 		<table align="center"><tr><td>
 		
-		<table width="100%" align="center">
-
-					<tr class="cabeceraMultilinea">
-					  <td>&nbsp;</td>
-				  </tr>
-		</table><br>
 		<?php echo $this->_tpl_vars['tabla_checkbox']; ?>
 
-		<br>
-		<table width="100%" align="center">
-
-					<tr class="cabeceraMultilinea">
-					  <td>&nbsp;</td>
-				  </tr>
-		</table>
+		
+		</td></tr></table>
 		</td></tr></table>
 		</td>
-		</tr>
+		</tr>	
+		
 		<tr>
 			<td align="center"><br><br>
 			<input type="submit" name="submit_modify" id="submit_modify" value="Modificar" class="botones">			

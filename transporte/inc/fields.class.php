@@ -50,7 +50,7 @@ class fields{
 								$error=false;
 							}							
 							break;
-				case "text": $return=$this->validate_text($this->lista[$name_keys[$i]]["value"]);
+				case "text": $return=$this->validate_text($this->lista[$name_keys[$i]]["value"],$this->lista[$name_keys[$i]]["null"]);
 							if(!is_int($return)){
 								array_push($this->array_error,$name_keys[$i],$return);
 								$error=false;
@@ -92,6 +92,12 @@ class fields{
 								$error=false;
 							}							
 							break;
+				case "tinyint":$return=$this->validate_int($this->lista[$name_keys[$i]]["value"],$this->lista[$name_keys[$i]]["null"]);
+							if(!is_int($return)){
+								array_push($this->array_error,$name_keys[$i],$return);
+								$error=false;
+							}							
+							break;
 				default: break;
 			}			
 		}
@@ -105,12 +111,17 @@ class fields{
 		}
 		if(is_numeric($value))
 			settype($value,"integer");
-		if (!is_int($value))
+		if (!is_double($value) && $value != "")
 			return "* El valor introducido no es un entero.";
 		return 0;
 	}
 	
-	function validate_text($value){
+	function validate_text($value,$null){
+		if($null==1 && ($value=="" || $value==null)){
+			return "* Este campo no puede estar vacio.";
+		}
+		if (!is_string($value)&& $value != "")
+			return "* El texto introducido no es valido.";
 		return 0;
 	}
 	
@@ -182,11 +193,23 @@ class fields{
 			else
 				$resultado = '';
 			if ($resultado == '')
-				return "* Error. Formato de fecha: dd-mm-aaaa";
+				return "* Error. $format";
 		}
 		return 0;
 	}
 	
+	function change_date($date,$format){										
+		switch ($format){
+			case "es":
+						list($anno,$mes,$dia)=sscanf($date,"%d-%d-%d");
+						return "$dia-$mes-$anno";
+			case "en":
+						list($dia,$mes,$anno)=sscanf($date,"%d-%d-%d");
+						return "$anno-$mes-$dia";
+			default:
+				return 0;
+		}
+	}
 	
 	
 	/*
