@@ -1,4 +1,6 @@
 <td valign="top">
+error id_product:{$error_id_product}<br>
+error id_corp:{$error_id_corp}
 {literal}
 <script>
 
@@ -12,6 +14,7 @@
 	  	<table align="center" width="100%">
 		<tr>
 		<td valign="top">
+		
 			<table width="100%" cellpadding="0" cellspacing="0"  bgcolor="#000000">
 						<tr Class="CabeceraModulo">
 						<td width="7%">
@@ -30,32 +33,32 @@
 					
 				  <tr>
 						<td width="125px" align="right" class="CampoFormulario">Nombre:</td>
-						<td> <input type="text" id="{$objeto->ddbb_name}" name="{$objeto->ddbb_name}" class="textoMenu"></td>
+						<td> <input type="text" id="{$objeto->ddbb_name}" name="{$objeto->ddbb_name}" class="textoMenu" value="{$objeto->name}"><font class="error">{$error_name}</font></td>
 					</tr>
 				  <tr>
 						<td width="125px" align="right" class="CampoFormulario">Nombre Web:</td>
-						<td> <input type="text" id="{$objeto->ddbb_name_web}" name="{$objeto->ddbb_name_web}" class="textoMenu"></td>
+						<td> <input type="text" id="{$objeto->ddbb_name_web}" name="{$objeto->ddbb_name_web}" class="textoMenu" value="{$objeto->name_web}"><font class="error">{$error_name_web}</font></td>
 					</tr>
 					
 					<tr>
 				 	<td width="125px" class="CampoFormulario" >Imagen:</td>
-					<td><input type="file" class="textoMenu" name="{$objeto->ddbb_path_photo}"></input></td>	
+					<td><input type="file" class="textoMenu" name="{$objeto->ddbb_path_photo}"></input><font class="error">{$error_path_photo}</font></td>	
 				</tr>		
 				<tr>
 					<td width="125px" align="right" class="CampoFormulario">P.V.P.:</td>
-					<td> <input type="text" id="{$objeto->ddbb_pvp}" name="{$objeto->ddbb_pvp}" class="textoMenu"></td>
+					<td> <input type="text" id="{$objeto->ddbb_pvp}" name="{$objeto->ddbb_pvp}" value="{$objeto->pvp}" class="textoMenu"><font class="error">{$error_pvp}</font></td>
 				</tr>
 				<tr>
 					<td width="125px" align="right" class="CampoFormulario">Impuestos:</td>
-					<td> <input type="text" id="{$objeto->ddbb_tax}" name="{$objeto->ddbb_tax}" class="textoMenu"></td>
+					<td> <input type="text" id="{$objeto->ddbb_tax}" name="{$objeto->ddbb_tax}" value="{$objeto->tax}" class="textoMenu"><font class="error">{$error_tax}</font></td>
 				</tr>
 				<tr>
 					<td width="125px" align="right" class="CampoFormulario">PVP-TAX:</td>
-					<td> <input type="text" id="{$objeto->ddbb_pvp_tax}" name="{$objeto->ddbb_pvp_tax}" class="textoMenu"></td>
+					<td> <input type="text" id="{$objeto->ddbb_pvp_tax}" name="{$objeto->ddbb_pvp_tax}" value="{$objeto->pvp_tax}" class="textoMenu"><font class="error">{$error_pvp_tax}</font></td>
 				</tr>
 				<tr>
 					<td width="125px" align="right" class="CampoFormulario">Stock M&iacute;nimo:</td>
-					<td> <input type="text" id="{$objeto->ddbb_minimun_stock}" name="{$objeto->ddbb_minimun_stock}" class="textoMenu"></td>
+					<td> <input type="text" id="{$objeto->ddbb_minimun_stock}" name="{$objeto->ddbb_minimun_stock}" class="textoMenu" value="{$objeto->minimun_stock}"><font class="error">{$error_minimun_stock}</font></td>
 				</tr>
 		</table>
 		</td><td>

@@ -72,13 +72,13 @@ class products{
 		$this->fields_list= new fields();
 		$this->fields_list->add($this->ddbb_id_product, $this->id_product, 'int', 11,0);
 		$this->fields_list->add($this->ddbb_id_corp, $this->id_corp, 'int', 11,0);
-		$this->fields_list->add($this->ddbb_name, $this->name, 'varchar', 50,0);
+		$this->fields_list->add($this->ddbb_name, $this->name, 'varchar', 50,0,1);
 		$this->fields_list->add($this->ddbb_name_web, $this->name_web, 'varchar', 50,0);
-		$this->fields_list->add($this->ddbb_pvp, $this->pvp, 'int', 11,0);
-		$this->fields_list->add($this->ddbb_tax, $this->tax, 'int', 11,0);
-		$this->fields_list->add($this->ddbb_pvp_tax, $this->pvp_tax, 'int', 11,0);
+		$this->fields_list->add($this->ddbb_pvp, $this->pvp, 'double', 11,0,1);
+		$this->fields_list->add($this->ddbb_tax, $this->tax, 'double', 11,0,1);
+		$this->fields_list->add($this->ddbb_pvp_tax, $this->pvp_tax, 'double', 11,0);
 		$this->fields_list->add($this->ddbb_path_photo, $this->path_photo, 'varchar', 255,0);
-		$this->fields_list->add($this->ddbb_minimun_stock, $this->minimun_stock, 'int', 11,0);
+		$this->fields_list->add($this->ddbb_minimun_stock, $this->minimun_stock, 'double', 11,0,1);
 		//print_r($this);
 		//se puede acceder a los grupos por numero de campo o por nombre de campo
 		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
@@ -201,9 +201,8 @@ class products{
 	}
 	
 	function add(){
-			if (!isset($_POST['submit_add'])){
+		if (!isset($_POST['submit_add'])){
 			//Mostrar plantilla vacía	
-
 			return 0;
 		}
 		//en el caso de que SI este definido submit_add
@@ -215,17 +214,33 @@ class products{
 			
 			//Validacion
 			
-			//Modificamos los datos del field_list
-			$this->field_list->modify_value();
+			//Modificamos los todos los valores del objeto fields con los nuevos datos del objeto product, exceptuando path_photo que eso se deberia hacer mediante la clase upload.
+			//Al id_product se le da 0 por quse neecesita un valor para que 
+			$this->id_product=0;
+			$this->fields_list->modify_value($this->ddbb_id_product,$this->id_product);
+			$this->fields_list->modify_value($this->ddbb_id_corp,$this->id_corp);
+			$this->fields_list->modify_value($this->ddbb_minimun_stock,$this->minimun_stock);
+			$this->fields_list->modify_value($this->ddbb_name,$this->name);
+			$this->fields_list->modify_value($this->ddbb_name_web,$this->name_web);
+			$this->fields_list->modify_value($this->ddbb_pvp,$this->pvp);
+			$this->fields_list->modify_value($this->ddbb_tax,$this->tax);
+			$this->fields_list->modify_value($this->ddbb_pvp_tax,$this->pvp_tax);
+			//validamos
+			$return=$this->fields_list->validate();						
 			
-			
+			if ($return)
+				echo "true";
+			else
+				echo "false";
 			//$return=validate_fields();
 			//En caso de que la validacion haya sido fallida se muestra la plantilla
 			//con los campos erroneos marcados con un *
-			$return=true; //Para pruebas dejar esta linea sin comentar
+			 //Para pruebas dejar esta linea sin comentar
 			
 			if (!$return){
-				//Mostrar plantilla con datos erroneos
+				//Mostrar plantilla con datos erroneos				
+				//Como hay que asignar variables al tpl se hara desde calculate tpl pero devolviendo aqui un -1
+				return -1;
 			}
 			else{
 			$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
@@ -292,12 +307,12 @@ class products{
 	
 	function insert_categories($id_product){
 		$rel_prods_cat = new rel_prods_cats();
-		
-		foreach($this->prod_cat_list as $cat){
-			$rel_prods_cat->id_cat_prod=$cat['id_cat_prod'];
-			$rel_prods_cat->id_product=$id_product;
-			$rel_prods_cat->add();
-		}
+		if (is_array($this->prod_cat_list))
+			foreach($this->prod_cat_list as $cat){
+				$rel_prods_cat->id_cat_prod=$cat['id_cat_prod'];
+				$rel_prods_cat->id_product=$id_product;
+				$rel_prods_cat->add();
+			}
 		return 0;
 	}
 	
@@ -611,15 +626,7 @@ class products{
 		$this->pvp_tax=$_POST[$prefix.$this->ddbb_pvp_tax];
 		$this->minimun_stock=$_POST[$prefix.$this->ddbb_minimun_stock];
 		$this->path_photo = $_SESSION['ruta_photo'];
-		//Colocar de manera provisional hasta que se haga la validacion de fields
-		//************Bloque
-		if ($this->name==""){
-			$this->name=" ";
-		}
-		if ($this->name_web==""){
-			$this->name_web=" ";
-		}
-		//************Fin Bloque
+
 		$this->get_categories_from_post();
 		
 		return 0;
@@ -689,12 +696,24 @@ class products{
 			$this->method=$method;
 				switch($method){
 						case 'add':
-									if ($this->add() !=0){
-										$this->method="list";
-										$tpl=$this->listar($tpl);
-										$tpl->assign("message","&nbsp;<br>Producto a&ntilde;adido correctamente<br>&nbsp;");
+									$return=$this->add();
+									switch ($return){										
+										case 0: //por defecto
+												$tpl->assign("tabla_checkbox",$this->table_categories(true));
+												break;
+										case -1: //Errores al intentar añadir datos
+												for ($i=0;$i<count($this->fields_list->array_error);$i+=2){
+													$tpl->assign("error_".$this->fields_list->array_error[$i],$this->fields_list->array_error[$i+1]);
+												}
+												$tpl->assign("tabla_checkbox",$this->table_categories(false));
+												break;
+										default: //Si se ha añadido
+												$this->method="list";
+												$tpl=$this->listar($tpl);
+												$tpl->assign("message","&nbsp;<br>Producto a&ntilde;adido correctamente<br>&nbsp;");									
+												break;
 									}
-									$tpl->assign("tabla_checkbox",$this->table_categories(true));
+									//esto se hace independientemetne del valor que se obtenga
 									$tpl->assign("objeto",$this);
 									break;
 						case 'list':

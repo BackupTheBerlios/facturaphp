@@ -4,10 +4,11 @@ require_once($SMARTY_DIR.'Smarty.class.php');
 class fields{
 	var $lista;
 	var $num;
+	var $array_error;
 	function fields(){
 		
 		$this->num=0;
-		
+		$this->array_error=array();
 	}
 	
 	function get_ddbb_fields(){
@@ -16,9 +17,9 @@ class fields{
 	
 	}
 	
-	function add($name, $value, $type, $size, $valid){
+	function add($name, $value, $type, $size, $valid,$null=0){
 	
-		$this->lista = array ($name => array("value" => $value, "type" => $type, "size" => $size, "valid" => $valid));
+		$this->lista[$name] = array("value" => $value, "type" => $type, "size" => $size, "valid" => $valid, "null" => $null);
 		$this->num++;
 		
 	}
@@ -38,22 +39,136 @@ class fields{
 	}
 	
 	function validate(){
-	
-		for ($i=0;$i<$this->num;$i++){
-			switch ($this->lista[$i]["type"]){
-				case "int": break;
-				case "text": break;
-				case "double": break;
-				case "varchar": break;
-				case "char": break;
-				case "long": break;
-				case "string": break;
-				case "real": break;
-				case "date": break;
+		$name_keys=array_keys($this->lista);
+		$array_error=array();
+		$error=true;
+		for ($i=0;$i<$this->num;$i++){	
+			switch ($this->lista[$name_keys[$i]]["type"]){					
+				case "int": $return=$this->validate_int($this->lista[$name_keys[$i]]["value"],$this->lista[$name_keys[$i]]["null"]);
+							if(!is_int($return)){
+								array_push($this->array_error,$name_keys[$i],$return);
+								$error=false;
+							}							
+							break;
+				case "text": $return=$this->validate_text($this->lista[$name_keys[$i]]["value"]);
+							if(!is_int($return)){
+								array_push($this->array_error,$name_keys[$i],$return);
+								$error=false;
+							}							
+							break;
+				case "double": $return=$this->validate_double($this->lista[$name_keys[$i]]["value"],$this->lista[$name_keys[$i]]["null"]);
+							if(!is_int($return)){
+								array_push($this->array_error,$name_keys[$i],$return);
+								$error=false;
+							}							
+							break;
+				case "varchar": $return=$this->validate_varchar($this->lista[$name_keys[$i]]["value"],$this->lista[$name_keys[$i]]["size"],$this->lista[$name_keys[$i]]["null"]);								
+							if(!is_int($return)){
+								array_push($this->array_error,$name_keys[$i],$return);
+								$error=false;
+							}							
+							break;
+				case "char": $return=$this->validate_char($this->lista[$name_keys[$i]]["value"]);
+							if(!is_int($return)){
+								array_push($this->array_error,$name_keys[$i],$return);
+								$error=false;
+							}							
+							break;
+				case "string": $return=$this->validate_string($this->lista[$name_keys[$i]]["value"]);
+							if(!is_int($return)){
+								array_push($this->array_error,$name_keys[$i],$return);
+								$error=false;
+							}							
+							break;
+				case "real": $return=$this->validate_real($this->lista[$name_keys[$i]]["value"]);
+							if(!is_int($return)){
+								array_push($this->array_error,$name_keys[$i],$return);
+								$error=false;
+							}							
+							break;
+				case "date": $return=$this->validate_date($this->lista[$name_keys[$i]]["value"]);
+							if(!is_int($return)){
+								array_push($this->array_error,$name_keys[$i],$return);
+								$error=false;
+							}							
+							break;
 				default: break;
 			}			
 		}
+		
+		return $error;
+	}
+	
+	function validate_int($value,$null){
+		if($null==1 && ($value=="" || $value==null)){
+			return "* Este campo no puede estar vacio.";
+		}
+		if(is_numeric($value))
+			settype($value,"integer");
+		if (!is_int($value))
+			return "* El valor introducido no es un entero.";
+		return 0;
+	}
+	
+	function validate_text($value){
+		return 0;
+	}
+	
+	function validate_double($value,$null){
+		if($null==1 && ($value=="" || $value==null)){
+			return "* Este campo no puede estar vacio.";
+		}
+		if (is_numeric($value)){
+			settype($value,"double");
+		}
+		if (!is_double($value) && $value != ""){
+			return "* El valor introducido no es un entero o decimal (Separacio&oacute;n de decimal con '.').";
+			}
+		return 0;
+	}
+	
+	function validate_varchar($value,$size,$null){
+		if($null==1 && ($value=="" || $value==null)){
+			return "* Este campo no puede estar vacio.";
+		}
+		if (!is_string($value)&& $value != "")
+			return "* El texto introducido no es valido.";
+		return 0;
+	}
+	
+	function validate_char($value){
+		return 0;
+	}
+	
+	function validate_string($value,$size){
+		return 0;
+	}
+	
+	function validate_real($value){
+		return 0;
+	}
+	
+	function validate_date($value){
+		return 0;
+	}
+	
+	/*
+is_array -- Averigua si una variable es un array.
+is_bool --  Encuentra si una variable es de tipo booleana
+is_double -- Averigua si una variable es un valor double (número decimal).
+is_float -- Averigua si una variable es un flotante.
+is_int -- Averigua si una variable es un valor entero.
+is_integer -- Averigua si una variable es un valor entero.
+is_long -- Averigua si una varible es un valor entero.
+is_null --  Encuentra si una variable es NULL
+is_numeric --  Encuentra si una variable es un número o una cadena numérica
+is_object -- Averigua si una varible es un objeto.
+is_real -- Averigua si una varible es un número real.
+is_resource --  Encuentra si una variable es un recurso
+is_scalar --  Encuentra si una variable es un escalar
+is_string -- Averigua si una varible es una cadena de caracteres (string).	
+	*/
+	
 	
 	}
-}
 ?>
