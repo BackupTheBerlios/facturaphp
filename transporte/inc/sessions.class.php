@@ -12,6 +12,7 @@ class sessions{
 	var $id_user;
 	var $up;
 	var $down;
+	var $expire;
 	var $theme;
 //BBDD name vars
 	var $db_name;
@@ -28,6 +29,7 @@ class sessions{
   	var $ddbb_up='up';
   	var $ddbb_down='down';
 	var $ddbb_name='name';
+	var $ddbb_expire = 'expire';
   	var $db;
 	var $result;  	
 //variables complementarias	
@@ -59,6 +61,7 @@ class sessions{
 		$this->fields_list->add($this->ddbb_id_user, $this->id_user, 'int', 11,0);
 		$this->fields_list->add($this->ddbb_up, $this->up, 'datetime',11,0);
 		$this->fields_list->add($this->ddbb_down, $this->down, 'datetime',11,0);
+		$this->fields_list->add($this->ddbb_expire, $this->expire, 'int',25,0);
 		//print_r($this);
 		//se puede acceder a las sesiones por numero de campo o por nombre de campo
 /*		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
@@ -162,53 +165,6 @@ class sessions{
 		return $this->num;
 	
 	}
-/*	
-	function preparar_datos($id_user)
-	{
-		$usuario = new users();
-		$usuario->read($id_user);
-		$this->sessions_list[$this->num][$this->ddbb_name] = $usuario->name." ".$usuario->last_name." ".$usuario->last_name2;
-
-		//Modificación del formato de las fechas para la presentación
-			list($anno,$mes,$dia,$hora,$minutos,$segundos)=sscanf($this->sessions_list[$this->num][$this->ddbb_up],"%d-%d-%d %d:%d:%d");
-			
-			if($mes < 10)
-				$mes = "0".$mes;
-			if($dia < 10)
-				$dia = "0".$dia;
-			if($hora < 10)
-				$hora = "0".$hora;
-			if($minutos < 10)
-				$minutos = "0".$minutos;
-			if($segundos < 10)
-				$segundos = "0".$segundos;
-				
-			$this->sessions_list[$this->num][$this->ddbb_up]="$dia-$mes-$anno $hora:$minutos:$segundos";
-		
-		
-		if ($this->sessions_list[$this->num][$this->ddbb_down] !="0000-00-00 00:00:00")
-		{
-			list($anno,$mes,$dia,$hora,$minutos,$segundos)=sscanf($this->sessions_list[$this->num][$this->ddbb_down],"%d-%d-%d %d:%d:%d");
-			
-			if($mes < 10)
-				$mes = "0".$mes;
-			if($dia < 10)
-				$dia = "0".$dia;
-			if($hora < 10)
-				$hora = "0".$hora;
-			if($minutos < 10)
-				$minutos = "0".$minutos;
-			if($segundos < 10)
-				$segundos = "0".$segundos;
-				
-			$this->sessions_list[$this->num][$this->ddbb_down]="$dia-$mes-$anno $hora:$minutos:$segundos";
-		}
-		else
-		{
-			$this->sessions_list[$this->num][$this->ddbb_down]="00-00-0000 00:00:00";
-		}		
-	}
-	*/
 	function get_add_form(){
 	
 		
@@ -235,6 +191,52 @@ class sessions{
 	
 	}
 	
+	function comprobar_conectados()
+	{
+		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
+		//crea una nueva conexi—n con una bbdd (mysql)
+		$this->db = NewADOConnection($this->db_type);
+		//le dice que no salgan los errores de conexi—n de la ddbb por pantalla
+		$this->db->debug=false;
+		//realiza una conexi—n permanente con la bbdd
+		$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
+		//mete la consulta
+		$expire = time();
+
+		$this->sql="SELECT * FROM ".$this->table_prefix.$this->table_name." WHERE ".$this->ddbb_down." = '0000-00-00' AND ".$this->ddbb_expire."<= \"".$expire."\"";
+
+		//la ejecuta y guarda los resultados
+		$this->result = $this->db->Execute($this->sql);
+		//si falla 
+		if ($this->result === false){
+			$error=1;
+			$this->db->close();
+			return 0;
+		}
+		else
+		{
+			//Desconectar a los que esten caducados, cambiar campo down
+			
+			$this->num=0;
+			while (!$this->result->EOF) 
+			{
+				$id = $this->result->fields[$this->ddbb_id_session];
+				print "identificadoe a quitar ".$id;
+				$this->read($id);
+				$this->down = gmdate("Y-m-d H:i:s");
+				$this->modify_other();
+			
+				print "Entra y modifica ".$id." ";
+				//nos movemos hasta el siguiente registro de resultado de la consulta
+				$this->result->MoveNext();
+				$this->num++;
+				
+			}
+			$this->db->close();
+			
+		}
+	}
+	
 	function read($id){
 		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
 		//crea una nueva conexi—n con una bbdd (mysql)
@@ -250,14 +252,17 @@ class sessions{
 		//si falla 
 		if ($this->result === false){
 			$error=1;
-			return 0;
 			$this->db->close();
-		}else{
+			return 0;	
+		}
+		else
+		{
 			$this->id_session=$id;
 			$this->id_session_php=$this->result->fields[$this->ddbb_id_session_php];
 			$this->id_user=$this->result->fields[$this->ddbb_id_user];
 			$this->up=$this->result->fields[$this->ddbb_up];
 			$this->down=$this->result->fields[$this->ddbb_down];
+			$this->expire = $this->result->fields[$this->ddbb_expire];
 			$this->db->close();
 			return 1;
 		}
@@ -366,6 +371,7 @@ class sessions{
 		$record[$this->ddbb_id_user]=$this->id_user;				
 		$record[$this->ddbb_up]=$this->up;
 		$record[$this->ddbb_down]=$this->down;		
+		$record[$this->ddbb_expire]=$this->expire;
 		//calculamos la sql de inserci—n respecto a los atributos
 		$this->sql = $this->db->GetUpdateSQL($this->result, $record);
 		//insertamos el registro
@@ -385,7 +391,56 @@ class sessions{
 
 	
 	}
-	  
+
+	function modify_other(){
+
+		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
+		//crea una nueva conexi—n con una bbdd (mysql)
+		$this->db = NewADOConnection($this->db_type);
+		//le dice que no salgan los errores de conexi—n de la ddbb por pantalla
+		$this->db->debug=false;
+		//realiza una conexi—n permanente con la bbdd
+		$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
+		//mete la consulta para coger los campos de la bbdd
+		$this->sql="SELECT * FROM ".$this->table_prefix.$this->table_name. " WHERE ".$this->ddbb_id_session." = \"".$this->id_session."\"" ;
+		//la ejecuta y guarda los resultados
+		$this->result = $this->db->Execute($this->sql);
+		//si falla 
+		if ($this->result === false){
+			$this->error=1;
+			$this->db->close();
+			return 0;
+		}
+		//rellenamos el array con los datos de los atributos de la clase
+		$record = array();
+		$record[$this->ddbb_id_session]=$this->id_session;
+		$record[$this->ddbb_id_session_php]=$this->id_session_php;
+		$record[$this->ddbb_id_user]=$this->id_user;				
+		$record[$this->ddbb_up]=$this->up;
+		$record[$this->ddbb_down]=$this->down;		
+		$record[$this->ddbb_expire]=$this->expire;
+		//calculamos la sql de inserci—n respecto a los atributos
+		$this->sql = $this->db->GetUpdateSQL($this->result, $record);
+		//insertamos el registro
+		$this->db->Execute($this->sql);
+		//si se ha insertado una fila
+		if($this->db->Affected_Rows()==1){
+			//capturammos el id de la linea insertada
+			$this->db->close();
+			//devolvemos el id de la tabla ya que todo ha ido bien
+			return $this->id_session;
+		}else {
+			//devolvemos 0 ya que no se ha insertado el registro
+			$this->error=-1;
+			print "FALLA";
+			$this->db->close();
+			return 0;
+		}
+
+	
+	}
+
+
 	function listar($tpl){
 		$num = $this->get_list_sessions();
 		$tabla_listado = new table(true);			

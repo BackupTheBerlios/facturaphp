@@ -23,6 +23,7 @@ $nav_bar="::Gesti&oacute;n::";
 
 //inicializa una plantilla
 $tpl= new template;
+	
 
 //Comprobar si la sesión debe caducar
 if(isset($_SESSION['max_page_time'])&& time() >= $_SESSION['max_page_time'])
@@ -46,6 +47,10 @@ if(isset($_SESSION['max_page_time'])&& time() >= $_SESSION['max_page_time'])
 	$index_template='index.tpl';
 	$_SESSION['expire'] = 1;	
 } 
+
+//Comprobar si hay usuarios caducados
+$session = new sessions();
+$session->comprobar_conectados();
 
 
 /******************************************* Identificación de usuario ***************************************************/
@@ -150,6 +155,9 @@ if(!isset($_SESSION['user']))
 		//como el usuario esta validado asigna su nombre a la plantilla
 		$tpl->assign('user_name',$_SESSION['user']);
 		$tpl->assign('login',0);
+		
+
+	
 		
 		//inicializa la plantilla principal de empresas a las que pertenece el usuario
 		//El usuario está logeado y se le presenta la plantilla de las empresas con las que trabaja
@@ -374,6 +382,11 @@ $tpl->assign('title',$title);
 $tpl->assign('nav_bar',$nav_bar);
 //Antes de ir a la plantilla se registra la hora máxima a la que puede estar el usuario en esa página
 $_SESSION['max_page_time'] = time()+1200;
+
+//Guardar en bbdd fecha de expiracion
+$session=new sessions();
+$session->expire = $_SESSION['max_page_time'];
+$session->modify();
 
 $tpl->display($index_template);
 //print_r($post_user);

@@ -8,7 +8,7 @@
 						<td width="7%">
 						 <img src="pics/usuariosico.png" width="32" height="32">
 						</td>
-						<td width="93%" valign="middle"  nowrap>A&ntilde;adir Catego&iacute;a de Producto</td>
+						<td width="93%" valign="middle"  nowrap>A&ntilde;adir Categor&iacute;a de Producto</td>
 			  </tr>
 		  </table>
 						<br>
@@ -20,7 +20,7 @@
 					
 				  <tr>
 						<td width="125px" align="right" class="CampoFormulario">Nombre:</td>
-						<td> <input type="text" id="{$objeto->ddbb_name}" name="{$objeto->ddbb_name}" class="textoMenu"><<font class="error">{$error_name}</font>/td>
+						<td> <input type="text" id="{$objeto->ddbb_name}" name="{$objeto->ddbb_name}" class="textoMenu"><font class="error">{$error_name}</font></td>
 					</tr>
 					<tr>
 				 	<td width="125px" class="CampoFormulario" >Imagen:</td>

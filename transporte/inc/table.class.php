@@ -189,7 +189,7 @@
 					$view=false;					
 					$micol=0;
 					while($micol<=count($acc)-1){
-						if($acc[$micol]){
+						if($acc[$micol]== 'view'){
 							$view=true;
 						}
 						$micol++;

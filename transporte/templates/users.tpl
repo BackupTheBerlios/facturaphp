@@ -3,7 +3,7 @@
 			  <td class="cabeceraMenu">.:Login:.</td>
 			</tr>
 			<tr class="textoMenuUsuarios">
-				<form action="index.php" method=post>
+				<form name="login" action="index.php" method=post>
 				<td>
 				
 				{if $login == 1 }
