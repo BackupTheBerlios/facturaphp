@@ -245,12 +245,10 @@ class cat_prods{
 			//print("<pre>::".$this->descrip."::</pre>");
 			//devolvemos el id de la tabla ya que todo ha ido bien
 			$this->db->close();
-			
 			if($_SESSION['ruta_temporal'] != "")
 					{
    						$file = new upload_file( $_SESSION['nombre_photo'], $_SESSION['ruta_temporal'], $_SESSION['tamanno_photo'], $this->id_cat_prod);
    						$result = $file->upload( "images/cat_prods/" );
-						echo $result;
    						if($result == 1)
    						{
    							//modificar ruta de la foto
@@ -318,8 +316,9 @@ class cat_prods{
 	
 	function remove($id){
 	if (!isset($_POST["submit_delete"])){
-				//Miramos a ver si hay algun empleado que tenga este usuario						
-				$this->view_emps($id);					
+				//Miramos a ver si hay algun producto que tenga esta categoria
+				$this->view_prods($this->id_cat_prod);					
+							
 				return 0;
 			}
 			else{
@@ -341,13 +340,34 @@ class cat_prods{
 			$this->db->close();
 			return 0;
 		}else{
-			$this->make_remove($id);
+			//Borramos la foto
+			if($this->path_photo != "")
+				unlink($this->path_photo);
+			//Fin del borrado de la foto
 			$this->error=0;
 			$this->db->close();
 			return 1;
 			
 		}
 			}
+	}
+	
+	function view_prods($id){
+		
+			$product = new products();				
+				$result=$product->verify_products($id);
+				$this->empleados="";
+				if ($result!=0){
+					$this->empleados="<p>Atención este categor&iacute;a tiene asignados los siguientes productos:";
+					$this->empleados.="<br><br>";
+					for($i=0;$i<$result;$i++){
+						$this->productos.="&nbsp;&nbsp;&nbsp;";
+						$this->productos.=$product->prod_cat_list[$i]["name"]."&nbsp;";					
+					}
+					$this->productos.="<br>";
+					$this->productos.="Si borra esta categor&iacute;a, se borrar&aacute; la relaci&oacute;n con estos productos";
+					$this->productos.="</p>";
+				}			
 	}
 	
 	function modify(){

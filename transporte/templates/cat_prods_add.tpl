@@ -31,9 +31,9 @@
 						<td> <select id="{$objeto->ddbb_id_cat_emp}" name="{$objeto->ddbb_id_cat_emp}">
 						<option value="0" selected>Ninguna</option>
 						
-						{section name="nombre" loop=$objeto->list_cat_prods}
-							<option value="{$objeto->list_cat_prods[nombre].id_cat_prod}">
-								{$objeto->list_cat_prods[nombre].name}
+						{section name="nombre" loop=$objeto->cat_prods_list}
+							<option value="{$objeto->cat_prods_list[nombre].id_cat_prod}">
+								{$objeto->cat_prods_list[nombre].name}
 							</option>
 						{/section}						
 						</td>
