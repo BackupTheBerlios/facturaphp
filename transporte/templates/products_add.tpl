@@ -1,6 +1,4 @@
 <td valign="top">
-error id_product:{$error_id_product}<br>
-error id_corp:{$error_id_corp}
 {literal}
 <script>
 
