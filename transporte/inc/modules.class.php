@@ -854,12 +854,13 @@ class modules{
 		
 	}
 	
+		
 	function modify_methods(){		
 
-		$this->delete_methods($this->id_module);
-		$this->add_methods($this->id_module);
+/*		$this->delete_methods($this->id_module);
+		$this->add_methods($this->id_module);*/
 		$this->module_methods="";
-		
+		$this->module_meth="";
 	//	$this->get_methods($this->id_module);		
 		//Leer los metodos desde bbdd
 		$this->get_methods($this->id_module);	
@@ -875,8 +876,9 @@ class modules{
 				$i++;
 			}
 		}	
-
+		
 		//Los que haya en la bbdd y no haya en los nuevos, seran los borrados
+		$h=0;
 		for ($i=0;$i<count($this->module_methods);$i++){
 			$result=false;
 			for ($j=0;$j<count($formulario);$j++){
@@ -886,34 +888,42 @@ class modules{
 				}
 			}
 			if(!$result){
-				$borrados[$i]["id_method"]=$this->module_meth[$i]["id_method"];
+				$borrados[$h]["id_method"]=$this->module_meth[$i]["id_method"];
+				$h++;
 			}
-		}		
+		}	
 		
 		//Los que haya en los nuevos y no en la bbdd seran los añadidos.
-		$nuevos="";
+		$h=0;
 		for ($i=0;$i<count($formulario);$i++){
 			$result=false;
-			for ($j=0;$j<count($this->module_methods);$j++){
+			for ($j=0;$j<count($this->module_meth);$j++){
 				if($formulario[$i]["name"]==$this->module_meth[$j]["name"]){
 					$result=true;
 					break;
 				}
 			}
 			if(!$result){
-				$nuevos[$i]["name"]=$formulario[$i]["name"];
-				$nuevos[$i]["name_web"]=$formulario[$i]["name_web"];
+				$nuevos[$h]["name"]=$formulario[$i]["name"];
+				$nuevos[$h]["name_web"]=$formulario[$i]["name_web"];
+				$h++;
 			}
 		}
-		
+				
 		
 		//Borramos
+		print_r($borrados);
+		
 		for($i=0;$i<count($borrados);$i++){
-			$this->delete_per_group_user_methods('per_user_methods',$borrados[$i]['id_method'],'id_method');
-			$this->delete_per_group_user_methods('per_user_methods',$borrados[$i]['id_method'],'id_method');
+			$this->delete_per_group_user_methods('per_user_methods',$borrados[$i]['id_method'],'id_method');	
+			$this->delete_per_group_user_methods('per_group_methods',$borrados[$i]['id_method'],'id_method');	
+			$this->delete_per_group_user_methods('methods',$borrados[$i]['id_method'],'id_method');	
+			echo "hola desde borrados";
 		}
 		//Añadimos los nuevos
+		
 		for	($i=0;$i<count($nuevos);$i++){
+			echo "hola desde nuevos";
 			$method = new methods();
 			$method->id_module=$this->id_module;
 			$method->name=$nuevos[$i]["name"];

@@ -9,13 +9,13 @@
 						<img src="pics/clientesico.png" width="32" height="32">
 						 <!--<img src="pics/usuariosico.png" width="32" height="32">-->
 						</td>
-						<td width="93%" valign="middle" nowrap>Detalle de usuarios </td>
+						<td width="93%" valign="middle" nowrap>Detalle de empleados </td>
 				</tr>
 			  </table>
 				<br>
 				<TABLE width="95%" align="center">
 					<tr class="cabeceraMultiLinea">
-						<td width="50%" height="23" nowrap>Identificador de Usuario: {$objeto->id_emp}
+						<td width="50%" height="23" nowrap>Identificador de Empleado: {$objeto->id_emp}
 						</td>
 						<td nowrap width="50%">&nbsp;</td>
 					</tr>
@@ -58,7 +58,7 @@
                               </tr>
                               <tr height="15px">
                                <td height="21" nowrap class="camposVistas">Fecha nacimiento: </td>
-                                <td nowrap class="datosVista">{$objeto->birthday}</td>
+                                <td nowrap class="datosVista">{$cumplecambiado}</td>
 								 <td width="25%"  nowrap class="camposVistas">E-mail: </td>
                                  <td width="25%" class="datosVista">{$objeto->mail}</td>                                
                               </tr>

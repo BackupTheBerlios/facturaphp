@@ -290,7 +290,7 @@ class group_users{
 	
 	}
 	  
-	function verify_group_user($id_user,$id_group){
+	function verify_group_user($id_group,$id_user){
 		//se puede acceder a los usuarios por numero de campo o por nombre de campo
 		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
 		//crea una nueva conexin con una bbdd (mysql)
@@ -315,8 +315,8 @@ class group_users{
 			//cogemos los datos del usuario
 			$this->users_list[$this->num]['id_user']=$this->result->fields['id_user'];
 			$this->users_list[$this->num]['id_group']=$this->result->fields['id_group'];
-			$this->users_list[$this->num]['id_group_user']=$this->result->fields['id_group_user'];			
-			$id_grupo_usuario=$this->users_list[$this->num]['id_group_user'];
+			$this->users_list[$this->num]['id_group_user']=$this->result->fields['id_group_user'];
+			$id_grupo_usuario=$this->result->fields['id_group_user'];
 			//nos movemos hasta el siguiente registro de resultado de la consulta
 			$this->num++;
 		}
