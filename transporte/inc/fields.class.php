@@ -86,7 +86,7 @@ class fields{
 								$error=false;
 							}							
 							break;
-				case "date": $return=$this->validate_date($this->lista[$name_keys[$i]]["value"]);
+				case "date": $return=$this->validate_date($this->lista[$name_keys[$i]]["value"],$this->lista[$name_keys[$i]]["null"]);
 							if(!is_int($return)){
 								array_push($this->array_error,$name_keys[$i],$return);
 								$error=false;
@@ -148,9 +148,46 @@ class fields{
 		return 0;
 	}
 	
-	function validate_date($value){
+	function validate_date($value,$null){
+		if($null==1 && ($value=="" || $value==null)){
+			return "* Este campo no puede estar vacio.";
+		}
+		$format="* Formato de fecha: dd-mm-aaaa";
+		if ($value){
+			$resultado = $value;
+			if ((substr($value,2,1) == '-') && (substr($value,5,1) == '-')){      
+				for ($i=0; $i<10; $i++){	
+					if (((substr($value,$i,1)<'0') || (substr($value,$i,1)>'9')) && ($i != 2) && ($i != 5)){
+						$resultado = '';
+						break;  
+					}  
+				}
+				if ($borrar){ 
+					$a = substr($value,6,4);
+					$m = substr($value,3,2);
+					$d = substr($value,0,2);
+					if(($a < 1900) || ($a > 2100) || ($m < 1) || ($m > 12) || ($d < 1) || ($d > 31))
+						$resultado = '';
+				} 
+				else{
+					if(($a%4 != 0) && ($m == 2) && ($d > 28))	   
+						$resultado = ''; // Año no bisiesto y es febrero y el dia es mayor a 28
+					else{
+						if (((($m == 4) || ($m == 6) || ($m == 9) || ($m==11)) && ($d>30)) || (($m==2) && ($d>29)))
+							$resultado = '';	      				  	 
+					}  // else
+				} // fin else
+				
+			} // if ((substr($value,2,1) == '') && (substr($value,5,1) == ''))			    			
+			else
+				$resultado = '';
+			if ($resultado == '')
+				return "* Error. Formato de fecha: dd-mm-aaaa";
+		}
 		return 0;
 	}
+	
+	
 	
 	/*
 is_array -- Averigua si una variable es un array.

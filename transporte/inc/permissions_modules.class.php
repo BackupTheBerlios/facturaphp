@@ -177,7 +177,7 @@ class permissions_modules{
 			$id_method=$this->result->fields['id_method'];
 
 		}
-	
+		$this->db->close();
 		$users = new users();
 	
 		//Se toma la lista de grupos a los que pertenece el usuario

@@ -2,8 +2,28 @@
 {literal}
 <script>
 
-	function comienza_por(){
-		
+	function check_uncheck(obj){
+		if (obj.checked)
+			marca_arriba(obj);
+		else
+			desmarca_abajo(obj);		
+	}
+	
+	function marca_arriba(obj){
+		cadena=obj.name;
+		finCadena=cadena.substring(0,cadena.indexOf('_'));
+		while(finCadena!=cadena){			
+			document.getElementById(cadena).checked=true;			
+			cadena=cadena.substring(cadena.lastIndexOf('_'),0);			
+		}
+	}
+	
+	function desmarca_abajo(obj){
+		for(i=0;i<document.forms['form_central'].elements.length;i++){
+			element=document.forms['form_central'].elements[i];
+			if(element.name.substring(0,obj.name.length)==obj.name)	
+				element.checked=false;
+		}		
 	}
 	
 </script>
@@ -44,11 +64,11 @@
 				</tr>		
 				<tr>
 					<td width="125px" align="right" class="CampoFormulario">P.V.P.:</td>
-					<td> <input type="text" id="{$objeto->ddbb_pvp}" name="{$objeto->ddbb_pvp}" value="{$objeto->pvp}" class="textoMenu"><font class="error">{$error_pvp}</font></td>
+					<td> <input type="text" id="{$objeto->ddbb_pvp}" name="{$objeto->ddbb_pvp}" value="{$objeto->pvp}" class="textoMenu">&euro;<font class="error">{$error_pvp}</font></td>
 				</tr>
 				<tr>
 					<td width="125px" align="right" class="CampoFormulario">Impuestos:</td>
-					<td> <input type="text" id="{$objeto->ddbb_tax}" name="{$objeto->ddbb_tax}" value="{$objeto->tax}" class="textoMenu"><font class="error">{$error_tax}</font></td>
+					<td> <input type="text" id="{$objeto->ddbb_tax}" name="{$objeto->ddbb_tax}" value="{$objeto->tax}" class="textoMenu">%<font class="error">{$error_tax}</font></td>
 				</tr>
 				<tr>
 					<td width="125px" align="right" class="CampoFormulario">PVP-TAX:</td>

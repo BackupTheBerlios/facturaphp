@@ -540,7 +540,7 @@ class users{
 		if (!isset($_POST['submit_modify'])){
 			//Mostrar plantilla vacía	
 			//pasarle a la plantilla los modulos y grupos con sus respectivos checkbox a checked false
-			$this->checkbox=new permissions_modules;
+			$this->checkbox=new permissions_modules();
 			$modules=new modules();
 			
 			$k=0;

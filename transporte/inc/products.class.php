@@ -210,13 +210,13 @@ class products{
 						
 			//Introducir los datos de post.
 			$this->get_fields_from_post();
-			
+
 			
 			//Validacion
 			
 			//Modificamos los todos los valores del objeto fields con los nuevos datos del objeto product, exceptuando path_photo que eso se deberia hacer mediante la clase upload.
 			//Al id_product se le da 0 por quse neecesita un valor para que 
-			/*$this->id_product=0;
+			$this->id_product=0;
 			$this->fields_list->modify_value($this->ddbb_id_product,$this->id_product);
 			$this->fields_list->modify_value($this->ddbb_id_corp,$this->id_corp);
 			$this->fields_list->modify_value($this->ddbb_minimun_stock,$this->minimun_stock);
@@ -226,8 +226,8 @@ class products{
 			$this->fields_list->modify_value($this->ddbb_tax,$this->tax);
 			$this->fields_list->modify_value($this->ddbb_pvp_tax,$this->pvp_tax);
 			//validamos
-			$return=$this->fields_list->validate();		*/				
-			$return=true;
+			$return=$this->fields_list->validate();		
+			//$return=true;
 			//$return=validate_fields();
 			//En caso de que la validacion haya sido fallida se muestra la plantilla
 			//con los campos erroneos marcados con un *
@@ -442,15 +442,26 @@ class products{
 			//$this->insert_post();
 			
 			//Validacion
-			//$return=validate_fields();
+			
+			//Modificamos los todos los valores del objeto fields con los nuevos datos del objeto product, exceptuando path_photo que eso se deberia hacer mediante la clase upload.
+			$this->fields_list->modify_value($this->ddbb_id_product,$this->id_product);
+			$this->fields_list->modify_value($this->ddbb_id_corp,$this->id_corp);
+			$this->fields_list->modify_value($this->ddbb_minimun_stock,$this->minimun_stock);
+			$this->fields_list->modify_value($this->ddbb_name,$this->name);
+			$this->fields_list->modify_value($this->ddbb_name_web,$this->name_web);
+			$this->fields_list->modify_value($this->ddbb_pvp,$this->pvp);
+			$this->fields_list->modify_value($this->ddbb_tax,$this->tax);
+			$this->fields_list->modify_value($this->ddbb_pvp_tax,$this->pvp_tax);
+			//validamos
+			$return=$this->fields_list->validate();		
 			
 			//En caso de que la validacion haya sido fallida se muestra la plantilla
 			//con los campos erroneos marcados con un *
-			$return=true; //Para pruebas dejar esta linea sin comentar
+			//$return=true; //Para pruebas dejar esta linea sin comentar
 			
 			if (!$return){
 				//Mostrar plantilla con datos erroneos
-				
+				return -1;
 			}
 			else{
 		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
@@ -659,10 +670,7 @@ class products{
 			//Llamamos a los hijos si es que tienen
 			
 			if ($cats[$i]['hijos']!=0)
-				$this->get_checkbox_categories($cats[$i]['hijos'],$variable."_".$cats[$i]['id_cat_prod']);
-			if ($i==100){
-				
-			}
+				$this->get_checkbox_categories($cats[$i]['hijos'],$variable."_".$cats[$i]['id_cat_prod']);			
 		}		
 		return 0;
 	}
@@ -715,7 +723,7 @@ class products{
 						case 'list':
 									$tpl=$this->listar($tpl);
 									break;
-						case 'modify':
+						case 'modify':/*
 									$this->read($_GET['id']);
 									if ($this->modify() !=0){
 										$this->method="list";
@@ -724,7 +732,30 @@ class products{
 									}
 									$tpl->assign("tabla_checkbox",$this->table_categories(false));
 									$tpl->assign("objeto",$this);
+									break;*/
+									
+									$this->read($_GET['id']);
+									$return=$this->modify();
+									switch ($return){										
+										case 0: //por defecto
+												$tpl->assign("tabla_checkbox",$this->table_categories(false));
+												break;
+										case -1: //Errores al intentar añadir datos
+												for ($i=0;$i<count($this->fields_list->array_error);$i+=2){
+													$tpl->assign("error_".$this->fields_list->array_error[$i],$this->fields_list->array_error[$i+1]);
+												}
+												$tpl->assign("tabla_checkbox",$this->table_categories(false));
+												break;
+										default: //Si se ha añadido
+												$this->method="list";
+												$tpl=$this->listar($tpl);
+												$tpl->assign("message","&nbsp;<br>Producto modificado correctamente<br>&nbsp;");
+												break;
+									}
+									//esto se hace independientemetne del valor que se obtenga
+									$tpl->assign("objeto",$this);
 									break;
+									
 						case 'delete':
 									$this->read($_GET['id']);
 									if ($this->remove($_GET['id'])!=0){
@@ -853,7 +884,7 @@ class products{
 		
 
 		//Si no es para nuevo: Buscamos las categorias relacionadas con el producto
-		if (!$new){
+		if (!$new && (!is_array($this->prod_cat_list)||$this->prod_cat_list=="")){			
 			if ($this->id_product!="" && $this->id_product!=0){
 				$rel = new rel_prods_cats();
 				$this->prod_cat_list=$rel->get_rel_prod_cat($this->id_product);
@@ -925,7 +956,7 @@ class products{
 		//Ponemos el checkbox. Si se quiere que haya una funcion que maneje por javascript su manejo, se debe incluir aqui
 		//Insertamos el nombre
 		$cadena=$cadena.$array_cat['name'];
-		$cadena=$cadena.'<input type="checkbox" value="1" name="'.$variable.'_'.$array_cat['id_cat_prod'].'" id="'.$variable.'_'.$array_cat['id_cat_prod'].'" ';		
+		$cadena=$cadena.'<input type="checkbox" value="1" onClick="check_uncheck(this);" name="'.$variable.'_'.$array_cat['id_cat_prod'].'" id="'.$variable.'_'.$array_cat['id_cat_prod'].'" ';		
 		//Si no es nuevo es por que puede que haya alguna categoria que este asignada al producto y hay que marcarla.
 		if (!$new){
 			for($k=0;$k<count($this->prod_cat_list);$k++){
