@@ -34,6 +34,7 @@ class modules{
   	var $fields_list;
   	var $error;
 	var $module_methods;
+	var $public_modules;
 	
   	//constructor
 	function modules(){
@@ -61,11 +62,11 @@ class modules{
 		//print_r($this);
 		//se puede acceder a los usuarios por numero de campo o por nombre de campo
 		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
-		//crea una nueva conexin con una bbdd (mysql)
+		//crea una nueva conexi—n con una bbdd (mysql)
 		$this->db = NewADOConnection($this->db_type);
-		//le dice que no salgan los errores de conexin de la ddbb por pantalla
+		//le dice que no salgan los errores de conexi—n de la ddbb por pantalla
 		$this->db->debug=false;
-		//realiza una conexin permanente con la bbdd
+		//realiza una conexi—n permanente con la bbdd
 		$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
 		//mete la consulta
 		$this->sql="SELECT * FROM ".$this->table_prefix.$this->table_name;
@@ -85,11 +86,11 @@ class modules{
 	function get_list_modules (){
 		//se puede acceder a los usuarios por numero de campo o por nombre de campo
 		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
-		//crea una nueva conexin con una bbdd (mysql)
+		//crea una nueva conexi—n con una bbdd (mysql)
 		$this->db = NewADOConnection($this->db_type);
-		//le dice que no salgan los errores de conexin de la ddbb por pantalla
+		//le dice que no salgan los errores de conexi—n de la ddbb por pantalla
 		$this->db->debug=false;
-		//realiza una conexin permanente con la bbdd
+		//realiza una conexi—n permanente con la bbdd
 		$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
 		//mete la consulta
 		$this->sql="SELECT * FROM ".$this->table_prefix.$this->table_name;
@@ -124,14 +125,14 @@ class modules{
 	{
 		//se puede acceder a los usuarios por numero de campo o por nombre de campo
 		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
-		//crea una nueva conexin con una bbdd (mysql)
+		//crea una nueva conexi—n con una bbdd (mysql)
 		$this->db = NewADOConnection($this->db_type);
-		//le dice que no salgan los errores de conexin de la ddbb por pantalla
+		//le dice que no salgan los errores de conexi—n de la ddbb por pantalla
 		$this->db->debug=false;
-		//realiza una conexin permanente con la bbdd
+		//realiza una conexi—n permanente con la bbdd
 		$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
 		//mete la consulta
-		$this->sql="SELECT `name`, `id_method`, `name_web` FROM `methods` WHERE `id_module` =".$id_module;
+		$this->sql="SELECT `name`, `id_method` FROM `methods` WHERE `id_module` =".$id_module;
 		//la ejecuta y guarda los resultados
 		$this->result = $this->db->Execute($this->sql);
 		//si falla 
@@ -146,7 +147,6 @@ class modules{
 		while (!$this->result->EOF)
 		{
 			$this->module_methods[$this->num]['name']=$this->result->fields['name'];
-			$this->module_methods[$this->num]['name_web']=$this->result->fields['name_web'];
 			$this->module_methods[$this->num]['id_method']=$this->result->fields['id_method'];
 			
 			//nos movemos hasta el siguiente registro de resultado de la consulta
@@ -154,6 +154,44 @@ class modules{
 			$this->num++;
 		}
 		$this->db->close();
+		return $this->num;	
+	}
+	
+	function get_list_public_modules()
+	{
+		//se puede acceder a los usuarios por numero de campo o por nombre de campo
+		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
+		//crea una nueva conexi—n con una bbdd (mysql)
+		$this->db = NewADOConnection($this->db_type);
+		//le dice que no salgan los errores de conexi—n de la ddbb por pantalla
+		$this->db->debug=false;
+		//realiza una conexi—n permanente con la bbdd
+		$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
+		//mete la consulta
+		$uno = 1;
+		$this->sql="SELECT `name`, `id_module`, `name_web` FROM `modules` WHERE `public` =".$uno;
+		//la ejecuta y guarda los resultados
+		$this->result = $this->db->Execute($this->sql);
+		//si falla 
+		if ($this->result === false){
+			$this->error=1;
+			$this->db->close();
+			return 0;
+		}  
+		
+		$this->num = 0;
+		while (!$this->result->EOF)
+		{
+			$this->public_modules[$this->num][0]=$this->result->fields['name'];
+			$this->public_modules[$this->num][1]=$this->result->fields['id_module'];
+			$this->public_modules[$this->num][2]=$this->result->fields['name_web'];
+			
+			//nos movemos hasta el siguiente registro de resultado de la consulta
+			$this->result->MoveNext();
+			$this->num++;
+		}
+		$this->db->close();
+		
 		return $this->num;	
 	}
 	
@@ -187,11 +225,11 @@ class modules{
 	
 		//se puede acceder a los usuarios por numero de campo o por nombre de campo
 		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
-		//crea una nueva conexin con una bbdd (mysql)
+		//crea una nueva conexi—n con una bbdd (mysql)
 		$this->db = NewADOConnection($this->db_type);
-		//le dice que no salgan los errores de conexin de la ddbb por pantalla
+		//le dice que no salgan los errores de conexi—n de la ddbb por pantalla
 		$this->db->debug=false;
-		//realiza una conexin permanente con la bbdd
+		//realiza una conexi—n permanente con la bbdd
 		$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
 		//mete la consulta
 		$this->sql="SELECT * FROM ".$this->table_prefix.$this->table_name." WHERE ".$this->ddbb_id_module."= \"".$id."\"";
@@ -218,11 +256,11 @@ class modules{
 	function add(){
 	
 		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
-		//crea una nueva conexin con una bbdd (mysql)
+		//crea una nueva conexi—n con una bbdd (mysql)
 		$this->db = NewADOConnection($this->db_type);
-		//le dice que no salgan los errores de conexin de la ddbb por pantalla
+		//le dice que no salgan los errores de conexi—n de la ddbb por pantalla
 		$this->db->debug=false;
-		//realiza una conexin permanente con la bbdd
+		//realiza una conexi—n permanente con la bbdd
 		$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
 		//mete la consulta para coger los campos de la bbdd
 		$this->sql="SELECT * FROM ".$this->table_prefix.$this->table_name. " WHERE ".$this->ddbb_id_module." = -1" ;
@@ -240,7 +278,7 @@ class modules{
 		$record[$this->ddbb_name]=$this->name;
 		$record[$this->ddbb_path]=$this->path;
 		$record[$this->ddbb_active]=$this->active;
-		//calculamos la sql de insercin respecto a los atributos
+		//calculamos la sql de inserci—n respecto a los atributos
 		$this->sql = $this->db->GetInsertSQL($this->result, $record);
 		//print($this->sql);
 		//insertamos el registro
@@ -264,11 +302,11 @@ class modules{
 	function remove($id){
 	
 		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
-		//crea una nueva conexin con una bbdd (mysql)
+		//crea una nueva conexi—n con una bbdd (mysql)
 		$this->db = NewADOConnection($this->db_type);
-		//le dice que no salgan los errores de conexin de la ddbb por pantalla
+		//le dice que no salgan los errores de conexi—n de la ddbb por pantalla
 		$this->db->debug=false;
-		//realiza una conexin permanente con la bbdd
+		//realiza una conexi—n permanente con la bbdd
 		$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
 		//mete la consulta para coger los campos de la bbdd
 		//calcula la consulta de borrado.
@@ -293,11 +331,11 @@ class modules{
 	function modify(){
 	
 		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
-		//crea una nueva conexin con una bbdd (mysql)
+		//crea una nueva conexi—n con una bbdd (mysql)
 		$this->db = NewADOConnection($this->db_type);
-		//le dice que no salgan los errores de conexin de la ddbb por pantalla
+		//le dice que no salgan los errores de conexi—n de la ddbb por pantalla
 		$this->db->debug=false;
-		//realiza una conexin permanente con la bbdd
+		//realiza una conexi—n permanente con la bbdd
 		$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
 		//mete la consulta para coger los campos de la bbdd
 		$this->sql="SELECT * FROM ".$this->table_prefix.$this->table_name. " WHERE ".$this->ddbb_id_module." = \"".$this->id_module."\"" ;
@@ -316,7 +354,7 @@ class modules{
 		$record[$this->ddbb_name]=$this->name;
 		$record[$this->ddbb_path]=$this->path;
 		$record[$this->ddbb_active]=$this->active;
-		//calculamos la sql de insercin respecto a los atributos
+		//calculamos la sql de inserci—n respecto a los atributos
 		$this->sql = $this->db->GetUpdateSQL($this->result, $record);
 		//insertamos el registro
 		$this->db->Execute($this->sql);
@@ -341,11 +379,7 @@ class modules{
 		
 	}
 	
-	function get_list_public_modules(){
-	
-		return 0;
-		
-	}
+
 	
 	function get_module_operations_list($module_name){
 	

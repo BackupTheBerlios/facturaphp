@@ -34,6 +34,8 @@ class groups{
   	var $fields_list;
   	var $error;
 	var $belong; //<- Esta variable se usara desde users.class.php la cual nos dira si el checkbox de los modelos modify o add estan a 1 o a 0 para grupos. Por defecto estará a 0.
+	var $per_modules;
+	var $num_modules;
   	//constructor
 	function groups(){
 		//coge las variables globales del fichero config.inc.php
@@ -141,6 +143,57 @@ class groups{
 	
 	function validate_modify_form(){
 	
+	}
+	
+	function get_permissions($id_group)
+	{
+		$this->modules = new modules();
+	
+		$this->num_modules = $this->modules->get_list_modules();
+
+		for ($modulo_num = 0; $modulo_num < $this->num_modules; $modulo_num++) 
+		{
+			//Como se tiene el numero de modulos entonces se puede ver nombre e identificador en $this->modules->modules_list
+			//Así será mas fácil recorrer la matriz, y no hay problemas de pasar un hash a smarty ya que no los acepta
+			$this->per_modules[$modulo_num] = new permissions_modules();
+			$this->per_modules[$modulo_num]->id_module = $this->modules->modules_list[$modulo_num]['id_module'];
+			$this->per_modules[$modulo_num]->module_name = $this->modules->modules_list[$modulo_num]['name'];
+			
+			$this->per_modules[$modulo_num]->per =  0;
+			
+			
+		
+			$this->per_modules[$modulo_num]->inicializar_base_datos();
+			$result = $this->per_modules[$modulo_num]->validate_per_group_module($id_group,$this->modules->modules_list[$modulo_num]['id_module'] );
+		
+			if($result == true)
+				$this->per_modules[$modulo_num]->per =  1;
+			
+			$this->per_modules[$modulo_num]->num_methods = $this->modules->get_list_module_methods($this->per_modules[$modulo_num]->id_module);
+			
+			for ($metodo_num = 0; $metodo_num < $this->per_modules[$modulo_num]->num_methods; $metodo_num++) 
+			{
+				$this->per_modules[$modulo_num]->per_methods[$metodo_num] = new permissions_methods();
+				$this->per_modules[$modulo_num]->per_methods[$metodo_num]->id_method = $this->modules->module_methods[$metodo_num]['id_method'];
+				$this->per_modules[$modulo_num]->per_methods[$metodo_num]->method_name = $this->modules->module_methods[$metodo_num]['name'];				
+				
+					
+				if($this->per_modules[$modulo_num]->per == true)
+				{	
+					$this->per_modules[$modulo_num]->per_methods[$metodo_num]->inicializar_base_datos();
+					$this->per_modules[$modulo_num]->per_methods[$metodo_num]->per = 0;
+					$result = $this->per_modules[$modulo_num]->per_methods[$metodo_num]->validate_per_group_method($id_group, $this->per_modules[$modulo_num]->per_methods[$metodo_num]->id_method);
+					if($result == true)
+						$this->per_modules[$modulo_num]->per_methods[$metodo_num]->per =  1;
+				}
+				else
+				{
+					$this->per_modules[$modulo_num]->per_methods[$metodo_num]->per = 0;
+					//print "NO MOdulo: metodo ".$this->method_name." permisos ".$this->per."............";
+				}
+				
+			}
+		}
 	}
 	
 	function read($id){

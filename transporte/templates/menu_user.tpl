@@ -10,48 +10,65 @@
 			  </td>
 			</tr>
 			
-			<tr class="textoMenu">
-			  <td width="10px">&nbsp;</td>
-			  <td>
-			  	- <a href="index.php?module=news" class="enlaceMenu">Noticias</a><br>
-			  </td>
-			</tr>
-			<tr class="textoMenu">
-			  <td width="10px">&nbsp;</td>
-			  <td>
-			  	- <a href="index.php?module=contact" class="enlaceMenu">Contacto</a><br>
-			  </td>
-			</tr>		
-			<tr class="textoMenu">
-			  <td width="10px">&nbsp;</td>
-			  <td>
-			  	- <a href="index.php?module=products" class="enlaceMenu">Productos</a><br>
-			  </td>
-			</tr>
-			<tr class="textoMenu">
-			  <td width="10px">&nbsp;</td>
-			  <td>
-			  	- <a href="index.php?module=services" class="enlaceMenu">Servicios</a><br>
-			  </td>
-			</tr>
-			{section name="i" loop=$user_menu->per_modules}
-				{if $user_menu->per_modules[i]->per==1}
+			
+			{php}
+				$module = new modules();
+				$num = $module->get_list_public_modules();
+				$i=0;
+				while($i!=$num)
+				{
+				{/php}
+				
 					<tr class="textoMenu">
-						<td width="10px">&nbsp;</td>
-								{if $user_menu->per_modules[i]->module_name == 'usuarios'}	
-										<td>
-										- <a href="index.php?module=users" class="enlaceMenu">Usuarios</a><br>
-										</td></tr>
-										
-								{/if}
-								{if $user_menu->per_modules[i]->module_name == 'clientes'}	
-									<td>
-									- <a href="index.php?module=clients" class="enlaceMenu">Clientes</a><br>
-									</td></tr>
-								{/if}
-					        
-				{/if}
-			{/section}
+					<td width="10px">&nbsp;</td>
+					<td>
+				{php}
+				
+					$href ='-<a href ="index.php?module='.$module->public_modules[$i][0].'" class="enlaceMenu">';
+				
+				
+					print $href;
+					 print $module->public_modules[$i][2];{/php}
+					</a><br></td></tr>'
+				
+				{php}
+					
+					$i++;
+					
+				}
+
+				
+				$user= new users(); 
+				$id_user = $user->get_id($_SESSION['user']);
+				$user->validate_per_user($id_user);
+				
+				$i=0;
+				while($i!=$num)
+				{
+				{/php}
+				
+					<tr class="textoMenu">
+					<td width="10px">&nbsp;</td>
+					<td>
+				{php}
+					if($user->per_modules[$i]->per == 1)
+					{
+						$href ='-<a href ="index.php?module='.$user->per_modules[$i]->module_name.'" class="enlaceMenu">';
+	
+						print $href;
+					 	print $user->per_modules[$i]->name_web;
+					}
+					{/php}
+					</a><br></td></tr>'
+				
+				{php}
+					
+					$i++;
+					
+				}
+			{/php}
+					
+			
 		</table>
 		<br>
 		

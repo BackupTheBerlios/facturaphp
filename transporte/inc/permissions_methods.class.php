@@ -12,6 +12,7 @@ class permissions_methods{
 	var $method_name;
 	var $method_name_web;
 	var $id_method;
+	var $name_web;
 	var $per;
 //
 	var $per_methods;
@@ -185,4 +186,4 @@ class permissions_methods{
 	}
 	
 }
-?>	
+?>
