@@ -258,7 +258,6 @@ $users= new users();
 $tpl->assign('num_users',$users->registrados);
 $session= new sessions();
 $num_sessions=$session->conectados();
-print "Ya se tine conectads";
 $tpl->assign('num_sessions',$num_sessions);
 
 //calcula la barra de navegaci—n y titulo de la pagina

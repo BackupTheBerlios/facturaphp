@@ -144,7 +144,7 @@ class menu{
 		{
 			$this->error=1;
 			$this->db->close();
-			echo "$id ";
+
 			return 0;
 		}
 		

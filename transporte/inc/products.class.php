@@ -216,7 +216,7 @@ class products{
 			
 			//Modificamos los todos los valores del objeto fields con los nuevos datos del objeto product, exceptuando path_photo que eso se deberia hacer mediante la clase upload.
 			//Al id_product se le da 0 por quse neecesita un valor para que 
-			$this->id_product=0;
+			/*$this->id_product=0;
 			$this->fields_list->modify_value($this->ddbb_id_product,$this->id_product);
 			$this->fields_list->modify_value($this->ddbb_id_corp,$this->id_corp);
 			$this->fields_list->modify_value($this->ddbb_minimun_stock,$this->minimun_stock);
@@ -226,12 +226,8 @@ class products{
 			$this->fields_list->modify_value($this->ddbb_tax,$this->tax);
 			$this->fields_list->modify_value($this->ddbb_pvp_tax,$this->pvp_tax);
 			//validamos
-			$return=$this->fields_list->validate();						
-			
-			if ($return)
-				echo "true";
-			else
-				echo "false";
+			$return=$this->fields_list->validate();		*/				
+			$return=true;
 			//$return=validate_fields();
 			//En caso de que la validacion haya sido fallida se muestra la plantilla
 			//con los campos erroneos marcados con un *
