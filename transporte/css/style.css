@@ -22,22 +22,22 @@ a:visited{
 a.enlaceMenu:link{
 	text-decoration:none;
 	font-family:verdana;
-	font-size:10px;
+	font-size:9px;
 	color:#000000;
 }
 
 a.enlaceMenu:hover{
 	text-decoration:underline;
 	font-family:verdana;
-	font-size:10px;
+	font-size:9px;
 	font-weight:bold;
-	color:#13A703;
+	color:#000000;
 }
-
+<!--color:#13A703;-->
 a.enlaceMenu:visited{
 	text-decoration:none;
 	font-family:verdana;
-	font-size:10px;
+	font-size:9px;
 	color:#000000;
 }
 
@@ -53,12 +53,21 @@ a.enlaceMenu:visited{
 	
 }
 
+.tituloMenu{	
+	background-color:#F0F0F0;
+	color:#13A703;
+	font-family:verdana;
+	font-size:10px;
+	text-align:left;	
+}
+
+
 .textoMenu{
 
 	color:#000000;
 	vertical-align:middle;
 	font-family:verdana;
-	font-size:10px;
+	font-size:9px;
 	text-align:left;
 }
 .textoMenuUsuarios{
