@@ -26,6 +26,7 @@ class modules{
   	var $ddbb_name='name';
   	var $ddbb_path='path';
   	var $ddbb_active='active';
+	var $ddbb_public='public';
 	var $db;
 	var $result;  	
 //variables complementarias	
@@ -112,6 +113,7 @@ class modules{
 			$this->modules_list[$this->num][$this->ddbb_name]=$this->result->fields[$this->ddbb_name];
 			$this->modules_list[$this->num][$this->ddbb_path]=$this->result->fields[$this->ddbb_path];
 			$this->modules_list[$this->num][$this->ddbb_active]=$this->result->fields[$this->ddbb_active];
+			$this->modules_list[$this->num][$this->ddbb_public]=$this->result->fields[$this->ddbb_public];
 			//nos movemos hasta el siguiente registro de resultado de la consulta
 			$this->result->MoveNext();
 			$this->num++;
