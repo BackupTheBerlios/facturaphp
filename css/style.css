@@ -1,0 +1,43 @@
+a:link{
+	text-decoration:none;
+	font-family:arial;
+	font-size:10px;
+	color:#000000;
+}
+
+a:hover{
+	text-decoration:underline;
+	font-family:arial;
+	font-size:10px;
+	color:#000000;
+}
+a:visited{
+	text-decoration:none;
+	font-family:arial;
+	font-size:10px;
+	color:#000000;
+}
+
+.cabeceraMenu{
+	background-color:#13A703;
+	
+	font-family:verdana;
+	font-size:12px;
+	font-weight:bold;
+	text-align:center;
+}
+
+.textoMenu{
+
+}
+
+.cajaMenu{border:1 solid #000000;
+	
+}
+
+.piePagina{	
+	font-family:arial;
+	font-size:10px;
+	color:#000000;
+	text-align:center;
+}
