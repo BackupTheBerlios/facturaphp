@@ -112,7 +112,6 @@ class permissions_modules{
 		}  
 		
 		$this->db->close();
-
 		return $this->result->fields['per'];
 		
 	}
@@ -454,6 +453,47 @@ class permissions_modules{
 			}
 		}
 		
+	}
+	
+	function validate_per_module_menus($id_user, $id_module)
+	{
+
+		$this->inicializar_base_datos();
+	
+		$user = new users();
+	
+		//Se toma la lista de grupos a los que pertenece el usuario
+		$num_groups = $user->get_groups($id_user); 
+			
+		$per = false;
+		$this->per = 0;
+		$num = 0;
+	
+		
+		//Se comprueba si el usuario tiene permisos en el módulo
+		$result = $this->validate_per_user_module($id_user, $id_module);
+	
+		if($result == true)
+		{
+			$per = true;
+			$this->per = 1;
+			//print "USER";
+		}
+		else //Se comprueba que alguno de los grupos al que pertenece tenga permiso
+		{	
+			while((!$per) && ($num < $num_groups))
+			{
+				$result = $this->validate_per_group_module ($user->groups_list[$num]['id_group'], $id_module);
+				if($result == true)
+				{
+					$per=true;
+					$this->per = 1;
+				}
+				
+				$num++;
+			}
+		}
+		return $this->per;
 	}
 	
 }
