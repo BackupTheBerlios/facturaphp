@@ -1,4 +1,4 @@
-<?php
+9<?php
 //clase que da soporte a los usuarios del programa
 //enlaza con la bbdd 
 global $ADODB_DIR, $INSTALL_DIR;
@@ -63,7 +63,6 @@ class emps{
 	var $num_corps;
 	var $emps_users_list;
 	var $emps_corp_list;
-	var $method;
 	var $obj_user;
 	var $cat_emps;
 	var $come;
