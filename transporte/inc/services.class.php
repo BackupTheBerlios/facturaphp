@@ -452,7 +452,7 @@ class services{
 			//Si se modificó la foto
 			if($_SESSION['ruta_temporal'] != "")
 				{
-   				$file = new upload_file( $_SESSION['nombre_photo'], $_SESSION['ruta_temporal'], $_SESSION['tamanno_photo'], $this->id_service);
+   				$file = new upload_file( $_SESSION['nombre_photo'], $_SESSION['ruta_temporal'], $_SESSION['tamanno_photo'], $this->id_service, $this->path_photo);
    				$result = $file->upload( "images/services/" );
    				}	
 			

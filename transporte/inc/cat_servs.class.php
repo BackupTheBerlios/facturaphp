@@ -503,7 +503,7 @@ class cat_servs{
 			//Si se modificó la foto
 			if($_SESSION['ruta_temporal'] != "")
 				{
-   				$file = new upload_file( $_SESSION['nombre_photo'], $_SESSION['ruta_temporal'], $_SESSION['tamanno_photo'], $this->id_vehicle);
+   				$file = new upload_file( $_SESSION['nombre_photo'], $_SESSION['ruta_temporal'], $_SESSION['tamanno_photo'], $this->id_vehicle, $this->path_photo);
    				$result = $file->upload( "images/cat_servs/" );
    				}	
 			

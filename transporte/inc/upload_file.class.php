@@ -64,11 +64,12 @@ class upload_file{
    ** @para Int File size
    ** @para String file rename to
   **/
-  function upload_file( $file_name, $tmp_file_name, $file_size, $file_rename_to = '' ){
+  function upload_file( $file_name, $tmp_file_name, $file_size, $file_rename_to = '', $file_path = '' ){
 	$this->cls_filename = $file_name;
     $this->cls_tmp_filename = $tmp_file_name;
     $this->cls_filesize = $file_size;
     $this->cls_file_rename_to = $file_rename_to;
+	$this->file_path = $file_path;
 	if($this->cls_file_rename_to != 0)
 	$this->cls_rename_file = 1;
 	if(isset($_POST['submit_modify']))
@@ -145,13 +146,13 @@ class upload_file{
   **/
   function move(){
 	 
-	  $extension = strrchr( $this->cls_filename, "." );
+	 // $extension = strrchr( $this->cls_filename, "." );
     
-   $file =  $this->cls_file_rename_to .strtoupper($extension);
+   //$file =  $this->cls_file_rename_to .strtoupper($extension);
 	
 	
 	 if( $this->cls_file_exists == 1 ){ 
-      $ret = $this->checkFileExists($this->cls_upload_dir . $file);
+      $ret = $this->checkFileExists($this->file_path);
       if( $ret != 1 ){
         return $this->resultUpload( $ret );    
       }

@@ -448,7 +448,7 @@ class products{
 			//Si se modificó la foto
 			if($_SESSION['ruta_temporal'] != "")
 				{
-   				$file = new upload_file( $_SESSION['nombre_photo'], $_SESSION['ruta_temporal'], $_SESSION['tamanno_photo'], $this->id_product);
+   				$file = new upload_file( $_SESSION['nombre_photo'], $_SESSION['ruta_temporal'], $_SESSION['tamanno_photo'], $this->id_product,$this->path_photo);
    				$result = $file->upload( "images/products/" );
    				}	
 			
