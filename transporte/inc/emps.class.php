@@ -68,7 +68,6 @@ class emps{
 	var $cat_emps;
 	var $come;
 	var $category;
-	var $method;
 	var $table_names_modify=array();
 	var $table_names_delete=array("holydays","rel_emps_cats",);
 	var $holydays_list;
