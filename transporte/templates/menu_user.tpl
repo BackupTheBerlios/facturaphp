@@ -43,10 +43,9 @@
 				$user->validate_per_user($id_user);
 				
 				$i=0;
-				while($i!=$num)
+				while($i!=$user->num_modules)
 				{
-				
-				
+			
 					if($user->per_modules[$i]->per == 1)
 					{
 					{/php}
@@ -59,6 +58,7 @@
 	
 						print $href;
 					 	print $user->per_modules[$i]->web_name;
+					 	
 					{/php}
 						</a><br></td></tr>
 					{php}
