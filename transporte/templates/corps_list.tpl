@@ -17,6 +17,7 @@
 				</tr>
 			  </table>
 			  <table width="100%">
+			   <tr><td class="message" align="center">{$message}</td></tr>
 			  <tr><td valign="top"><form method="post" action="index.php?module=corps&method=list">
 			  	<table width="250px" align="center">
 				 <tr>

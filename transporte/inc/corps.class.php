@@ -60,6 +60,7 @@ class corps{
   	var $num;
   	var $fields_list;
   	var $error;
+	var $method;
   	//constructor
 	function corps(){
 		//coge las variables globales del fichero config.inc.php
@@ -265,8 +266,16 @@ class corps{
 		$result=true;
 	//	$result=validate_per($method,$_SESSION['user'],$module);
 		if ($result){
+								$this->method=$method;
 				switch($method){
+
 						case 'add':
+									if ($this->add() !=0){
+										$this->method="list";
+										$tpl=$this->listar($tpl);										
+										$tpl->assign("message","&nbsp;<br>Empresa a&ntilde;adida correctamente<br>&nbsp;");
+									}
+									$tpl->assign("objeto",$this);
 									break;
 						case 'list':
 									$tpl=$this->listar($tpl);
@@ -283,11 +292,11 @@ class corps{
 									$tpl=$this->view($_GET['id'],$tpl);
 									break;
 						default:
-									$method='list';
+									$this->method='list';
 									$tpl=$this->listar($tpl);
 									break;
 					}
-				$tpl->assign('plantilla','corps_'.$method.'.tpl');					
+				$tpl->assign('plantilla','corps_'.$this->method.'.tpl');					
 			}
 		else
 			{
@@ -296,7 +305,29 @@ class corps{
 		return $tpl;
 	}
 	function add(){
-		
+			if (!isset($_POST['submit_add'])){
+			//Mostrar plantilla vacía	
+
+			return 0;
+		}
+		//en el caso de que SI este definido submit_add
+		else{
+						
+			//Introducir los datos de post.
+			$this->get_fields_from_post();	
+						
+			//Validacion
+			//$return=validate_fields();
+			
+			//En caso de que la validacion haya sido fallida se muestra la plantilla
+			//con los campos erroneos marcados con un *
+			$return=true; //Para pruebas dejar esta linea sin comentar
+			
+			if (!$return){
+				//Mostrar plantilla con datos erroneos
+				
+			}
+			else{
 			
 			
 			
@@ -344,19 +375,45 @@ class corps{
 			if($this->db->Insert_ID()>=0){
 				//capturammos el id de la linea insertada
 				$this->id_corp=$this->db->Insert_ID();
+				
 				//print("<pre>::".$this->id_corp."::</pre>");
 				//devolvemos el id de la tabla ya que todo ha ido bien
 				$this->db->close();
 				return $this->id_corp;
 			}else {
 				//devolvemos 0 ya que no se ha insertado el registro
+				
 				$this->error=-1;
 				$this->db->close();
 				return 0;
 			}			
 		
-		
+			}}
 	}
+	
+	function get_fields_from_post(){
+		
+		//Cogemos los campos principales
+		$this->name=$_POST[$this->ddbb_name];
+		$this->full_name=$_POST[$this->ddbb_full_name];
+		$this->address=$_POST[$this->ddbb_address];		
+		$this->cif_nif=$_POST[$this->ddbb_cif_nif];		
+		$this->fiscal_address=$_POST[$this->ddbb_fiscal_address];	
+		$this->postal_address=$_POST[$this->ddbb_postal_address];
+		$this->url=$_POST[$this->ddbb_url];
+		$this->mail=$_POST[$this->ddbb_mail];
+		$this->city=$_POST[$this->ddbb_city];
+		$this->state=$_POST[$this->ddbb_state];
+		$this->postal_code=$_POST[$this->ddbb_postal_code];
+		$this->country=$_POST[$this->ddbb_country];
+		$this->phone=$_POST[$this->ddbb_phone];
+		$this->mobile_phone=$_POST[$this->ddbb_mobile_phone];
+		$this->fax=$_POST[$this->ddbb_fax];
+		$this->notes=$_POST[$this->ddbb_notes];
+
+
+		return 0;
+	}	
 	
 	function remove($id){
 	
@@ -578,9 +635,9 @@ class corps{
 			$method = $this->method;
 		}		
 		if ($corp != ""){
-			$corp='<a href="index.php?module=user_corps&method=select&id='.$_SESSION['ident_corp'].'">'.$corp.' ::';
+			$corp='<a href="index.php?module=user_corps&method=select&id='.$_SESSION['ident_corp'].'">'.$corp.'</a> ::';
 		}
-		$nav_bar = '<a>Zona privada</a> :: '.$corp.' <a href="index.php?module=corps">Empresas</a>';
+		$nav_bar = '<a href="index.php?module=user_corps">Zona privada</a> :: '.$corp.' <a href="index.php?module=corps">Empresas</a>';
 		$nav_bar=$nav_bar.$this->localice($method);
 		return $nav_bar;
 	}		

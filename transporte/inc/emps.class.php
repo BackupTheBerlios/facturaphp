@@ -67,6 +67,10 @@ class emps{
 	var $cat_emps;
 	var $come;
 	var $category;
+	var $method;
+	var $table_names_modify=array();
+	var $table_names_delete=array("holydays","rel_emps_cats",);
+	
   	//constructor
 	function emps(){
 		//coge las variables globales del fichero config.inc.php
@@ -424,6 +428,109 @@ class emps{
 		return $holyday->modify();
 	}
 	
+	function remove($id){
+			if (!isset($_POST["submit_delete"])){
+				
+									
+				return 0;
+			}
+			else{
+			//HAY QUE VERIFICAR EN LAS COMPROBACIONES QUE NO SE ELIMINE EL MISMO USUARIO
+			//QUE ESTA CONECTADO EN ESTE MOMENTO.
+			$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
+			//crea una nueva conexión con una bbdd (mysql)
+			$this->db = NewADOConnection($this->db_type);
+			//le dice que no salgan los errores de conexión de la ddbb por pantalla
+			$this->db->debug=false;
+			//realiza una conexión permanente con la bbdd
+			$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
+			//mete la consulta para coger los campos de la bbdd
+			//calcula la consulta de borrado.
+			$this->sql="DELETE FROM ".$this->table_prefix.$this->table_name. " WHERE ".$this->ddbb_id_emp." = ".$id;
+			//la ejecuta y guarda los resultados		
+
+			$this->result = $this->db->Execute($this->sql);
+			//si falla 
+
+			if ($this->db->Affected_Rows() == 0){				
+				$this->error=1;
+				$this->db->close();
+				return 0;
+			}else{
+				$this->make_remove($id);
+				$this->error=0;
+				$this->db->close();
+				return 1;
+				
+			}
+		}
+	}
+	
+	function make_remove($id){
+		//modificamos todos aquellos registros en los que hay un id_user;
+		for ($i=0;$i<count($this->table_names_modify);$i++){
+			$this->modify_all_id_emp($id,$this->table_names_modify[$i]);
+		}
+		//borramos todos aquellos registros en los que hay un id_user;		
+		for ($i=0;$i<count($this->table_names_delete);$i++){
+			$this->delete_all_id_emp($id,$this->table_names_delete[$i]);
+		}
+	}
+	
+	function modify_all_id_emp($id,$table){
+			$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
+			//crea una nueva conexión con una bbdd (mysql)
+			$this->db = NewADOConnection($this->db_type);
+			//le dice que no salgan los errores de conexión de la ddbb por pantalla
+			$this->db->debug=false;
+			//realiza una conexión permanente con la bbdd
+			$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
+			//mete la consulta para coger los campos de la bbdd
+			//calcula la consulta de borrado.
+			$this->sql="UPDATE ".$table. " SET id_user = 0 WHERE id_emp = ".$id;
+			//la ejecuta y guarda los resultados
+			$this->result = $this->db->Execute($this->sql);
+			//si falla 
+			if ($this->db->Affected_Rows() == 0){
+				$this->error=1;
+				$this->db->close();
+				return 0;
+			}else{
+			
+				$this->error=0;
+				$this->db->close();
+				return 1;
+				
+			}
+	}
+	
+	function delete_all_id_emp($id,$table){
+		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
+			//crea una nueva conexión con una bbdd (mysql)
+			$this->db = NewADOConnection($this->db_type);
+			//le dice que no salgan los errores de conexión de la ddbb por pantalla
+			$this->db->debug=false;
+			//realiza una conexión permanente con la bbdd
+			$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
+			//mete la consulta para coger los campos de la bbdd
+			//calcula la consulta de borrado.
+
+			$this->sql="DELETE FROM ".$table. " WHERE id_emp = ".$id;
+			//la ejecuta y guarda los resultados
+			$this->result = $this->db->Execute($this->sql);
+			//si falla 
+			if ($this->db->Affected_Rows() == 0){
+				$this->error=1;
+				$this->db->close();
+				return 0;
+			}else{
+			
+				$this->error=0;
+				$this->db->close();
+				return 1;
+				
+			}
+	}
 	
 	function get_user_corps($id_user)
 	{
@@ -842,7 +949,7 @@ class emps{
 							}
 							else{
 								$this->emps_list="";
-								$method="list";
+								$this->method="list";
 								$tpl=$this->listar($tpl);
 								$tpl->assign("message","&nbsp;<br>Empleado borrado correctamente<br>&nbsp;");
 							}
@@ -889,16 +996,22 @@ class emps{
 		$this->category=$_POST["category"];
 	}
 
-	function bar($method,$corp){		
+	function bar($method,$corp){	
+		if ($method!=$this->method){
+			$method=$this->method;
+		}	
 		if ($corp != ""){
-			$corp='<a href="index.php?module=user_corps&method=select&id='.$_SESSION['ident_corp'].'">'.$corp.' ::';
+			$corp='<a href="index.php?module=user_corps&method=select&id='.$_SESSION['ident_corp'].'">'.$corp.'</a> ::';
 		}
-		$nav_bar = '<a>Zona privada</a> :: '.$corp.' <a href="index.php?module=emps">Empleados</a>';
+		$nav_bar = '<a href="index.php?module=user_corps">Zona privada</a> :: '.$corp.' <a href="index.php?module=emps">Empleados</a>';
 		$nav_bar=$nav_bar.$this->localice($method);
 		return $nav_bar;
 	}	
 
 	function title($method,$corp){
+				if ($method!=$this->method){
+			$method=$this->method;
+		}	
 		if ($corp != ""){
 			$corp=$corp." ::";
 		}
