@@ -37,7 +37,7 @@
 	$DDBB_NAME="transporte";
 	$DDBB_USER="root";
 	$DDBB_PASS="";
-	$IP_DDBB="127.0.0.1";
+	$IP_DDBB="localhost";
 	$TABLE_PREFIX="";
 	$DDBB_TYPE="mysql";
 	$DDBB_PORT="3306";
@@ -92,8 +92,8 @@
 	$INSTALL_DIR="C:\\Archivos de programa\\EasyPHP1-7\\www\\transporte\\";
 	*/
 	
-	//$WIN32=false;
-	$WIN32=true;
+	$WIN32=false;
+	//$WIN32=true;
 	$BARRA_WINDOWS="\\";
 	$BARRA_LINUX="/";
 	//$SLASH="/";

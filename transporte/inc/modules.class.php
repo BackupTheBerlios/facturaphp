@@ -38,7 +38,6 @@ class modules{
   	var $num;
   	var $fields_list;
   	var $error;
-	var $module_methods;
 	var $public_modules;
 	var $method;
 	var $module_meth;

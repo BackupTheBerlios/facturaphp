@@ -33,7 +33,6 @@ class permissions_modules{
 	var $db_port;
 	var $db_type;
 	var $table_prefix;
-	var $result; 
 	var $db;
 	var $sql;
 	var $result;  	 	
