@@ -131,9 +131,9 @@ class products{
 			$this->products_list[$this->num][$this->ddbb_id_corp]=$this->result->fields[$this->ddbb_id_corp];
 			$this->products_list[$this->num][$this->ddbb_name]=$this->result->fields[$this->ddbb_name];
 			$this->products_list[$this->num][$this->ddbb_name_web]=$this->result->fields[$this->ddbb_name_web];
-			$this->products_list[$this->num][$this->ddbb_id_pvp]=$this->result->fields[$this->ddbb_id_pvp];
-			$this->products_list[$this->num][$this->ddbb_id_tax]=$this->result->fields[$this->ddbb_id_tax];
-			$this->products_list[$this->num][$this->ddbb_id_pvp_tax]=$this->result->fields[$this->ddbb_id_pvp_tax];
+			$this->products_list[$this->num][$this->ddbb_pvp]=$this->result->fields[$this->ddbb_pvp];
+			$this->products_list[$this->num][$this->ddbb_tax]=$this->result->fields[$this->ddbb_tax];
+			$this->products_list[$this->num][$this->ddbb_pvp_tax]=$this->result->fields[$this->ddbb_pvp_tax];
 			$this->products_list[$this->num][$this->ddbb_path_photo]=$this->result->fields[$this->ddbb_path_photo];
 			$this->products_list[$this->num][$this->ddbb_minimun_stock]=$this->result->fields[$this->ddbb_minimun_stock];
 			//nos movemos hasta el siguiente registro de resultado de la consulta
@@ -433,7 +433,7 @@ class products{
 			//Si se modificó la foto
 			if($_SESSION['ruta_temporal'] != "")
 				{
-   				$file = new upload_file( $_SESSION['nombre_photo'], $_SESSION['ruta_temporal'], $_SESSION['tamanno_photo'], $this->id_vehicle);
+   				$file = new upload_file( $_SESSION['nombre_photo'], $_SESSION['ruta_temporal'], $_SESSION['tamanno_photo'], $this->id_product);
    				$result = $file->upload( "images/products/" );
    				}	
 			
@@ -1003,6 +1003,8 @@ class products{
 		
 		
 		$this->num=0;
+		$tabla = null;
+		
 		while (!$this->result->EOF) {
 			//cogemos los datos de la categoria
 			$tabla[$this->num]['id_cat_prod']=$this->result->fields['id_cat_prod'];

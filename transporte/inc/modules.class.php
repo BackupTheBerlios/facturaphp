@@ -43,6 +43,8 @@ class modules{
 	var $method;
 	var $module_meth;
 	var $module_methods;
+	var $order;
+	
   	//constructor
 	function modules(){
 		//coge las variables globales del fichero config.inc.php

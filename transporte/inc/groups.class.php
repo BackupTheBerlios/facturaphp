@@ -546,6 +546,8 @@ class groups{
 				else{	
 					//Se prepara el array de permisos
 					$k=0;
+					$permissions = null;
+					
 					for($i = 0;$i<$this->num_modules;$i++)
 					{
 						if(($this->per_modules[$i]->per == 1)&&($this->per_modules[$i]->module_name != 'error'))
@@ -574,6 +576,8 @@ class groups{
 			}
 			
 			$i=0;
+			$variables = null;
+			
 			while($i<count($variables_modulos)){
 				
 				for($k=0;$k<count($variables_modulos);$k++){

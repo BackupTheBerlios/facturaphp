@@ -130,9 +130,9 @@ class services{
 			$this->services_list[$this->num][$this->ddbb_id_corp]=$this->result->fields[$this->ddbb_id_corp];
 			$this->services_list[$this->num][$this->ddbb_name]=$this->result->fields[$this->ddbb_name];
 			$this->services_list[$this->num][$this->ddbb_name_web]=$this->result->fields[$this->ddbb_name_web];
-			$this->services_list[$this->num][$this->ddbb_id_pvp]=$this->result->fields[$this->ddbb_id_pvp];
-			$this->services_list[$this->num][$this->ddbb_id_tax]=$this->result->fields[$this->ddbb_id_tax];
-			$this->services_list[$this->num][$this->ddbb_id_pvp_tax]=$this->result->fields[$this->ddbb_id_pvp_tax];
+			$this->services_list[$this->num][$this->ddbb_pvp]=$this->result->fields[$this->ddbb_pvp];
+			$this->services_list[$this->num][$this->ddbb_tax]=$this->result->fields[$this->ddbb_tax];
+			$this->services_list[$this->num][$this->ddbb_pvp_tax]=$this->result->fields[$this->ddbb_pvp_tax];
 			$this->services_list[$this->num][$this->ddbb_path_photo]=$this->result->fields[$this->ddbb_path_photo];
 			$this->services_list[$this->num][$this->ddbb_minimun_stock]=$this->result->fields[$this->ddbb_minimun_stock];
 			//nos movemos hasta el siguiente registro de resultado de la consulta

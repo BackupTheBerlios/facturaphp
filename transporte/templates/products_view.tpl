@@ -9,7 +9,7 @@
 						<td width="7%">
 						<img src="pics/clientesico.png" width="32" height="32">
 						</td>
-						<td width="93%" valign="middle" nowrap>Detalle de categor&iacute;a </td>
+						<td width="93%" valign="middle" nowrap>Detalle de producto </td>
 				</tr>
 			  </table>
 				<br>
@@ -18,7 +18,7 @@
 						<td valign="top">
 							<table width="100%">
 							<tr class="cabeceraMultiLinea">
-								<td colspan="2" height="23" nowrap>Identificador de Categor&iacute;a: {$objeto->id_product}</td>
+								<td colspan="2" height="23" nowrap>Identificador de Producto: {$objeto->id_product}</td>
 								<td align="center" colspan="2">
 									{section name="indice" loop=$acciones}			
 									{if $acciones[indice]== 'modify'}

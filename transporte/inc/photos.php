@@ -1,5 +1,5 @@
 <?php
-if((isset($_GET['module']))&& (isset($_GET['method']))&&($_GET['module']=='vehicles')&&($_GET['method']=='add'))
+if((isset($_FILES['path_photo']))&&(isset($_GET['module']))&& (isset($_GET['method']))&&($_GET['module']=='vehicles')&&($_GET['method']=='add'))
 {
    $_SESSION['ruta_photo'] = "pics/no-image.gif";
    $_SESSION['nombre_photo'] = $_FILES['path_photo']['name'];
@@ -9,7 +9,7 @@ if((isset($_GET['module']))&& (isset($_GET['method']))&&($_GET['module']=='vehic
  
 
 //Si se modifica la foto de un coche
-if((isset($_GET['module']))&& (isset($_GET['method']))&&($_GET['module']=='vehicles')&&($_GET['method']=='modify'))
+if((isset($_FILES['path_photo']))&&(isset($_GET['module']))&& (isset($_GET['method']))&&($_GET['module']=='vehicles')&&($_GET['method']=='modify'))
 {
  $_SESSION['ruta_photo'] = "";
  $_SESSION['nombre_photo'] = $_FILES['path_photo']['name'];
@@ -18,7 +18,7 @@ if((isset($_GET['module']))&& (isset($_GET['method']))&&($_GET['module']=='vehic
 }
 
 //Si se añade la foto de una categoria de producto
-if((isset($_GET['module']))&& (isset($_GET['method']))&&($_GET['module']=='cat_prods')&&($_GET['method']=='add'))
+if((isset($_FILES['path_photo']))&&(isset($_GET['module']))&& (isset($_GET['method']))&&($_GET['module']=='cat_prods')&&($_GET['method']=='add'))
 {
     $_SESSION['ruta_photo'] = "pics/no-image.gif";
    $_SESSION['nombre_photo'] = $_FILES['path_photo']['name'];
@@ -27,7 +27,7 @@ if((isset($_GET['module']))&& (isset($_GET['method']))&&($_GET['module']=='cat_p
 }
 
 //Si se modifica la foto de una categoria de producto
-if((isset($_GET['module']))&& (isset($_GET['method']))&&($_GET['module']=='cat_prods')&&($_GET['method']=='modify'))
+if((isset($_FILES['path_photo']))&&(isset($_GET['module']))&& (isset($_GET['method']))&&($_GET['module']=='cat_prods')&&($_GET['method']=='modify'))
 {
    $_SESSION['ruta_photo'] = "";
    $_SESSION['nombre_photo'] = $_FILES['path_photo']['name'];
@@ -36,7 +36,7 @@ if((isset($_GET['module']))&& (isset($_GET['method']))&&($_GET['module']=='cat_p
 }
 
 //Si se añade la foto de un producto
-if((isset($_GET['module']))&& (isset($_GET['method']))&&($_GET['module']=='products')&&($_GET['method']=='add'))
+if((isset($_FILES['path_photo']))&&(isset($_GET['module']))&& (isset($_GET['method']))&&($_GET['module']=='products')&&($_GET['method']=='add'))
 {
    $_SESSION['ruta_photo'] = "pics/no-image.gif";
    $_SESSION['nombre_photo'] = $_FILES['path_photo']['name'];
@@ -45,7 +45,7 @@ if((isset($_GET['module']))&& (isset($_GET['method']))&&($_GET['module']=='produ
 }
 
 //Si se modifica la foto de un producto
-if((isset($_GET['module']))&& (isset($_GET['method']))&&($_GET['module']=='products')&&($_GET['method']=='modify'))
+if((isset($_FILES['path_photo']))&&(isset($_GET['module']))&& (isset($_GET['method']))&&($_GET['module']=='products')&&($_GET['method']=='modify'))
 {
    $_SESSION['ruta_photo'] = "";
    $_SESSION['nombre_photo'] = $_FILES['path_photo']['name'];
@@ -54,7 +54,7 @@ if((isset($_GET['module']))&& (isset($_GET['method']))&&($_GET['module']=='produ
 }
 
 //Si se añade la foto de un servicio
-if((isset($_GET['module']))&& (isset($_GET['method']))&&($_GET['module']=='services')&&($_GET['method']=='add'))
+if((isset($_FILES['path_photo']))&&(isset($_GET['module']))&& (isset($_GET['method']))&&($_GET['module']=='services')&&($_GET['method']=='add'))
 {
    $_SESSION['ruta_photo'] = "pics/no-image.gif";
    $_SESSION['nombre_photo'] = $_FILES['path_photo']['name'];
@@ -63,7 +63,7 @@ if((isset($_GET['module']))&& (isset($_GET['method']))&&($_GET['module']=='servi
 }
 
 //Si se modifica la foto de un servicio
-if((isset($_GET['module']))&& (isset($_GET['method']))&&($_GET['module']=='services')&&($_GET['method']=='modify'))
+if((isset($_FILES['path_photo']))&&(isset($_GET['module']))&& (isset($_GET['method']))&&($_GET['module']=='services')&&($_GET['method']=='modify'))
 {
    $_SESSION['ruta_photo'] = "";
    $_SESSION['nombre_photo'] = $_FILES['path_photo']['name'];
@@ -72,7 +72,7 @@ if((isset($_GET['module']))&& (isset($_GET['method']))&&($_GET['module']=='servi
 }
 
 //Si se añade la foto de una categoria de servicio
-if((isset($_GET['module']))&& (isset($_GET['method']))&&($_GET['module']=='cat_servs')&&($_GET['method']=='add'))
+if((isset($_FILES['path_photo']))&&(isset($_GET['module']))&& (isset($_GET['method']))&&($_GET['module']=='cat_servs')&&($_GET['method']=='add'))
 {
    $_SESSION['ruta_photo'] = "pics/no-image.gif";
    $_SESSION['nombre_photo'] = $_FILES['path_photo']['name'];
@@ -81,7 +81,7 @@ if((isset($_GET['module']))&& (isset($_GET['method']))&&($_GET['module']=='cat_s
 }
 
 //Si se modifica la foto de una categoria de servicio
-if((isset($_GET['module']))&& (isset($_GET['method']))&&($_GET['module']=='cat_servs')&&($_GET['method']=='modify'))
+if((isset($_FILES['path_photo']))&&(isset($_GET['module']))&& (isset($_GET['method']))&&($_GET['module']=='cat_servs')&&($_GET['method']=='modify'))
 {
    $_SESSION['ruta_photo'] = "";
    $_SESSION['nombre_photo'] = $_FILES['path_photo']['name'];
