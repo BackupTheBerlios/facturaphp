@@ -32,6 +32,7 @@ if(!isset($_SESSION['user']))
 		$session->register();
 		//registra la variable de sesion user con el nombre de usuario
 		$_SESSION['user']=$_POST['user'];
+		$_SESSION['ident_corp']=0;
 		//como el usuario esta validado asigna su nombre a la plantilla
 		$tpl->assign('user_name',$_SESSION['user']);
 		$tpl->assign('login',0);
@@ -162,24 +163,27 @@ if(!isset($_SESSION['user']) && isset($_GET['module']))
 //Se comprueba que el usuario tenga permisos sobre el módulo que aparece en la barra de direccion
 if(isset($_SESSION['user']) && isset($_GET['module']))
 {
-	//Se comprueba si el modulo es público si es así se deja no hay problema, pero sino se tendrá que saber si tiene o no acceso a él
-	if($module->is_public_module($_GET['module']) == 0)
+	//if($_SESSION['user']!= 'admin')
 	{
-		$permiso = new permissions_modules();
-		
-		//Se prepara para poder investigar los permisos en el modulo
-		if (!isset($_GET['method']))
+		//Se comprueba si el modulo es público si es así se deja no hay problema, pero sino se tendrá que saber si tiene o no acceso a él
+		if($module->is_public_module($_GET['module']) == 0)
 		{
-			$method=null;
-		}
-		else
-		{
-			$method=$_GET['method'];
-		}
-		
-		if($permiso->validate_per($_SESSION['user'], $_GET['module'], $method) == 0)
-		{
-			$module_name = 'error';	
+			$permiso = new permissions_modules();
+			
+			//Se prepara para poder investigar los permisos en el modulo
+			if (!isset($_GET['method']))
+			{
+				$method=null;
+			}
+			else
+			{
+				$method=$_GET['method'];
+			}
+			
+			if($permiso->validate_per($_SESSION['user'], $_GET['module'], $method) == 0)
+			{
+				$module_name = 'error';	
+			}
 		}
 	}
 }
