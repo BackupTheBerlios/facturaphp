@@ -30,6 +30,7 @@ class modules{
   	var $ddbb_active='active';
 	var $ddbb_public='public';
 	var $ddbb_parent = 'parent';
+	var $ddbb_order = 'order';
 	var $db;
 	var $result;  	
 //variables complementarias	
@@ -67,6 +68,7 @@ class modules{
 		$this->fields_list->add($this->ddbb_active, $this->active, 'tinyint', 3,0);	
 		$this->fields_list->add($this->ddbb_public, $this->publico, 'tinyint', 3,0);
 		$this->fields_list->add($this->ddbb_parent, $this->parent, 'tinyint', 3,0);	
+		$this->fields_list->add($this->ddbb_order, $this->order, 'int', 11,0);	
 		//print_r($this);
 		//se puede acceder a los usuarios por numero de campo o por nombre de campo
 		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
@@ -101,7 +103,7 @@ class modules{
 		//realiza una conexi—n permanente con la bbdd
 		$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
 		//mete la consulta
-		$this->sql="SELECT * FROM ".$this->table_prefix.$this->table_name;
+		$this->sql="SELECT * FROM ".$this->table_prefix.$this->table_name." ORDER BY 'order'";
 		//la ejecuta y guarda los resultados
 		$this->result = $this->db->Execute($this->sql);
 		//si falla 
@@ -122,6 +124,7 @@ class modules{
 			$this->modules_list[$this->num][$this->ddbb_active]=$this->result->fields[$this->ddbb_active];
 			$this->modules_list[$this->num][$this->ddbb_public]=$this->result->fields[$this->ddbb_public];
 			$this->modules_list[$this->num][$this->ddbb_parent]=$this->result->fields[$this->ddbb_parent];
+			$this->modules_list[$this->num][$this->ddbb_order]=$this->result->fields[$this->ddbb_order];
 			//nos movemos hasta el siguiente registro de resultado de la consulta
 			$this->result->MoveNext();
 			$this->num++;

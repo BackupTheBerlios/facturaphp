@@ -231,9 +231,12 @@ if(isset($_SESSION['user']) && isset($_GET['module']))
 				$method=$_GET['method'];
 			}
 		
-			if($permiso->validate_per($_SESSION['user'], $_GET['module'], $method) == 0)
+			if(($_GET['module'] != 'user_corps') &&($method != 'select'))
 			{
-				$module_name = 'error';	
+				if($permiso->validate_per($_SESSION['user'], $_GET['module'], $method) == 0)
+				{
+					$module_name = 'error';	
+				}
 			}
 		}
 	}

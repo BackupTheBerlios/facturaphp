@@ -59,6 +59,9 @@ function initialize_object($module)
 					break;	
 		case 'cat_vehicles':
 					$objeto=new cat_vehicles();
+					break;	
+		case 'drivers':
+					$objeto=new drivers();
 					break;		
 		default:		
 					if(!isset($_SESSION['user']))
