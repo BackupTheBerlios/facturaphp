@@ -15,7 +15,7 @@ class services{
 	var $pvp;
 	var $tax;
 	var $pvp_tax;
-	var $minimun_stock;
+	var $descrip;
 	
 //BBDD name vars
 	var $db_name;
@@ -34,7 +34,7 @@ class services{
 	var $ddbb_pvp='pvp';
 	var $ddbb_tax='tax';
 	var $ddbb_pvp_tax='pvp_tax';
-	var $ddbb_minimun_stock='minimun_stock';
+	var $ddbb_descrip='descrip';
 	var $db;
 	var $result;  
 	var $sql;
@@ -77,7 +77,7 @@ class services{
 		$this->fields_list->add($this->ddbb_tax, $this->tax, 'double', 11,0,1);
 		$this->fields_list->add($this->ddbb_pvp_tax, $this->pvp_tax, 'double', 11,0,1);
 		$this->fields_list->add($this->ddbb_path_photo, $this->path_photo, 'varchar', 255,0);
-		$this->fields_list->add($this->ddbb_minimun_stock, $this->minimun_stock, 'double', 11,0,1);
+		$this->fields_list->add($this->ddbb_descrip, $this->descrip, 'text', 255,0);
 		//print_r($this);
 		//se puede acceder a los grupos por numero de campo o por nombre de campo
 /*		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
@@ -134,7 +134,7 @@ class services{
 			$this->services_list[$this->num][$this->ddbb_tax]=$this->result->fields[$this->ddbb_tax];
 			$this->services_list[$this->num][$this->ddbb_pvp_tax]=$this->result->fields[$this->ddbb_pvp_tax];
 			$this->services_list[$this->num][$this->ddbb_path_photo]=$this->result->fields[$this->ddbb_path_photo];
-			$this->services_list[$this->num][$this->ddbb_minimun_stock]=$this->result->fields[$this->ddbb_minimun_stock];
+			$this->services_list[$this->num][$this->ddbb_descrip]=$this->result->fields[$this->ddbb_descrip];
 			//nos movemos hasta el siguiente registro de resultado de la consulta
 			$this->result->MoveNext();
 			$this->num++;
@@ -191,7 +191,7 @@ class services{
 			$this->pvp=$this->result->fields[$this->ddbb_pvp];
 			$this->tax=$this->result->fields[$this->ddbb_tax];
 			$this->pvp_tax=$this->result->fields[$this->ddbb_pvp_tax];
-			$this->minimun_stock=$this->result->fields[$this->ddbb_minimun_stock];
+			$this->descrip=$this->result->fields[$this->ddbb_descrip];
 			$this->db->close();
 			return 1;
 		}
@@ -219,7 +219,7 @@ class services{
 			
 			$this->fields_list->modify_value($this->ddbb_id_service,$this->id_service);
 			$this->fields_list->modify_value($this->ddbb_id_corp,$this->id_corp);
-			$this->fields_list->modify_value($this->ddbb_minimun_stock,$this->minimun_stock);
+			$this->fields_list->modify_value($this->ddbb_descrip,$this->descrip);
 			$this->fields_list->modify_value($this->ddbb_name,$this->name);
 			$this->fields_list->modify_value($this->ddbb_name_web,$this->name_web);
 			$this->fields_list->modify_value($this->ddbb_pvp,$this->pvp);
@@ -263,7 +263,7 @@ class services{
 			$record[$this->ddbb_pvp]=$this->pvp;
 			$record[$this->ddbb_tax] = $this->tax;
 			$record[$this->ddbb_pvp_tax]=$this->pvp_tax;
-			$record[$this->ddbb_minimun_stock]=$this->minimun_stock;
+			$record[$this->ddbb_descrip]=$this->descrip;
 			//calculamos la sql de inserci—n respecto a los atributos
 			$this->sql = $this->db->GetInsertSQL($this->result, $record);
 			
@@ -465,7 +465,7 @@ class services{
 			//Modificamos los todos los valores del objeto fields con los nuevos datos del objeto product, exceptuando path_photo que eso se deberia hacer mediante la clase upload.
 			$this->fields_list->modify_value($this->ddbb_id_service,$this->id_service);
 			$this->fields_list->modify_value($this->ddbb_id_corp,$this->id_corp);
-			$this->fields_list->modify_value($this->ddbb_minimun_stock,$this->minimun_stock);
+			$this->fields_list->modify_value($this->ddbb_descrip,$this->descrip);
 			$this->fields_list->modify_value($this->ddbb_name,$this->name);
 			$this->fields_list->modify_value($this->ddbb_name_web,$this->name_web);
 			$this->fields_list->modify_value($this->ddbb_pvp,$this->pvp);
@@ -510,7 +510,7 @@ class services{
 		$record[$this->ddbb_pvp]=$this->pvp;
 		$record[$this->ddbb_tax] = $this->tax;
 		$record[$this->ddbb_pvp_tax]=$this->pvp_tax;
-		$record[$this->ddbb_minimun_stock]=$this->minimun_stock;
+		$record[$this->ddbb_descrip]=$this->descrip;
 		//calculamos la sql de insercin respecto a los atributos
 		$this->sql = $this->db->GetUpdateSQL($this->result, $record);
 		//insertamos el registro		
@@ -650,7 +650,7 @@ class services{
 		$this->pvp=$_POST[$prefix.$this->ddbb_pvp];
 		$this->tax=$_POST[$prefix.$this->ddbb_tax];
 		$this->pvp_tax=$_POST[$prefix.$this->ddbb_pvp_tax];
-		$this->minimun_stock=$_POST[$prefix.$this->ddbb_minimun_stock];
+		$this->descrip=htmlentities($_POST[$prefix.$this->ddbb_descrip]);
 		$this->path_photo = $_SESSION['ruta_photo'];
 		
 
@@ -1065,7 +1065,7 @@ class services{
 			$this->services_list[$this->num][$this->ddbb_id_tax]=$this->result->fields[$this->ddbb_id_tax];
 			$this->services_list[$this->num][$this->ddbb_id_pvp_tax]=$this->result->fields[$this->ddbb_id_pvp_tax];
 			$this->services_list[$this->num][$this->ddbb_path_photo]=$this->result->fields[$this->ddbb_path_photo];
-			$this->services_list[$this->num][$this->ddbb_minimun_stock]=$this->result->fields[$this->ddbb_minimun_stock];
+			$this->services_list[$this->num][$this->ddbb_descrip]=$this->result->fields[$this->ddbb_descrip];
 			//nos movemos hasta el siguiente registro de resultado de la consulta
 			$this->result->MoveNext();
 			$this->num++;

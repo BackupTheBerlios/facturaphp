@@ -47,6 +47,10 @@
 					<td> <input type="text" id="{$objeto->ddbb_minimun_stock}" name="{$objeto->ddbb_minimun_stock}" value="{$objeto->minimun_stock}" class="textoMenu"><font class="error">{$error_minimun_stock}</font></td>
 				</tr>
 				<tr>
+						<td width="125" align="right" class="CampoFormulario">Descripcion:</td>
+						<td rowspan="2" ><textarea name="{$objeto->ddbb_descrip}" class="textoMenu" id="{$objeto->ddbb_descrip}">{$objeto->descrip}</textarea> <font class="error">{$error_descrip}</font></td>
+					</tr>
+				<tr>
 						<td width="125px" align="right" class="CampoFormulario">Fotograf&iacute;a:</td>
 						<td><a href="index.php?module=products&method=show&id={$objeto->id_product}"><img src="{$objeto->path_photo}" width="80" height="80"></a>
 						<input type="file" name="{$objeto->ddbb_path_photo}"></input><font class="error">{$error_path_photo}</font></td>	

@@ -41,8 +41,8 @@
 					<td> <input type="text" id="{$objeto->ddbb_pvp_tax}" name="{$objeto->ddbb_pvp_tax}" value="{$objeto->pvp_tax}" class="textoMenu"><font class="error">{$error_pvp_tax}</font></td>
 				</tr>
 				<tr>
-					<td width="125px" align="right" class="CampoFormulario">Stock M&iacute;nimo:</td>
-					<td> <input type="text" id="{$objeto->ddbb_minimun_stock}" name="{$objeto->ddbb_minimun_stock}" value="{$objeto->minimun_stock}" class="textoMenu"><font class="error">{$error_minimun_stock}</font></td>
+						<td width="125" align="right" class="CampoFormulario">Descripcion:</td>
+						<td rowspan="2" ><textarea name="{$objeto->ddbb_descrip}" class="textoMenu" id="{$objeto->ddbb_descrip}">{$objeto->descrip}</textarea> <font class="error">{$error_descrip}</font></td>
 				</tr>
 				<tr>
 						<td width="125px" align="right" class="CampoFormulario">Fotograf&iacute;a:</td>
