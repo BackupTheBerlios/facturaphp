@@ -10,6 +10,12 @@ class sessions{
 	
 		return 0;
 	}
+	
+	function register(){
+	
+		
+	
+	}
 }
 
 ?>

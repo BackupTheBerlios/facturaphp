@@ -21,7 +21,8 @@ if(!isset($_SESSION['user'])){
 	$post_user= new users(); 
 	if(isset($_POST['passwd'])&& isset($_POST['user'])&&$post_user->validate_user($_POST['user'],$_POST['passwd'])==1){
 		//printf('usuario validado');
-		//aqui debe inicializar un registro de session en la bbdd
+		$session=new sessions();
+		$session->register();
 		//registra la variable de sesion user cone l nombre de usuario
 		$_SESSION['user']=$_POST['user'];
 		//como el usuario esta validado asigna su nombre a la plantilla
@@ -65,7 +66,7 @@ if(!isset($_SESSION['user'])){
 
 
 
-//identifica el usuario el modulo la operaci—n y los permisos
+//identifica el usuario el modulo y la operaci—n
 if(isset($_GET['module'])){
 	$module=$_GET['module'];
 	$_SESSION['module']=$module;
@@ -88,13 +89,12 @@ $modules_list=$module->get_list_modules_user($_SESSION['user']);
 $tpl->assign('modules_list',$modules_list);
 //coge las operaciones de ese modulo disponibles
 if(isset($_GET['module'])||isset($_SESSION['module'])){
-
 	if(isset($_GET['module'])){
-		$module=$_GET['module'];
+		$module_name=$_GET['module'];
 	}else{
-		$module=$_SESSION['module'];
+		$module_name=$_SESSION['module'];
 	}
-	$operations_list=$module->get_module_operations_list($module);
+	$operations_list=$module->get_module_operations_list($module_name);
 }
 
 //coge las sesiones abiertas y los usuarios registrados
@@ -105,6 +105,7 @@ $session= new sessions();
 $num_sessions=$session->num();
 $tpl->assign('num_sessions',$num_sessions);
 //calcula la barra de navegaci—n y titulo de la pagina
+
 //calcula la plantilla a presentar
 
 //pasa las variables de la presentaci—n a la plantilla dependiente del objeto
