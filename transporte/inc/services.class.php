@@ -275,15 +275,30 @@ class services{
 				$this->id_service=$this->db->Insert_ID();
 				$this->insert_categories($this->id_service);
 				if($_SESSION['ruta_temporal'] != "")
+				{
+	   				$file = new upload_file( $_SESSION['nombre_photo'], $_SESSION['ruta_temporal'], $_SESSION['tamanno_photo'], $this->id_service);
+	   				$result = $file->upload( "images/services/" );
+	   				if($result == 1)
+	   				{
+	   					//modificar ruta de la foto
+						$this->modify_photo($this->id_cat_serv);
+					}
+	   			}
+				else
+				{
+					$direccion = "images/services/".$this->id_service.".gif";
+					//Copiar fichero con no imagen
+					if (!copy("pics/no-image.gif",$direccion))
+							{
+	   							print("Error al copiar el fichero");
+					}
+					else
 					{
-   						$file = new upload_file( $_SESSION['nombre_photo'], $_SESSION['ruta_temporal'], $_SESSION['tamanno_photo'], $this->id_service);
-   						$result = $file->upload( "images/services/" );
-   						if($result == 1)
-   						{
-   							//modificar ruta de la foto
-							$this->modify_photo($this->id_cat_serv);
-						}
-   					}	
+						$_SESSION['ruta_photo'] = "images/services/".$this->id_service.".gif";
+						//modificar ruta de la foto
+						$this->modify_photo($this->id_service);
+					}
+				}	
 				//print("<pre>::".$this->id_corp."::</pre>");
 				//devolvemos el id de la tabla ya que todo ha ido bien
 				$this->db->close();

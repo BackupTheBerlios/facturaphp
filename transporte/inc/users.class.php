@@ -586,6 +586,7 @@ class users{
 			$this->checkbox=new permissions_modules();
 			$modules=new modules();
 			$num_modules = $modules->get_list_modules();
+		
 			$k=0;
 			for($i=0;$i<$num_modules;$i++)
 			{
@@ -641,14 +642,17 @@ class users{
 			
 			$groups=new groups();
 			$groups->get_list_groups();
+	
 			$this->get_groups($this->id_user);
+			
 			$k=0;
 			for($i=0;$i<$groups->num;$i++)
 			{
 				if($_SESSION['super'])
 				{
 					$this->checkbox_groups[$i]= new groups();
-					$this->checkbox_groups[$i]->read($groups->groups_list[$i][$groups->ddbb_id_group]);				
+					$this->checkbox_groups[$i]->read($groups->groups_list[$i][$groups->ddbb_id_group]);	
+					
 					if ($this->checkbox_groups[$i]->verify_user($this->id_user)!=0)
 					{
 						$this->checkbox_groups[$i]->belong=1;

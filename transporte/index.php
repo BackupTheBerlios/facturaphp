@@ -63,8 +63,11 @@ if(!isset($_SESSION['user']))
 	{	
 		//registra la variable de sesion user con el nombre de usuario
 		$_SESSION['user']=$_POST['user'];
+		
 		//Se toma el identificador del usuario para ahorrar cálculos
 		$_SESSION['ident_user'] = $post_user->get_id($_SESSION['user']);
+		$_SESSION['queries']= new log_methods();
+		$_SESSION['queries']->id_user = $_SESSION['ident_user'];
 		
 		//Se busca registro de la sesión (ya se conoce al usuario)
 		$session=new sessions();

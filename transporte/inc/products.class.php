@@ -277,15 +277,30 @@ class products{
 				$this->id_product=$this->db->Insert_ID();
 				$this->insert_categories($this->id_product);
 				if($_SESSION['ruta_temporal'] != "")
+				{
+   					$file = new upload_file( $_SESSION['nombre_photo'], $_SESSION['ruta_temporal'], $_SESSION['tamanno_photo'], $this->id_product);
+   					$result = $file->upload( "images/products/" );
+   					if($result == 1)
+   					{
+   						//modificar ruta de la foto
+						$this->modify_photo($this->id_cat_prod);
+					}
+   				}
+				else
+				{
+					$direccion = "images/products/".$this->id_product.".gif";
+					//Copiar fichero con no imagen
+					if (!copy("pics/no-image.gif",$direccion))
 					{
-   						$file = new upload_file( $_SESSION['nombre_photo'], $_SESSION['ruta_temporal'], $_SESSION['tamanno_photo'], $this->id_product);
-   						$result = $file->upload( "images/products/" );
-   						if($result == 1)
-   						{
-   							//modificar ruta de la foto
-							$this->modify_photo($this->id_cat_prod);
-						}
-   					}	
+   						print("Error al copiar el fichero");
+					}
+					else
+					{
+						$_SESSION['ruta_photo'] = "images/products/".$this->id_product.".gif";
+						//modificar ruta de la foto
+						$this->modify_photo($this->id_product);
+					}
+				}	
 				//print("<pre>::".$this->id_corp."::</pre>");
 				//devolvemos el id de la tabla ya que todo ha ido bien
 				$this->db->close();

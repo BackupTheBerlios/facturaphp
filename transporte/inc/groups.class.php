@@ -187,9 +187,8 @@ class groups{
 	function get_permissions($id_group)
 	{
 		$this->modules = new modules();
-	
 		$this->num_modules = $this->modules->get_list_modules();
-
+	
 		for ($modulo_num = 0; $modulo_num < $this->num_modules; $modulo_num++) 
 		{
 			//Como se tiene el numero de modulos entonces se puede ver nombre e identificador en $this->modules->modules_list
@@ -203,7 +202,7 @@ class groups{
 			
 			
 		
-			$this->per_modules[$modulo_num]->inicializar_base_datos();
+		//	$this->per_modules[$modulo_num]->inicializar_base_datos();
 		//	$result = $this->per_modules[$modulo_num]->validate_per_group_module($id_group,$this->modules->modules_list[$modulo_num]['id_module'] );
 			$result = $_SESSION['permisos_group_modules'][$id_group][$this->modules->modules_list[$modulo_num]['id_module']];
 		
@@ -211,7 +210,6 @@ class groups{
 				$this->per_modules[$modulo_num]->per =  1;
 			
 			$this->per_modules[$modulo_num]->num_methods = $this->modules->get_list_module_methods($this->per_modules[$modulo_num]->id_module);
-			
 			for ($metodo_num = 0; $metodo_num < $this->per_modules[$modulo_num]->num_methods; $metodo_num++) 
 			{
 				$this->per_modules[$modulo_num]->per_methods[$metodo_num] = new permissions_methods();
@@ -222,7 +220,7 @@ class groups{
 					
 				if($this->per_modules[$modulo_num]->per == true)
 				{	
-					$this->per_modules[$modulo_num]->per_methods[$metodo_num]->inicializar_base_datos();
+					//$this->per_modules[$modulo_num]->per_methods[$metodo_num]->inicializar_base_datos();
 					$this->per_modules[$modulo_num]->per_methods[$metodo_num]->per = 0;
 	//				$result = $this->per_modules[$modulo_num]->per_methods[$metodo_num]->validate_per_group_method($id_group, $this->per_modules[$modulo_num]->per_methods[$metodo_num]->id_method);
 					$result = $$_SESSION['permisos_group_methods'][$id_grupo][$this->per_modules[$modulo_num]->per_methods[$metodo_num]->id_method];
@@ -265,8 +263,7 @@ class groups{
 			$this->name=$this->result->fields[$this->ddbb_name];
 			$this->name_web=$this->result->fields[$this->ddbb_name_web];
 			$this->descrip=$this->result->fields[$this->ddbb_descrip];
-			$this->belong=0;//Variable para los checkbox, por defecto a 0.
-			
+			$this->belong=0;//Variable para los checkbox, por defecto a 0.	
 			//Una vez sabído el identificador de grupo, se puede pedir que realice su lista de permisos
 			$this->get_permissions($this->id_group);
 			

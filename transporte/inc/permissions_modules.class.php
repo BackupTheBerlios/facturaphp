@@ -119,7 +119,7 @@ class permissions_modules{
 	function validate_per ($user, $module, $method_name)
 	{
 
-		$this->inicializar_base_datos();
+		//$this->inicializar_base_datos();
 		//print "Pasados usuario: ".$user.", modulo: ".$module.", metodo: ".$method_name;
 		
 		//se puede acceder a los usuarios por numero de campo o por nombre de campo
@@ -300,7 +300,7 @@ class permissions_modules{
 	function validate_per_module($id_user)
 	{
 	
-		$this->inicializar_base_datos();
+		//$this->inicializar_base_datos();
 	
 		$user = new users();
 	
@@ -365,13 +365,14 @@ class permissions_modules{
 	
 	function validate_per_module_without_groups($id_user)
 	{
-		$this->inicializar_base_datos();
+		//$this->inicializar_base_datos();
 	
 		$user = new users();
-	
+
+		/*
 		//Se toma la lista de grupos a los que pertenece el usuario
 		$num_groups = $user->get_groups($id_user); 
-		
+		*/
 		
 		$per = false;
 		$this->per = 0;
@@ -395,8 +396,6 @@ class permissions_modules{
 	
 		$this->num_methods = $modules->get_list_module_methods($this->id_module);
 
-
-
 		for ($metodo_num = 0; $metodo_num < $this->num_methods; $metodo_num++) 
 		{
 			//Como se tiene el numero de metodos de este modulo, entonces se puede ver nombre e identificador en $this->per_methods[$metodo_num]->name
@@ -415,8 +414,7 @@ class permissions_modules{
 				$this->per_methods[$metodo_num]->per = 0;
 				//print "NO MOdulo: metodo ".$this->method_name." permisos ".$this->per."............";
 			}
-		}
-		
+		}		
 	}
 
 	//Esta funcion hace lo mismo que validate_per_module pero su función es para grupos.
