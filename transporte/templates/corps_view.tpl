@@ -102,7 +102,7 @@
 					<img src="pics/pestagna-empssobre.gif" id="emps" onClick="Ocultar(this,'emps_1')" name="boton">
 						</td>
 						  	<td  align="center">
-					<img src="pics/pestagna-clients.gif" id="clients" onClick="Ocultar(this,'Clientes')" name="boton"> 					</td>
+					<img src="pics/pestagna-clients.gif" id="clients" onClick="Ocultar(this,'clients_1')" name="boton"> 					</td>
 					  	<td   align="center" >
 					<img src="pics/pestagna-facturaspen.gif" id="facturaspen" onClick="Ocultar(this,'facturaspen_1')" name="boton">
 					</td>

@@ -469,8 +469,10 @@ class corps{
 
 			if ($empleados->get_list_emps($_SESSION['ident_corp'])==0)
 			{
-
-				$cadena=$cadena.$tabla_empleados->tabla_vacia('emps');
+				
+				$per = new permissions();
+				$per->get_permissions_list('corps');
+				$cadena=$cadena.$tabla_empleados->tabla_vacia('emps',$per->add);
 				$variables_empleados=$tabla_empleados->nombres_variables;
 			}
 			else
@@ -483,17 +485,77 @@ class corps{
 				$variables_empleados=$tabla_empleados->nombres_variables;
 			}
 			
+			//Rellenamos de forma provisional las variables con un "no se puede mostrar"
+			
+			$clients = new table(false);
+			$facturaspen= new table(false);
+			$facturascob= new table(false);
+			$products= new table(false);
+			$services= new table(false);
+			$gestionalm= new table(false);
+			$partes= new table(false);
+			
+			$cadena=$cadena.$clients->dont_show('clients');
+			$cadena=$cadena.$facturaspen->dont_show('facturaspen');
+			$cadena=$cadena.$facturascob->dont_show('facturascob');
+			$cadena=$cadena.$products->dont_show('products');
+			$cadena=$cadena.$services->dont_show('services');
+			$cadena=$cadena.$gestionalm->dont_show('gestionalm');
+			$cadena=$cadena.$partes->dont_show('partes');
+			
+			$variables_clients=$clients->nombres_variables;
+			$variables_facturaspen=$facturaspen->nombres_variables;
+			$variables_facturascob=$facturascobs->nombres_variables;
+			$variables_products=$products->nombres_variables;
+			$variables_services=$services->nombres_variables;
+			$variables_gestionalm=$gestionalm->nombres_variables;
+			$variables_partes=$partes->nombres_variables;
+			
 			
 			
 			$i=0;
-			while($i<(count($variables_empleados)))
+			while($i<(count($variables_empleados)+count($variables_clients)+count($variables_facturaspen)+count($variables_facturascob)+count($variables_products)+count($variables_services)+count($variables_gestionalm)+count($variables_partes)))
 			{
 				for($j=0;$j<count($variables_empleados);$j++)
 				{
 					$variables[$i]=$variables_empleados[$j];
 					$i++;
 				}
-				
+				for($j=0;$j<count($variables_clients);$j++)
+				{
+					$variables[$i]=$variables_clients[$j];
+					$i++;
+				}
+				for($j=0;$j<count($variables_facturaspen);$j++)
+				{
+					$variables[$i]=$variables_facturaspen[$j];
+					$i++;
+				}
+				for($j=0;$j<count($variables_facturascob);$j++)
+				{
+					$variables[$i]=$variables_facturascob[$j];
+					$i++;
+				}
+				for($j=0;$j<count($variables_products);$j++)
+				{
+					$variables[$i]=$variables_products[$j];
+					$i++;
+				}
+				for($j=0;$j<count($variables_services);$j++)
+				{
+					$variables[$i]=$variables_services[$j];
+					$i++;
+				}
+				for($j=0;$j<count($variables_gestionalm);$j++)
+				{
+					$variables[$i]=$variables_gestionalm[$j];
+					$i++;
+				}
+				for($j=0;$j<count($variables_partes);$j++)
+				{
+					$variables[$i]=$variables_partes[$j];
+					$i++;
+				}				
 			}
 			
 			//Se comprueba si hay permiso para borrar o modificar

@@ -184,8 +184,24 @@
 					}
 					// CUERPO DE TABLA
 					$col=0;
+					$view=false;					
+					$micol=0;
+					while($micol<=count($acc)-1){
+						if($acc[$micol]){
+							$view=true;
+						}
+						$micol++;
+					}
 					while($col<=(count($cabecera)/2)-1){
-						$variable=$variable.'<td>'.$list_name[$registro][$nombre_campos[$col+1]].'</td>';
+						$variable=$variable.'<td>';						
+						if($view){
+							$variable=$variable.'<A href=\\"index.php?module='.$var_js.'&method='.$acc["view"].'&id='.$list_name[$registro][$nombre_campos[0]].'\\">';
+						}						
+						$variable=$variable.$list_name[$registro][$nombre_campos[$col+1]];
+						if($view){
+							$variable=$variable.'</A>';
+						}						
+						$variable=$variable.'</td>';
 						$col++;
 					} // while
 					$col=0;
@@ -222,7 +238,7 @@
 		
 		function dont_show($var_js){
 			$cadena='<script>'."\n\r";
-			$cadena=$cadena.$var_js.'_1="<table align=\\"center\\"><tr align=\\"center\\"><td><h3>No se pueden mostrar los datos</h3></td></tr></table>";';
+			$cadena=$cadena.$var_js.'_1="<br><table align=\\"center\\"><tr align=\\"center\\"><td><h3>No se pueden mostrar los datos</h3></td></tr></table><br>";';
 			$cadena=$cadena."\n\r".'</script>';
 			$this->nombres_variables=array(0=>$var_js.'_1');
 			return $cadena;

@@ -30,8 +30,8 @@ function initialize_object($module)
 		case 'cat_emps':
 					$objeto=new cat_emps();
 					break;
-		case 'holidays':
-					$objeto=new holidays();
+		case 'holydays':
+					$objeto=new holydays();
 					break;
 		case 'methods':
 					$objeto=new methods();

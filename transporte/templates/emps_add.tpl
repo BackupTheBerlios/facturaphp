@@ -25,6 +25,7 @@ function enableDisable(value){
 		}
 }
 
+
 function hola(){
 	alert(document.getElementById("birthday").value);
 }
@@ -49,15 +50,19 @@ function hola(){
 			  </table>
 						<br>
 	<table align="center" width="90%"><tr><td width ="40%"valign="top">
-		<tr><td>
+	<tr>
+					  <td  colspan="2" class="cabeceraCampoFormulario">Datos del empleado:</td>
+		  </tr>
+		<tr><td valign="top">
 <!--		<input type="hidden" name="id_emps">
 		<input type="hidden" name="id_corp">
 		<input type="hidden" name="id_user">-->
-		<table width="250px" align="center">
+		
+			
+		  
+		<table width="250px" align="center" >
 
-					 <tr>
-					  <td colspan="2" class="cabeceraCampoFormulario">Datos del empleado:</td>
-				  </tr>
+					 
 				  <tr>
 						<td width="125" align="right" class="CampoFormulario">Nombre:</td>
 						<td> <input type="text" id="{$objeto->ddbb_name}" name="{$objeto->ddbb_name}" class="textoMenu"></td>
@@ -109,7 +114,8 @@ function hola(){
 				</table>
 			
 			</td>
-			<td width ="60%"valign="top">
+			<td width ="60%" valign="top">
+			
 			<table width="250px" align="center">
 			<tr><td cospan="2" class="cabeceraCampoFormulario"></td></tr>
 			 <tr>
@@ -135,6 +141,21 @@ function hola(){
 						  <option value="{$categorias[indice].id_cat_emp}">{$categorias[indice].name}</option>						 
 						  {/section}
 						</select></td>
+				 </tr>
+				 <tr>
+						<td width="125" class="CampoFormulario" nowrap>Fecha de alta:</td>
+						<td > <!--<input type="text" id="come"  name="fields[multi_edit][0][up]" class="textoMenu">-->						
+				 <input class="textoMenu" type="text" name="comeChanged" value="00-00-0000" "size="15" maxlength="99" class="textfield" id="comeChanged" readonly>
+				 <input class="textoMenu" type="hidden" name="{$holyday->ddbb_come}" value="0000-00-00" size="15" maxlength="99" class="textfield" id="{$holyday->ddbb_come}"><!--{$holiday->ddbb_come}-->
+                                    <script type="text/javascript">
+                                    
+                    <!--
+                    document.write('<a title="Calendario" href="javascript:openCalendar(\'lang=es-utf-8&amp;server=1\', \'form_central\', \'{$holyday->ddbb_come}\', \'comeChanged\', \'date\')"><img class="calendar" valign="center" src="pics/calendar.png" alt="Calendario"/></a>');
+                    //-->
+                    </script>
+		    
+						
+						</td>
 				 </tr>
 			</table>
 			<br>

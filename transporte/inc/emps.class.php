@@ -4,7 +4,6 @@
 global $ADODB_DIR, $INSTALL_DIR;
 require_once ($INSTALL_DIR.'inc/config.inc.php');
 require_once ($INSTALL_DIR.'inc/table.class.php');
-
 require_once ($ADODB_DIR."adodb.inc.php");
 
 class emps{
@@ -180,7 +179,7 @@ class emps{
 	}
 	
 	function add(){
-		if(!isset($_POST['add_adduser'])){
+		if(!isset($_POST['new_user'])){
 			$this->obj_user=new users();
 			$this->obj_user->add();
 		}
@@ -635,6 +634,8 @@ class emps{
 								$tpl=$this->listar($tpl);										
 								$tpl->assign("message","&nbsp;<br>Empleado a&ntilde;adido correctamente<br>&nbsp;");
 							}
+							$vacaciones= new holydays();
+							$tpl->assign("holyday",$vacaciones);
 							$tpl->assign("categorias",$this->cat_emps->cat_emps_list);
 							$tpl->assign("objeto",$this);									
 							$tpl->assign("usuarios",$this->obj_user);
