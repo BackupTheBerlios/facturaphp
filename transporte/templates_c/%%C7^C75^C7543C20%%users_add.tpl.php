@@ -1,35 +1,11 @@
-<?php /* Smarty version 2.6.3, created on 2004-10-25 00:30:23
+<?php /* Smarty version 2.6.3, created on 2004-10-27 19:19:46
          compiled from users_add.tpl */ ?>
 <td valign="top">
-<?php echo '
-<script>
-	
-	function clickCheckbox(){
-	
-	}
-	
-	function selectRow(){
-	
-	}
-	
-	function selectAll(){
-		for (var i=0;i<document.forms["form_central"].elements.length;i++){
-			if(document.forms["form_central"].elements[i].type=="checkbox"){
-				document.forms["form_central"].elements[i].checked=true;
-				}
-		}
-	}
-    function unselectAll(){
-		for (var i=0;i<document.forms["form_central"].elements.length;i++){
-			if(document.forms["form_central"].elements[i].type=="checkbox"){
-				document.forms["form_central"].elements[i].checked=false;
-				}
-		}
-	}
-    
-</script>
-'; ?>
-
+<?php $_smarty_tpl_vars = $this->_tpl_vars;
+$this->_smarty_include(array('smarty_include_tpl_file' => "checkbox.tpl", 'smarty_include_vars' => array()));
+$this->_tpl_vars = $_smarty_tpl_vars;
+unset($_smarty_tpl_vars);
+ ?>
 <form method="post" action="index.php?module=users&method=add" name="form_central">
 	  	<table align="center" width="100%">
 		<tr>
@@ -90,20 +66,16 @@
 					<input type="button" Value="Deseleccionar Todos" class="botones" onClick="unselectAll();">
 				  	</td>
 				  </tr>
-				 
-				</table>
-		</td>
-		</tr>	
-		<tr>
-		<td valign="top">
+
+				 <tr>
+		<td valign="top" colspan="2">
 			<br>
-			<table width="90%" align="center" border="0">
+			<table width="100%" align="center" border="0">
 			 <tr>
-					  <td colspan="2" class="cabeceraCampoFormulario">Permisos por modulos-metodos: </td>
+					  <td colspan="2" class="cabeceraCampoFormulario">Grupos: </td>
 			</tr>
 			<tr class="cabeceraMultiLinea">
-				<td width="30%">Grupos</td>
-				
+				<td width="100%" colspan="2">Grupos</td>				
 			</tr>
 			
 			<?php 
@@ -144,12 +116,35 @@ $this->_sections['indice']['last']       = ($this->_sections['indice']['iteratio
 				}				
 				print('<tr class="'.$clase.'">');
 				 ?>
+				<td>
+				<input type="checkbox" value="1" name="grupo_<?php echo $this->_tpl_vars['grupos'][$this->_sections['indice']['index']]->id_group; ?>
+" <?php if ($this->_tpl_vars['grupos'][$this->_sections['indice']['index']]->belong == true): ?>checked<?php endif; ?>><?php echo $this->_tpl_vars['grupos'][$this->_sections['indice']['index']]->name_web; ?>
+
+				<?php $this->_sections['indice']['index']+=1;
+					echo $this->_sections['indice']['index'];  ?>
 				
+				</td>
+				<?php if (! $this->_sections['indice']['last']): ?>
+				<td>
+				<input type="checkbox" value="1" name="grupo_<?php echo $this->_tpl_vars['grupos'][$this->_sections['indice']['index']]->id_group; ?>
+" <?php if ($this->_tpl_vars['grupos'][$this->_sections['indice']['index']]->belong == true): ?>checked<?php endif; ?>><?php echo $this->_tpl_vars['grupos'][$this->_sections['indice']['index']]->name_web; ?>
+
+				</td>
+				<?php else: ?>
+				<td>
+				&nbsp;
+				</td>
+				<?php endif; ?>
 				</tr>
 			<?php endfor; endif; ?>
+			<tr class="cabeceraMultilinea"><td colspan="2">&nbsp</td></tr>
 			</table>
 		</td>
 		</tr>	
+				</table>
+		</td>
+		</tr>	
+		
 		<tr>
 
 			<td valign="top">
@@ -258,13 +253,12 @@ _metodo_<?php echo $this->_tpl_vars['modulos']->per_modules[$this->_sections['in
 			<tr  class="cabeceraMultiLinea"><td colspan="2">&nbsp;</td></tr>
 			</table>
 		
-			<br>
-			<br> 								
+											
 		</td>
 		</tr>
 		<tr>
 			<td align="center"><br><br>
-			<input type="submit" name="submit_add" id ="name="submit_add" "value="A&ntilde;adir" class="botones">			
+			<input type="submit" name="submit_add" id =" name="submit_add" "value="A&ntilde;adir" class="botones">			
 			<input type="reset" Value="Limpiar Datos" class="botones">
 			</td>
 		</tr>

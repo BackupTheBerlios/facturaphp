@@ -50,20 +50,16 @@
 					<input type="button" Value="Deseleccionar Todos" class="botones" onClick="unselectAll();">
 				  	</td>
 				  </tr>
-				 
-				</table>
-		</td>
-		</tr>	
-		<tr>
-		<td valign="top">
+
+				 <tr>
+		<td valign="top" colspan="2">
 			<br>
-			<table width="90%" align="center" border="0">
+			<table width="100%" align="center" border="0">
 			 <tr>
-					  <td colspan="2" class="cabeceraCampoFormulario">Permisos por modulos-metodos: </td>
+					  <td colspan="2" class="cabeceraCampoFormulario">Grupos: </td>
 			</tr>
 			<tr class="cabeceraMultiLinea">
-				<td width="30%">Grupos</td>
-				
+				<td width="100%" colspan="2">Grupos</td>				
 			</tr>
 			
 			{php}
@@ -81,12 +77,31 @@
 				}				
 				print('<tr class="'.$clase.'">');
 				{/php}
+				<td>
+				<input type="checkbox" value="1" name="grupo_{$grupos[indice]->id_group}" {if $grupos[indice]->belong==true}checked{/if}>{$grupos[indice]->name_web}
+				{php}$this->_sections['indice']['index']+=1;
+					echo $this->_sections['indice']['index']; {/php}
 				
+				</td>
+				{if !$smarty.section.indice.last}
+				<td>
+				<input type="checkbox" value="1" name="grupo_{$grupos[indice]->id_group}" {if $grupos[indice]->belong==true}checked{/if}>{$grupos[indice]->name_web}
+				</td>
+				{else}
+				<td>
+				&nbsp;
+				</td>
+				{/if}
 				</tr>
 			{/section}
+			<tr class="cabeceraMultilinea"><td colspan="2">&nbsp</td></tr>
 			</table>
 		</td>
 		</tr>	
+				</table>
+		</td>
+		</tr>	
+		
 		<tr>
 
 			<td valign="top">

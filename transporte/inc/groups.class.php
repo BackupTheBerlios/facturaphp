@@ -33,6 +33,7 @@ class groups{
   	var $num;
   	var $fields_list;
   	var $error;
+	var $belong; //<- Esta variable se usara desde users.class.php la cual nos dira si el checkbox de los modelos modify o add estan a 1 o a 0 para grupos. Por defecto estará a 0.
   	//constructor
 	function groups(){
 		//coge las variables globales del fichero config.inc.php
@@ -166,6 +167,7 @@ class groups{
 			$this->name=$this->result->fields[$this->ddbb_name];
 			$this->name_web=$this->result->fields[$this->ddbb_name_web];
 			$this->descrip=$this->result->fields[$this->ddbb_descrip];
+			$this->belong=0;//Variable para los checkbox, por defecto a 0.
 			$this->db->close();
 			return 1;
 		}

@@ -262,14 +262,12 @@ class users{
 			}
 			
 			//Grupos
-			$groups= new groups();
-			for($i=0;$i<$groups->num;i++){
-				$this->checkbox_groups[$i]= new groups;
-					
+			$groups=new groups();
+			for($i=0;$i<$groups->num;$i++){
+				$this->checkbox_groups[$i]= new groups();
+				$this->checkbox_groups[$i]->read($groups->groups_list[$i][$groups->ddbb_id_group]);					
 			}
-			
-
-			
+			echo $this->checkbox_groups[0]->name_web;
 			return 0;
 		}
 		//en el caso de que SI este definido submit_add
@@ -599,6 +597,7 @@ class users{
 									}
 									$tpl->assign("objeto",$this);
 									$tpl->assign("modulos",$this->checkbox);
+									$tpl->assign("grupos",$this->checkbox_groups);
 									break;
 						case 'list':
 									$tpl=$this->listar($tpl);
