@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.3, created on 2004-12-13 22:13:06
+<?php /* Smarty version 2.6.3, created on 2005-01-10 21:01:22
          compiled from corps_view.tpl */ ?>
 <td valign="top">
 
@@ -90,7 +90,8 @@ unset($_smarty_tpl_vars);
 "><?php echo $this->_tpl_vars['objeto']->mail; ?>
 </a></td>
                               </tr>
-                              <tr height="15px">                                <td height="21" nowrap class="camposVistas">Url:</td>
+                              <tr height="15px">                               
+                                <td height="21" nowrap class="camposVistas">Url:</td>
                                 <td nowrap class="datosVista"><a href="<?php echo $this->_tpl_vars['objeto']->url; ?>
 "><?php echo $this->_tpl_vars['objeto']->url; ?>
 </a></td>
