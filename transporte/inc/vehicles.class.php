@@ -262,7 +262,6 @@ class vehicles{
 					}
 					//rellenamos el array con los datos de los atributos de la clase
 					$record = array();
-					$record[$this->ddbb_id_vehicle] = $_SESSION['ident_vehicle'];
 					$record[$this->ddbb_id_corp] = $this->id_corp;
 					$record[$this->ddbb_alias]=$this->alias;
 					$record[$this->ddbb_number_plate]=$this->number_plate;
@@ -286,6 +285,7 @@ class vehicles{
 						$this->db->close();
 					}
 					$_SESSION['ident_vehicle'] = $this->id_vehicle;
+					print "Se insertó el vehículo".$_SESSION['ident_vehicle'];
 					return $this->id_vehicle;
 			
 				}
@@ -437,7 +437,52 @@ class vehicles{
 			}
 	}
 	
-	
+	function modify_photo(){
+print 'modifica foto'.$_SESSION['ident_vehicle'];		
+		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
+		//crea una nueva conexin con una bbdd (mysql)
+		$this->db = NewADOConnection($this->db_type);
+		//le dice que no salgan los errores de conexin de la ddbb por pantalla
+		$this->db->debug=false;
+		//realiza una conexin permanente con la bbdd
+		$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
+		//mete la consulta para coger los campos de la bbdd
+		$this->sql="SELECT * FROM ".$this->table_prefix.$this->table_name. " WHERE ".$this->ddbb_id_vehicle." = \"".$_SESSION['ident_vehicle']."\"" ;
+		//la ejecuta y guarda los resultados
+		$this->result = $this->db->Execute($this->sql);
+		//si falla 
+		if ($this->result === false)
+		{
+			$this->error=1;
+			$this->db->close();
+			return 0;
+		}
+		//rellenamos el array con los datos de los atributos de la clase
+		$record = array();
+		$record[$this->ddbb_id_vehicle]=$_SESSION['ident_vehicle'];
+		$record[$this->ddbb_path_photo]=$_SESSION['ruta_photo'];
+		//calculamos la sql de insercin respecto a los atributos
+		$this->sql = $this->db->GetUpdateSQL($this->result, $record);
+		//insertamos el registro				
+		$this->db->Execute($this->sql);
+		//si se ha insertado una fila
+		$Affected_Rows=$this->db->Affected_Rows();
+				
+		if(($Affected_Rows==1)||($this->sql==""))
+		{
+			//capturammos el id de la linea insertada
+			$this->db->close();
+			//devolvemos el id de la tabla ya que todo ha ido bien
+			return $this->id_vehicle;
+		}
+		else 
+		{
+			//devolvemos 0 ya que no se ha insertado el registro
+			$this->error=-1;
+			$this->db->close();
+			return 0;
+		}
+	}
 	
 	function modify(){
 		if (!isset($_POST['submit_modify']))
@@ -580,11 +625,16 @@ class vehicles{
 		$this->method=$method;
 				switch($method){
 						case 'add':												
-									if ($this->add() !=0)
+									if ($_SESSION['add_photo'] == 1)
 									{
 										$this->method="list";
 										$tpl=$this->listar($tpl);										
 										$tpl->assign("message","&nbsp;<br>Veh&iacute;culo a&ntilde;adido correctamente<br>&nbsp;");
+										$_SESSION['add_photo'] = 0;
+									}
+									else 
+									{
+										$this->add();
 									}															
 									$tpl->assign("objeto",$this);
 									$tpl->assign("categorias",$this->cat_vehicles->cat_vehicles_list);
