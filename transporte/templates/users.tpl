@@ -21,7 +21,7 @@
 				{/if}
 				{if $login == 0 }
 				
-				Usuario:<br><br><b>Elena</b><br><br> 
+				Usuario:<br><br><b>{$user_name}</b><br><br> 
 				<input type="submit" name="submit" value="Desconectar" class="botones">
 			 	{/if}
 			 	</td>
