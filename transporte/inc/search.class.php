@@ -8,7 +8,7 @@ require_once ($ADODB_DIR."adodb.inc.php");
 
 class search{
 //internal vars
-var $query;
+var $query = "";
 	//BBDD name vars
 	//constructor
 	function search(){
@@ -24,7 +24,6 @@ var $query;
 		{
 			//Se hace split
 			$diferent_queries = split(" ",$search_query);
-			print "número de queries ".count($diferent_queries);
 		}
 		else
 			$diferent_queries = $search_query;
@@ -37,6 +36,7 @@ var $query;
 				//print "Iteración ".$i." de posible campo".$search[$i]."   ";
 				//Buscar campo en fields que coincida en nombre y comprobar tipo
 				$tipo = $fields->lista[$search[$i]]["type"];
+		
 				switch($tipo)
 				{
 					case "int":
@@ -89,8 +89,7 @@ var $query;
 			}
 		}
 		
-		//Se devuelve el WHERE construido
-		print $this->query;
+		//Se devuelve el WHERE construído
 		return $this->query;
 	}
 	

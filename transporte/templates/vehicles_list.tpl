@@ -21,24 +21,13 @@
 			  <tr><td valign="top"><form method="post" action="index.php?module=vehicles&method=list">
 			  	<table width="250px" align="center">
 				 <tr>
-					  <td colspan="2" class="cabeceraCampoFormulario">Criterios de b&uacute;squeda:</td>
+					  <td colspan="2" class="cabeceraCampoFormulario">B&uacute;squeda:</td>
 				  </tr>
 					 <tr>
-						<td width="125px" class="CampoFormulario">Identificador del veh&iacute;culo:</td>
-						<td > <input type="text" id="{$objeto->ddbb_id_vehicle}" name="{$objeto->ddbb_id_vehicle}" class="textoMenu"></td>
+						<td  width="125px" align="right" class="CampoFormulario">Introduzca su b&uacute;squeda:</td>
+						<td><input type="text" id="{$objeto->ddbb_search}" name="{$objeto->ddbb_search}" value="{$objeto->search_query}" class="textoMenu"></td>
 				  </tr>
-				<tr>
-						<td width="125px" class="CampoFormulario" >Matr&iacute;cula:</td>
-						<td > <input type="text" id="{$objeto->ddbb_number_plate}" name="{$objeto->ddbb_number_plate}" class="textoMenu"></td>
-				  </tr>
-					<tr>
-						<td width="125px" class="CampoFormulario" >Alias:</td>
-						<td > <input type="text" id="{$objeto->ddbb_alias}" name="{$objeto->ddbb_alias}" class="textoMenu"></td>
-				  </tr>
-				  <tr>
-						<td width="125px" class="CampoFormulario" >Fotograf&iacute;a:</td>
-						<td > <input type="text" id="{$objeto->ddbb_path_photo}" name="{$objeto->ddbb_path_photo}" class="textoMenu"></td>
-				  </tr>
+				
 				    <tr>
 						<td width="125" class="CampoFormulario">Nº de Registros por p&aacute;gina:</td>
 						<td><select name="Registros">
@@ -48,7 +37,7 @@
 						</select></td>
 				 </tr>
 				 <tr>
-				 	<td align="center" colspan="2"><input type="submit" value="Buscar" name="Submit" class="botones"></td>
+				 	<td align="center" colspan="2"><input type="submit" value="Buscar" name="submit_vehicles_search" class="botones"></td>
 				 </tr>
 				  </table>
 				</form><br>

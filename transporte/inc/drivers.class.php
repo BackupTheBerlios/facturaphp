@@ -16,6 +16,9 @@ class drivers{
 	var $last_name2;
 	var $num_vehicles;
 	var $date="00-00-0000";
+	var $search;
+	var $search_query;
+
 //BBDD name vars
 	var $db_name;
 	var $db_ip;
@@ -31,6 +34,7 @@ class drivers{
 	var $ddbb_alias = 'alias';
 	var $ddbb_path_photo = 'path_photo';
 	var $ddbb_date = 'date';
+	var $ddbb_search='search';
 //Información necesaria sobre empleado conductor y vehículo conducido
 	var $ddbb_name = 'name';
 	var $ddbb_last_name = 'last_name';
@@ -81,34 +85,26 @@ class drivers{
 		$this->fields_list->add($this->ddbb_id_vehicle, $this->id_vehicle, 'int', 11,0);
 		$this->fields_list->add($this->ddbb_date, $this->date, 'date', 20,0);
 	
-		//se puede acceder a los usuarios por numero de campo o por nombre de campo
-	/*	$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
-		//crea una nueva conexin con una bbdd (mysql)
-		$this->db = NewADOConnection($this->db_type);
-		//le dice que no salgan los errores de conexin de la ddbb por pantalla
-		$this->db->debug=false;
-		//realiza una conexin permanente con la bbdd
-		$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
-		//mete la consulta
-		$this->sql="SELECT * FROM ".$this->table_prefix.$this->table_name;
-		//la ejecuta y guarda los resultados
-		$this->result = $this->db->Execute($this->sql);
-		//si falla 
-		if ($this->result === false){
-			$error=1;
-			return 0;
-		}  
-		$this->db->close();
-*/		
-		/*******************************/
-	
-		return $this/*->get_list_drivers()*/;	 
+		$this->search[0]= 'name';
+		$this->search[1]= 'last_name';
+		$this->search[2]= 'last_name2';
+		
+		return $this;	 
 		
 	}
 	
 	function get_list_drivers ()
 	{
+		if (isset($_POST['submit_drivers_search']))
+		{
+			//Obtener datos del formulario de búsqueda
+			$this->get_fields_from_search_post();
 		
+			//Crear query
+			$my_search = new search();
+			$empleados = new emps();
+			$query = $my_search->get_query($this->search_query, FALSE, $this->search, $empleados->fields_list);
+		}	
 		//Buscar los empleados de la empresa en la que se está y coincidencia en id con los id de emps en drivers
 		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
 		//crea una nueva conexin con una bbdd (mysql)
@@ -118,7 +114,10 @@ class drivers{
 		//realiza una conexin permanente con la bbdd
 		$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
 		//mete la consulta
-		$this->sql="SELECT drivers.* FROM emps, drivers WHERE emps.id_corp =".$_SESSION['ident_corp']." AND emps.id_emp=drivers.id_emp";
+		if($query != "")
+			$this->sql="SELECT drivers.* FROM emps, drivers WHERE (".$query.") AND emps.id_corp =".$_SESSION['ident_corp']." AND emps.id_emp=drivers.id_emp";
+		else
+			$this->sql="SELECT drivers.* FROM emps, drivers WHERE emps.id_corp =".$_SESSION['ident_corp']." AND emps.id_emp=drivers.id_emp";
 
 		//la ejecuta y guarda los resultados
 		$this->result = $this->db->Execute($this->sql);
@@ -171,10 +170,16 @@ class drivers{
 			else
 				$drivers[$temp[$i][$this->ddbb_id_emp]]['cont']--;
 		}
-		
 		$this->db->close();
 		return $this->num;
 	
+	
+	}
+	
+	function get_fields_from_search_post(){
+		//Cogemos los campos principales de búsqueda
+		$this->search_query=$_POST[$this->ddbb_search];
+		return 0;
 	}
 	
 	function get_list_drivers_vehicle ($id_vehicle)
@@ -773,6 +778,7 @@ class drivers{
 							
 				case 'list':
 							$tpl=$this->listar($tpl);
+							$tpl->assign("objeto",$this);
 							break;
 				case 'modify':
 							/*$this->read($_GET['id']);
@@ -840,6 +846,7 @@ class drivers{
 							{
 								$this->method='list';
 								$tpl=$this->listar($tpl);
+								$tpl->assign("objeto",$this);
 							}
 							else
 							{

@@ -21,28 +21,13 @@
 			  <tr><td valign="top"><form method="post" action="index.php?module=drivers&method=list">
 			  	<table width="250px" align="center">
 				 <tr>
-					  <td colspan="2" class="cabeceraCampoFormulario">Criterios de b&uacute;squeda:</td>
+					  <td colspan="2" class="cabeceraCampoFormulario">B&uacute;squeda:</td>
 				  </tr>
-					 <tr>
-						<td width="125px" class="CampoFormulario">Identificador del conductor:</td>
-						<td > <input type="text" id="{$objeto->ddbb_id_driver}" name="{$objeto->ddbb_id_driver}" class="textoMenu"></td>
+					  <tr>
+						<td  width="125px" align="right" class="CampoFormulario">Introduzca su b&uacute;squeda:</td>
+						<td><input type="text" id="{$objeto->ddbb_search}" name="{$objeto->ddbb_search}" value="{$objeto->search_query}" class="textoMenu"></td>
 				  </tr>
-				<tr>
-						<td width="125px" class="CampoFormulario" >Nombre:</td>
-						<td > <input type="text" id="{$objeto->ddbb_name}" name="{$objeto->ddbb_name}" class="textoMenu"></td>
-				  </tr>
-					<tr>
-						<td width="125px" class="CampoFormulario" >Primer apellido:</td>
-						<td > <input type="text" id="{$objeto->ddbb_last_name}" name="{$objeto->ddbb_last_name}" class="textoMenu"></td>
-				  </tr>
-				  <tr>
-						<td width="125px" class="CampoFormulario" >Segundo apellido:</td>
-						<td > <input type="text" id="{$objeto->ddbb_last_name2}" name="{$objeto->ddbb_last_name2}" class="textoMenu"></td>
-				  </tr>
-				  <tr>
-						<td width="125px" class="CampoFormulario" >Alias del veh&iacute;culo que conduce:</td>
-						<td > <input type="text" id="{$objeto->ddbb_alias}" name="{$objeto->ddbb_alias}" class="textoMenu"></td>
-				  </tr>
+				
 				    <tr>
 						<td width="125" class="CampoFormulario">Nº de Registros por p&aacute;gina:</td>
 						<td><select name="Registros">
@@ -52,7 +37,7 @@
 						</select></td>
 				 </tr>
 				 <tr>
-				 	<td align="center" colspan="2"><input type="submit" value="Buscar" name="Submit" class="botones"></td>
+				 	<td align="center" colspan="2"><input type="submit" value="Buscar" name="submit_drivers_search" class="botones"></td>
 				 </tr>
 				  </table>
 				</form><br>
