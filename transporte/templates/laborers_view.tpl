@@ -32,7 +32,7 @@
 								<td height="21" nowrap class="camposVistas">Segundo Apellido: </td>
                                 <td nowrap class="datosVista">{$objeto->last_name2}</td>                        
                                 <td height="21" nowrap class="camposVistas">Empleado: </td>
-                                <td nowrap class="datosVista">{$emp_laborer}</td>
+                                <td nowrap class="datosVista">{$emp_driver}</td>
                               </tr>
                     		  <tr>      
 			      				<td align="center">
