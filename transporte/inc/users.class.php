@@ -39,7 +39,7 @@ class users{
   	//constructor
 	function users(){
 		//coge las variables globales del fichero config.inc.php
-		global $DDBB_TYPE, $DDBB_NAME, $IP_DDBB, $DDBB_USER, $DDBB_PASS, $DDBB_PORT, $DDBB_PREFIX;
+		global $DDBB_TYPE, $DDBB_NAME, $IP_DDBB, $DDBB_USER, $DDBB_PASS, $DDBB_PORT, $TABLE_PREFIX;
 		$this->db_type=$DDBB_TYPE;
 		$this->db_name=$DDBB_NAME;
 		$this->db_ip=$IP_DDBB;
@@ -49,13 +49,13 @@ class users{
 		$this->table_prefix=$TABLE_PREFIX;
 		//define el array asociativo de los tipos de datos de los campos de la tabla
 		$this->fields_list= new fields();
-		$this->fields_list->add($ddbb_id_user, $id_user, 'int', 11);
-		$this->fields_list->add($ddbb_login, $login, 'varchar', 20);
-		$this->fields_list->add($ddbb_passwd, $passwd, 'varchar', 20);
-		$this->fields_list->add($ddbb_name, $name, 'varchar', 20);
-		$this->fields_list->add($ddbb_last_name, $last_name, 'varchar', 20);
-		$this->fields_list->add($ddbb_last_name2, $last_name2, 'varchar', 20 );
-		$this->fields_list->add($ddbb_full_name, $full_name, 'varchar', 100);		
+		$this->fields_list->add($this->ddbb_id_user, $this->id_user, 'int', 11);
+		$this->fields_list->add($this->ddbb_login, $this->login, 'varchar', 20);
+		$this->fields_list->add($this->ddbb_passwd, $this->passwd, 'varchar', 20);
+		$this->fields_list->add($this->ddbb_name, $this->name, 'varchar', 20);
+		$this->fields_list->add($this->ddbb_last_name, $this->last_name, 'varchar', 20);
+		$this->fields_list->add($this->ddbb_last_name2, $this->last_name2, 'varchar', 20 );
+		$this->fields_list->add($this->ddbb_full_name, $this->full_name, 'varchar', 100);		
 		//print_r($this);
 		//se puede acceder a los usuarios por numero de campo o por nombre de campo
 		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
@@ -76,7 +76,7 @@ class users{
 		}  
 		$this->db->close();
 		
-		return $this->list_users();	 
+		return $this->get_list_users();	 
 		
 	}
 	
@@ -243,6 +243,38 @@ class users{
 	
 	}
 	  
+	function validate_user($user, $passwd){
+		//se puede acceder a los usuarios por numero de campo o por nombre de campo
+		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
+		//crea una nueva conexi—n con una bbdd (mysql)
+		$this->db = NewADOConnection($this->db_type);
+		//le dice que no salgan los errores de conexi—n de la ddbb por pantalla
+		$this->db->debug=false;
+		//realiza una conexi—n permanente con la bbdd
+		$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
+		//mete la consulta
+		$this->sql="SELECT * FROM ".$this->table_prefix.$this->table_name." WHERE ".$this->ddbb_login."=\"".$user."\" AND ".$this->ddbb_passwd."= \"".$passwd."\"";
+		//printf($this->sql);
+		//la ejecuta y guarda los resultados
+		$this->result = $this->db->Execute($this->sql);
+		//si falla
+		//print_r($this); 
+		if ($this->result === false){
+			$error=1;
+			$this->db->close();
+			return 0;
+		}  
+		//comprobamos si la contrase–a es correcta
+		if($this->result->fields[$this->ddbb_passwd]==$passwd){
+			$this->db->close();
+			return 1;
+		}
+		$this->db->close();
+		return 0;
+		
+		
+	
+	}
 	
 	function view ($id){
 	
