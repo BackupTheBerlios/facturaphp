@@ -239,7 +239,6 @@ class users{
 			
 			//En caso de que la validacion haya sido fallida se muestra la plantilla
 			//con los campos erroneos marcados con un *
-			return 1;
 			$return=true; //Para pruebas dejar esta linea sin comentar
 			
 			if (!$return){
@@ -284,12 +283,17 @@ class users{
 				//si se ha insertado una fila
 				if($this->db->Insert_ID()>=0){
 					//SE INSERTAN LOS PERMISOS.
-
+					//Insertamos los permisos por modulo					
+					//Insertamos los grupos
+					//$this->insert_per_groups();
 					//capturammos el id de la linea insertada
 					$this->id_user=$this->db->Insert_ID();
+					$this->add_per_modules_methods();
+					echo $this->id_user;
 					//print("<pre>::".$this->id_user."::</pre>");
 					//devolvemos el id de la tabla ya que todo ha ido bien
 					$this->db->close();
+
 					return $this->id_user;
 				}else {
 					
@@ -373,6 +377,7 @@ class users{
 			//capturammos el id de la linea insertada
 			$this->db->close();
 			//devolvemos el id de la tabla ya que todo ha ido bien
+
 			return $this->id_user;
 		}else {
 			//devolvemos 0 ya que no se ha insertado el registro
@@ -516,6 +521,7 @@ class users{
 										
 										$tpl->assign("message","&nbsp;<br>Usuario a&ntilde;adido correctamente<br>&nbsp;");
 									}
+									$tpl->assign("objeto",$this);
 									$tpl->assign("modulos",$this->checkbox);
 									break;
 						case 'list':
@@ -550,7 +556,7 @@ class users{
 		$this->name=trim($_POST[$this->ddbb_name]);
 		$this->last_name=trim($_POST[$this->ddbb_last_name]);
 		$this->last_name2=trim($_POST[$this->ddbb_last_name2]);		
-		
+
 		//Cogemos los checkbox
 		//$this->get_groups_from_post();
 		//Cogemos los checkboxn de modulos-grupos
@@ -560,28 +566,28 @@ class users{
 
 	function get_modules_methods_from_post(){		
 		
-		$checkbox=new permissions_modules();
+		$this->checkbox=new permissions_modules();
 		$modules=new modules();
 			for($i=0;$i<$modules->num;$i++){
-				$checkbox->per_modules[$i]=new permissions_modules;				
-				$checkbox->per_modules[$i]->id_module=$modules->modules_list[$i]['id_module'];
-				$checkbox->per_modules[$i]->module_name=$modules->modules_list[$i]['name_web'];
-				$checkbox->per_modules[$i]->validate_per_module(0);
+				$this->checkbox->per_modules[$i]=new permissions_modules;				
+				$this->checkbox->per_modules[$i]->id_module=$modules->modules_list[$i]['id_module'];
+				$this->checkbox->per_modules[$i]->module_name=$modules->modules_list[$i]['name_web'];
+				$this->checkbox->per_modules[$i]->validate_per_module(0);
 			}			
 			for($i=0;$i<$modules->num;$i++){			
-					$checkbox->per_modules[$i]->per=$_POST["modulo_".$checkbox->per_modules[$i]->id_module];
-					if (($checkbox->per_modules[$i]->per=="") || ($checkbox->per_modules[$i]->per==null)){
-						$checkbox->per_modules[$i]->per=0;
+					$this->checkbox->per_modules[$i]->per=$_POST["modulo_".$this->checkbox->per_modules[$i]->id_module];
+					if (($this->checkbox->per_modules[$i]->per=="") || ($this->checkbox->per_modules[$i]->per==null)){
+						$this->checkbox->per_modules[$i]->per=0;
 					}
 					//aqui hacemos lo mismo pero con los metodos.
 					for($j=0;$j<count($checkbox->per_modules[$i]->per_methods);$j++){
-								$checkbox->per_modules[$i]->per_methods[$j]->per=$_POST['modulo_'.$checkbox->per_modules[$i]->id_module.'_metodo_'.$checkbox->per_modules[$i]->per_methods[$j]->id_method];
-								if (($checkbox->per_modules[$i]->per_methods[$j]->per=="") || ($checkbox->per_modules[$i]->per_methods[$j]->per==null)){
-									$checkbox->per_modules[$i]->per_methods->per=0;
+								$this->checkbox->per_modules[$i]->per_methods[$j]->per=$_POST['modulo_'.$this->checkbox->per_modules[$i]->id_module.'_metodo_'.$this->checkbox->per_modules[$i]->per_methods[$j]->id_method];
+								if (($this->checkbox->per_modules[$i]->per_methods[$j]->per=="") || ($this->checkbox->per_modules[$i]->per_methods[$j]->per==null)){
+									$this->checkbox->per_modules[$i]->per_methods->per=0;
 								}								
 					}
 			}		
-		return $checkbox;			 			
+		return 0;			 			
 	}
 	
 	
@@ -664,6 +670,28 @@ class users{
 		return $localice;
 	}
 	
+	function add_per_modules_methods(){
+		$this->checkbox=new permissions_modules();
+		$per_user_modules=new per_user_modules();
+		$per_user_methods=new per_user_methods();			
+			for($i=0;$i<count($checkbox->per_modules);$i++){								
+					if ($this->checkbox->per_modules[$i]->per==1){
+						$per_user_modules->id_module=$this->checkbox->per_modules[$i]->id_module;
+						$per_user_modules->id_user=$this->id_user;
+						$per_user_modules->per=1;						
+						$per_user_modules->add();
+						}
+					for($j=0;$j<count($checkbox->per_modules[$i]->per_methods);$j++){
+								if ($this->checkbox->per_modules[$i]->per_methods[$j]->per==1){
+									$per_user_modules->id_module=$this->checkbox->per_modules[$i]->per_methods[$j]->id_method;
+									$per_user_methods->id_user=$this->id_user;
+									$per_user_methods->per=1;
+									$per_user_methods->add();
+								}								
+					}
+			}		
+		return 0;
+	}
 
 	function admin ($id){
 	
