@@ -1024,6 +1024,7 @@ class emps{
 							break;
 				case 'view':							
 							$tpl=$this->view($_GET['id'],$tpl);
+							$_SESSION['id_emp']=$this->id_emp;
 							break;
 				default:
 							if($_SESSION['ident_corp'] != 0)

@@ -8,7 +8,7 @@
 						<td width="7%">
 						 <img src="pics/usuariosico.png" width="32" height="32">
 						</td>
-						<td width="93%" valign="middle"  nowrap>Modificar Catego&iacute;a de empleado</td>
+						<td width="93%" valign="middle"  nowrap>Modificar Categor&iacute;a de empleado</td>
 			  </tr>
 		  </table>
 						<br>
@@ -20,11 +20,11 @@
 					
 				  <tr>
 						<td width="125px" align="right" class="CampoFormulario">Nombre:</td>
-						<td> <input type="text" id="{$objeto->ddbb_name}" name="{$objeto->ddbb_name}" class="textoMenu" value="{$objeto->name}"></td>
+						<td> <input type="text" id="{$objeto->ddbb_name}" name="{$objeto->ddbb_name}" class="textoMenu" value="{$objeto->name}"><font class="error">{$error_name}</font></td>
 					</tr>
 					  <tr>
 						<td width="125" align="right" class="CampoFormulario">Descripcion:</td>
-						<td rowspan="2" ><textarea name="{$objeto->ddbb_descrip}" class="textoMenu" id="{$objeto->ddbb_descrip}">{$objeto->descrip}</textarea> </td>
+						<td rowspan="2" ><textarea name="{$objeto->ddbb_descrip}" class="textoMenu" id="{$objeto->ddbb_descrip}">{$objeto->descrip}</textarea> <font class="error">{$error_descrip}</font></td>
 					</tr>				  
 		</table>
 		</td>

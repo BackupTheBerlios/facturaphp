@@ -17,7 +17,17 @@
 					<tr class="cabeceraMultiLinea">
 						<td width="50%" height="23" nowrap>Identificador de Empleado: {$objeto->id_emp}
 						</td>
-						<td nowrap width="50%">&nbsp;</td>
+						<td nowrap width="50%">
+						{section name="indice" loop=$acciones}
+						{if $acciones[indice]== 'modify'}
+							<a href="index.php?module=emps&method={$acciones[indice]}&id={$objeto->id_emp}">
+							<img src="pics/btn{$acciones[indice]}.gif" border="0"></a>
+						{else}
+							<a href="index.php?module=emps&method={$acciones[indice]}&id={$objeto->id_emp}">
+							<img src="pics/btn{$acciones[indice]}.gif" border="0" ></a>
+						{/if}				
+				{/section}
+						</td>
 					</tr>
 					<tr>
 						<td colspan="2">
@@ -67,21 +77,7 @@
                               <tr height="15px">                               
                                <td height="21" nowrap class="camposVistas">Usuario: </td>
                                 <td nowrap class="datosVista">{$user_emp}</td>
-								<td><table align="center"><tr>
-				{section name="indice" loop=$acciones}
-				
-				<td>
-				{if $acciones[indice]== 'modify'}
-				<a href="index.php?module=emps&method={$acciones[indice]}&id={$objeto->id_emp}">
-				<img src="pics/btn{$acciones[indice]}.gif" border="0"></a></td>
-				{else}
-				<td><a href="index.php?module=emps&method={$acciones[indice]}&id={$objeto->id_emp}">
-				<img src="pics/btn{$acciones[indice]}.gif" border="0" ></a></td>
-				{/if}
-				
-				{/section}
-
-							</tr>	</table></td>
+								<td>&nbsp;</td>
 								<td></td>
                               </tr>
                             </table>

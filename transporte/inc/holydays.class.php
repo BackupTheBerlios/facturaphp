@@ -560,7 +560,7 @@ class holydays{
 			$this->come=$_POST[$this->ddbb_come];
 			$this->gone=$_POST[$this->ddbb_gone];
 			$this->ill=$_POST[$this->ddbb_ill];
-			$this->descrip=$_POST[$this->ddbb_descrip];
+			$this->descrip=htmlentities($_POST[$this->ddbb_descrip]);
 			
 	}
 	

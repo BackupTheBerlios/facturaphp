@@ -581,19 +581,12 @@ class cat_servs{
 	function get_fields_from_post(){
 		
 		//Cogemos los campos principales
-		$this->name=$_POST[$this->ddbb_name];
-		$this->descrip=$_POST[$this->ddbb_descrip];
+		$this->name=htmlentities($_POST[$this->ddbb_name]);
+		$this->descrip=htmlentities($_POST[$this->ddbb_descrip]);
 		$this->path_photo = $_SESSION['ruta_photo'];
 		$this->id_parent_cat=$_POST[$this->ddbb_id_parent_cat];
 		//Colocar de manera provisional hasta que se haga la validacion de fields
-		//************Bloque
-		if ($this->name==""){
-			$this->name=" ";
-		}
-		if ($this->descrip==""){
-			$this->descrip=" ";
-		}
-		//************Fin Bloque
+		
 
 		//Cogemos los checkbox de grupos
 
@@ -604,11 +597,24 @@ class cat_servs{
 		$this->method=$method;
 				switch($method){
 						case 'add':									
-									if ($this->add() !=0){
-										$this->method="list";
-										$tpl=$this->listar($tpl);										
-										$tpl->assign("message","&nbsp;<br>Categoria de servicio a&ntilde;adida correctamente<br>&nbsp;");
+									$return=$this->add();
+									switch ($return){										
+										case 0: //por defecto
+												$tpl->assign("tabla_checkbox",$this->table_categories(true));
+												break;
+										case -1: //Errores al intentar añadir datos
+												for ($i=0;$i<count($this->fields_list->array_error);$i+=2){
+													$tpl->assign("error_".$this->fields_list->array_error[$i],$this->fields_list->array_error[$i+1]);
+												}
+												$tpl->assign("tabla_checkbox",$this->table_categories(false));
+												break;
+										default: //Si se ha añadido
+												$this->method="list";
+												$tpl=$this->listar($tpl);										
+												$tpl->assign("message","&nbsp;<br>Categoria de servicio a&ntilde;adida correctamente<br>&nbsp;");
+												break;
 									}
+									$this->get_list_cat_servs();
 									$tpl->assign("objeto",$this);
 									break;
 									
@@ -617,11 +623,24 @@ class cat_servs{
 									break;
 						case 'modify':
 									$this->read($_GET['id']);
-									if ($this->modify() !=0){
-										$this->method="list";
-										$tpl=$this->listar($tpl);										
-										$tpl->assign("message","&nbsp;<br>Categor&iacute;a de servicio modificada correctamente<br>&nbsp;");
+									$return=$this->modify();
+									switch ($return){										
+										case 0: //por defecto
+												$tpl->assign("tabla_checkbox",$this->table_categories(false));
+												break;
+										case -1: //Errores al intentar añadir datos
+												for ($i=0;$i<count($this->fields_list->array_error);$i+=2){
+													$tpl->assign("error_".$this->fields_list->array_error[$i],$this->fields_list->array_error[$i+1]);
+												}
+												$tpl->assign("tabla_checkbox",$this->table_categories(false));
+												break;
+										default: //Si se ha añadido
+												$this->method="list";
+												$tpl=$this->listar($tpl);										
+												$tpl->assign("message","&nbsp;<br>Categor&iacute;a de servicio modificada correctamente<br>&nbsp;");
+												break;
 									}
+									$this->get_list_cat_servs();
 									$tpl->assign("objeto",$this);
 									break;
 						case 'delete':

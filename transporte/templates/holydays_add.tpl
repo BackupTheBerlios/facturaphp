@@ -2,8 +2,7 @@
 {literal}
 <script>
 	function setToCero(cad){
-		document.getElementById(cad).value="0000-00-00";
-		document.getElementById(cad+"Changed").value="00-00-0000";
+		document.getElementById(cad).value="00-00-0000";
 	}
 </script>
 {/literal}
@@ -31,11 +30,11 @@
 				  <tr>
 						<td width="125px" align="right" class="CampoFormulario">Baja:</td>
 						<td> <input class="textoMenu" type="text" name="{$objeto->ddbb_gone}" value="{$objeto->gone}" "size="15" maxlength="99" class="textfield"  id="{$objeto->ddbb_gone}">
-				 	<!--<input class="textoMenu" type="hidden" name="{$objeto->ddbb_gone}" value="0000-00-00" size="15" maxlength="99" class="textfield"  id="{$objeto->ddbb_gone}">-->
+				 	
                                     <script type="text/javascript">
                                     
                     <!--
-                    document.write('<a title="Calendario" href="javascript:openCalendar2(\'lang=es-utf-8&amp;server=1\', \'form_central\', \'{$objeto->ddbb_gone}\', \'goneChanged\', \'date\')"><img class="calendar" valign="center" src="pics/calendar.png" alt="Calendario"/></a>');
+                    document.write('<a title="Calendario" href="javascript:openCalendar(\'lang=es-utf-8&amp;server=1\', \'form_central\', \'{$objeto->ddbb_gone}\', \'date\')"><img class="calendar" valign="center" src="pics/calendar.png" alt="Calendario"/></a>');
                     //-->
                     </script><font class="error">{$error_gone}</font>
                     <input type="button" value="Poner a 0" class="botones" onclick="setToCero('gone');">
@@ -44,11 +43,11 @@
 					<tr>
 						<td width="125px" align="right" class="CampoFormulario">Alta:</td>
 						<td> <input class="textoMenu" type="text" name="{$objeto->ddbb_come}" value="{$objeto->come}" "size="15" maxlength="99" class="textfield"  id="{$objeto->ddbb_come}">
-				 <!--<input class="textoMenu" type="hidden" name="{$objeto->ddbb_come}" value="0000-00-00" size="15" maxlength="99" class="textfield"  id="{$objeto->ddbb_come}">-->
+				
                                     <script type="text/javascript">
                                     
                     <!--
-                    document.write('<a title="Calendario" href="javascript:openCalendar2(\'lang=es-utf-8&amp;server=1\', \'form_central\', \'{$objeto->ddbb_come}\', \'comeChanged\', \'date\')"><img class="calendar" valign="center" src="pics/calendar.png" alt="Calendario"/></a>');
+                    document.write('<a title="Calendario" href="javascript:openCalendar(\'lang=es-utf-8&amp;server=1\', \'form_central\', \'{$objeto->ddbb_come}\', \'date\')"><img class="calendar" valign="center" src="pics/calendar.png" alt="Calendario"/></a>');
                     //-->
                     </script><font class="error">{$error_come}</font>
                     <input type="button" value="Poner a 0" class="botones" onclick="setToCero('come');">

@@ -20,7 +20,7 @@
 					
 				  <tr>
 						<td width="125px" align="right" class="CampoFormulario">Nombre:</td>
-						<td> <input type="text" id="{$objeto->ddbb_name}" name="{$objeto->ddbb_name}" class="textoMenu" value="{$objeto->name}"></td>
+						<td> <input type="text" id="{$objeto->ddbb_name}" name="{$objeto->ddbb_name}" class="textoMenu" value="{$objeto->name}"><font class="error">{$error_name}</font></td>
 					</tr>
 					<tr>
 						<td width="125px" align="right" class="CampoFormulario">Fotograf&iacute;a:</td>
@@ -36,12 +36,12 @@
 							<option value="{$objeto->cat_prods_list[nombre].id_cat_prod}" {if $objeto->id_parent_cat==$objeto->cat_prods_list[nombre].id_cat_prod}selected{/if}>
 								{$objeto->cat_prods_list[nombre].name}
 							</option>
-						{/section}						
+						{/section}<font class="error">{$error_id_parent_cat}</font>						
 						</td>
 					</tr>
 					  <tr>
 						<td width="125" align="right" class="CampoFormulario">Descripcion:</td>
-						<td rowspan="2" ><textarea name="{$objeto->ddbb_descrip}" class="textoMenu" id="{$objeto->ddbb_descrip}">{$objeto->descrip}</textarea> </td>
+						<td rowspan="2" ><textarea name="{$objeto->ddbb_descrip}" class="textoMenu" id="{$objeto->ddbb_descrip}">{$objeto->descrip}</textarea><font class="error">{$error_descrip}</font> </td>
 					</tr>
 		</table>
 		</td>

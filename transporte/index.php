@@ -370,7 +370,7 @@ else
 $tpl->assign('title',$title);
 $tpl->assign('nav_bar',$nav_bar);
 //Antes de ir a la plantilla se registra la hora máxima a la que puede estar el usuario en esa página
-$_SESSION['max_page_time'] = time()+300;
+$_SESSION['max_page_time'] = time()+1200;
 
 $tpl->display($index_template);
 //print_r($post_user);

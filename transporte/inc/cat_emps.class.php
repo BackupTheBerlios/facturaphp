@@ -53,9 +53,9 @@ class cat_emps{
 		//este array de alguna manera aumatizada
 		************************/
 		$this->fields_list= new fields();
-		$this->fields_list->add($this->ddbb_id_cat_emp, $this->id_cat_emp, 'int', 11,0);
-		$this->fields_list->add($this->ddbb_name, $this->name, 'int', 11,0);
-		$this->fields_list->add($this->ddbb_descrip, $this->descrip, 'int', 11,0);
+		$this->fields_list->add($this->ddbb_id_cat_emp, $this->id_cat_emp, 'int', 11,0,1);
+		$this->fields_list->add($this->ddbb_name, $this->name, 'varchar', 50,0,1);
+		$this->fields_list->add($this->ddbb_descrip, $this->descrip, 'text', 255,0);
 		//print_r($this);
 		//se puede acceder a los grupos por numero de campo o por nombre de campo
 	/*	$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
@@ -186,60 +186,68 @@ class cat_emps{
 			$this->get_fields_from_post();	
 						
 			//Validacion
-			//$return=validate_fields();
+			
+			//Modificamos los todos los valores del objeto fields con los nuevos datos del objeto product, exceptuando path_photo que eso se deberia hacer mediante la clase upload.
+			//Al id_product se le da 0 por quse neecesita un valor para que 
+			$this->id_cat_emp=0;
+			$this->fields_list->modify_value($this->ddbb_id_cat_emp,$this->id_cat_emp);
+			$this->fields_list->modify_value($this->ddbb_name,$this->name);
+			$this->fields_list->modify_value($this->ddbb_descrip,$this->descrip);
+			//validamos
+			$return=$this->fields_list->validate();	
 			
 			//En caso de que la validacion haya sido fallida se muestra la plantilla
 			//con los campos erroneos marcados con un *
-			$return=true; //Para pruebas dejar esta linea sin comentar
+			
 			
 			if (!$return){
 				//Mostrar plantilla con datos erroneos
-				
+				return -1;
 			}
 			else{
 				//Si todo es correcto si meten los datos
 
-		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
-		//crea una nueva conexi—n con una bbdd (mysql)
-		$this->db = NewADOConnection($this->db_type);
-		//le dice que no salgan los errores de conexi—n de la ddbb por pantalla
-		$this->db->debug=false;
-		//realiza una conexi—n permanente con la bbdd
-		$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
-		//mete la consulta para coger los campos de la bbdd
-		$this->sql="SELECT * FROM ".$this->table_prefix.$this->table_name. " WHERE ".$this->ddbb_id_cat_emp." = -1" ;
-		//la ejecuta y guarda los resultados
-		$this->result = $this->db->Execute($this->sql);
-		//si falla 
-		if ($this->result === false){
-			$this->error=1;
-			$this->db->close();
-			return 0;
-		}
-		//rellenamos el array con los datos de los atributos de la clase
-		$record = array();
-		$record[$this->ddbb_name] = $this->name;
-		$record[$this->ddbb_descrip]=$this->descrip;
-		//calculamos la sql de inserci—n respecto a los atributos
-		$this->sql = $this->db->GetInsertSQL($this->result, $record);
-		//print($this->sql);
-		//insertamos el registro
-		$this->db->Execute($this->sql);
-		//si se ha insertado una fila
-		if($this->db->Insert_ID()>=0){
-			//capturammos el id de la linea insertada
-			$this->id_cat_emp=$this->db->Insert_ID();
-			//print("<pre>::".$this->descrip."::</pre>");
-			//devolvemos el id de la tabla ya que todo ha ido bien
-			$this->db->close();
-			return $this->id_cat_emp;
-		}else {
-			//devolvemos 0 ya que no se ha insertado el registro
-			$this->error=-1;
-			$this->db->close();
-			return 0;
-		}	
-		}
+				$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
+				//crea una nueva conexi—n con una bbdd (mysql)
+				$this->db = NewADOConnection($this->db_type);
+				//le dice que no salgan los errores de conexi—n de la ddbb por pantalla
+				$this->db->debug=false;
+				//realiza una conexi—n permanente con la bbdd
+				$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
+				//mete la consulta para coger los campos de la bbdd
+				$this->sql="SELECT * FROM ".$this->table_prefix.$this->table_name. " WHERE ".$this->ddbb_id_cat_emp." = -1" ;
+				//la ejecuta y guarda los resultados
+				$this->result = $this->db->Execute($this->sql);
+				//si falla 
+				if ($this->result === false){
+					$this->error=1;
+					$this->db->close();
+					return 0;
+				}
+				//rellenamos el array con los datos de los atributos de la clase
+				$record = array();
+				$record[$this->ddbb_name] = $this->name;
+				$record[$this->ddbb_descrip]=$this->descrip;
+				//calculamos la sql de inserci—n respecto a los atributos
+				$this->sql = $this->db->GetInsertSQL($this->result, $record);
+				//print($this->sql);
+				//insertamos el registro
+				$this->db->Execute($this->sql);
+				//si se ha insertado una fila
+				if($this->db->Insert_ID()>=0){
+					//capturammos el id de la linea insertada
+					$this->id_cat_emp=$this->db->Insert_ID();
+					//print("<pre>::".$this->descrip."::</pre>");
+					//devolvemos el id de la tabla ya que todo ha ido bien
+					$this->db->close();
+					return $this->id_cat_emp;
+				}else {
+					//devolvemos 0 ya que no se ha insertado el registro
+					$this->error=-1;
+					$this->db->close();
+					return 0;
+				}	
+			}	
 		}				
 	}
 	
@@ -378,20 +386,8 @@ class cat_emps{
 	function get_fields_from_post(){
 		
 		//Cogemos los campos principales
-		$this->name=$_POST[$this->ddbb_name];
-		$this->descrip=$_POST[$this->ddbb_descrip];
-		
-		//Colocar de manera provisional hasta que se haga la validacion de fields
-		//************Bloque
-		if ($this->name==""){
-			$this->name=" ";
-		}
-		if ($this->descrip==""){
-			$this->descrip=" ";
-		}
-		//************Fin Bloque
-
-		//Cogemos los checkbox de grupos
+		$this->name=htmlentities($_POST[$this->ddbb_name]);
+		$this->descrip=htmlentities($_POST[$this->ddbb_descrip]);
 
 		return 0;
 	}	
@@ -399,11 +395,21 @@ class cat_emps{
 	function calculate_tpl($method, $tpl){
 		$this->method=$method;
 				switch($method){
-						case 'add':									
-									if ($this->add() !=0){
-										$this->method="list";
-										$tpl=$this->listar($tpl);										
-										$tpl->assign("message","&nbsp;<br>Categoria de empleado a&ntilde;adida correctamente<br>&nbsp;");
+						case 'add':																		
+									$return=$this->add();
+									switch ($return){										
+										case 0: //por defecto												
+												break;
+										case -1: //Errores al intentar añadir datos
+												for ($i=0;$i<count($this->fields_list->array_error);$i+=2){
+													$tpl->assign("error_".$this->fields_list->array_error[$i],$this->fields_list->array_error[$i+1]);
+												}												
+												break;
+										default: //Si se ha añadido
+												$this->method="list";
+												$tpl=$this->listar($tpl);										
+												$tpl->assign("message","&nbsp;<br>Categoria de empleado a&ntilde;adida correctamente<br>&nbsp;");
+												break;
 									}
 									$tpl->assign("objeto",$this);
 									break;
@@ -412,11 +418,21 @@ class cat_emps{
 									$tpl=$this->listar($tpl);
 									break;
 						case 'modify':
-									$this->read($_GET['id']);
-									if ($this->modify() !=0){
-										$this->method="list";
-										$tpl=$this->listar($tpl);										
-										$tpl->assign("message","&nbsp;<br>Categor&iacute;a de empleado modificada correctamente<br>&nbsp;");
+									$this->read($_GET['id']);									
+									$return=$this->modify();
+									switch ($return){										
+										case 0: //por defecto												
+												break;
+										case -1: //Errores al intentar añadir datos
+												for ($i=0;$i<count($this->fields_list->array_error);$i+=2){
+													$tpl->assign("error_".$this->fields_list->array_error[$i],$this->fields_list->array_error[$i+1]);
+												}												
+												break;
+										default: //Si se ha añadido
+												$this->method="list";
+												$tpl=$this->listar($tpl);										
+												$tpl->assign("message","&nbsp;<br>Categor&iacute;a de empleado modificada correctamente<br>&nbsp;");
+												break;
 									}
 									$tpl->assign("objeto",$this);
 									break;

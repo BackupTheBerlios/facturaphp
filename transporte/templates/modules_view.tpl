@@ -17,7 +17,17 @@
 					<tr class="cabeceraMultiLinea">
 						<td width="50%" height="23" nowrap>Identificador de M&oacute;dulo: {$objeto->id_module}
 						</td>
-						<td nowrap width="50%">&nbsp;</td>
+						<td nowrap width="50%">{section name="indice" loop=$acciones}				
+				
+						{if $acciones[indice]== 'modify'}
+						<a href="index.php?module=modules&method={$acciones[indice]}&id={$objeto->id_module}">
+						<img src="pics/btn{$acciones[indice]}.gif" border="0"></a>
+						{else}
+						<a href="index.php?module=modules&method={$acciones[indice]}&id={$objeto->id_module}">
+						<img src="pics/btn{$acciones[indice]}.gif" border="0" ></a>
+						{/if}
+				
+						{/section}</td>
 					</tr>
 					<tr>
 						<td colspan="2">

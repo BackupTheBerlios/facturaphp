@@ -123,7 +123,11 @@ var hour;
 var minute;
 var second;
 var clock_set = 0;
-
+var dia;
+var mes;
+var hora;
+var minuto;
+var segundo;
 /**
  * Opens calendar window.
  *
@@ -132,17 +136,10 @@ var clock_set = 0;
  * @param   string      field name
  * @param   string      edit type - date/timestamp
  */
-function openCalendar(params, form, field, changed, type) {
+function openCalendar(params, form, field, /*changed,*/ type) {
     window.open("inc/calendar.php?" + params, "calendar", "width=400,height=200,status=yes");
     dateField = eval("document." + form + "." + field);
-	dateChanged = eval("document." + form + "." + changed);
-    dateType = type;
-}
-
-function openCalendar2(params, form, field, changed, type) {
-    window.open("inc/calendar.php?" + params, "calendar", "width=400,height=200,status=yes");
-    dateField = eval("document." + form + "." + changed);
-	dateChanged = eval("document." + form + "." + field);		
+//	dateChanged = eval("document." + form + "." + changed);
     dateType = type;
 }
 
@@ -207,19 +204,58 @@ function initCalendar() {
                         second  = parseInt(time[2]);
                     }
                 }
-                date        = value.split("-");
-                day         = parseInt(date[2]);
-                month       = parseInt(date[1]) - 1;
-                year        = parseInt(date[0]);
+
+                date = value.split("-");
+				//Hay que hacer lo siguiente con los nº 8 y 9 (en mes 9 y 10)
+
+            	dia=date[0];
+				if(dia=="08")
+					dia=8;
+				if(dia=="09")
+					dia=9;
+				mes=date[1];
+				if(mes=="08")	
+					mes=8;
+				if(mes=="09")
+					mes=9;
+                day         = parseInt(dia);
+                month       = parseInt(mes) - 1;
+               year        = parseInt(date[2]);
             } else {
-                year        = parseInt(value.substr(0,4));
-                month       = parseInt(value.substr(4,2)) - 1;
-                day         = parseInt(value.substr(6,2));
-                hour        = parseInt(value.substr(8,2));
-                minute      = parseInt(value.substr(10,2));
-                second      = parseInt(value.substr(12,2));
+			dia=value.substr(0,2);
+				if(dia=="08")
+					dia=8;
+				if(dia=="09")
+					dia=9;
+				mes=value.substr(3,2);
+				if(mes=="08")	
+					mes=8;
+				if(mes=="09")
+					mes=9;
+				hora=value.substr(11,2);
+				if(hora=="08")
+					hora=8;
+				if(hora=="09")
+					hora=9;
+				minuto=value.substr(14,2);
+				if(minuto=="08")	
+					minuto=8;
+				if(minuto=="09")
+					minuto=9;
+				segundo=value.substr(17,2);
+				if(segundo=="08")	
+					segundo=8;
+				if(mes=="09")
+					segundo=9;
+                day        = parseInt(dia);
+                month       = parseInt(mes) - 1;
+                year        = parseInt(value.substr(6,4));
+                hour        = parseInt(hora);
+                minute      = parseInt(minuto);
+                second      = parseInt(segundo);
             }
         }
+		
         if (isNaN(year) || isNaN(month) || isNaN(day) || day == 0) {
             dt      = new Date();
             year    = dt.getFullYear();
@@ -250,6 +286,7 @@ function initCalendar() {
         cnt = document.all["calendar_data"];
     }
 
+
     cnt.innerHTML = "";
 
     str = ""
@@ -261,9 +298,11 @@ function initCalendar() {
     str += month_names[month];
     str += ' <a href="#" onclick="month++; initCalendar();">&raquo;</a>';
     str += '</th><th width="50%">';
+	str += '<a href="#" onclick="year-=10; initCalendar();">&laquo;&laquo;</a> ';
     str += '<a href="#" onclick="year--; initCalendar();">&laquo;</a> ';
     str += year;
     str += ' <a href="#" onclick="year++; initCalendar();">&raquo;</a>';
+	str += ' <a href="#" onclick="year+=10; initCalendar();">&raquo;&raquo;</a>';
     str += '</th></tr></table>';
 
     str += '<table class="calendar"><tr>';
@@ -291,18 +330,16 @@ function initCalendar() {
         dispmonth = 1 + month;
 
         if (window.opener.dateType == 'datetime' || window.opener.dateType == 'date') {
-            actVal = formatNum4(year) + "-" + formatNum2(dispmonth, 'month') + "-" + formatNum2(i, 'day');
-			actVal2 = formatNum2(i, 'day') + "-" + formatNum2(dispmonth, 'month') + "-" + formatNum4(year);
+            actVal = formatNum2(i, 'day') + "-" + formatNum2(dispmonth, 'month') + "-" + formatNum4(year);
         } else {
-            actVal = "" + formatNum4(year) + formatNum2(dispmonth, 'month') + formatNum2(i, 'day');
-			actVal2 = "" + formatNum2(i, 'day') +  + formatNum2(dispmonth, 'month') + formatNum4(year);
+            actVal = "" + formatNum2(i, 'day') +  + formatNum2(dispmonth, 'month') + formatNum4(year);	
         }
         if (i == day) {
             style = ' class="selected"';
         } else {
             style = '';
         }
-        str += "<td" + style + "><a href='#' onclick='returnDate(\"" + actVal + "\",\"" + actVal2 + "\");'>" + i + "</a></td>"
+        str += "<td" + style + "><a href='#' onclick='returnDate(\"" + actVal + "\");'>" + i + "</a></td>"
         dayInWeek++;
     }
     for (i = dayInWeek; i < 7; i++) {
@@ -342,9 +379,9 @@ function initCalendar() {
  * @param   string     date text
  * @param	string	   date text changed
  */
-function returnDate(d,d2) {
+function returnDate(d) {
     txt = d;
-	txt2 = d2;
+
     if (window.opener.dateType != 'date') {
         // need to get time
         h = parseInt(document.getElementById('hour').value);
@@ -352,14 +389,12 @@ function returnDate(d,d2) {
         s = parseInt(document.getElementById('second').value);
         if (window.opener.dateType == 'datetime') {			
             txt += ' ' + formatNum2(h, 'hour') + ':' + formatNum2(m, 'minute') + ':' + formatNum2(s, 'second');
-			txt2 += ' ' + formatNum2(h, 'hour') + ':' + formatNum2(m, 'minute') + ':' + formatNum2(s, 'second');
         } else {
             // timestamp
             txt += formatNum2(h, 'hour') + formatNum2(m, 'minute') + formatNum2(s, 'second');
-			txt2 += formatNum2(h, 'hour') + formatNum2(m, 'minute') + formatNum2(s, 'second');
         }
     }
-    window.opener.dateChanged.value = txt2;
+
     window.opener.dateField.value = txt;
     window.close();
 }

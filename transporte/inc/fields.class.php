@@ -162,6 +162,9 @@ class fields{
 		if($null==1 && ($value=="" || $value==null)){
 			return "* Este campo no puede estar vacio.";
 		}
+		if (strlen(html_entity_decode($value))>$size)
+			return "* El texto introducido no debe ser mayor a $size caract&eacute;res";
+			
 		if (!is_string($value)&& $value != "")
 			return "* El texto introducido no es valido.";
 		return 0;
@@ -171,8 +174,8 @@ class fields{
 		return 0;
 	}
 	
-	function validate_string($value,$size){
-		return 0;
+	function validate_string($value,$size,$null){			
+		return validate_varchar($value,$size,$null);
 	}
 	
 	function validate_real($value){
@@ -183,8 +186,8 @@ class fields{
 		if($null==1 && ($value=="" || $value==null)){
 			return "* Este campo no puede estar vacio.";
 		}
-		$format="* Formato de fecha: dd-mm-aaaa";
-		if ($value){
+		$format="Formato de fecha: dd-mm-aaaa";
+		if ($value){			
 			$resultado = $value;
 			if ((substr($value,2,1) == '-') && (substr($value,5,1) == '-')){      
 				for ($i=0; $i<10; $i++){	
@@ -192,40 +195,65 @@ class fields{
 						$resultado = '';
 						break;  
 					}  
-				}
-				if ($borrar){ 
+				}				
+				if ($resultado){ 
 					$a = substr($value,6,4);
 					$m = substr($value,3,2);
 					$d = substr($value,0,2);
-					if(($a < 1900) || ($a > 2100) || ($m < 1) || ($m > 12) || ($d < 1) || ($d > 31))
-						$resultado = '';
-				} 
-				else{
-					if(($a%4 != 0) && ($m == 2) && ($d > 28))	   
-						$resultado = ''; // Año no bisiesto y es febrero y el dia es mayor a 28
+					if((($a < 1900) && ($a!=0)) || ($a > 2100) || ($m < 0) || ($m > 12) || ($d < 0) || ($d > 31)){
+						$resultado = '';}
+				 
 					else{
-						if (((($m == 4) || ($m == 6) || ($m == 9) || ($m==11)) && ($d>30)) || (($m==2) && ($d>29)))
-							$resultado = '';	      				  	 
-					}  // else
-				} // fin else
-				
+						if(($a%4 != 0) && ($m == 2) && ($d > 28)){	   
+							$format="El año $a no es bisiesto y ha introducido $d-02";
+							$resultado = ''; // Año no bisiesto y es febrero y el dia es mayor a 28
+						}
+						else{
+							if (((($m == 4) || ($m == 6) || ($m == 9) || ($m==11)) && ($d>30)) || (($m==2) && ($d>29))){
+								$format="El mes $m no tiene $d d&iacute;as";
+								$resultado = '';	      				  	 
+							}
+						}  // else
+					} // fin else
+				}//fin if($resultado)
 			} // if ((substr($value,2,1) == '') && (substr($value,5,1) == ''))			    			
 			else
+				{
 				$resultado = '';
+				}
 			if ($resultado == '')
-				return "* Error. $format";
+				return "* $format";
 		}
 		return 0;
 	}
 	
-	function change_date($date,$format){										
+	function change_date($date,$format){
+		//La única validación de datos que se hace aquí es que 
+		//la fecha ya este en el formato especificado
+		echo $date." ".stripos($date,"-")."<br>";		
 		switch ($format){
 			case "es":
-						list($anno,$mes,$dia)=sscanf($date,"%d-%d-%d");
-						return "$dia-$mes-$anno";
+						if (stripos($date,"-")!=2){
+							$anno=substr($date,0,4);
+							$mes=substr($date,5,2);
+							$dia=substr($date,8,2);
+							//list($anno,$mes,$dia)=sscanf($date,"%s-%s-%s");
+							echo "es: $dia-$mes-$anno";
+							return "$dia-$mes-$anno";
+						}
+						else{
+							return $date;
+						}
 			case "en":
-						list($dia,$mes,$anno)=sscanf($date,"%d-%d-%d");
-						return "$anno-$mes-$dia";
+						if (stripos($date,"-")!=4){
+							$anno = substr($date,6,4);
+							$mes = substr($date,3,2);
+							$dia = substr($date,0,2);
+							return "$anno-$mes-$dia";
+						}
+						else{
+							return $date;
+						}
 			default:
 				return 0;
 		}

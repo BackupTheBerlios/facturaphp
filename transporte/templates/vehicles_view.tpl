@@ -18,7 +18,20 @@
 						<td valign="top">
 							<table width="100%">
 							<tr class="cabeceraMultiLinea">
-								<td colspan="2" height="23" nowrap>Identificador de Veh&iacute;culo: {$objeto->id_vehicle}</td>
+								<td height="23" nowrap>Identificador de Veh&iacute;culo: {$objeto->id_vehicle}</td>
+								<td width="50%" nowrap align="center">
+								{section name="indice" loop=$acciones}				
+				
+						{if $acciones[indice]== 'modify'}
+						<a href="index.php?module=vehicles&method={$acciones[indice]}&id={$objeto->id_vehicle}">
+						<img src="pics/btn{$acciones[indice]}.gif" border="0"></a>
+						{else}
+						<a href="index.php?module=vehicles&method={$acciones[indice]}&id={$objeto->id_vehicle}">
+						<img src="pics/btn{$acciones[indice]}.gif" border="0" ></a>
+						{/if}
+				
+						{/section}
+								</td>
 							</tr>
                               <tr height="15px">
                                 <td width="25%"  nowrap class="camposVistas">Alias:</td>

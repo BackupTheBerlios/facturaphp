@@ -799,7 +799,7 @@
 	
 	function& _Execute($sql,$inputarr=false)
 	{
-
+		//echo $sql."<br>";
 		if ($this->debug) {
 		global $HTTP_SERVER_VARS;
 		
