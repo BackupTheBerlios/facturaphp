@@ -481,7 +481,7 @@ class modules{
 	function add(){
 	if (!isset($_POST['submit_add'])){
 			//Mostrar plantilla vacía				
-			
+
 			return 0;
 		}
 		//en el caso de que SI este definido submit_add
@@ -567,13 +567,14 @@ class modules{
 									$return=$this->add();
 									switch ($return){										
 										case 0: //por defecto	
-												$tpl->assign("padres",$this->modules_list);											
+												$this->get_list_modules();
+												$tpl->assign("padres",$this->modules_list);
 												break;
 										case -1: //Errores al intentar añadir datos
 												for ($i=0;$i<count($this->fields_list->array_error);$i+=2){
 													$tpl->assign("error_".$this->fields_list->array_error[$i],$this->fields_list->array_error[$i+1]);
 												}			
-												print_r($this->module_meth);
+												$this->get_list_modules();
 												$tpl->assign("module_methods",$this->module_meth);
 												$tpl->assign("padres",$this->modules_list);									
 												break;
@@ -595,6 +596,9 @@ class modules{
 									$return=$this->modify();
 									switch ($return){										
 										case 0: //por defecto
+												$this->get_methods($this->id_module);
+												$this->get_list_modules();
+												$tpl->assign("padres",$this->modules_list);
 												$tpl->assign("objeto",$this);
 												$tpl->assign("module_methods",$this->module_methods);
 												//$tpl->assign("tabla_checkbox",$this->table_categories(false));
@@ -603,8 +607,10 @@ class modules{
 												for ($i=0;$i<count($this->fields_list->array_error);$i+=2){
 													$tpl->assign("error_".$this->fields_list->array_error[$i],$this->fields_list->array_error[$i+1]);
 												}
+												$this->get_list_modules();
+												$tpl->assign("padres",$this->modules_list);
 												$tpl->assign("objeto",$this);
-												$tpl->assign("module_methods",$this->module_methods);
+												$tpl->assign("module_methods",$this->module_meth);
 												//$tpl->assign("tabla_checkbox",$this->table_categories(false));
 												break;
 										default: //Si se ha añadido
@@ -682,7 +688,8 @@ class modules{
 	if (!isset($_POST['submit_modify'])){
 			//Mostrar plantilla vacía	
 			//pasarle a la plantilla los modulos y grupos con sus respectivos checkbox a checked false
-			$this->get_methods($this->id_module);
+			
+			
 			
 			
 			return 0;
@@ -1035,7 +1042,10 @@ class modules{
 				$i++;
 			}
 		}		
-
+		echo "module methods";
+		print_r(module_methods);
+		echo "<br>module_meth";
+		print_r(module_meth);
 		return 0;
 	}	
 	
