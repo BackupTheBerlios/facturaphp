@@ -107,10 +107,7 @@
 			<td valign="top">
 			<br>
 			<br>    
-		{php}
-		if($_SESSION['super'] || $_SESSION['admin'])
-		{
-		{/php}
+		
 		
 			<table width="90%" align="center" border="0">
 			 <tr>
@@ -166,9 +163,7 @@
 			<input type="reset" Value="Borrar Datos" class="botones">
 			</td>
 		</tr>
-	{php}
-	}
-	{/php}
+	
 	  	</table> 
 	</form>
 </td>

@@ -27,13 +27,18 @@
                                 <td width="25%" nowrap class="datosVista">{$objeto->name}</td>
 								 <td>
 								 	<table align="center"><tr>
-								<!-- Elegir el modo a hacer-->	
-											<!--{$acciones}-->
-											<!--{section name="indice" loop=$acciones}
-												<td>
-												<a href="index.php?module=cat_emps&method={$acciones[indice]}&id={$objeto->id_group}">
-												<img src="pics/btn{$acciones[indice]}.gif" border="0"></a></td>
-											{/section}-->
+								{section name="indice" loop=$acciones}
+				
+				<td>
+				{if $acciones[indice]== 'modify'}
+				<a href="index.php?module=groups&method={$acciones[indice]}&id={$objeto->id_cat_emp}">
+				<img src="pics/btn{$acciones[indice]}.gif" border="0"></a></td>
+				{else}
+				<td><a href="index.php?module=users&method={$acciones[indice]}&id={$objeto->id_cat_emp}">
+				<img src="pics/btn{$acciones[indice]}.gif" border="0" onClick="confirm('¿Desea borrar este registro?\nSi pulsa Sí se borrarán tambien los registros relacionados con este cliente (p.ej: datos de usuario)')"></a></td>
+				{/if}
+				
+				{/section}
 									</tr></table>
 							</td>
 								<td></td>

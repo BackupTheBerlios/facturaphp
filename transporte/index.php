@@ -225,8 +225,7 @@ $objeto= initialize_object($module_name);
 
 //coge las sesiones abiertas y los usuarios registrados
 $users= new users();
-$num=$users->num;
-$tpl->assign('num_users',$num);
+$tpl->assign('num_users',$users->registrados);
 $session= new sessions();
 $num_sessions=$session->num();
 $tpl->assign('num_sessions',$num_sessions);
