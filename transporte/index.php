@@ -107,6 +107,26 @@ else
 	} 
 }
 
+  
+  
+//Si se va a añadir un coche, entonces se toma el nombre del archivo que se le pasó y se copia al directorio images/vehicles con el 
+//identificador del coche como nombre
+//Los directorios images y vehicles deben tener permiso de escritura para los demás, ya que para poder copiar un archivo debe ser propietario de 
+//la aplicación root, y quien los va a manejar será el grupo www-data
+if((isset($_GET['module']))&& (isset($_GET['method']))&&($_GET['module']=='vehicles')&&($_GET['method']=='add'))
+{
+ $file = new upload_file( $_FILES['path_photo']['name'], $_FILES['path_photo']['tmp_name'], $_FILES['path_photo']['size'], ($_SESSION['ident_vehicle'] + 1));
+ $result = $file->upload( "images/vehicles/" );
+}
+//Si se modifica la foto de un coche
+if((isset($_GET['module']))&& (isset($_GET['method']))&&($_GET['module']=='vehicles')&&($_GET['method']=='modify'))
+{
+print "Se cambia la foto";
+print "Fichero :".$_FILES['path_photo']['name'];
+ $file = new upload_file( $_FILES['path_photo']['name'], $_FILES['path_photo']['tmp_name'], $_FILES['path_photo']['size'], $_GET['id']);
+ $result = $file->upload( "images/vehicles/" );
+ print $result;
+}
 
 
 //identifica el usuario el modulo y la operaci—n

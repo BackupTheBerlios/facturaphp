@@ -57,8 +57,8 @@ class vehicles{
 		$this->fields_list->add($this->ddbb_id_vehicle, $this->id_vehicle, 'int', 11,0);
 		$this->fields_list->add($this->ddbb_id_corp, $this->id_corp, 'int', 11,0);
 		$this->fields_list->add($this->ddbb_number_plate, $this->number_plate, 'varchar', 10,0);
-		$this->fields_list->add($this->ddbb_alias, $this->alias, 'varchar', 10,0);
-		$this->fields_list->add($this->ddbb_path_photo, $this->path_photo, 'varchar', 20,0);
+		$this->fields_list->add($this->ddbb_alias, $this->alias, 'varchar', 255,0);
+		$this->fields_list->add($this->ddbb_path_photo, $this->path_photo, 'varchar', 255,0);
 		
 		//se puede acceder a los vehiculos por numero de campo o por nombre de campo
 		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
@@ -160,6 +160,13 @@ class vehicles{
 		}
 		
 	
+	}
+	
+	function show($id, $tpl)
+	{
+		$this->read($id);
+		$tpl->assign('objeto', $this);
+		return $tpl;
 	}
 	
 	function add()
@@ -358,38 +365,45 @@ class vehicles{
 	
 			
 	function remove($id){
-		if (!isset($_POST["submit_delete"])){
-				//Miramos a ver si hay algun empleado que tenga este usuario						
-			//	$this->view_emps($id);					
+		if (!isset($_POST["submit_delete"])){				
 				return 0;
 			}
 			else{
-			
-			$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
-			//crea una nueva conexión con una bbdd (mysql)
-			$this->db = NewADOConnection($this->db_type);
-			//le dice que no salgan los errores de conexión de la ddbb por pantalla
-			$this->db->debug=false;
-			//realiza una conexión permanente con la bbdd
-			$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
-			//mete la consulta para coger los campos de la bbdd
-			//calcula la consulta de borrado.
-			$this->sql="DELETE FROM ".$this->table_prefix.$this->table_name. " WHERE ".$this->ddbb_id_vehicle." = ".$id;
-			//la ejecuta y guarda los resultados		
-print "Intentamos borrar";
-			$this->result = $this->db->Execute($this->sql);
-			//si falla 
+			//Se borra la foto asociada con el vehiculo
+			if(unlink($this->path_photo)==true)
+			{
+				//Se borra el vehiculo de la bbdd
+				$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
+				//crea una nueva conexión con una bbdd (mysql)
+				$this->db = NewADOConnection($this->db_type);
+				//le dice que no salgan los errores de conexión de la ddbb por pantalla
+				$this->db->debug=false;
+				//realiza una conexión permanente con la bbdd
+				$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
+				//mete la consulta para coger los campos de la bbdd
+				//calcula la consulta de borrado.
+				$this->sql="DELETE FROM ".$this->table_prefix.$this->table_name. " WHERE ".$this->ddbb_id_vehicle." = ".$id;
+				//la ejecuta y guarda los resultados		
+				$this->result = $this->db->Execute($this->sql);
+				//si falla 
 
-			if ($this->db->Affected_Rows() == 0){				
-				$this->error=1;
-				$this->db->close();
+				if ($this->db->Affected_Rows() == 0)
+				{				
+					$this->error=1;
+					$this->db->close();
+					return 0;
+				}
+				else
+				{
+					$this->make_remove($id);
+					$this->error=0;
+					$this->db->close();
+					return 1;	
+				}
+			}
+			else
+			{
 				return 0;
-			}else{
-				$this->make_remove($id);
-				$this->error=0;
-				$this->db->close();
-				return 1;
-				
 			}
 		}		
 	}
@@ -406,7 +420,163 @@ print "Intentamos borrar";
 	}
 	
 	function modify(){
-		
+		if (!isset($_POST['submit_modify'])){
+			//Mostrar plantilla vacía	
+			//pasarle a la plantilla las categorías con sus respectivos checkbox a checked false
+		//	$this->checkbox=new permissions_modules;
+		//	$modules=new modules();
+		/*	
+			$k=0;
+			for($i=0;$i<$modules->num;$i++)
+			{
+				if($_SESSION['super'])
+				{
+					$this->checkbox->per_modules[$i]=new permissions_modules;
+					$this->checkbox->per_modules[$i]->id_module=$modules->modules_list[$i]['id_module'];
+					$this->checkbox->per_modules[$i]->module_name=$modules->modules_list[$i]['name_web'];
+					$this->checkbox->per_modules[$i]->validate_per_module_without_groups($this->id_user);
+				}
+				else
+				{
+					if(($modules->modules_list[$i]['name']!='modules')&&($modules->modules_list[$i]['name']!='methods'))
+					{
+						$this->checkbox->per_modules[$k]=new permissions_modules;
+						$this->checkbox->per_modules[$k]->id_module=$modules->modules_list[$i]['id_module'];
+						$this->checkbox->per_modules[$k]->module_name=$modules->modules_list[$i]['name_web'];
+						$this->checkbox->per_modules[$k]->validate_per_module_without_groups($this->id_user);
+						
+						if($modules->modules_list[$i]['name']=='corps')
+						{
+							//Si es admin y el modulo es empresas sólo puede otorgar permisos en el método Ver, 
+							//por lo que todos los demás métodos no le serán accesibles
+							$j=0;
+							$salir = false;
+							while(($j<$this->checkbox->per_modules[$k]->num_methods)&&($salir==false))
+							{
+								if($this->checkbox->per_modules[$k]->per_methods[$j]->method_name == 'view')
+								{
+									$name = $this->checkbox->per_modules[$k]->per_methods[$j]->method_name; 
+									$id_method = $this->checkbox->per_modules[$k]->per_methods[$j]->id_method;
+									$name_web = $this->checkbox->per_modules[$k]->per_methods[$j]->method_name_web;
+									$permiso = $this->checkbox->per_modules[$k]->per_methods[$j]->per;
+									
+									$this->checkbox->per_modules[$k]->per_methods = null;
+									
+									$this->checkbox->per_modules[$k]->per_methods[0] = new permissions_methods();
+									$this->checkbox->per_modules[$k]->per_methods[0]->id_method = $id_method;
+									$this->checkbox->per_modules[$k]->per_methods[0]->method_name_web = $name_web;
+									$this->checkbox->per_modules[$k]->per_methods[0]->method_name == $name; 
+									$this->checkbox->per_modules[$k]->per_methods[0]->per = $permiso;
+
+									$this->checkbox->per_modules[$k]->num_methods = 1;
+									$salir = true;
+								}
+								$j++;
+							}
+						}
+						
+						$k++;
+					}
+				}
+			}
+			
+			$groups=new groups();
+			$this->get_groups($this->id_user);
+			$k=0;
+			for($i=0;$i<$groups->num;$i++)
+			{
+				if($_SESSION['super'])
+				{
+					$this->checkbox_groups[$i]= new groups();
+					$this->checkbox_groups[$i]->read($groups->groups_list[$i][$groups->ddbb_id_group]);				
+					if ($this->checkbox_groups[$i]->verify_user($this->id_user)!=0)
+					{
+						$this->checkbox_groups[$i]->belong=1;
+					}
+				}
+				else
+				{
+					if(($groups->groups_list[$i][$groups->ddbb_name] != 'superadmin')&&($groups->groups_list[$i][$groups->ddbb_name] != 'admin'))
+					{
+						$this->checkbox_groups[$k]= new groups();
+						$this->checkbox_groups[$k]->read($groups->groups_list[$i][$groups->ddbb_id_group]);				
+						if ($this->checkbox_groups[$k]->verify_user($this->id_user)!=0)
+						{
+							$this->checkbox_groups[$k]->belong=1;
+						}
+						$k++;
+					}
+				}
+			}
+			*/
+			//$tpl->assign('usuarios',$this->per_module_methods);
+			
+			return 0;
+		}
+		else{
+			//Introducir los datos de post.
+			$this->get_fields_from_post();
+			//$this->insert_post();
+			
+			//Validacion
+			//$return=validate_fields();
+			
+			//En caso de que la validacion haya sido fallida se muestra la plantilla
+			//con los campos erroneos marcados con un *
+			$return=true; //Para pruebas dejar esta linea sin comentar
+			
+			if (!$return){
+				//Mostrar plantilla con datos erroneos
+				
+			}
+			else{
+				$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
+				//crea una nueva conexin con una bbdd (mysql)
+				$this->db = NewADOConnection($this->db_type);
+				//le dice que no salgan los errores de conexin de la ddbb por pantalla
+				$this->db->debug=false;
+				//realiza una conexin permanente con la bbdd
+				$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
+				//mete la consulta para coger los campos de la bbdd
+				$this->sql="SELECT * FROM ".$this->table_prefix.$this->table_name. " WHERE ".$this->ddbb_id_vehicle." = \"".$this->id_vehicle."\"" ;
+				//la ejecuta y guarda los resultados
+				$this->result = $this->db->Execute($this->sql);
+				//si falla 
+				if ($this->result === false){
+					$this->error=1;
+					$this->db->close();
+					return 0;
+				}
+				//rellenamos el array con los datos de los atributos de la clase
+				$record = array();
+				$record[$this->ddbb_id_vehicle]=$this->id_vehicle;
+				$record[$this->ddbb_id_corp]=$this->id_corp;
+				$record[$this->ddbb_alias] = $this->alias;
+				$record[$this->ddbb_number_plate]=$this->number_plate;
+				$record[$this->ddbb_path_photo]=$this->path_photo;
+				//calculamos la sql de insercin respecto a los atributos
+				$this->sql = $this->db->GetUpdateSQL($this->result, $record);
+				//insertamos el registro				
+				$this->db->Execute($this->sql);
+				//si se ha insertado una fila
+
+				if(($this->db->Affected_Rows()==1)||($this->sql=="")){
+					//capturammos el id de la linea insertada
+				
+				//	$this->modify_group_users();
+				//	$this->modify_module_methods();
+
+					$this->db->close();
+					//devolvemos el id de la tabla ya que todo ha ido bien
+					return $this->id_vehicle;
+				}else {
+					//devolvemos 0 ya que no se ha insertado el registro
+					$this->error=-1;
+					$this->db->close();
+					return 0;
+				}
+			}
+		}	
 	}
 	
 	function view ($id,$tpl){
@@ -428,7 +598,7 @@ print "Intentamos borrar";
 			
 			//Se comprueba si hay permiso para borrar o modificar
 			$permisos_mod_del = new permissions();
-			$permisos_mod_del->get_permissions_modify_delete();
+			$permisos_mod_del->get_permissions_modify_delete('vehicles');
 			
 			$tpl->assign('acciones',$permisos_mod_del->per_mod_del);
 
@@ -451,10 +621,7 @@ print "Intentamos borrar";
 		}
 		else
 		{
-			//Se cambia el campo path, por la foto en sí
-		/*	for($i=0;$i<$num;$i++)
-				$this->vehicles_list[$i]['path_photo'] = '<img src="images/vehicles/129" width="20" height="20">';*/
-			$cadena=''.$tabla_listado->make_tables('vehicles',$this->vehicles_list,array('Identificador de Empresa',20,'Alias',20,'Foto',20),array($this->ddbb_id_vehicle,$this->ddbb_id_corp,$this->ddbb_alias,$this->ddbb_path_photo),10,$per->permissions_module,$per->add);
+			$cadena=''.$tabla_listado->make_tables('vehicles',$this->vehicles_list,array('Alias',20,'Matr&iacute;cula',20,'Foto',20),array($this->ddbb_id_vehicle,$this->ddbb_alias,$this->ddbb_number_plate, $this->ddbb_path_photo),10,$per->permissions_module,$per->add);
 			$variables=$tabla_listado->nombres_variables;
 		}		
 		$tpl->assign('variables',$variables);
@@ -487,31 +654,34 @@ print "Intentamos borrar";
 									$tpl=$this->listar($tpl);
 									break;
 						case 'modify':
-						/*			$this->read($_GET['id']);
+									$this->read($_GET['id']);
 									if ($this->modify() !=0){
 										$this->method="list";
 										$tpl=$this->listar($tpl);										
-										$tpl->assign("message","&nbsp;<br>Usuario modificado correctamente<br>&nbsp;");
+										$tpl->assign("message","&nbsp;<br>Veh&iacute;culo modificado correctamente<br>&nbsp;");
 									}
 									$tpl->assign("objeto",$this);
-									$tpl->assign("modulos",$this->checkbox);
-									$tpl->assign("grupos",$this->checkbox_groups);*/
+							//		$tpl->assign("modulos",$this->checkbox);
+							//		$tpl->assign("grupos",$this->checkbox_groups);
 									break;
 						case 'delete':
-							/*		$this->read($_GET['id']);
+									$this->read($_GET['id']);
 									if ($this->remove($_GET['id'])==0){
-										$tpl->assign("message",$this->empleados);
+										//$tpl->assign("message",$this->emps);
 									}
 									else{
-										$this->users_list="";
+										$this->vehicles_list = "";
 										$this->method="list";
 										$tpl=$this->listar($tpl);
-										$tpl->assign("message","&nbsp;<br>Usuario borrado correctamente<br>&nbsp;");
+										$tpl->assign("message","&nbsp;<br>Veh&iacute;culo borrado correctamente<br>&nbsp;");
 									}
-									$tpl->assign("objeto",$this);*/
+									$tpl->assign("objeto",$this);
 									break;
 						case 'view':									
 									$tpl=$this->view($_GET['id'],$tpl);
+									break;
+						case 'show':
+									$tpl=$this->show($_GET['id'], $tpl);									
 									break;
 						default:
 									$this->method='list';
@@ -564,6 +734,9 @@ print "Intentamos borrar";
 									break;
 						case 'view':
 									$localice=" :: Ver Vehículos";	
+									break;
+						case 'show':
+									$localice=" :: Ver foto del Vehículo";	
 									break;
 						default:
 									$localice=" :: Buscar Vehículos";
