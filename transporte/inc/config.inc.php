@@ -23,7 +23,7 @@
 	$DDBB_USER="root";
 	$DDBB_PASS="sta3war2";
 	$IP_DDBB="127.0.0.1";
-	$DDBB_PREFIX="";
+	$TABLE_PREFIX="";
 	$DDBB_TYPE="mysql";
 	$DDBB_PORT="3306";
 	$INSTALL_DIR="/Users/david/Sites/transporte/";
