@@ -734,7 +734,7 @@ class users{
 				if ($this->num_modules==0)
 				{
 	
-					$cadena=$cadena.$tabla_modulos->tabla_vacia('modules');
+					$cadena=$cadena.$tabla_modulos->tabla_vacia('modules',false);
 					$variables_modulos=$tabla_modulos->nombres_variables;
 				}
 				else{	
@@ -776,7 +776,7 @@ class users{
 				//listado de grupos
 				if ($this->get_groups($id)==0)
 				{
-					$cadena=$cadena.$tabla_grupos->tabla_vacia('group_users');
+					$cadena=$cadena.$tabla_grupos->tabla_vacia('group_users',false);
 					$variables_grupos=$tabla_grupos->nombres_variables;
 				}
 				else

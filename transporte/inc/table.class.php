@@ -207,9 +207,22 @@
 			return $cadena;				
 		}
 		
-		function tabla_vacia($var_js){
+		function tabla_vacia($var_js,$add){
 			$cadena='<script>'."\n\r";
-			$cadena=$cadena.$var_js.'_1="<table align=\\"center\\"><tr align=\\"center\\"><td><a href=\\"index.php?module='.$var_js.'&method=add\\"><img border=\\"0\\"src=\\"pics/btnnew.gif\\"></a></td></tr><tr align=\\"center\\"><td><h3>No hay registros</h3></td></tr></table>";';
+			$cadena=$cadena.$var_js.'_1="<table align=\\"center\\">';
+			if ($add){
+				$cadena=$cadena.'<tr align=\\"center\\"><td><a href=\\"index.php?module='.$var_js.'&method=add\\"><img border=\\"0\\"src=\\"pics/btnnew.gif\\"></a></td></tr>';
+			}
+			$cadena=$cadena.'<tr align=\\"center\\"><td><h3>No hay registros</h3></td></tr></table>";';
+			$cadena=$cadena."\n\r".'</script>';
+			$this->nombres_variables=array(0=>$var_js.'_1');
+			return $cadena;
+		}
+		
+		
+		function dont_show($var_js){
+			$cadena='<script>'."\n\r";
+			$cadena=$cadena.$var_js.'_1="<table align=\\"center\\"><tr align=\\"center\\"><td><h3>No se pueden mostrar los datos</h3></td></tr></table>";';
 			$cadena=$cadena."\n\r".'</script>';
 			$this->nombres_variables=array(0=>$var_js.'_1');
 			return $cadena;
