@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.3, created on 2004-08-09 19:30:13
+<?php /* Smarty version 2.6.3, created on 2004-08-11 04:21:07
          compiled from users_add.tpl */ ?>
 <td valign="top">
 <form method="post" action="index.php?module=users&method=add">
@@ -10,7 +10,7 @@
 						<td width="7%">
 						 <img src="pics/usuariosico.png" width="32" height="32">
 						</td>
-						<td width="93%" valign="middle"  nowrap>Alta/Modificaci&oacute;n de usuarios</td>
+						<td width="93%" valign="middle"  nowrap>Alta de usuarios</td>
 								</tr>
 						</table>
 						<br>
@@ -56,11 +56,22 @@
 					  <td colspan="2" class="cabeceraCampoFormulario">Otros datos: </td>
 				  </tr>
 				  <tr>
+				  	<!--
+					Colocarlo de forma que quede igual que con los listados de permisos más abajo puestos
+					<td colspan="2"><table border="0">
+						
+						</table></td>-->
 						<td width="125px" class="CampoFormulario">Grupo:</td>
-						<td > <select class="textoMenu" id="grupo" name="grupo">
-						  <option value="1">Administrador</option>
-						  <option value="2">Conductores</option>
-						  <option value="0">Nuevo</option>
+						<td > <select class="textoMenu" id="<?php echo $this->_tpl_vars['objeto']->ddbb_id_group; ?>
+" name="<?php echo $this->_tpl_vars['objeto']->ddbb_id_group; ?>
+">
+							<?php if (count($_from = (array)$this->_tpl_vars['groups_list'])):
+    foreach ($_from as $this->_tpl_vars['group_element']):
+?>
+								<option value="<?php echo $this->_tpl_vars['group_element']->id_group; ?>
+"><?php echo $this->_tpl_vars['group_element']->name_web; ?>
+</option>
+							<?php endforeach; unset($_from); endif; ?>							
 						</select></td>
 				  </tr>
 				</table>
@@ -76,17 +87,50 @@
 					</td>
 					<td Colspan="4" width="60%">Permisos</td>
 				</tr>
+			<?php 
+			$linea=0;
+			 ?>
+			<?php if (count($_from = (array)$this->_tpl_vars['modules_list'])):
+    foreach ($_from as $this->_tpl_vars['module_element']):
+?>
+				<?php if ($this->_tpl_vars['linea'] == 0): ?>
 				<tr class="multiLinea1">
+					<?php 
+							$linea=1;
+					 ?>
+				<?php else: ?>
+				<tr class="multiLinea2">
+					<?php 
+							$linea=0;
+					 ?>
+				<?php endif; ?>
+				
+					<td width="40%" nowrap><input type="checkbox" id="<?php echo $this->_tpl_vars['module_element']->id_module; ?>
+" name="<?php echo $this->_tpl_vars['module_element']->name; ?>
+" value="<?php echo $this->_tpl_vars['module_element']->id_module; ?>
+"> 
+					<?php echo $this->_tpl_vars['module_element']->name_web; ?>
+ </td>
 
-					<td width="40%" nowrap><input type="checkbox" name="checkbox" value="checkbox"> 
-					Usuarios </td>
-					<td width="15%"  nowrap><input type="checkbox" name="checkbox" value="checkbox">
+				<?php if (count($_from = (array)$this->_tpl_vars['methods_list'])):
+    foreach ($_from as $this->_tpl_vars['method_element']):
+?>
+					<td width="15%"  nowrap><input type="checkbox" id="<?php echo $this->_tpl_vars['method_element']->id_method; ?>
+" name="<?php echo $this->_tpl_vars['module_element']->name; ?>
+_<?php echo $this->_tpl_vars['method_element']->name; ?>
+" value="<?php echo $this->_tpl_vars['method_element']->id_method; ?>
+">
 			        Listar</td>
+				<?php endforeach; unset($_from); endif; ?>
+					<!--
 					<td width="15%"  nowrap><input type="checkbox" name="checkbox" value="checkbox"> A&ntilde;adir</td>
 					<td width="15%"  nowrap><input type="checkbox" name="checkbox" value="checkbox"> Modificar</td>
 
 					<td width="15%"  nowrap><input type="checkbox" name="checkbox" value="checkbox"> Borrar</td>
+					-->
 				</tr>
+			<?php endforeach; unset($_from); endif; ?>
+<!--
 				<tr class="multiLinea2">
 					<td width="40%" nowrap><input type="checkbox" name="checkbox" value="checkbox"> 
 					Camiones</td>
@@ -117,7 +161,7 @@
 
 					<td width="15%"  nowrap><input type="checkbox" name="checkbox" value="checkbox"> Modificar</td>
 					<td width="15%"  nowrap><input type="checkbox" name="checkbox" value="checkbox"> Borrar</td>
-				</tr>		
+				</tr>		-->
 			</table>			</td>
 		</tr>
 		<tr>

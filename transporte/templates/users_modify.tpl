@@ -8,7 +8,7 @@
 						<td width="7%">
 						 <img src="pics/usuariosico.png" width="32" height="32">
 						</td>
-						<td width="93%" valign="middle"  nowrap>Alta de usuarios</td>
+						<td width="93%" valign="middle"  nowrap>Modificaci&oacute;n de usuarios</td>
 								</tr>
 						</table>
 						<br>
@@ -70,7 +70,7 @@
 					<td Colspan="4" width="60%">Permisos</td>
 				</tr>
 			{php}
-				$linea=0;
+				$linea = 0;
 			{/php}
 			{foreach from=$modules_list item=module_element}
 				{if $linea==0}
