@@ -1,19 +1,51 @@
 <html>
 <head>
-	<title>Resuival :: Zona privada :: Clientes :: Detalle de clientes</title>
+	<title>Zona privada :: Resuival :: Clientes :: Detalle de clientes</title>
+
 </head>
 <link rel="stylesheet" href="css/style.css"> 
 <body style="top-margin:0px; left-margin:0px" background="pics/fond.gif">
+	<script>
+
+	var contactos = '<table align="center" width="80%"><tr class="cabeceraMultiLinea"><td width="40%">Nombre Completo</td><td width="20%">Tel&eacute;fono</td><td width="20%">Tel&eacute;fono M&oacute;vil</td><td width="20%" colspan="3">Acciones</td></tr><tr class="multiLinea1"><td>Miguel Sanchez Hernández</td><td>923123456</td><td>656669988</td><td><a href="#">Ver</a></td><td><a href="#">Editar</a></td>								<td><a href="#">Borrar</a></td></tr><tr class="multiLinea2"><td>Antonio Gonz&aacute; Mart&iacute;n</td><td>923652854</td><td>654452589</td><td><a href="#">Ver</a></td><td><a href="#">Editar</a></td><td><a href="#">Borrar</a></td></tr><tr class="multiLinea1"><td>Carlos Zamora Gutierrez</td><td>923236545</td><td>656632519</td><td><a href="#">Ver</a></td><td><a href="#">Editar</a></td><td><a href="#">Borrar</a></td></tr><tr class="multiLinea2"><td>Vicente Benito Alc&aacute;ntara</td><td>923456875</td><td>654126545</td><td><a href="#">Ver</a></td><td><a href="#">Editar</a></td><td><a href="#">Borrar</a></td>								</tr><tr class="cabeceraMultiLinea"><td colspan="6">&nbsp;</td></tr></table>';
+	var facturas = 'Hola desde facturas';
+	
+	</script>
+	<script>
+	var i = 0;
+	function Ocultar(obj,cadena){
+
+		document.getElementById('contactos').src='pics/pestagna-contactos.gif';
+		document.getElementById('facturas').src='pics/pestagna-facturas.gif';
+		document.getElementById('partes').src='pics/pestagna-partes.gif';
+		document.getElementById('tarifas').src='pics/pestagna-tarifas.gif';
+		document.getElementById(cadena).src = 'pics/pestagna-' + cadena + 'sobre.gif';
+		
+		miDivMostrar = document.getElementById('divMostrar');
+		if (i == 0){
+						miDivMostrar.innerHTML = contactos;
+						i = 1;
+				}
+			else{
+						miDivMostrar.innerHTML = facturas ;
+						i = 0;
+					}
+
+
+		S
+	}
+	</script>
+	
 <table width="100%" height="100%">
 	<tr>
 		<td colspan="2" height="100px">
 			<table width="100%">
 				<tr>
 					<td height="100px"><img src="pics/logo.gif"></td>
-	  				<td align="right" valign="middle"><img src="pics/dragdrop.png"></td>
+	  				<td align="right" valign="middle"><img src="pics/tux.gif" width="133" height="100"><img src="pics/dragdrop.png"></td>
 				</tr>
 				<tr class="barraNavegacion">
-					<td colspan="2" >Zona privada :: Clientes :: Detalle de cliente</td>
+					<td colspan="2" >Zona privada :: Resuival :: Clientes :: Detalle de cliente</td>
 				</tr>
 			</table>		
 		</td>	  
@@ -146,12 +178,12 @@
 		<tr>
 		<td valign="top">
 			<table width="100%" cellpadding="0" cellspacing="0"  bgcolor="#000000">
-						<tr>
-						<td width="7%">&nbsp;
+						<tr Class="CabeceraModulo">
+						<td width="7%">
 						<img src="pics/clientesico.png" width="32" height="32">
 						 <!--<img src="pics/usuariosico.png" width="32" height="32">-->
 						</td>
-						<td width="93%" valign="middle" Class="CabeceraModulo" nowrap>Detalle de clientes </td>
+						<td width="93%" valign="middle" nowrap>Detalle de clientes </td>
 				</tr>
 			  </table>
 				<br>
@@ -226,15 +258,18 @@
 					  <br>
 					  <table align="center" width="400" cellspacing="0" cellpadding="0">
 					  <tr>
-					  	<td width="25%" align="center"><img src="pics/pestagna-contactos.gif"></td>
-					  	<td width="25%"  align="center"><img src="pics/pestagna-facturas-sobre.gif"></td>
-					  	<td width="25%"  align="center"><img src="pics/pestagna-partes-sobre.gif"></td>
-					  	<td width="25%" align="center"><img src="pics/pestagna-tarifas-sobre.gif"></td>
+					  	<td width="25%" align="center"><img src="pics/pestagna-contactossobre.gif" id="Contactos" onClick="Ocultar(this,'Contactos')"></td>
+					  	<td width="25%"  align="center"><img src="pics/pestagna-facturas.gif" id="Facturas" onClick="Ocultar(this,'Facturas')"></td>
+					  	<td width="25%"  align="center" ><img src="pics/pestagna-partes.gif" id="partes"></td>
+					  	<td width="25%" align="center"><img src="pics/pestagna-tarifas.gif" id="tarifas"></td>
 					  </tr>
 					  	<td align="center" colspan="4"><img src="pics/barra.gif"></td>
 					  </table>
+
 					  <br>
-						<table align="center" width="80%">
+					 
+					  <div name="divMostrar" id="divMostrar" >
+						<!--<table align="center" width="80%">
 							<tr class="cabeceraMultiLinea">
 								<td width="40%">Nombre Completo
 								</td>
@@ -277,7 +312,11 @@
 							<tr class="cabeceraMultiLinea">
 								<td colspan="6">&nbsp;</td>
 							</tr>
-						</table>	  
+						</table>	  -->
+					</div>					
+					 <script>
+					  	document.getElementById("divMostrar").innerHTML = contactos;
+					  </script>
 					  <br>
 					  <table align="center" width="400" cellpadding="0" cellspacing="0">
 						  <tr><td><img src="pics/barra.gif"></td></tr>

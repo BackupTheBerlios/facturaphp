@@ -90,7 +90,7 @@ a.enlaceMenu:visited{
 }
 
 .barraNavegacion{
-	background-color:#D3D7D3;
+	background-image:url(../pics/fondoCamposVistas.gif);
 	font-family:arial;
 	font-size:15px;
 	color:#000000;
@@ -106,6 +106,7 @@ a.enlaceMenu:visited{
 }
 
 .CabeceraModulo{
+	background-image:url(../pics/fondoCabeceraMenu.gif);
 	Color:#FFFFFF;
 	font-size:20px;
 	font-weight:bold;
