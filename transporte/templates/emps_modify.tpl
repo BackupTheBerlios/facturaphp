@@ -332,7 +332,7 @@ function enableDisable(value){
 		</td>
 		</tr>
 		<tr>
-			<td align="center" colspan="2"><br><br><input type="submit" name="submit_modify" value="A&ntilde;adir" class="botones">
+			<td align="center" colspan="2"><br><br><input type="submit" name="submit_modify" value="Modificar" class="botones">
 			<input type="reset" Value="Borrar Datos" class="botones">
 			</td>
 		</tr>

@@ -7,14 +7,14 @@
                           <!--<img src="pics/usuariosico.png" width="32" height="32">-->
 						</td>
 						<td width="93%" valign="middle"  nowrap>
-						  Borrar Empleados </td>
+						  Borrar usuarios </td>
 				</tr>
 	</table>
-			  <form method="post" action="index.php?module=emps&method=delete&id={$objeto->id_emp}">			  
+			  <form method="post" action="index.php?module=users&method=delete&id={$objeto->id_user}">			  
 			  
 			  <br>
-			  <p>Se va a proceder al borrado del Empleado: {$objeto->name} {$objeto->last_name} {$objeto->last_name2}</p>
-			  <p>Se borrar&aacute;n las relaciones con las categorias, y altas y bajas a las que pertenezca. Si tiene algun usuario asignado, éste se mantendrá por que cabe la posibilidad de que también este asignado a otro empleado</p>
+			  <p>Se va a proceder al borrado del usuario: {$objeto->login}</p>
+			  <p>Se borrar&aacute;n las relaciones con los grupos a los que pertenezca al igual que los permisos a modulos y metodos en los que esté relacionado</p>
 			  {$message}
   			  <br>
 			  <table align="center"><tr><td align="center"><input type="submit" name="submit_delete" value="Borrar" class="botones"></td></tr></table>
