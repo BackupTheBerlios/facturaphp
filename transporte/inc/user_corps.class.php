@@ -48,8 +48,9 @@ var $emp;
 								{
 									$_SESSION['ident_corp'] = $this->emp->corps_list[0]['id_corp'];
 									$my_corp = new corps();
-									$tpl = $my_corp->view($this->emp->corps_list[0]['id_corp'],$tpl);
+									$tpl = $my_corp->view($_SESSION['ident_corp'],$tpl);
 									$tpl->assign('plantilla','corps_view.tpl');	
+									
 								}
 								else
 									$tpl->assign('plantilla','user_corps_'.$method.'.tpl');	

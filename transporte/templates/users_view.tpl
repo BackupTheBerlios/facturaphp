@@ -37,13 +37,82 @@
                                  <td width="25%" class="datosVista">{$objeto->last_name}</td>
                                 
                               </tr>
-                              <tr height="15px">                                <td height="21" nowrap class="camposVistas">Segundo Apellido: </td>
+                              <tr height="15px">                               
+                               <td height="21" nowrap class="camposVistas">Segundo Apellido: </td>
                                 <td nowrap class="datosVista">{$objeto->last_name2}</td>
 								<td><table align="center">
-								<tr><td>
-								<a href="index.php?module=users&method=modify&id={$objeto->id_user}"><img src="pics/btnEditar.gif" border="0"></a></td>								
-								<td><a href="index.php?module=users&method=delete&id={$objeto->id_user}"><img src="pics/btnborrar.gif" border="0" onClick="confirm('¿Desea borrar este registro?\nSi pulsa Sí se borrarán tambien los registros relacionados con este cliente (p.ej: datos de usuario)')"></a></td>
-								</tr>
+								
+								
+								
+			{php}
+			if(!$_SESSION['super'] || !$_SESSION['admin'])
+			{
+				$user= new users(); 
+				$id_user = $user->get_id($_SESSION['user']);
+				$user->validate_per_user_module($id_user, 'users');
+				
+				$modify = false;
+				$delete = false;
+				
+				for($i=0; $i<$user->permission->num_methods;$i++)
+				{
+					if($user->permission->per_methods[$i]->method_name == 'modify')
+					{
+						if($user->permission->per_methods[$i]->per == 1)
+							$modify = true;
+					}
+					else
+					if($user->permission->per_methods[$i]->method_name == 'delete')
+					{
+						if($user->permission->per_methods[$i]->per == 1)
+							$delete = true;
+					}
+				}
+				
+				if($modify || $delete)
+				{
+			{/php}
+				<tr>
+			{php}
+				}
+				
+				if($modify)
+				{
+			{/php}
+								<td>
+								<a href="index.php?module=users&method=modify&id={$objeto->id_user}">
+								<img src="pics/btnEditar.gif" border="0"></a></td>		
+			{php}
+				}
+				
+				if($delete)
+				{
+			{/php}						
+								<td><a href="index.php?module=users&method=delete&id={$objeto->id_user}">
+								<img src="pics/btnborrar.gif" border="0" onClick="confirm('¿Desea borrar este registro?\nSi pulsa Sí se borrarán tambien los registros relacionados con este cliente (p.ej: datos de usuario)')"></a></td>
+			{php}
+				}
+			
+				if($modify || $delete)
+					{
+				{/php}
+					</tr>
+				{php}
+					}
+				}
+				else
+				{
+			{/php}
+							<tr>
+								<td>
+								<a href="index.php?module=users&method=modify&id={$objeto->id_user}">
+								<img src="pics/btnEditar.gif" border="0"></a></td>
+								<td><a href="index.php?module=users&method=delete&id={$objeto->id_user}">
+								<img src="pics/btnborrar.gif" border="0" onClick="confirm('¿Desea borrar este registro?\nSi pulsa Sí se borrarán tambien los registros relacionados con este cliente (p.ej: datos de usuario)')"></a></td>	
+							</tr>
+			{php}
+				}
+				{/php}
 								</table></td>
 								<td></td>
                               </tr>

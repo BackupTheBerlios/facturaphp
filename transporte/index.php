@@ -32,7 +32,29 @@ if(!isset($_SESSION['user']))
 		$session->register();
 		//registra la variable de sesion user con el nombre de usuario
 		$_SESSION['user']=$_POST['user'];
-		$_SESSION['ident_corp']=0;
+		$user = new users();
+		$id_user = $user->get_id($_SESSION['user']);
+		$num_groups = $user->get_groups($id_user);
+		
+		$_SESSION['super'] = false;
+		$_SESSION['admin'] = false;
+		
+		for($i = 0; $i < $num_groups; $i++)
+		{	
+			if($user->groups_list[$i]['id_group'] == 2)
+			{
+				$_SESSION['admin'] = true;
+			}
+			else
+			if($user->groups_list[$i]['id_group'] == 1)
+			{
+				$_SESSION['super'] = true;
+			}
+		}
+
+		$_SESSION['ident_corp'] = 0;
+		
+		
 		//como el usuario esta validado asigna su nombre a la plantilla
 		$tpl->assign('user_name',$_SESSION['user']);
 		$tpl->assign('login',0);
@@ -139,13 +161,13 @@ if(isset($_GET['module'])&& (!isset($_GET['method']))&&($_GET['module']=='user_c
 
 //Se indica si se trabaja con una empresa, con cuál se está trabajando
 
-	//Se comprueba si estan eligiendo empresa
-	if(isset($_GET['module'])&& isset($_GET['method'])&&(($_GET['module']=='user_corps')&&($_GET['method']=='select')))
-	{	
-		//registra la variable de sesion user con el nombre de usuario
-		$_SESSION['ident_corp']=$_GET['id'];
-		
-	}	
+//Se comprueba si estan eligiendo empresa
+if(isset($_GET['module'])&& isset($_GET['method'])&&(($_GET['module']=='user_corps')&&($_GET['method']=='select')))
+{	
+	//registra la variable de sesion user con el nombre de usuario
+	$_SESSION['ident_corp']=$_GET['id'];
+	
+}	
 
 		
 //2 opciones:
@@ -163,7 +185,7 @@ if(!isset($_SESSION['user']) && isset($_GET['module']))
 //Se comprueba que el usuario tenga permisos sobre el módulo que aparece en la barra de direccion
 if(isset($_SESSION['user']) && isset($_GET['module']))
 {
-	//if($_SESSION['user']!= 'admin')
+	if((!$_SESSION['super']) && (!$_SESSION['admin']))
 	{
 		//Se comprueba si el modulo es público si es así se deja no hay problema, pero sino se tendrá que saber si tiene o no acceso a él
 		if($module->is_public_module($_GET['module']) == 0)
@@ -179,15 +201,19 @@ if(isset($_SESSION['user']) && isset($_GET['module']))
 			{
 				$method=$_GET['method'];
 			}
-			
+		
 			if($permiso->validate_per($_SESSION['user'], $_GET['module'], $method) == 0)
 			{
 				$module_name = 'error';	
 			}
 		}
 	}
+	else
+	if($_SESSION['admin'] && ($_GET['module'] == 'modules' || $_GET['module'] == 'methods'))
+	{
+		$module_name = 'error';	
+	}
 }
-
 
 
 //inicializar el objeto que corresponda
@@ -220,9 +246,12 @@ else
 	//En este orden
 	$tpl=$objeto->calculate_tpl($method,$tpl);
 	
+	
 	//Se obtiene el nombre de la empresa en la que se está trabajando
-	if(!isset ($_SESSION['ident_corp']))
+	if($_SESSION['ident_corp']==0)
+	{
 		$corp = "";
+	}
 	else
 	{
 		$my_corp = new corps();

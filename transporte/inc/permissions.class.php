@@ -49,39 +49,51 @@ class permissions{
 	
 	function get_permissions_list($module)
 	{
-		$user = new users();
-		$id_user = $user->get_id($_SESSION['user']);
-		$user->validate_per_user($id_user);
 		
-		$this->permissions_module = array();
-		
-		for($i = 0; $i < $user->num_modules; $i++)
+		if($_SESSION['super'] || $_SESSION['admin'])
 		{
-			//Si coincide el modulo a buscar con el que estamos estudiando
-			if($user->per_modules[$i]->module_name == $module)
+			$this->permissions_module = array('view', 'modify', 'delete');
+			$this->add = true;
+			return 3;
+		}
+		else
+		{
+			$user = new users();
+			$id_user = $user->get_id($_SESSION['user']);
+			$user->validate_per_user($id_user);
+		
+			$this->permissions_module = array();
+		
+			for($i = 0; $i < $user->num_modules; $i++)
 			{
-				$j = 0;
-				for($k = 0; $k < $user->per_modules[$i]->num_methods; $k++)
+				//Si coincide el modulo a buscar con el que estamos estudiando
+				if($user->per_modules[$i]->module_name == $module)
 				{
-					//Si tiene permiso sobre el metodo se añade al array
-					if($user->per_modules[$i]->per_methods[$k]->per == 1)
+					$j = 0;
+					for($k = 0; $k < $user->per_modules[$i]->num_methods; $k++)
 					{
-						$this->per_add = false; 
-						
-						if(($user->per_modules[$i]->per_methods[$k]->method_name == 'view') || ($user->per_modules[$i]->per_methods[$k]->method_name == 'modify') || ($user->per_modules[$i]->per_methods[$k]->method_name == 'delete'))
+						//Si tiene permiso sobre el metodo se añade al array
+						if($user->per_modules[$i]->per_methods[$k]->per == 1)
 						{
-							$this->permissions_module[$j] = $user->per_modules[$i]->per_methods[$k]->method_name;
-							$j++;
-						}
+							$this->per_add = false; 
 						
-						if($user->per_modules[$i]->per_methods[$k]->method_name == 'add')
-						{
-							$this->add = true;
+							if(($user->per_modules[$i]->per_methods[$k]->method_name == 'view') || ($user->per_modules[$i]->per_methods[$k]->method_name == 'modify') || ($user->per_modules[$i]->per_methods[$k]->method_name == 'delete'))
+							{
+								$this->permissions_module[$j] = $user->per_modules[$i]->per_methods[$k]->method_name;
+								$j++;
+							}
+						
+							if($user->per_modules[$i]->per_methods[$k]->method_name == 'add')
+							{
+								$this->add = true;
+							}
 						}
 					}
+					
+					return $j-1;	
 				}
-				return 1;	
 			}
+		
 		}
 	
 	}

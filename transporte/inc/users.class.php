@@ -605,22 +605,12 @@ class users{
 		$this->get_list_users();
 		$tabla_listado = new table(true);
 		
-		if($_SESSION['user']=='admin')
-			{
-				$acciones = array('view', 'modify', 'delete');
-				$add = true;
-			}
-			else
-			{
-				$per = new permissions();
-				$per->get_permissions_list('users');
-				
-				$acciones = $per->permissions_module;
-				$add = $per->add;
-			}
-	
 		
-		$cadena=''.$tabla_listado->make_tables('users',$this->users_list,array('Login',20,'Nombre',20,'Primer Apellido',20,'Segundo Apellido',20),array($this->ddbb_id_user,$this->ddbb_login,$this->ddbb_name,$this->ddbb_last_name,$this->ddbb_last_name2),10,$acciones,$add);
+		$per = new permissions();
+		$per->get_permissions_list('users');
+		
+		
+		$cadena=''.$tabla_listado->make_tables('users',$this->users_list,array('Login',20,'Nombre',20,'Primer Apellido',20,'Segundo Apellido',20),array($this->ddbb_id_user,$this->ddbb_login,$this->ddbb_name,$this->ddbb_last_name,$this->ddbb_last_name2),10,$per->permissions_module,$per->add);
 		$variables=$tabla_listado->nombres_variables;		
 		$tpl->assign('variables',$variables);
 		$tpl->assign('cadena',$cadena);		
@@ -787,40 +777,6 @@ class users{
 		return $this->num;
 	}
 	
-	function is_admin($id_user)
-	{
-		$num_groups = $this->get_groups($id_user);
-		
-		$i = 0;
-		while($i < $num_groups)
-		{
-			//Recorremos la lista de grupos al que pertenece el usuario en busca de si pertenece al grupo admin
-			if($this->groups_list[$i]['id_group'] == 2)
-			{
-				return true;
-			}
-			$i++;
-		}
-		return false;
-	}
-	
-	function is_super($id_user)
-	{
-		$num_groups = $this->get_groups($id_user);
-		
-		$i = 0;
-		while($i < $num_groups)
-		{
-			//Recorremos la lista de grupos al que pertenece el usuario en busca de si pertenece al grupo admin
-			if($this->groups_list[$i]['id_group'] == 1)
-			{
-				return true;
-			}
-			$i++;
-		}
-		return false;
-	}
-	
 	
 	function get_modules($id){	
 		return 0;
@@ -877,7 +833,25 @@ class users{
 		}
 	}
 	
-	
+	function validate_per_user_module($id_user, $module)
+	{			
+		$this->modules = new modules();
+		$id_module = $this->modules->get_id($module);
+
+		for ($modulo_num = 0; $modulo_num < $this->num_modules; $modulo_num++) 
+		{
+			//Como se tiene el numero de modulos entonces se puede ver nombre e identificador en $this->modules->modules_list
+			//Así será mas fácil recorrer la matriz, y no hay problemas de pasar un hash a smarty ya que no los acepta
+			$this->permission = new permissions_modules();
+			$this->permission->id_module = $this->modules->id_module;
+			$this->permission->module_name = $this->modules->name;
+			$this->permission->web_name = $this->modules->name_web;
+			$this->permission->publico = $this->modules->publico;
+			$this->permission->parent = $this->modules->parent;
+			$this->permission->validate_per_module($id_user);
+		
+		}
+	}
 	
 	
 	function localice($method){	
