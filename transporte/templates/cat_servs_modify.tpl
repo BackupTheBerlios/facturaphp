@@ -8,7 +8,7 @@
 						<td width="7%">
 						 <img src="pics/usuariosico.png" width="32" height="32">
 						</td>
-						<td width="93%" valign="middle"  nowrap>A&ntilde;adir Catego&iacute;a de Servicio</td>
+						<td width="93%" valign="middle"  nowrap>Modificar Categor&iacute;a de Servicio</td>
 			  </tr>
 		  </table>
 						<br>
@@ -28,7 +28,7 @@
 						<input type="file" name="{$objeto->ddbb_path_photo}"></input></td>	
 				  </tr>
 					 <tr>
-						<td width="125px" align="right" class="CampoFormulario">Categoria Padre:</td>
+						<td width="125px" align="right" class="CampoFormulario">Categor&iacute;a Padre:</td>
 						<td> <select id="{$objeto->ddbb_id_parent_cat}" name="{$objeto->ddbb_id_parent_cat}">
 						<option value="0" {if $objeto->id_parent_cat==0}selected{/if}>Ninguna</option>
 						
