@@ -3,12 +3,7 @@
 			  <td class="cabeceraMenu" colspan="2">.:Men&uacute; principal:.</td>
 			 <!-- <td colspan="2"><img src="pics/menuPrincipal.gif"></td>-->
 			</tr>
-			<tr class="textoMenu">
-			  <td width="10px">&nbsp;</td>
-			  <td>
-			  	- <a href="index.php?module=user_corps" class="enlaceMenu">Inicio</a><br>
-			  </td>
-			</tr>
+			
 			
 			
 			{php}
