@@ -5,8 +5,8 @@
 			<tr class="textoMenuUsuarios">			 
 			<td><img src="pics/usuariosico.png"></td>
 			  <td>
-			  	Conectados: <b>1</b><br>
-			  	Registrados: <b>5</b>
+			  	Conectados: <b>{$num_sessions}</b><br>
+			  	Registrados: <b>{$num_users}</b>
 			  </td>
 			</tr>
 		</table>

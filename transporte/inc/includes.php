@@ -6,4 +6,6 @@ require_once($ADODB_DIR.'adodb.inc.php');
 require_once($SMARTY_DIR.'Smarty.class.php');
 require_once('templates.class.php');
 require_once('fields.class.php');
+require_once('sessions.class.php');
+require_once('modules.class.php');
 ?>

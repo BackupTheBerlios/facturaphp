@@ -24,6 +24,12 @@
 			<tr class="textoMenu">
 			  <td width="10px">&nbsp;</td>
 			  <td>
+			  	- <a href="index.php?module=users" class="enlaceMenu">Usuarios</a><br>
+			  </td>
+			</tr>
+			<tr class="textoMenu">
+			  <td width="10px">&nbsp;</td>
+			  <td>
 			  	- <a href="#" class="enlaceMenu">Productos</a><br>
 			  </td>
 			</tr>

@@ -63,10 +63,47 @@ if(!isset($_SESSION['user'])){
 	} 
 }
 
+
+
 //identifica el usuario el modulo la operaci—n y los permisos
+if(isset($_GET['module'])){
+	$module=$_GET['module'];
+	$_SESSION['module']=$module;
+	switch ($module){
+		case ('users'): {
+			$object= new users;
+		}
+	
+	}
+}
+
 //coge el listado de modulos disponibles para el usuario
-//coge las operaciones de ese modulo diaponibles
+$module= new modules();
+if(isset($_SESSION['user'])){
+$modules_list=$module->get_list_modules_user($_SESSION['user']);
+}else{
+	$modules_list=$module->get_list_public_modules();
+
+}
+$tpl->assign('modules_list',$modules_list);
+//coge las operaciones de ese modulo disponibles
+if(isset($_GET['module'])||isset($_SESSION['module'])){
+
+	if(isset($_GET['module'])){
+		$module=$_GET['module'];
+	}else{
+		$module=$_SESSION['module'];
+	}
+	$operations_list=$module->get_module_operations_list($module);
+}
+
 //coge las sesiones abiertas y los usuarios registrados
+$users= new users();
+$num=$users->num;
+$tpl->assign('num_users',$num);
+$session= new sessions();
+$num_sessions=$session->num();
+$tpl->assign('num_sessions',$num_sessions);
 //calcula la barra de navegaci—n y titulo de la pagina
 //calcula la plantilla a presentar
 
