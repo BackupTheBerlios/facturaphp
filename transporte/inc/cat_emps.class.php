@@ -343,10 +343,20 @@ class cat_emps{
 	}
 	  
 	function listar($tpl){
-		$this->get_list_cat_emps();
+		$num = $this->get_list_cat_emps();
 		$tabla_listado = new table(true);
-		$cadena=''.$tabla_listado->make_tables('cat_emps',$this->cat_emps_list,array('Nombre',20,'Descripci&oacute;n',60),array($this->ddbb_id_cat_emp,$this->ddbb_name,$this->ddbb_descrip),10,array('view','modify','delete'),true);
-		$variables=$tabla_listado->nombres_variables;		
+		$per = new permissions();
+		$per->get_permissions_list('cat_emps');
+		if ($num==0)
+		{
+			$cadena=''.$cadena.$tabla_listado->tabla_vacia('cat_emps', $per->add);
+			$variables=$tabla_listado->nombres_variables;
+		}
+		else
+		{	
+			$cadena=''.$tabla_listado->make_tables('cat_emps',$this->cat_emps_list,array('Nombre',20,'Descripci&oacute;n',60),array($this->ddbb_id_cat_emp,$this->ddbb_name,$this->ddbb_descrip),10,$per->permissions_module,$per->add);
+			$variables=$tabla_listado->nombres_variables;
+		}		
 		$tpl->assign('variables',$variables);
 		$tpl->assign('cadena',$cadena);		
 		return $tpl;
@@ -358,7 +368,7 @@ class cat_emps{
 	
 			//Se comprueba si hay permiso para borrar o modificar
 			$permisos_mod_del = new permissions();
-			$permisos_mod_del->get_permissions_modify_delete($_SESSION['user'], 'cat_emps');
+			$permisos_mod_del->get_permissions_modify_delete('cat_emps');
 			
 			$tpl->assign('acciones',$permisos_mod_del->per_mod_del);
 
@@ -531,7 +541,7 @@ class cat_emps{
 		if ($corp != ""){
 			$corp='<a href="index.php">'.$corp.' ::';
 		}
-		$nav_bar = '<a href="index.php">Zona privada</a> :: '.$corp.' <a href="index.php?module=cat_emps">Categor&iacute;a de empleados</a>';
+		$nav_bar = '<a href="index.php?module=corps&method=view&id='.$_SESSION['ident_corp'].'">Zona privada</a> :: '.$corp.' <a href="index.php?module=cat_emps">Categor&iacute;a de empleados</a>';
 		$nav_bar=$nav_bar.$this->localice($method);
 		return $nav_bar;
 	}	

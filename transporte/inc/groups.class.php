@@ -575,7 +575,7 @@ class groups{
 
 			//Se comprueba si hay permiso para borrar o modificar
 			$permisos_mod_del = new permissions();
-			$permisos_mod_del->get_permissions_modify_delete($_SESSION['user'], 'groups');
+			$permisos_mod_del->get_permissions_modify_delete('groups');
 			
 			$tpl->assign('acciones',$permisos_mod_del->per_mod_del);
 			
@@ -587,17 +587,27 @@ class groups{
 	}
 	
 	function listar($tpl){
-		$this->get_list_groups();
+		$num = $this->get_list_groups();
 		
 		$per = new permissions();
-		$per->get_permissions_list('groups');
-				
+		$per->get_permissions_list('groups');				
 		$tabla_listado = new table(true);
-		$cadena=''.$tabla_listado->make_tables('groups',$this->groups_list,array('Nombre',40,'Nombre Web',40),array($this->ddbb_id_group,$this->ddbb_name,$this->ddbb_name_web),10,$per->permissions_module,$per->add);
-		$variables=$tabla_listado->nombres_variables;		
+		if ($num==0)
+		{
+			$cadena=''.$cadena.$tabla_listado->tabla_vacia('groups', $per->add);
+			$variables=$tabla_listado->nombres_variables;
+		}
+		else
+		{	
+			$cadena=''.$tabla_listado->make_tables('groups',$this->groups_list,array('Nombre',40,'Nombre Web',40),array($this->ddbb_id_group,$this->ddbb_name,$this->ddbb_name_web),10,$per->permissions_module,$per->add);
+			$variables=$tabla_listado->nombres_variables;
+		}		
 		$tpl->assign('variables',$variables);
 		$tpl->assign('cadena',$cadena);		
 		return $tpl;
+		
+		
+		
 	}
 
 		function calculate_tpl($method, $tpl){
@@ -659,7 +669,7 @@ class groups{
 		if ($corp != ""){
 			$corp='<a href="index.php?module=user_corps&method=select&id='.$_SESSION['ident_corp'].'">'.$corp.' ::';
 		}
-		$nav_bar = '<a>Zona privada</a> :: '.$corp.' <a href="index.php?module=groups">Grupos</a>';
+		$nav_bar = '<a href="index.php?module=corps&method=view&id='.$_SESSION['ident_corp'].'">Zona privada</a> :: '.$corp.' <a href="index.php?module=groups">Grupos</a>';
 		$nav_bar=$nav_bar.$this->localice($method);
 		return $nav_bar;
 	}		

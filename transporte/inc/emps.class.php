@@ -950,7 +950,7 @@ class emps{
 			
 			//Se comprueba si hay permiso para borrar o modificar
 			$permisos_mod_del = new permissions();
-			$permisos_mod_del->get_permissions_modify_delete($_SESSION['user'], 'emps');
+			$permisos_mod_del->get_permissions_modify_delete('emps');
 			$tpl->assign('acciones',$permisos_mod_del->per_mod_del);
 					
 			
@@ -1094,14 +1094,21 @@ class emps{
 
 	function listar($tpl)
 	{
-		$this->get_list_emps($_SESSION['ident_corp']);
+		$num = $this->get_list_emps($_SESSION['ident_corp']);
 	
+		$tabla_listado = new table(true);
 		$per = new permissions();
 		$per->get_permissions_list('emps');
-		
-		$tabla_listado = new table(true);
-		$cadena=''.$tabla_listado->make_tables('emps',$this->emps_list,array('Nombre',20,'Primer Apellido',20,'Segundo Apellido',20),array($this->ddbb_id_emp, $this->ddbb_name,$this->ddbb_last_name,$this->ddbb_last_name2),10,$per->permissions_module,$per->add);
-		$variables=$tabla_listado->nombres_variables;		
+		if ($num==0)
+		{
+			$cadena=''.$cadena.$tabla_listado->tabla_vacia('emps', $per->add);
+			$variables=$tabla_listado->nombres_variables;
+		}
+		else
+		{	
+			$cadena=''.$tabla_listado->make_tables('emps',$this->emps_list,array('Nombre',20,'Primer Apellido',20,'Segundo Apellido',20),array($this->ddbb_id_emp, $this->ddbb_name,$this->ddbb_last_name,$this->ddbb_last_name2),10,$per->permissions_module,$per->add);
+			$variables=$tabla_listado->nombres_variables;	
+		}				
 		$tpl->assign('variables',$variables);
 		$tpl->assign('cadena',$cadena);		
 		return $tpl;
@@ -1235,7 +1242,7 @@ class emps{
 		if ($corp != ""){
 			$corp='<a href="index.php?module=user_corps&method=select&id='.$_SESSION['ident_corp'].'">'.$corp.'</a> ::';
 		}
-		$nav_bar = '<a href="index.php?module=user_corps">Zona privada</a> :: '.$corp.' <a href="index.php?module=emps">Empleados</a>';
+		$nav_bar = '<a href="index.php?module=corps&method=view&id='.$_SESSION['ident_corp'].'">Zona privada</a> :: '.$corp.' <a href="index.php?module=emps">Empleados</a>';
 		$nav_bar=$nav_bar.$this->localice($method);
 		return $nav_bar;
 	}	

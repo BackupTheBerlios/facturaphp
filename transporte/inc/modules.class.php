@@ -728,7 +728,7 @@ class modules{
 
 			//Se comprueba si hay permiso para borrar o modificar
 			$permisos_mod_del = new permissions();
-			$permisos_mod_del->get_permissions_modify_delete($_SESSION['user'], 'modules');
+			$permisos_mod_del->get_permissions_modify_delete('modules');
 
 			$tpl->assign('acciones',$permisos_mod_del->per_mod_del);
 
@@ -747,7 +747,7 @@ class modules{
 	if ($corp != ""){
 			$corp='<a href="index.php?module=user_corps&method=select&id='.$_SESSION['ident_corp'].'">'.$corp.' ::';
 		}
-		$nav_bar = '<a>Zona privada</a> :: '.$corp.' <a href="index.php?module=modules">M&oacute;dulos</a>';
+		$nav_bar = '<a href="index.php?module=corps&method=view&id='.$_SESSION['ident_corp'].'">Zona privada</a> :: '.$corp.' <a href="index.php?module=modules">M&oacute;dulos</a>';
 		$nav_bar=$nav_bar.$this->localice($method);
 		return $nav_bar;
 	}	
@@ -789,26 +789,20 @@ class modules{
 	}
 	
 	function listar($tpl){
-		$this->get_list_modules();
+		$num = $this->get_list_modules();
 		$tabla_listado = new table(true);
-		
-		if($_SESSION['user']=='admin')
-			{
-				$acciones = array('view', 'modify', 'delete');
-				$add = true;
-			}
-			else
-			{
-				$per = new permissions();
-				$per->get_permissions_list('modules');
-				
-				$acciones = $per->permissions_module;
-				$add = $per->add;
-			}
-	
-		
-		$cadena=''.$tabla_listado->make_tables('modules',$this->modules_list,array('Nombre Web',40,'Nombre',20,'Ruta',20),array($this->ddbb_id_module,$this->ddbb_name_web,$this->ddbb_name,$this->ddbb_path),10,$acciones,$add);
-		$variables=$tabla_listado->nombres_variables;		
+		$per = new permissions();
+		$per->get_permissions_list('modules');
+		if ($num==0)
+		{
+			$cadena=''.$cadena.$tabla_listado->tabla_vacia('modules', $per->add);
+			$variables=$tabla_listado->nombres_variables;
+		}
+		else
+		{	
+			$cadena=''.$tabla_listado->make_tables('modules',$this->modules_list,array('Nombre Web',40,'Nombre',20,'Ruta',20),array($this->ddbb_id_module,$this->ddbb_name_web,$this->ddbb_name,$this->ddbb_path),10,$per->permissions_module,$per->add);
+			$variables=$tabla_listado->nombres_variables;		
+		}
 		$tpl->assign('variables',$variables);
 		$tpl->assign('cadena',$cadena);		
 		return $tpl;

@@ -29,7 +29,7 @@ class news{
 		if ($corp != ""){
 			$corp='<a href="index.php?module=user_corps&method=select&id='.$_SESSION['ident_corp'].'">'.$corp.' ::';
 		}
-		$nav_bar = '<a>Zona Pública</a> :: '.$corp.' <a href="index.php?module=news">Noticias</a>';
+		$nav_bar = 'Zona Pública :: '.$corp.' <a href="index.php?module=news">Noticias</a>';
 
 		return $nav_bar;
 	}		

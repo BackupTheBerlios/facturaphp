@@ -29,7 +29,7 @@ class contact{
 		if ($corp != ""){
 			$corp='<a href="index.php?module=user_corps&method=select&id='.$_SESSION['ident_corp'].'">'.$corp.' ::';
 		}
-		$nav_bar = '<a>Zona Pública</a> :: '.$corp.' <a href="index.php?module=contact">Contacto</a>';
+		$nav_bar = '<a href="index.php?module=corps&method=view&id='.$_SESSION['ident_corp'].'">Zona privada</a> :: '.$corp.' <a href="index.php?module=contact">Contacto</a>';
 	
 		return $nav_bar;
 	}	
@@ -39,7 +39,7 @@ class contact{
 		if ($corp != ""){
 			$corp=$corp." ::";
 		}
-		$title = "Zona Pública :: Contacto";
+		$title = "Zona Privada :: Contacto";
 		return $title;
 	}		
 	

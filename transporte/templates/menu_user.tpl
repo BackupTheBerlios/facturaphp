@@ -43,6 +43,13 @@
 					$i++;
 					
 				}
+				{/php}
+				<tr class="textoMenu">
+				<td width="10px">&nbsp;</td>
+				<td>
+					- <a href="index.php?module=contact" class="enlaceMenu">Contactos
+				</a><br></td></tr>
+				{php}
 
 				if(($_SESSION['admin'] == false)&&($_SESSION['super'] == false))
 				{

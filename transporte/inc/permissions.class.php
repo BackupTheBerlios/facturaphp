@@ -99,7 +99,7 @@ class permissions{
 	
 	}
 	
-	function get_permissions_modify_delete($id_user,$module)
+	function get_permissions_modify_delete($module)
 	{
 		if(!$_SESSION['super'] && !$_SESSION['admin'])
 		{

@@ -29,7 +29,7 @@ class services{
 		if ($corp != ""){
 			$corp='<a href="index.php?module=user_corps&method=select&id='.$_SESSION['ident_corp'].'">'.$corp.' ::';
 		}
-		$nav_bar = '<a>Zona Pública</a> :: '.$corp.' <a href="index.php?module=uservices">Servicios</a>';
+		$nav_bar = 'Zona Privada :: '.$corp.' <a href="index.php?module=uservices">Servicios</a>';
 	
 		return $nav_bar;
 	}	
@@ -40,7 +40,7 @@ class services{
 		{
 			$corp=$corp." ::";
 		}
-		$title = "Zona Pública :: Servicios";
+		$title = "Zona Privada :: Servicios";
 		return $title;
 	}		
 	

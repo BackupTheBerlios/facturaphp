@@ -890,7 +890,7 @@ class users{
 			
 			//Se comprueba si hay permiso para borrar o modificar
 			$permisos_mod_del = new permissions();
-			$permisos_mod_del->get_permissions_modify_delete($_SESSION['user'], 'users');
+			$permisos_mod_del->get_permissions_modify_delete('users');
 
 			
 			$tpl->assign('acciones',$permisos_mod_del->per_mod_del);
@@ -903,16 +903,20 @@ class users{
 	}
 	
 	function listar($tpl){
-		$this->get_list_users();
+		$num = $this->get_list_users();
 		$tabla_listado = new table(true);
-		
-		
 		$per = new permissions();
 		$per->get_permissions_list('users');
-		
-		
-		$cadena=''.$tabla_listado->make_tables('users',$this->users_list,array('Login',20,'Nombre',20,'Primer Apellido',20,'Segundo Apellido',20),array($this->ddbb_id_user,$this->ddbb_login,$this->ddbb_name,$this->ddbb_last_name,$this->ddbb_last_name2),10,$per->permissions_module,$per->add);
-		$variables=$tabla_listado->nombres_variables;		
+		if ($num==0)
+		{
+			$cadena=''.$cadena.$tabla_listado->tabla_vacia('users', $per->add);
+			$variables=$tabla_listado->nombres_variables;
+		}
+		else
+		{	
+			$cadena=''.$tabla_listado->make_tables('users',$this->users_list,array('Login',20,'Nombre',20,'Primer Apellido',20,'Segundo Apellido',20),array($this->ddbb_id_user,$this->ddbb_login,$this->ddbb_name,$this->ddbb_last_name,$this->ddbb_last_name2),10,$per->permissions_module,$per->add);
+			$variables=$tabla_listado->nombres_variables;
+		}		
 		$tpl->assign('variables',$variables);
 		$tpl->assign('cadena',$cadena);		
 		return $tpl;
@@ -1094,7 +1098,7 @@ class users{
 	if ($corp != ""){
 			$corp='<a href="index.php?module=user_corps&method=select&id='.$_SESSION['ident_corp'].'">'.$corp.' ::';
 		}
-		$nav_bar = '<a>Zona privada</a> :: '.$corp.' <a href="index.php?module=users">Usuarios</a>';
+		$nav_bar = '<a href="index.php?module=corps&method=view&id='.$_SESSION['ident_corp'].'">Zona privada</a> :: '.$corp.' <a href="index.php?module=users">Usuarios</a>';
 		$nav_bar=$nav_bar.$this->localice($method);
 		return $nav_bar;
 	}	
