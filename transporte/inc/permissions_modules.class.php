@@ -66,7 +66,7 @@ class permissions_modules{
 		$this->db->debug=false;
 		//realiza una conexi—n permanente con la bbdd
 		$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
-		
+	
 		//mete la consulta
 		$this->sql='SELECT `per`FROM `per_group_modules` WHERE `id_module`='.$id_module.' AND `id_group`='.$id_group;
 		//la ejecuta y guarda los resultados
@@ -263,9 +263,8 @@ class permissions_modules{
 	
 		
 		//Se comprueba si el usuario tiene permisos en el módulo
-			
 		$result = $this->validate_per_user_module($id_user, $this->id_module);
-
+	
 		if($result == true)
 		{
 			$per = true;
@@ -301,7 +300,7 @@ class permissions_modules{
 			$this->per_methods[$metodo_num] = new permissions_methods();
 			$this->per_methods[$metodo_num]->id_method = $modules->module_methods[$metodo_num]['id_method'];
 			$this->per_methods[$metodo_num]->method_name = $modules->module_methods[$metodo_num]['name'];				
-			$this->per_methods[$metodo_num]->name_web = $modules->module_methods[$metodo_num]['name_web'];
+			$this->per_methods[$metodo_num]->method_name_web = $modules->module_methods[$metodo_num]['name_web'];
 			if($per == true)
 			{	
 				$this->per_methods[$metodo_num]->validate_per_method($id_user, $this->per_methods[$metodo_num]->id_method);
@@ -314,10 +313,9 @@ class permissions_modules{
 		}
 		
 	}
-	
+			
 	function validate_per_module_without_groups($id_user)
 	{
-	
 		$this->inicializar_base_datos();
 	
 		$user = new users();
@@ -370,6 +368,5 @@ class permissions_modules{
 		}
 		
 	}
-	
 }
-?>	
+?>
