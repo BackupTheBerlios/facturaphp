@@ -65,6 +65,8 @@ class emps{
 	var $method;
 	var $obj_user;
 	var $cat_emps;
+	var $come;
+	var $category;
   	//constructor
 	function emps(){
 		//coge las variables globales del fichero config.inc.php
@@ -179,8 +181,9 @@ class emps{
 	}
 	
 	function add(){
-		if(!isset($_POST['new_user'])){
+		if((!isset($_POST['existUser']))||($_POST['existUser']=="new")){
 			$this->obj_user=new users();
+			$this->obj_user->is_emps=true;
 			$this->obj_user->add();
 		}
 		//Miramos a ver si esta definida el "submit_add" y si no lo esta, pasamos directamente a mostrar la plantilla
@@ -230,14 +233,27 @@ class emps{
 				}
 				//rellenamos el array con los datos de los atributos de la clase
 				$record = array();
-				$record[$this->ddbb_login] = $this->login;
-				$record[$this->ddbb_passwd]=$this->passwd;
 				$record[$this->ddbb_name]=$this->name;
 				$record[$this->ddbb_last_name]=$this->last_name;
 				$record[$this->ddbb_last_name2]=$this->last_name2;
-				$record[$this->ddbb_full_name]=$this->full_name;
-				$record[$this->ddbb_internal]=$this->internal;
-				$record[$this->ddbb_active]=$this->active;
+				$record[$this->ddbb_birthday]=$this->birthday;
+				$record[$this->ddbb_address]=$this->address;
+				$record[$this->ddbb_id_corp]=$this->id_corp;
+				$record[$this->ddbb_city]=$this->city;
+				$record[$this->ddbb_state]=$this->state;
+				$record[$this->ddbb_country]=$this->country;
+				$record[$this->ddbb_postal_code]=$this->postal_code;
+				$record[$this->ddbb_phone]=$this->phone;
+				$record[$this->ddbb_mobile_phone]=$this->mobile_phone;
+				$record[$this->ddbb_fax]=$this->fax;
+				$record[$this->ddbb_mail]=$this->mail;				
+				
+				//Insertamus el usuario.
+				if ($_POST["user"]=="new"){
+					$this->id_user=$this->obj_user->id_user;
+				}	
+				$record[$this->ddbb_id_user]=$this->id_user;		
+				
 				//calculamos la sql de insercin respecto a los atributos
 				$this->sql = $this->db->GetInsertSQL($this->result, $record);
 				//print($this->sql);
@@ -245,14 +261,17 @@ class emps{
 				$this->db->Execute($this->sql);
 				//si se ha insertado una fila
 				if($this->db->Insert_ID()>=0){
-					//SE INSERTAN LOS PERMISOS.
-					//Insertamos los permisos por modulo					
-					//Insertamos los grupos
-					//$this->insert_per_groups();
+					//Cogemos el id del empleado insertado.
+					
+					$this->id_emp=$this->db->Insert_ID();
+					
 					//capturammos el id de la linea insertada
-					$this->id_user=$this->db->Insert_ID();
-					$this->add_group_users();
-					$this->add_per_modules_methods();
+					//Introducimos categorias;
+					$this->add_category($this->id_emp);
+					//Introducimos fecha de alta.
+					$this->add_holiday($this->id_emp);
+
+					
 					//print("<pre>::".$this->id_user."::</pre>");
 					//devolvemos el id de la tabla ya que todo ha ido bien
 					$this->db->close();
@@ -269,6 +288,115 @@ class emps{
 				
 			}
 		}
+	}
+	
+	function add_category($id){
+		$category=new rel_emps_cats();
+		$category->id_emp=$id;
+		$category->id_cat_emp=$this->category;
+		return $category->add();
+	}
+	
+	function add_holiday($id){
+		$holyday=new holydays();
+		$holyday->id_emp=$id;
+		$holyday->come=$this->come;
+		return $holyday->add();
+	}
+	
+	function modify(){
+		$user_changed=0;
+		if((!isset($_POST['existUser']))||($_POST['existUser']=="new")||($_POST['existUser']=="modify")){
+			
+				if(($_POST['existUser']=="new")||($this->id-user==0)||($this->id-user=="")){
+					$this->obj_user=new users();
+					$this->obj_user->is_emps=true;
+					$user_changed=$this->obj_user->add();
+					}
+				if($_POST['existUser']=="modify"){
+					$this->obj_user=new users();
+					$this->obj_user->is_emps=true;
+					$user_changed=$this->obj_user->modify();
+					}
+		}
+		if (!isset($_POST['submit_modify'])){
+			
+			
+			return 0;
+		}
+		else{
+			//Introducir los datos de post.
+			$this->get_fields_from_post();
+			//$this->insert_post();
+			
+			//Validacion
+			//$return=validate_fields();
+			
+			//En caso de que la validacion haya sido fallida se muestra la plantilla
+			//con los campos erroneos marcados con un *
+			$return=true; //Para pruebas dejar esta linea sin comentar
+			
+			if (!$return){
+				//Mostrar plantilla con datos erroneos
+				
+			}
+			else{
+				$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
+				//crea una nueva conexin con una bbdd (mysql)
+				$this->db = NewADOConnection($this->db_type);
+				//le dice que no salgan los errores de conexin de la ddbb por pantalla
+				$this->db->debug=false;
+				//realiza una conexin permanente con la bbdd
+				$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
+				//mete la consulta para coger los campos de la bbdd
+				$this->sql="SELECT * FROM ".$this->table_prefix.$this->table_name. " WHERE ".$this->ddbb_id_user." = \"".$this->id_user."\"" ;
+				//la ejecuta y guarda los resultados
+				$this->result = $this->db->Execute($this->sql);
+				//si falla 
+				if ($this->result === false){
+					$this->error=1;
+					$this->db->close();
+					return 0;
+				}
+				//rellenamos el array con los datos de los atributos de la clase
+				$record = array();
+				$record[$this->ddbb_name]=$this->name;
+				$record[$this->ddbb_last_name]=$this->last_name;
+				$record[$this->ddbb_last_name2]=$this->last_name2;
+				$record[$this->ddbb_birthday]=$this->birthday;
+				$record[$this->ddbb_address]=$this->address;
+				$record[$this->ddbb_id_corp]=$this->id_corp;
+				$record[$this->ddbb_city]=$this->city;
+				$record[$this->ddbb_state]=$this->state;
+				$record[$this->ddbb_country]=$this->country;
+				$record[$this->ddbb_postal_code]=$this->postal_code;
+				$record[$this->ddbb_phone]=$this->phone;
+				$record[$this->ddbb_mobile_phone]=$this->mobile_phone;
+				$record[$this->ddbb_fax]=$this->fax;
+				$record[$this->ddbb_mail]=$this->mail;		
+				//calculamos la sql de insercin respecto a los atributos
+				$this->sql = $this->db->GetUpdateSQL($this->result, $record);
+				//insertamos el registro				
+				$this->db->Execute($this->sql);
+				//si se ha insertado una fila
+
+				if(($this->db->Affected_Rows()==1)){
+					//capturammos el id de la linea insertada
+				
+					$this->modify_group_users();
+					$this->modify_module_methods();
+
+					$this->db->close();
+					//devolvemos el id de la tabla ya que todo ha ido bien
+					return $this->id_user;
+				}else {
+					//devolvemos 0 ya que no se ha insertado el registro
+					$this->error=-1;
+					$this->db->close();
+					return 0;
+				}
+			}
+		}	
 	}
 	
 	
@@ -684,13 +812,32 @@ class emps{
 		return $tpl;
 	}
 	
-	function get_elements_from_post(){		
-		$resultado=$_POST["modulo_1"];
-		echo "hola1<br>";
-		print_r($resultado);
-		echo "<br>";
-		echo "hola2<br>";
-		return 0;
+	function get_fields_from_post(){		
+		$this->name=$_POST[$this->ddbb_name];
+		$this->last_name=$_POST[$this->ddbb_last_name];
+		$this->last_name2=$_POST[$this->ddbb_last_name2];
+		$this->birthday=$_POST[$this->ddbb_birthday];
+		$this->address=$_POST[$this->ddbb_address];
+		$this->id_corp=$_SESSION['ident_corp'];
+		$this->city=$_POST[$this->ddbb_city];
+		$this->state=$_POST[$this->ddbb_state];
+		$this->country=$_POST[$this->ddbb_country];
+		$this->postal_code=$_POST[$this->ddbb_postal_code];
+		$this->phone=$_POST[$this->ddbb_phone];
+		$this->mobile_phone=$_POST[$this->ddbb_mobile_phone];
+		$this->fax=$_POST[$this->ddbb_fax];
+		$this->mail=$_POST[$this->ddbb_mail];
+		
+		//Cogemos la fecha de alta
+		$this->come=$_POST["come"];
+		
+		//Si el usuario ya estaba creado, se lo asignamos		
+		if ($_POST["user"]=="exist"){
+			$this->id_user=$_POST["existUser"];
+		}		
+		
+		//Cogemos la categoria
+		$this->category=$_POST["category"];
 	}
 
 	function bar($method,$corp){		

@@ -66,6 +66,7 @@ class users{
 	var $table_names_modify = array ("emps");
 	var $table_names_delete = array ("group_users","per_user_modules","per_user_methods");
 	var $empleados;
+	var $is_emps=false;
 	//log_methods ¿donde tiene que ir? a delete o a modify?
 	
   	//constructor
@@ -974,11 +975,15 @@ class users{
 	function get_fields_from_post(){
 		
 		//Cogemos los campos principales
-		$this->login=$_POST[$this->ddbb_login];
-		$this->passwd=$_POST[$this->ddbb_passwd];
-		$this->name=$_POST[$this->ddbb_name];
-		$this->last_name=$_POST[$this->ddbb_last_name];
-		$this->last_name2=$_POST[$this->ddbb_last_name2];	
+		$prefix="";
+		if ($this->is_emps){
+			$prefix="user_";
+		}
+		$this->login=$_POST[$prefix.$this->ddbb_login];
+		$this->passwd=$_POST[$prefix.$this->ddbb_passwd];
+		$this->name=$_POST[$prefix.$this->ddbb_name];
+		$this->last_name=$_POST[$prefix.$this->ddbb_last_name];
+		$this->last_name2=$_POST[$prefix.$this->ddbb_last_name2];	
 		
 		//Colocar de manera provisional hasta que se haga la validacion de fields
 		//************Bloque
