@@ -184,6 +184,30 @@ class permissions_methods{
 			}			
 		}
 	}
+	function validate_per_method_without_groups($id_user, $id_method)
+	{
+		//print "USUARIO -> ".$id_user.".....";
 	
+		$this->inicializar_base_datos();
+	
+		$users_list = new users();
+			
+		$num = 0;		
+		$per = false;
+	
+		$result = $this->validate_per_user_method($id_user,$id_method);
+		
+		if($result == true)
+		{
+			$this->add_per(1);
+			//print "USUARIO-T: metodo ".$this->method_name." permisos ".$this->per."............";
+		}
+		else
+		{
+			$this->add_per(0);
+			$num = 0;
+		}
+			
+	}
 }
 ?>

@@ -290,41 +290,40 @@ class group_users{
 	
 	}
 	  
-	/*function validate_user($user, $passwd){
+	function verify_group_user($id_user,$id_group){
 		//se puede acceder a los usuarios por numero de campo o por nombre de campo
 		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
-		//crea una nueva conexi—n con una bbdd (mysql)
+		//crea una nueva conexin con una bbdd (mysql)
 		$this->db = NewADOConnection($this->db_type);
-		//le dice que no salgan los errores de conexi—n de la ddbb por pantalla
+		//le dice que no salgan los errores de conexin de la ddbb por pantalla
 		$this->db->debug=false;
-		//realiza una conexi—n permanente con la bbdd
+		//realiza una conexin permanente con la bbdd
 		$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
 		//mete la consulta
-		$this->sql="SELECT * FROM ".$this->table_prefix.$this->table_name." WHERE ".$this->ddbb_login."=\"".$user."\"";
-		//printf($this->sql);
+		$this->sql='SELECT `id_user`,`id_group`,`id_group_user` FROM `group_users` WHERE `id_group` = \''.$id_group.'\' AND `id_user` = \''.$id_user.'\'';
 		//la ejecuta y guarda los resultados
 		$this->result = $this->db->Execute($this->sql);
-		//si falla
-		//printf($this); 
 		if ($this->result === false){
-			//printf('no existe usuario o contrase–a');
-			$error=1;
+			$this->error=1;
 			$this->db->close();
 			return 0;
-		}else{  
-		//la contrase–a es correcta
-			if($passwd==$this->result->fields[$this->ddbb_passwd]){
-			//printf('existe usuario o contrase–a');
-			$this->db->close();
-			return 1;
-			}
+		}  
+		
+		$this->num=0;
+		$id_grupo_usuario=0;
+		if (!$this->result->EOF) {//Solo debe de haber un registro
+			//cogemos los datos del usuario
+			$this->users_list[$this->num]['id_user']=$this->result->fields['id_user'];
+			$this->users_list[$this->num]['id_group']=$this->result->fields['id_group'];
+			$this->users_list[$this->num]['id_group_user']=$this->result->fields['id_group_user'];			
+			$id_grupo_usuario=$this->users_list[$this->num]['id_group_user'];
+			//nos movemos hasta el siguiente registro de resultado de la consulta
+			$this->num++;
 		}
 		$this->db->close();
-		return 0;
-		
-		
+		return $id_grupo_usuario;
 	
-	}*/
+	}
 	
 	function view ($id){
 	

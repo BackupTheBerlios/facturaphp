@@ -132,7 +132,7 @@ class modules{
 		//realiza una conexi—n permanente con la bbdd
 		$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
 		//mete la consulta
-		$this->sql="SELECT `name`, `id_method` FROM `methods` WHERE `id_module` =".$id_module;
+		$this->sql="SELECT `name`, `id_method`,`name_web` FROM `methods` WHERE `id_module` =".$id_module;
 		//la ejecuta y guarda los resultados
 		$this->result = $this->db->Execute($this->sql);
 		//si falla 
@@ -148,7 +148,7 @@ class modules{
 		{
 			$this->module_methods[$this->num]['name']=$this->result->fields['name'];
 			$this->module_methods[$this->num]['id_method']=$this->result->fields['id_method'];
-			
+			$this->module_methods[$this->num]['name_web']=$this->result->fields['name_web'];			
 			//nos movemos hasta el siguiente registro de resultado de la consulta
 			$this->result->MoveNext();
 			$this->num++;

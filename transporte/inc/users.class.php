@@ -258,17 +258,14 @@ class users{
 				$this->checkbox->per_modules[$i]=new permissions_modules;
 				$this->checkbox->per_modules[$i]->id_module=$modules->modules_list[$i]['id_module'];
 				$this->checkbox->per_modules[$i]->module_name=$modules->modules_list[$i]['name_web'];
-				$this->checkbox->per_modules[$i]->validate_per_module(0);
-			}
-			
+				$this->checkbox->per_modules[$i]->validate_per_module_without_groups(0);
+			}			
 			//Grupos
 			$groups=new groups();
 			for($i=0;$i<$groups->num;$i++){
 				$this->checkbox_groups[$i]= new groups();
-				$this->checkbox_groups[$i]->read($groups->groups_list[$i][$groups->ddbb_id_group]);
-				
+				$this->checkbox_groups[$i]->read($groups->groups_list[$i][$groups->ddbb_id_group]);				
 			}
-
 			return 0;
 		}
 		//en el caso de que SI este definido submit_add
@@ -392,9 +389,18 @@ class users{
 				$this->checkbox->per_modules[$i]=new permissions_modules;
 				$this->checkbox->per_modules[$i]->id_module=$modules->modules_list[$i]['id_module'];
 				$this->checkbox->per_modules[$i]->module_name=$modules->modules_list[$i]['name_web'];
-				$this->checkbox->per_modules[$i]->validate_per_module($this->id_user);
+				$this->checkbox->per_modules[$i]->validate_per_module_without_groups($this->id_user);
 			}
-
+			
+			$groups=new groups();
+			$this->get_groups($this->id_user);
+			for($i=0;$i<$groups->num;$i++){
+				$this->checkbox_groups[$i]= new groups();
+				$this->checkbox_groups[$i]->read($groups->groups_list[$i][$groups->ddbb_id_group]);				
+				if ($this->checkbox_groups[$i]->verify_user($this->id_user)!=0){
+					$this->checkbox_groups[$i]->belong=1;
+				}
+			}
 			//$tpl->assign('usuarios',$this->per_module_methods);
 			
 			return 0;
@@ -402,7 +408,6 @@ class users{
 		else{
 			//Introducir los datos de post.
 			$this->get_fields_from_post();
-		
 			//$this->insert_post();
 			
 			//Validacion
@@ -447,11 +452,16 @@ class users{
 				$record[$this->ddbb_active]=$this->active;
 				//calculamos la sql de inserci—n respecto a los atributos
 				$this->sql = $this->db->GetUpdateSQL($this->result, $record);
-				//insertamos el registro
+				//insertamos el registro				
 				$this->db->Execute($this->sql);
 				//si se ha insertado una fila
-				if($this->db->Affected_Rows()==1){
+
+				if(($this->db->Affected_Rows()==1)||($this->sql=="")){
 					//capturammos el id de la linea insertada
+				
+					$this->modify_group_users();
+					$this->modify_module_methods();
+
 					$this->db->close();
 					//devolvemos el id de la tabla ya que todo ha ido bien
 					return $this->id_user;
@@ -600,6 +610,7 @@ class users{
 									$tpl->assign("modulos",$this->checkbox);
 									$tpl->assign("grupos",$this->checkbox_groups);
 									break;
+									
 						case 'list':
 									$tpl=$this->listar($tpl);
 									break;
@@ -612,6 +623,7 @@ class users{
 									}
 									$tpl->assign("objeto",$this);
 									$tpl->assign("modulos",$this->checkbox);
+									$tpl->assign("grupos",$this->checkbox_groups);
 									break;
 						case 'delete':
 									break;
@@ -635,11 +647,24 @@ class users{
 	function get_fields_from_post(){
 		
 		//Cogemos los campos principales
-		$this->login=trim($_POST[$this->ddbb_login]);
-		$this->passwd=trim($_POST[$this->ddbb_passwd]);
-		$this->name=trim($_POST[$this->ddbb_name]);
-		$this->last_name=trim($_POST[$this->ddbb_last_name]);
-		$this->last_name2=trim($_POST[$this->ddbb_last_name2]);		
+		$this->login=$_POST[$this->ddbb_login];
+		$this->passwd=$_POST[$this->ddbb_passwd];
+		$this->name=$_POST[$this->ddbb_name];
+		$this->last_name=$_POST[$this->ddbb_last_name];
+		$this->last_name2=$_POST[$this->ddbb_last_name2];	
+		
+		//Colocar de manera provisional hasta que se haga la validacion de fields
+		//************Bloque
+		if ($this->name==""){
+			$this->name=" ";
+		}
+		if ($this->last_name==""){
+			$this->last_name=" ";
+		}
+		if ($this->last_name2==""){
+			$this->last_name2=" ";
+		}
+		//************Fin Bloque
 
 		//Cogemos los checkbox de grupos
 		$this->get_groups_from_post();
@@ -662,8 +687,7 @@ class users{
 				if($this->checkbox_groups[$i]->belong!=1){
 					$this->checkbox_groups[$i]->belong=0;
 				}
-			}
-			
+			}			
 	}
 	function get_modules_methods_from_post(){		
 		
@@ -811,6 +835,34 @@ class users{
 				$group_users->add();
 			}
 		}
+		return;
+	}
+	
+	function modify_group_users(){
+		$groups=new groups();
+		$group_users=new group_users();
+
+		for($i=0;$i<$groups->num;$i++){
+
+
+			if($this->checkbox_groups[$i]->belong==0){
+				//$result es el id del group_users de la tabla que se ve a continuacion.
+				$result=$group_users->verify_group_user($this->checkbox_groups[$i]->id_group,$this->id_user);
+
+				if($result!=0){
+					$group_users->remove($result);					
+				}
+			}
+			else{
+				$result=$group_users->verify_group_user($this->checkbox_groups[$i]->id_group,$this->id_user);
+
+				if($result==0){
+					$group_users->id_group=$this->checkbox_groups[$i]->id_group;
+					$group_users->id_user=$this->id_user;
+					$group_users->add();
+				}
+			}
+		}
 	}
 	
 	function add_per_modules_methods(){
@@ -836,7 +888,88 @@ class users{
 			}		
 		return 0;
 	}
+	
+	function modify_module_methods(){
+		$per_user_modules=new per_user_modules();
+		$per_user_methods=new per_user_methods();					
+			for($i=0;$i<count($this->checkbox->per_modules);$i++){																									
+				if ($this->checkbox->per_modules[$i]->per==1){		
+				/***********
+				En caso de que el valor del checkbox sea 1 si existe en la tabla se modifica	,
+				y si no existe, se crea*/
+					$result=$per_user_modules->verify_user_module($this->id_user,$this->checkbox->per_modules[$i]->id_module);
+					if ($result!=0){
+						$per_user_modules->read($result);
+						$per_user_modules->per=1;						
+						$per_user_modules->modify();							
+					}									
+					else{
+						$per_user_modules->id_module=$this->checkbox->per_modules[$i]->id_module;
+						$per_user_modules->id_user=$this->id_user;
+						$per_user_modules->per=1;						
+						$per_user_modules->add();
+					}
+					for($j=0;$j<count($this->checkbox->per_modules[$i]->per_methods);$j++){
+						
+						if ($this->checkbox->per_modules[$i]->per_methods[$j]->per==1){
+							/***********
+							En caso de que el valor del checkbox sea 1 si existe en la tabla se modifica	,
+							y si no existe, se crea*/
+							$result=$per_user_methods->verify_user_method($this->id_user,$this->checkbox->per_modules[$i]->per_methods[$j]->id_method);
+							if ($result!=0){
+								$per_user_methods->read($result);
+								$per_user_methods->per=1;
+								$per_user_methods->modify();
+							}
+							else{
+								$per_user_methods->id_method=$this->checkbox->per_modules[$i]->per_methods[$j]->id_method;
+								$per_user_methods->id_user=$this->id_user;
+								$per_user_methods->per=1;
+								$per_user_methods->add();
+							}
+						}								
+						else{
+							/*****************
+							En caso de que el valor sea 0, si existe en la tabla se cambia su valor, si no no se hace
+							nada
+							*/
+							
+							$result=$per_user_methods->verify_user_method($this->id_user,$this->checkbox->per_modules[$i]->per_methods[$j]->id_method);
+							if ($result!=0){
+								$per_user_methods->read($result);
+								$per_user_methods->per=0;
+								$per_user_methods->modify();
+							}
+						}
+					}
+				}
+				else{//En caso de que el permiso sea 0 si existe en la tabla, se modificara el valor, y si no existe no hará nada
 
+					$result=$per_user_modules->verify_user_module($this->id_user,$this->checkbox->per_modules[$i]->id_module);
+
+					if ($result!=0){
+
+						$per_user_modules->read($result);
+						
+						$per_user_modules->per=0;	
+						
+						$per_user_modules->modify();							
+					}	
+					//Aqui los checkbox de metodos al no tener permiso en un modulo, no pueden ser valores iguales a 1, ya qu eno puede tener permiso.
+					for($j=0;$j<count($this->checkbox->per_modules[$i]->per_methods);$j++){
+						$result=$per_user_methods->verify_user_method($this->id_user,$this->checkbox->per_modules[$i]->per_methods[$j]->id_method);
+						//En caso de que exista el valor se modifica y si no, no se hace nada.
+						if ($result!=0){
+							$per_user_methods->read($result);
+							$per_user_methods->per=0;
+							$per_user_methods->modify();
+						}									
+					}								
+				}					
+		}		
+		return 0;
+	}
+	
 	function admin ($id){
 	
 	
