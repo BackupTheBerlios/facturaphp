@@ -139,22 +139,87 @@ class users{
 			return 0;
 		}  
 		
-		$this->num=0;
-		while (!$this->result->EOF) {
-			//cogemos los datos del usuario
-			$this->users_list[$this->num][$this->ddbb_id_user]=$this->result->fields[$this->ddbb_id_user];
-			$this->users_list[$this->num][$this->ddbb_login]=$this->result->fields[$this->ddbb_login];
-			$this->users_list[$this->num][$this->ddbb_passwd]=$this->result->fields[$this->ddbb_passwd];
-			$this->users_list[$this->num][$this->ddbb_name]=$this->result->fields[$this->ddbb_name];
-			$this->users_list[$this->num][$this->ddbb_last_name]=$this->result->fields[$this->ddbb_last_name];
-			$this->users_list[$this->num][$this->ddbb_last_name2]=$this->result->fields[$this->ddbb_last_name2];
-			$this->users_list[$this->num][$this->ddbb_full_name]=$this->result->fields[$this->ddbb_full_name];
-			$this->users_list[$this->num][$this->ddbb_internal]=$this->result->fields[$this->ddbb_internal];
-			$this->users_list[$this->num][$this->ddbb_active]=$this->result->fields[$this->ddbb_active];
-			//nos movemos hasta el siguiente registro de resultado de la consulta
-			$this->result->MoveNext();
-			$this->num++;
+		
+		//cogemos los datos del usuario
+		if(!$_SESSION['super'] && !$_SESSION['admin'])
+		{
+			$this->num=0;
+			while (!$this->result->EOF) 
+			{
+				$users[$this->num][$this->ddbb_id_user]=$this->result->fields[$this->ddbb_id_user];
+				$users[$this->num][$this->ddbb_login]=$this->result->fields[$this->ddbb_login];
+				$users[$this->num][$this->ddbb_passwd]=$this->result->fields[$this->ddbb_passwd];
+				$users[$this->num][$this->ddbb_name]=$this->result->fields[$this->ddbb_name];
+				$users[$this->num][$this->ddbb_last_name]=$this->result->fields[$this->ddbb_last_name];
+				$users[$this->num][$this->ddbb_last_name2]=$this->result->fields[$this->ddbb_last_name2];
+				$users[$this->num][$this->ddbb_full_name]=$this->result->fields[$this->ddbb_full_name];
+				$users[$this->num][$this->ddbb_internal]=$this->result->fields[$this->ddbb_internal];
+				$users[$this->num][$this->ddbb_active]=$this->result->fields[$this->ddbb_active];
+				
+				//nos movemos hasta el siguiente registro de resultado de la consulta
+				$this->result->MoveNext();
+				$this->num++;
+			}
+			$num_usuarios = $this->num;
+			$k=0;	
+			for($i = 0; $i < $num_usuarios; $i++)
+			{
+		
+				$num_groups = $this->get_groups($users[$i][$this->ddbb_id_user]);
+				$per = true;
+
+				for($j = 0; $j < $num_groups; $j++)
+				{	
+					if($this->groups_list[$j]['id_group'] == 2) 
+					{
+						$per = false;
+					}
+					else
+					if($this->groups_list[$j]['id_group'] == 1)
+					{
+						$per = false;
+					}
+				}
+				
+				if($per)
+				{
+					$this->users_list[$k][$this->ddbb_id_user]=$users[$i][$this->ddbb_id_user];
+					$this->users_list[$k][$this->ddbb_login]=$users[$i][$this->ddbb_login];
+					$this->users_list[$k][$this->ddbb_passwd]=$users[$i][$this->ddbb_passwd];
+					$this->users_list[$k][$this->ddbb_name]=$users[$i][$this->ddbb_name];
+					$this->users_list[$k][$this->ddbb_last_name]=$users[$i][$this->ddbb_last_name];
+					$this->users_list[$k][$this->ddbb_last_name2]=$users[$i][$this->ddbb_last_name2];
+					$this->users_list[$k][$this->ddbb_full_name]=$users[$i][$this->ddbb_full_name];
+					$this->users_list[$k][$this->ddbb_internal]=$users[$i][$this->ddbb_internal];
+					$this->users_list[$k][$this->ddbb_active]=$users[$i][$this->ddbb_active];
+					//nos movemos hasta el siguiente registro de resultado de la consulta
+					$k++;
+				}
+			}//fin for
+			$this->num = $k;	
 		}
+		else
+		{
+			$this->num=0;
+			while (!$this->result->EOF) 
+			{
+				$this->users_list[$this->num][$this->ddbb_id_user]=$this->result->fields[$this->ddbb_id_user];
+				$this->users_list[$this->num][$this->ddbb_login]=$this->result->fields[$this->ddbb_login];
+				$this->users_list[$this->num][$this->ddbb_passwd]=$this->result->fields[$this->ddbb_passwd];
+				$this->users_list[$this->num][$this->ddbb_name]=$this->result->fields[$this->ddbb_name];
+				$this->users_list[$this->num][$this->ddbb_last_name]=$this->result->fields[$this->ddbb_last_name];
+				$this->users_list[$this->num][$this->ddbb_last_name2]=$this->result->fields[$this->ddbb_last_name2];
+				$this->users_list[$this->num][$this->ddbb_full_name]=$this->result->fields[$this->ddbb_full_name];
+				$this->users_list[$this->num][$this->ddbb_internal]=$this->result->fields[$this->ddbb_internal];
+				$this->users_list[$this->num][$this->ddbb_active]=$this->result->fields[$this->ddbb_active];
+				
+				//nos movemos hasta el siguiente registro de resultado de la consulta
+				$this->result->MoveNext();
+				$this->num++;
+			}
+			
+		}
+		
 		$this->db->close();
 		return $this->num;
 	
@@ -400,20 +465,87 @@ class users{
 			//pasarle a la plantilla los modulos y grupos con sus respectivos checkbox a checked false
 			$this->checkbox=new permissions_modules;
 			$modules=new modules();
-			for($i=0;$i<$modules->num;$i++){
-				$this->checkbox->per_modules[$i]=new permissions_modules;
-				$this->checkbox->per_modules[$i]->id_module=$modules->modules_list[$i]['id_module'];
-				$this->checkbox->per_modules[$i]->module_name=$modules->modules_list[$i]['name_web'];
-				$this->checkbox->per_modules[$i]->validate_per_module_without_groups($this->id_user);
+			
+			$k=0;
+			for($i=0;$i<$modules->num;$i++)
+			{
+				if($_SESSION['super'])
+				{
+					$this->checkbox->per_modules[$i]=new permissions_modules;
+					$this->checkbox->per_modules[$i]->id_module=$modules->modules_list[$i]['id_module'];
+					$this->checkbox->per_modules[$i]->module_name=$modules->modules_list[$i]['name_web'];
+					$this->checkbox->per_modules[$i]->validate_per_module_without_groups($this->id_user);
+				}
+				else
+				{
+					if(($modules->modules_list[$i]['name']!='modules')&&($modules->modules_list[$i]['name']!='methods'))
+					{
+						$this->checkbox->per_modules[$k]=new permissions_modules;
+						$this->checkbox->per_modules[$k]->id_module=$modules->modules_list[$i]['id_module'];
+						$this->checkbox->per_modules[$k]->module_name=$modules->modules_list[$i]['name_web'];
+						$this->checkbox->per_modules[$k]->validate_per_module_without_groups($this->id_user);
+						
+						if($modules->modules_list[$i]['name']=='corps')
+						{
+							//Si es admin y el modulo es empresas sólo puede otorgar permisos en el método Ver, 
+							//por lo que todos los demás métodos no le serán accesibles
+							$j=0;
+							$salir = false;
+							while(($j<$this->checkbox->per_modules[$k]->num_methods)&&($salir==false))
+							{
+								if($this->checkbox->per_modules[$k]->per_methods[$j]->method_name == 'view')
+								{
+									$name = $this->checkbox->per_modules[$k]->per_methods[$j]->method_name; 
+									$id_method = $this->checkbox->per_modules[$k]->per_methods[$j]->id_method;
+									$name_web = $this->checkbox->per_modules[$k]->per_methods[$j]->method_name_web;
+									$permiso = $this->checkbox->per_modules[$k]->per_methods[$j]->per;
+									
+									$this->checkbox->per_modules[$k]->per_methods = null;
+									
+									$this->checkbox->per_modules[$k]->per_methods[0] = new permissions_methods();
+									$this->checkbox->per_modules[$k]->per_methods[0]->id_method = $id_method;
+									$this->checkbox->per_modules[$k]->per_methods[0]->method_name_web = $name_web;
+									$this->checkbox->per_modules[$k]->per_methods[0]->method_name == $name; 
+									$this->checkbox->per_modules[$k]->per_methods[0]->per = $permiso;
+
+									$this->checkbox->per_modules[$k]->num_methods = 1;
+									$salir = true;
+								}
+								$j++;
+							}
+						}
+						
+						$k++;
+					}
+				}
 			}
 			
 			$groups=new groups();
 			$this->get_groups($this->id_user);
-			for($i=0;$i<$groups->num;$i++){
-				$this->checkbox_groups[$i]= new groups();
-				$this->checkbox_groups[$i]->read($groups->groups_list[$i][$groups->ddbb_id_group]);				
-				if ($this->checkbox_groups[$i]->verify_user($this->id_user)!=0){
-					$this->checkbox_groups[$i]->belong=1;
+			$k=0;
+			for($i=0;$i<$groups->num;$i++)
+			{
+				if($_SESSION['super'])
+				{
+					$this->checkbox_groups[$i]= new groups();
+					$this->checkbox_groups[$i]->read($groups->groups_list[$i][$groups->ddbb_id_group]);				
+					if ($this->checkbox_groups[$i]->verify_user($this->id_user)!=0)
+					{
+						$this->checkbox_groups[$i]->belong=1;
+					}
+				}
+				else
+				{
+					if(($groups->groups_list[$i][$groups->ddbb_name] != 'superadmin')&&($groups->groups_list[$i][$groups->ddbb_name] != 'admin'))
+					{
+						$this->checkbox_groups[$k]= new groups();
+						$this->checkbox_groups[$k]->read($groups->groups_list[$i][$groups->ddbb_id_group]);				
+						if ($this->checkbox_groups[$k]->verify_user($this->id_user)!=0)
+						{
+							$this->checkbox_groups[$k]->belong=1;
+						}
+						$k++;
+					}
 				}
 			}
 			//$tpl->assign('usuarios',$this->per_module_methods);
@@ -539,60 +671,134 @@ class users{
 			// Leemos el usuario y se lo pasamos a la plantilla
 			$this->read($id);
 			$tpl->assign('objeto',$this);
+				
+			
+			
+			if(!$_SESSION['super'] || !$_SESSION['admin'])
+			{	
+				$groups = false;
+				$modules = false;
+			
+				$i=0;
+				while($i!=$this->num_modules)
+				{
+			
+					if(($this->per_modules[$i]->per == 1)&&($this->per_modules[$i]->module_name=='modules'))
+					{
+					//Se comprueba si se tiene permiso para ver
+						$j=0;
+						while(($j<$this->per_modules[$i]->num_methods))
+						{
+							if(($this->per_modules[$i]->per_methods[$j]->per == 1)&&($this->per_modules[$i]->per_methods[$j]->method_name == 'view'))
+							{
+								$modules = true;
+							}
+							$j++;
+						}
+					}
+					else 
+					if(($this->per_modules[$i]->per == 1)&&($this->per_modules[$i]->module_name=='groups'))
+					{
+						//Se comprueba si se tiene permiso para ver
+						$j=0;
+						while(($j<$this->per_modules[$i]->num_methods))
+						{
+							if(($this->per_modules[$i]->per_methods[$j]->per == 1)&&($this->per_modules[$i]->per_methods[$j]->method_name == 'view'))
+							{
+								$groups = true;
+							}
+							$j++;
+						}
+					}
+					
+					$i++;
+					
+				}
+
+			}
+			else
+			{
+				$modules = true;
+				$groups = true;
+			}
+			
+		
+			$mensaje = null;
+			$mensaje[0]['id_mensaje'] = 1;
+			$mensaje[0]['mes'] = "Sentimos informarle de que no tiene permiso para acceder a esta información";
+			
 			//listado de modulos
 			$tabla_modulos = new table(false);
-
-			if ($this->num_modules==0){
-
-				$cadena=$cadena.$tabla_modulos->tabla_vacia('modules');
-				$variables_modulos=$tabla_modulos->nombres_variables;
-			}
-			else{	
-				//Se prepara el array de permisos
-				$k=0;
-				for($i = 0;$i<$this->num_modules;$i++)
+			if($modules)
+			{
+				if ($this->num_modules==0)
 				{
-					if(($this->per_modules[$i]->per == 1)&&($this->per_modules[$i]->module_name != 'error'))
-					{
-						$permissions[$k]['id_module']=$this->per_modules[$i]->id_module;
-						$permissions[$k]['name']=$this->per_modules[$i]->web_name;
-						$permissions[$k]['methods'] = "";
-						for($j=0;$j<$this->per_modules[$i]->num_methods;$j++)
-							if($this->per_modules[$i]->per_methods[$j]->per ==1)
-							{
-								$permissions[$k]['methods'] = $permissions[$k]['methods'].' '.$this->per_modules[$i]->per_methods[$j]->method_name_web;
-							}
-							$k++;
-					}
+	
+					$cadena=$cadena.$tabla_modulos->tabla_vacia('modules');
+					$variables_modulos=$tabla_modulos->nombres_variables;
 				}
-				
+				else{	
+					//Se prepara el array de permisos
+					$k=0;
+					for($i = 0;$i<$this->num_modules;$i++)
+					{
+						if(($this->per_modules[$i]->per == 1)&&($this->per_modules[$i]->module_name != 'error'))
+						{
+							$permissions[$k]['id_module']=$this->per_modules[$i]->id_module;
+							$permissions[$k]['name']=$this->per_modules[$i]->web_name;
+							$permissions[$k]['methods'] = "";
+							for($j=0;$j<$this->per_modules[$i]->num_methods;$j++)
+								if($this->per_modules[$i]->per_methods[$j]->per ==1)
+								{
+									$permissions[$k]['methods'] = $permissions[$k]['methods'].' '.$this->per_modules[$i]->per_methods[$j]->method_name_web;
+								}
+								$k++;
+						}
+					}
 					
-				$cadena=$cadena.$tabla_modulos->make_tables('modules',$permissions,array('Nombre del modulo',20,'Métodos en los que se tiene permiso',120),array('id_module','name', 'methods'),10,null,false);
+						
+					$cadena=$cadena.$tabla_modulos->make_tables('modules',$permissions,array('Nombre del modulo',20,'Métodos en los que se tiene permiso',120),array('id_module','name', 'methods'),10,null,false);
+					$variables_modulos=$tabla_modulos->nombres_variables;
+				}
+			}
+			else
+			{
+				$cadena=$cadena.$tabla_modulos->make_tables('modules',$mensaje,array('ACCION NO PERMITIDA',50),array('id_mensaje','mes'),10,null,false);
 				$variables_modulos=$tabla_modulos->nombres_variables;
 			}
 			
 			
-			//$tpl->assign('list_modules', $this->list_modules_availables($id))
 			//listado de permisos por modulos
 			$tabla_grupos = new table(false);
-			//listado de grupos
-			if ($this->get_groups($id)==0)
+			if($groups)
 			{
-				$cadena=$cadena.$tabla_grupos->tabla_vacia('group_users');
-				$variables_grupos=$tabla_grupos->nombres_variables;
-			}
-			else{		
-				$per = new permissions();
-				$num = $per->get_permissions_list('users');
 				
-				$per_delete = null;
-				for($i=0; $i<$num;$i++)
-				if($per->permissions_module[$i] == 'delete')
-					$per_delete = array('delete');
-							
-				$cadena=$cadena.$tabla_grupos->make_tables('group_users',$this->groups_list,array('Nombre de grupo',75),array('id_group','name_web'),10,$per_delete,$per->add);
+				//listado de grupos
+				if ($this->get_groups($id)==0)
+				{
+					$cadena=$cadena.$tabla_grupos->tabla_vacia('group_users');
+					$variables_grupos=$tabla_grupos->nombres_variables;
+				}
+				else
+				{		
+					$per = new permissions();
+					$num = $per->get_permissions_list('users');
+					
+					$per_delete = null;
+					for($i=0; $i<$num;$i++)
+					if($per->permissions_module[$i] == 'delete')
+						$per_delete = array('delete');
+								
+					$cadena=$cadena.$tabla_grupos->make_tables('group_users',$this->groups_list,array('Nombre de grupo',75),array('id_group','name_web'),10,$per_delete,$per->add);
+					$variables_grupos=$tabla_grupos->nombres_variables;
+				}
+			}
+			else
+			{
+				$cadena=$cadena.$tabla_grupos->make_tables('groups_users',$mensaje,array('ACCION NO PERMITIDA',50),array('id_mensaje','mes'),10,null,false);
 				$variables_grupos=$tabla_grupos->nombres_variables;
 			}
+			
 			$i=0;
 			while($i<(count($variables_grupos)+count($variables_modulos))){
 				for($j=0;$j<count($variables_grupos);$j++){
@@ -604,7 +810,7 @@ class users{
 					$i++;
 				}
 			}
-		
+
 			$tpl->assign('variables',$variables);
 			$tpl->assign('cadena',$cadena);
 			//			
@@ -845,23 +1051,21 @@ class users{
 	}
 	
 	function validate_per_user_module($id_user, $module)
-	{			
+	{	
+
 		$this->modules = new modules();
 		$id_module = $this->modules->get_id($module);
 
-		for ($modulo_num = 0; $modulo_num < $this->num_modules; $modulo_num++) 
-		{
-			//Como se tiene el numero de modulos entonces se puede ver nombre e identificador en $this->modules->modules_list
-			//Así será mas fácil recorrer la matriz, y no hay problemas de pasar un hash a smarty ya que no los acepta
-			$this->permission = new permissions_modules();
-			$this->permission->id_module = $this->modules->id_module;
-			$this->permission->module_name = $this->modules->name;
-			$this->permission->web_name = $this->modules->name_web;
-			$this->permission->publico = $this->modules->publico;
-			$this->permission->parent = $this->modules->parent;
-			$this->permission->validate_per_module($id_user);
+		$this->modules->read($id_module);
 		
-		}
+		$this->permission = new permissions_modules();
+		$this->permission->id_module = $this->modules->id_module;
+		$this->permission->module_name = $this->modules->name;
+		$this->permission->web_name = $this->modules->name_web;
+		$this->permission->publico = $this->modules->publico;
+		$this->permission->parent = $this->modules->parent;
+		$this->permission->validate_per_module($id_user);
+	
 	}
 	
 	

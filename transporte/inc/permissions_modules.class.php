@@ -299,8 +299,7 @@ class permissions_modules{
 	
 		//Se toma la lista de grupos a los que pertenece el usuario
 		$num_groups = $user->get_groups($id_user); 
-		
-		
+			
 		$per = false;
 		$this->per = 0;
 		$num = 0;
@@ -334,8 +333,6 @@ class permissions_modules{
 	
 		$this->num_methods = $modules->get_list_module_methods($this->id_module);
 
-
-
 		for ($metodo_num = 0; $metodo_num < $this->num_methods; $metodo_num++) 
 		{
 			//Como se tiene el numero de metodos de este modulo, entonces se puede ver nombre e identificador en $this->per_methods[$metodo_num]->name
@@ -346,7 +343,7 @@ class permissions_modules{
 			$this->per_methods[$metodo_num]->method_name = $modules->module_methods[$metodo_num]['name'];				
 			$this->per_methods[$metodo_num]->method_name_web = $modules->module_methods[$metodo_num]['name_web'];
 			if($per == true)
-			{	
+			{
 				$this->per_methods[$metodo_num]->validate_per_method($id_user, $this->per_methods[$metodo_num]->id_method);
 			}
 			else

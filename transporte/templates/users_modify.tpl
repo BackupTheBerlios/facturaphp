@@ -52,7 +52,7 @@
 				  </tr>
 								 <tr>
 		<td valign="top" colspan="2">
-			<br>
+			<br>	
 			<table width="100%" align="center" border="0">
 			 <tr>
 					  <td colspan="2" class="cabeceraCampoFormulario">Grupos: </td>
@@ -91,6 +91,7 @@
 				&nbsp;
 				</td>
 				{/if}
+				
 				</tr>
 			{/section}
 			<tr class="cabeceraMultilinea"><td colspan="2">&nbsp</td></tr>
@@ -106,7 +107,11 @@
 			<td valign="top">
 			<br>
 			<br>    
-			
+		{php}
+		if($_SESSION['super'] || $_SESSION['admin'])
+		{
+		{/php}
+		
 			<table width="90%" align="center" border="0">
 			 <tr>
 					  <td colspan="2" class="cabeceraCampoFormulario">Permisos por modulos-metodos: </td>
@@ -161,6 +166,9 @@
 			<input type="reset" Value="Borrar Datos" class="botones">
 			</td>
 		</tr>
+	{php}
+	}
+	{/php}
 	  	</table> 
 	</form>
 </td>

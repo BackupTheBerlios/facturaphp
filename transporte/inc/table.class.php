@@ -85,6 +85,7 @@
 		}
 		
 		function make_tables($var_js,$list_name,$cabecera,$nombre_campos,$num_rows,$acc,$new){
+
 			$cadena ='<script>'."\n\r\t";									
 			$curr_pag=1;
 			$registro=0;
@@ -122,7 +123,7 @@
 				if ($this->listado && $new) {				
 					     $variable=$variable.'<table align=\\"center\\"><tr><td><a href=\\"index.php?module='.$var_js.'&method=add\\"><img border=\\"0\\"src=\\"pics/btnnew.gif\\"></a></td></tr><table>';				
 				 }
-				elseif(!$this->listado){
+				elseif(!$this->listado){				
 					$variable=$variable.'<table width=\\"80%\\" align=\\"center\\"><tr><td width=\\"20%\\">';
 					//si puede o no ejecutar nuevo
 					if (!$new) {
@@ -131,6 +132,9 @@
 					else{
 						$variable=$variable.'<a href=\\"index.php?module='.$var_js.'&method=add\\"><img border=\\"0\\"src=\\"pics/btnnew.gif\\"></a></td>';
 					}
+					
+					
+					/*
 					//NUMERO DE REGISTROS POR PÁGINA
 					$variable=$variable.'<td width=\\"40%\\" align=\\"center\\"><span class=\\"cabeceraCampoFormulario\\">Registros por p&aacute;gina:</span> <select class=\\"textoMenu\\">';					
 					for($i=0;$i<count($this->select_registros_pagina);$i++){
@@ -141,6 +145,8 @@
 							$variable=$variable.'<option value=\\"'.$this->select_registros_pagina[$i].'\\" id=\\"'.$this->select_registros_pagina[$i].'\\">'.$this->select_registros_pagina[$i].'</option>';
 						}
 					}
+					
+					*/
 					$variable=$variable.'</select></td>';
 					
 					// BUSQUEDA
@@ -197,7 +203,7 @@
 				$curr_pag++;
 			} // while			
 			$cadena=$cadena."\n\r".'</script>';	
-			// devolvemos el resultado.<
+			// devolvemos el resultado.
 			return $cadena;				
 		}
 		

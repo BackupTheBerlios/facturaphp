@@ -154,7 +154,7 @@ class permissions_methods{
 		}
 		else
 		{
-			$this->add_per(0);
+
 			$num = 0;
 			
 			//comprobar si en alguno de los grupos se tiene permiso

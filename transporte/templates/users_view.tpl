@@ -1,5 +1,5 @@
 <td valign="top">
-
+{$cadena}
 
 {include file=capas.tpl}
 	
