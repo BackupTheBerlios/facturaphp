@@ -107,16 +107,26 @@ else
 	} 
 }
 
-  
-  
+//Cada vez que se entre en vehículos hay que saber cuál es el vehículo con mayor id  
+if((isset($_GET['module']))&&($_GET['module']=='vehicles'))
+{
+	$vehicle = new vehicles();	
+	$_SESSION['ident_vehicle'] = $vehicle->sig_id();
+}
 //Si se va a añadir un coche, entonces se toma el nombre del archivo que se le pasó y se copia al directorio images/vehicles con el 
 //identificador del coche como nombre
 //Los directorios images y vehicles deben tener permiso de escritura para los demás, ya que para poder copiar un archivo debe ser propietario de 
 //la aplicación root, y quien los va a manejar será el grupo www-data
 if((isset($_GET['module']))&& (isset($_GET['method']))&&($_GET['module']=='vehicles')&&($_GET['method']=='add'))
 {
- $file = new upload_file( $_FILES['path_photo']['name'], $_FILES['path_photo']['tmp_name'], $_FILES['path_photo']['size'], ($_SESSION['ident_vehicle'] + 1));
- $result = $file->upload( "images/vehicles/" );
+ if($_FILES['path_photo']['tmp_name'] != "")
+ {
+   $file = new upload_file( $_FILES['path_photo']['name'], $_FILES['path_photo']['tmp_name'], $_FILES['path_photo']['size'], $_SESSION['ident_vehicle']);
+   $result = $file->upload( "images/vehicles/" );
+   
+ }
+ else
+ 	$_SESSION['ruta_photo'] == "";
 }
 //Si se modifica la foto de un coche
 if((isset($_GET['module']))&& (isset($_GET['method']))&&($_GET['module']=='vehicles')&&($_GET['method']=='modify'))
@@ -288,7 +298,7 @@ else
 
 	$tpl->assign('title',$title);
 	$tpl->assign('nav_bar',$nav_bar);
-	
+
 
 $tpl->display($index_template);
 //print_r($post_user);

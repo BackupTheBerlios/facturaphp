@@ -26,8 +26,11 @@
                               </tr>
                               <tr>
 								<td height="21" nowrap class="camposVistas">Matr&iacute;cula:</td>
-                                <td nowrap class="datosVista">{$objeto->number_plate}</td>
-                                
+                                <td nowrap class="datosVista">{$objeto->number_plate}</td>  
+                              </tr>
+                              <tr>
+								<td height="21" nowrap class="camposVistas">Categor&iacute;a:</td>
+                                <td nowrap class="datosVista">{$objeto->category}</td>  
                               </tr>
                     		  <tr>      
 			      				<td align="center">

@@ -67,7 +67,8 @@
 								<td width="25%" nowrap class="camposVistas">E-mail:</td>
                                 <td width="25%" nowrap class="datosVista"><a href="mailto:{$objeto->mail}">{$objeto->mail}</a></td>
                               </tr>
-                              <tr height="15px">                                <td height="21" nowrap class="camposVistas">Url:</td>
+                              <tr height="15px">                               
+                                <td height="21" nowrap class="camposVistas">Url:</td>
                                 <td nowrap class="datosVista"><a href="{$objeto->url}">{$objeto->url}</a></td>
 								<td><table align="center"><tr>
 				{section name="indice" loop=$acciones}

@@ -51,11 +51,14 @@ function initialize_object($module)
 		case 'error':
 					$objeto=new error();
 					break;
-		case 'vehicles':
-					$objeto=new vehicles();
-					break;
 		case 'cat_prods':
 					$objeto=new cat_prods();
+					break;
+		case 'vehicles':
+					$objeto=new vehicles();
+					break;	
+		case 'cat_vehicles':
+					$objeto=new cat_vehicles();
 					break;		
 		default:		
 					if(!isset($_SESSION['user']))
@@ -71,4 +74,6 @@ function initialize_object($module)
 	
 	return $objeto;
 }
+
+
 ?>

@@ -35,6 +35,8 @@ require_once('fields.class.php');
 require_once('sessions.class.php');
 require_once('modules.class.php');
 require_once('upload_file.class.php');
-require_once('vehicles.class.php');
 require_once('cat_prods.class.php');
+require_once('vehicles.class.php');
+require_once('cat_vehicles.class.php');
+require_once('rel_vehicles_cats.class.php');
 ?>
