@@ -604,7 +604,12 @@ class users{
 	function listar($tpl){
 		$this->get_list_users();
 		$tabla_listado = new table(true);
-		$cadena=''.$tabla_listado->make_tables('users',$this->users_list,array('Login',20,'Nombre',20,'Primer Apellido',20,'Segundo Apellido',20),array($this->ddbb_id_user,$this->ddbb_login,$this->ddbb_name,$this->ddbb_last_name,$this->ddbb_last_name2),10,array('view','modify','delete'),true);
+		
+		$per = new permissions();
+		$per->get_permissions_list('users');
+	
+		
+		$cadena=''.$tabla_listado->make_tables('users',$this->users_list,array('Login',20,'Nombre',20,'Primer Apellido',20,'Segundo Apellido',20),array($this->ddbb_id_user,$this->ddbb_login,$this->ddbb_name,$this->ddbb_last_name,$this->ddbb_last_name2),10,$per->permissions_module,$per->add);
 		$variables=$tabla_listado->nombres_variables;		
 		$tpl->assign('variables',$variables);
 		$tpl->assign('cadena',$cadena);		
@@ -647,7 +652,7 @@ class users{
 									}
 									else{
 										$this->users_list="";
-										$this->method="list";
+										$method="list";
 										$tpl=$this->listar($tpl);
 										$tpl->assign("message","&nbsp;<br>Usuario borrado correctamente<br>&nbsp;");
 									}
@@ -780,10 +785,10 @@ class users{
 		if ($method!=$this->method){
 			$method = $this->method;
 		}		
-		if ($corp != ""){
-			$corp='<a href="index.php">'.$corp.' ::';
+	if ($corp != ""){
+			$corp='<a href="index.php?module=user_corps&method=select&id='.$_SESSION['ident_corp'].'">'.$corp.' ::';
 		}
-		$nav_bar = '<a href="index.php">Zona privada</a> :: '.$corp.' <a href="index.php?module=users">Usuarios</a>';
+		$nav_bar = '<a>Zona privada</a> :: '.$corp.' <a href="index.php?module=users">Usuarios</a>';
 		$nav_bar=$nav_bar.$this->localice($method);
 		return $nav_bar;
 	}	

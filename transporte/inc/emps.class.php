@@ -634,9 +634,12 @@ class emps{
 	function listar($tpl)
 	{
 		$this->get_list_emps($_SESSION['ident_corp']);
+		
+		$per = new permissions();
+		$per->get_permissions_list('emps');
 
 		$tabla_listado = new table(true);
-		$cadena=''.$tabla_listado->make_tables('emps',$this->emps_list,array('Nombre',20,'Primer Apellido',20,'Segundo Apellido',20),array($this->ddbb_id_emp, $this->ddbb_name,$this->ddbb_last_name,$this->ddbb_last_name2),10,array('view','modify','delete'),true);
+		$cadena=''.$tabla_listado->make_tables('emps',$this->emps_list,array('Nombre',20,'Primer Apellido',20,'Segundo Apellido',20),array($this->ddbb_id_emp, $this->ddbb_name,$this->ddbb_last_name,$this->ddbb_last_name2),10,$per->permissions_module,$per->add);
 		$variables=$tabla_listado->nombres_variables;		
 		$tpl->assign('variables',$variables);
 		$tpl->assign('cadena',$cadena);		
@@ -680,7 +683,7 @@ class emps{
 									}
 									else{
 										$this->emps_list="";
-										$this->method="list";
+										$method="list";
 										$tpl=$this->listar($tpl);
 										$tpl->assign("message","&nbsp;<br>Empleado borrado correctamente<br>&nbsp;");
 									}
@@ -710,9 +713,9 @@ class emps{
 
 	function bar($method,$corp){		
 		if ($corp != ""){
-			$corp='<a href="index.php">'.$corp.' ::';
+			$corp='<a href="index.php?module=user_corps&method=select&id='.$_SESSION['ident_corp'].'">'.$corp.' ::';
 		}
-		$nav_bar = '<a href="index.php">Zona privada</a> :: '.$corp.' <a href="index.php?module=emps">Empleados</a>';
+		$nav_bar = '<a>Zona privada</a> :: '.$corp.' <a href="index.php?module=emps">Empleados</a>';
 		$nav_bar=$nav_bar.$this->localice($method);
 		return $nav_bar;
 	}	
