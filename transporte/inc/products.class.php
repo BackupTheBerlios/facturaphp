@@ -966,5 +966,49 @@ class products{
 			}
 		return $tabla;
 	}
+	
+	function get_list_products_corps ($id_corp){
+		$this->products_list=array ();
+		//se puede acceder a los grupos_usuarios por numero de campo o por nombre de campo
+		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
+		//crea una nueva conexin con una bbdd (mysql)
+		$this->db = NewADOConnection($this->db_type);
+		//le dice que no salgan los errores de conexin de la ddbb por pantalla
+		$this->db->debug=false;
+		//realiza una conexin permanente con la bbdd
+		$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
+		//mete la consulta
+		$this->sql="SELECT * FROM ".$this->table_prefix.$this->table_name." WHERE `".$this->ddbb_id_corp."` = ".$id_corp;
+		//la ejecuta y guarda los resultados
+		$this->result = $this->db->Execute($this->sql);
+		//si falla 
+		if ($this->result === false){
+			$this->error=1;
+			$this->db->close();
+
+			return 0;
+		}  
+		
+		$this->num=0;
+		while (!$this->result->EOF) {
+			//cogemos los datos del usuario
+			$this->products_list[$this->num][$this->ddbb_id_product]=$this->result->fields[$this->ddbb_id_product];
+			$this->products_list[$this->num][$this->ddbb_id_corp]=$this->result->fields[$this->ddbb_id_corp];
+			$this->products_list[$this->num][$this->ddbb_name]=$this->result->fields[$this->ddbb_name];
+			$this->products_list[$this->num][$this->ddbb_name_web]=$this->result->fields[$this->ddbb_name_web];
+			$this->products_list[$this->num][$this->ddbb_id_pvp]=$this->result->fields[$this->ddbb_id_pvp];
+			$this->products_list[$this->num][$this->ddbb_id_tax]=$this->result->fields[$this->ddbb_id_tax];
+			$this->products_list[$this->num][$this->ddbb_id_pvp_tax]=$this->result->fields[$this->ddbb_id_pvp_tax];
+			$this->products_list[$this->num][$this->ddbb_path_photo]=$this->result->fields[$this->ddbb_path_photo];
+			$this->products_list[$this->num][$this->ddbb_minimun_stock]=$this->result->fields[$this->ddbb_minimun_stock];
+			//nos movemos hasta el siguiente registro de resultado de la consulta
+			$this->result->MoveNext();
+			$this->num++;
+		}
+		$this->db->close();
+		return $this->num;
+	
+	}
+	
 }
 ?>

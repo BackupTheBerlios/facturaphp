@@ -604,34 +604,65 @@ class corps{
 				$per = new permissions();
 				$per->get_permissions_list('corps');
 							
-				$cadena=''.$tabla_empleados->make_tables('emps',$empleados->emps_list,array('Nombre',20,'Primer Apellido',20,'Segundo Apellido',20),array('id_emp', 'name','last_name','last_name2'),10,$per->permissions_module,$per->add);
+				$cadena=$cadena.$tabla_empleados->make_tables('emps',$empleados->emps_list,array('Nombre',20,'Primer Apellido',20,'Segundo Apellido',20),array('id_emp', 'name','last_name','last_name2'),10,$per->permissions_module,$per->add);
 		
 				$variables_empleados=$tabla_empleados->nombres_variables;
 			}
+
 			
+			//Productos
+			$products= new products(false);
+			$tabla_productos = new table (false);
+			if ($products->get_list_products_corps($_SESSION['ident_corp'])==0)
+			{				
+				$per = new permissions();
+				$per->get_permissions_list('corps');
+				$cadena=$cadena.$tabla_productos->tabla_vacia('products',$per->add);
+				$variables_products=$tabla_productos->nombres_variables;
+			}
+			else
+			{	
+				$per = new permissions();
+				$per->get_permissions_list('corps');							
+				$cadena=$cadena.$tabla_productos->make_tables('products',$products->products_list,array('Nombre',20,'Nombre Web',20,'Imagen',20),array('id_product', 'name','name_web','path_photo'),10,$per->permissions_module,$per->add);		
+				$variables_products=$tabla_productos->nombres_variables;
+			}
+			
+			//servicios
+			$services= new services(false);
+			$tabla_servicios = new table (false);
+			if ($services->get_list_services_corp($_SESSION['ident_corp'])==0)
+			{				
+				$per = new permissions();
+				$per->get_permissions_list('corps');
+				$cadena=$cadena.$tabla_servicios->tabla_vacia('services',$per->add);
+				$variables_services=$tabla_servicios->nombres_variables;
+			}
+			else
+			{	
+				$per = new permissions();
+				$per->get_permissions_list('corps');							
+				$cadena=$cadena.$tabla_servicios->make_tables('services',$services->services_list,array('Nombre',20,'Nombre Web',20,'Imagen',20),array('id_service', 'name','name_web','path_photo'),10,$per->permissions_module,$per->add);		
+				$variables_services=$tabla_servicios->nombres_variables;
+			}
+						
 			//Rellenamos de forma provisional las variables con un "no se puede mostrar"
 			
 			$clients = new table(false);
 			$facturaspen= new table(false);
 			$facturascob= new table(false);
-			$products= new table(false);
-			$services= new table(false);
 			$gestionalm= new table(false);
 			$partes= new table(false);
 			
 			$cadena=$cadena.$clients->dont_show('clients');
 			$cadena=$cadena.$facturaspen->dont_show('facturaspen');
 			$cadena=$cadena.$facturascob->dont_show('facturascob');
-			$cadena=$cadena.$products->dont_show('products');
-			$cadena=$cadena.$services->dont_show('services');
 			$cadena=$cadena.$gestionalm->dont_show('gestionalm');
 			$cadena=$cadena.$partes->dont_show('partes');
 			
 			$variables_clients=$clients->nombres_variables;
 			$variables_facturaspen=$facturaspen->nombres_variables;
 			$variables_facturascob=$facturascobs->nombres_variables;
-			$variables_products=$products->nombres_variables;
-			$variables_services=$services->nombres_variables;
 			$variables_gestionalm=$gestionalm->nombres_variables;
 			$variables_partes=$partes->nombres_variables;
 			

@@ -199,6 +199,9 @@ class cat_prods{
 			//Validacion
 			//$return=validate_fields();
 			
+			//validamos que las posibles posibilidades de las
+			//categorias
+			$return=$this->validate_categories();
 			//En caso de que la validacion haya sido fallida se muestra la plantilla
 			//con los campos erroneos marcados con un *
 			$return=true; //Para pruebas dejar esta linea sin comentar
@@ -265,6 +268,17 @@ class cat_prods{
 		}	
 		}
 		}				
+	}
+	
+	function validate_categories(){
+	/**********************
+	 * Posibilidades:
+	 * 		1-	Si es categoria padre, no puede elegir
+	 * 			categorias hijas,nietas... como su cateogoria
+	 * 			padre
+	 * 		2-	
+	 */
+	return true;
 	}
 	
 	function modify_photo($id_cat_prod)

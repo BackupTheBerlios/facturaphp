@@ -645,7 +645,7 @@ class modules{
 	if (!isset($_POST['submit_modify'])){
 			//Mostrar plantilla vacía	
 			//pasarle a la plantilla los modulos y grupos con sus respectivos checkbox a checked false
-			$this->get_methods($this->id_module);			
+			$this->get_methods($this->id_module);
 			
 			
 			return 0;
@@ -902,9 +902,9 @@ class modules{
 			$method = $this->method;
 		}		
 	if ($corp != ""){
-			$corp='<a href="index.php?module=corps&method=view&id='.$_SESSION['ident_corp'].'">'.$corp.' ::';
+			$corp='<a href="index.php?module=corps&method=view&id='.$_SESSION['ident_corp'].'">'.$corp.'</a> :: ';
 		}
-		$nav_bar = '<a href="index.php?module=user_corps">Zona privada</a> :: '.$corp.' <a href="index.php?module=modules">M&oacute;dulos</a>';
+		$nav_bar='<a href="index.php?module=user_corps">Zona privada</a> :: '.$corp.'<a href="index.php?module=modules">M&oacute;dulos</a>';
 		$nav_bar=$nav_bar.$this->localice($method);
 		return $nav_bar;
 	}	
@@ -1134,7 +1134,7 @@ class modules{
 		}  
 		
 		$this->num=0;
-		$this->module_methods="";
+		$this->module_methods=array();
 		while (!$this->result->EOF) {
 			//cogemos los datos del usuario
 //			
