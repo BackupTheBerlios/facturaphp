@@ -1,6 +1,6 @@
 <html>
 <head>
-	<title>Zona privada :: Resuival :: Clientes :: Buscar</title>
+	<title>Zona privada :: Resuival :: Usuarios :: Buscar</title>
 </head>
 <link rel="stylesheet" href="css/style.css"> 
 <body style="top-margin:0px; left-margin:0px" background="pics/fond.gif">
@@ -13,7 +13,7 @@
 	  				<td align="right" valign="middle"><img src="pics/dragdrop.gif"></td>
 				</tr>
 				<tr class="barraNavegacion">
-					<td colspan="2" >Zona privada :: Resuival :: Clientes :: Buscar </td>
+					<td colspan="2" >Zona privada :: Resuival :: Usuarios :: Buscar </td>
 				</tr>
 			</table>		
 		</td>	  
@@ -149,7 +149,7 @@
                           <!--<img src="pics/usuariosico.png" width="32" height="32">-->
 						</td>
 						<td width="93%" valign="middle"  nowrap>
-						  Buscar clientes </td>
+						  Buscar usuarios </td>
 				</tr>
 			  </table>
 			  <table width="100%">
@@ -159,8 +159,8 @@
 					  <td colspan="2" class="cabeceraCampoFormulario">Criterios de b&uacute;squeda:</td>
 				  </tr>
 					 <tr>
-						<td width="125px" class="CampoFormulario">CIF/NIF:</td>
-						<td > <input type="text" id="last_name" name="cif_nif" class="textoMenu"></td>
+						<td width="125px" class="CampoFormulario">Login:</td>
+						<td > <input type="text" id="login" name="login" class="textoMenu"></td>
 				  </tr>
 				  <tr>
 					
@@ -169,13 +169,17 @@
 						<td> <input type="text" id="name" name="name" class="textoMenu"></td>
 				</tr>
 					<tr>
-						<td width="125px" class="CampoFormulario" >Nombre completo:</td>
-						<td > <input type="text" id="full_name" name="full_name" class="textoMenu"></td>
+						<td width="125px" class="CampoFormulario" >Primer apellido:</td>
+						<td > <input type="text" id="last_name" name="last_name" class="textoMenu"></td>
+				  </tr>
+				  <tr>
+						<td width="125px" class="CampoFormulario" >Segundo apellido:</td>
+						<td > <input type="text" id="last_name2" name="last_name2" class="textoMenu"></td>
 				  </tr>
 				    <tr>
 						<td width="125" class="CampoFormulario">Nº de Registros por p&aacute;gina:</td>
 						<td><select name="Registros">
-						  <option>10</option>
+						  <option selected>10</option>
 						  <option>30</option>
 						  <option>50</option>
 						</select></td>
@@ -195,94 +199,104 @@
 						<td colspan="3" class="cabeceraCampoFormulario">Listado:</td>
 					</tr>
 							<tr class="cabeceraMultiLinea">
-								<td width="20%">Cif/Nif
-								</td>
+								<td width="20%">Login</td>
 								<td width="20%">Nombre</td>
-								<td width="40%">NombreCompleto</td>
+								<td width="20%">Primer apellido </td>
+								<td width="20%">Segundo apellido </td>								
 								<td width="20%" colspan="3">Acciones</td>
 							</tr>
 							<tr class="multiLinea1">
-								<td>75612534D</td>
+								<td>Pepesan</td>
 								<td>David</td>
-								<td>David Vaquero Santiago </td>
+								<td>Vaquero</td>
+								<td>Santiago</td>
 								<td><a href="vistaClientes.htm"><img src="pics/btnVer.gif" border="0"></a></td>
 								<td><a href="formularioclientes.htm"><img src="pics/btnEditar.gif" border="0"></a></td>								
 								<td><a href="#"><img src="pics/btnborrar.gif" border="0" onClick="confirm('¿Desea borrar este registro?\nSi pulsa Sí se borrarán tambien los registros relacionados con este cliente (p.ej: datos de usuario)')"></a></td>		
 							</tr>
 							<tr class="multiLinea2">
-								<td>84235126W</td>
-								<td>Antonio</td>
-								<td>Antonio Gonz&aacute;lez Mart&iacute;n</td>
+								<td>Demetrio</td>
+								<td>Daniel</td>
+								<td>Gonz&aacute;lez</td>
+								<td>Zaballos</td>
 								<td><a href="#"><img src="pics/btnVer.gif" border="0"></a></td>
 								<td><a href="#"><img src="pics/btnEditar.gif" border="0"></a></td>								
 								<td><a href="#"><img src="pics/btnborrar.gif" border="0"></a></td>		
 							</tr>
 							<tr class="multiLinea1">
-								<td>72316584G</td>
-								<td>Carlos</td>
-								<td>Carlos Zamora Gutierrez</td>
-								<td><a href="#"><img src="pics/btnVer.gif" border="0"></a></td>
-								<td><a href="#"><img src="pics/btnEditar.gif" border="0"></a></td>								
-								<td><a href="#"><img src="pics/btnborrar.gif" border="0"></a></td>		
-							</tr>
-							<tr class="multiLinea2">
-								<td>76246316C</td>
-								<td>Andr&eacute;s</td>
-								<td>Andres Ledesma Moreno </td>
-								<td><a href="#"><img src="pics/btnVer.gif" border="0"></a></td>
-								<td><a href="#"><img src="pics/btnEditar.gif" border="0"></a></td>								
-								<td><a href="#"><img src="pics/btnborrar.gif" border="0"></a></td>		
-							</tr>
-							<tr class="multiLinea1">
-								<td>75612534D</td>
-								<td>Miguel</td>
-								<td>Miguel Sanchez Hernández</td>
-								<td><a href="#"><img src="pics/btnVer.gif" border="0"></a></td>
-								<td><a href="#"><img src="pics/btnEditar.gif" border="0"></a></td>								
-								<td><a href="#"><img src="pics/btnborrar.gif" border="0"></a></td>		
-							</tr>
-							<tr class="multiLinea2">
-								<td>84235126W</td>
-								<td>Alejandro</td>
-								<td>Alejandro L&oacute;pez Becerro </td>
-								<td><a href="#"><img src="pics/btnVer.gif" border="0"></a></td>
-								<td><a href="#"><img src="pics/btnEditar.gif" border="0"></a></td>								
-								<td><a href="#"><img src="pics/btnborrar.gif" border="0"></a></td>		
-							</tr>
-							<tr class="multiLinea1">
-								<td>72316584G</td>
+								<td>Uni</td>
 								<td>Enrique</td>
-								<td>Enrique G&oacute;mez Rodr&iacute;guez </td>
+								<td>Gomez</td>
+								<td>Rodriguez</td>
 								<td><a href="#"><img src="pics/btnVer.gif" border="0"></a></td>
 								<td><a href="#"><img src="pics/btnEditar.gif" border="0"></a></td>								
 								<td><a href="#"><img src="pics/btnborrar.gif" border="0"></a></td>		
 							</tr>
 							<tr class="multiLinea2">
-								<td>76246316C</td>
-								<td>Cristina</td>
-								<td>Cristina Loreto P&eacute;rez </td>
+								<td>Public</td>
+								<td>Alberto</td>
+								<td>Perez</td>
+								<td>Carabias</td>
 								<td><a href="#"><img src="pics/btnVer.gif" border="0"></a></td>
 								<td><a href="#"><img src="pics/btnEditar.gif" border="0"></a></td>								
 								<td><a href="#"><img src="pics/btnborrar.gif" border="0"></a></td>		
 							</tr>
 							<tr class="multiLinea1">
-								<td>72316584G</td>
-								<td>Carmen</td>
-								<td>Carmen P&eacute;rez Blanco </td>
+								<td>ElMerch</td>
+								<td>Eduardo</td>
+								<td>Merch&aacute;n</td>
+								<td>Avila</td>
 								<td><a href="#"><img src="pics/btnVer.gif" border="0"></a></td>
 								<td><a href="#"><img src="pics/btnEditar.gif" border="0"></a></td>								
 								<td><a href="#"><img src="pics/btnborrar.gif" border="0"></a></td>		
 							</tr>
 							<tr class="multiLinea2">
-								<td>76246316C</td>
-								<td>Patricia</td>
-								<td>Patricia Ingelmo Santos </td>
+								<td>Talia</td>
+								<td>Maria</td>
+								<td>Perez</td>
+								<td>Blanco</td>
+								<td><a href="#"><img src="pics/btnVer.gif" border="0"></a></td>
+								<td><a href="#"><img src="pics/btnEditar.gif" border="0"></a></td>								
+								<td><a href="#"><img src="pics/btnborrar.gif" border="0"></a></td>		
+							</tr>
+							<tr class="multiLinea1">
+								<td>Mewiwi</td>
+								<td>Marta</td>
+								<td>Lopez</td>
+								<td>Becerro</td>
+								<td><a href="#"><img src="pics/btnVer.gif" border="0"></a></td>
+								<td><a href="#"><img src="pics/btnEditar.gif" border="0"></a></td>								
+								<td><a href="#"><img src="pics/btnborrar.gif" border="0"></a></td>		
+							</tr>
+							<tr class="multiLinea2">
+								<td>Ginger</td>
+								<td>Beatriz</td>
+								<td>Alonso</td>
+								<td>Mart&iacute;n</td>
+								<td><a href="#"><img src="pics/btnVer.gif" border="0"></a></td>
+								<td><a href="#"><img src="pics/btnEditar.gif" border="0"></a></td>								
+								<td><a href="#"><img src="pics/btnborrar.gif" border="0"></a></td>		
+							</tr>
+							<tr class="multiLinea1">
+								<td>Kurgan</td>
+								<td>Miguel</td>
+								<td>Sanchez</td>
+								<td>Gomez</td>
+								<td><a href="#"><img src="pics/btnVer.gif" border="0"></a></td>
+								<td><a href="#"><img src="pics/btnEditar.gif" border="0"></a></td>								
+								<td><a href="#"><img src="pics/btnborrar.gif" border="0"></a></td>		
+							</tr>
+							<tr class="multiLinea2">
+								<td>Flipi</td>
+								<td>Alejandro</td>
+								<td>Ledesma</td>
+								<td>Labrador</td>
 								<td><a href="#"><img src="pics/btnVer.gif" border="0"></a></td>
 								<td><a href="#"><img src="pics/btnEditar.gif" border="0"></a></td>								
 								<td><a href="#"><img src="pics/btnborrar.gif" border="0"></a></td>		
 							</tr>
 							<tr class="cabeceraMultiLinea">
-								<td colspan="6">&nbsp;</td>
+								<td colspan="7">&nbsp;</td>
 							</tr>
 						</table>	  
 						<table align="center">
