@@ -555,6 +555,182 @@ class modules{
 			}}
 	}
 	
+		function view ($id,$tpl){
+	/*
+		Cosas que faltan por hacer:
+			De forma general, mirar los permisos del usuario que vaya a acceder aqui, para saber si tiene permisos de borrar editar ver etc...
+			Averiguar como pasar el numero de registros, si va a ser a grupos a grupos, si va a ser a modulos, a modulos
+			Order By (y mantener la búsqueda en el caso de que hubiera hecha una y averiguar la "pestaña" a la que hace referencia)
+			Busquedas
+	*/
+			$cadena='';			
+			// Leemos el usuario y se lo pasamos a la plantilla
+			$this->read($id);
+			$tpl->assign('objeto',$this);
+			if($this->parent==0){
+				$padre="Ninguno";
+			}
+			else{
+				$new_obj=new modules();
+				$new_obj->read($this->parent);
+				$padre=$new_obj->name_web;
+			}
+			//cogemos los metodos del modulo
+			$this->get_methods($id);
+			$metodos="";
+			for ($i=0;$i<count($this->module_meth);$i++){
+				$metodos = $metodos.$this->module_meth[$i]['name_web']." ";				
+			}
+			
+			$tpl->assign('metodos',$metodos);
+			$tpl->assign('padre',$padre);
+			
+			
+			if(!$_SESSION['super'] || !$_SESSION['admin'])
+			{	
+				$groups = false;
+				$modules = false;
+			
+				$i=0;
+				while($i!=$this->num_modules)
+				{
+			
+					if(($this->per_modules[$i]->per == 1)&&($this->per_modules[$i]->module_name=='modules'))
+					{
+					//Se comprueba si se tiene permiso para ver
+						$j=0;
+						while(($j<$this->per_modules[$i]->num_methods))
+						{
+							if(($this->per_modules[$i]->per_methods[$j]->per == 1)&&($this->per_modules[$i]->per_methods[$j]->method_name == 'view'))
+							{
+								$modules = true;
+							}
+							$j++;
+						}
+					}
+					else 
+					if(($this->per_modules[$i]->per == 1)&&($this->per_modules[$i]->module_name=='groups'))
+					{
+						//Se comprueba si se tiene permiso para ver
+						$j=0;
+						while(($j<$this->per_modules[$i]->num_methods))
+						{
+							if(($this->per_modules[$i]->per_methods[$j]->per == 1)&&($this->per_modules[$i]->per_methods[$j]->method_name == 'view'))
+							{
+								$groups = true;
+							}
+							$j++;
+						}
+					}
+					
+					$i++;
+					
+				}
+
+			}
+			else
+			{
+				$modules = true;
+				$groups = true;
+			}
+			
+		
+			$mensaje = null;
+			$mensaje[0]['id_mensaje'] = 1;
+			$mensaje[0]['mes'] = "Sentimos informarle de que no tiene permiso para acceder a esta información";
+			
+			//listado de modulos
+		/*	$tabla_modulos = new table(false);
+			if($modules)
+			{
+				if ($this->num_modules==0)
+				{
+	
+					$cadena=$cadena.$tabla_modulos->tabla_vacia('modules');
+					$variables_modulos=$tabla_modulos->nombres_variables;
+				}
+				else{	
+					//Se prepara el array de permisos
+					$k=0;
+					for($i = 0;$i<$this->num_modules;$i++)
+					{
+						if(($this->per_modules[$i]->per == 1)&&($this->per_modules[$i]->module_name != 'error'))
+						{
+							$permissions[$k]['id_module']=$this->per_modules[$i]->id_module;
+							$permissions[$k]['name']=$this->per_modules[$i]->web_name;
+							$permissions[$k]['methods'] = "";
+							for($j=0;$j<$this->per_modules[$i]->num_methods;$j++)
+								if($this->per_modules[$i]->per_methods[$j]->per ==1)
+								{
+									$permissions[$k]['methods'] = $permissions[$k]['methods'].' '.$this->per_modules[$i]->per_methods[$j]->method_name_web;
+								}
+								$k++;
+						}
+					}
+					
+						
+					$cadena=$cadena.$tabla_modulos->make_tables('modules',$permissions,array('Nombre del modulo',20,'Métodos en los que se tiene permiso',120),array('id_module','name', 'methods'),10,null,false);
+					$variables_modulos=$tabla_modulos->nombres_variables;
+				}
+			}
+			else
+			{
+				$cadena=$cadena.$tabla_modulos->make_tables('modules',$mensaje,array('ACCION NO PERMITIDA',50),array('id_mensaje','mes'),10,null,false);
+				$variables_modulos=$tabla_modulos->nombres_variables;
+			}
+			
+			
+			//listado de permisos por modulos
+			$tabla_grupos = new table(false);
+			if($groups)
+			{
+				
+				//listado de grupos
+				if ($this->get_groups($id)==0)
+				{
+					$cadena=$cadena.$tabla_grupos->tabla_vacia('group_users');
+					$variables_grupos=$tabla_grupos->nombres_variables;
+				}
+				else
+				{		
+					$per = new permissions();
+					$num = $per->get_permissions_list('users');
+					
+					$per_delete = null;
+					for($i=0; $i<$num;$i++)
+					if($per->permissions_module[$i] == 'delete')
+						$per_delete = array('delete');
+								
+					$cadena=$cadena.$tabla_grupos->make_tables('group_users',$this->groups_list,array('Nombre de grupo',75),array('id_group','name_web'),10,$per_delete,$per->add);
+					$variables_grupos=$tabla_grupos->nombres_variables;
+				}
+			}
+			else
+			{
+				$cadena=$cadena.$tabla_grupos->make_tables('groups_users',$mensaje,array('ACCION NO PERMITIDA',50),array('id_mensaje','mes'),10,null,false);
+				$variables_grupos=$tabla_grupos->nombres_variables;
+			}
+			
+			$i=0;
+			while($i<(count($variables_grupos)+count($variables_modulos))){
+				for($j=0;$j<count($variables_grupos);$j++){
+					$variables[$i]=$variables_grupos[$j];
+					$i++;
+				}
+				for($k=0;$k<count($variables_modulos);$k++){
+					$variables[$i]=$variables_modulos[$k];
+					$i++;
+				}
+			}
+
+			$tpl->assign('variables',$variables);
+			$tpl->assign('cadena',$cadena);*/
+			//			
+		
+			return $tpl;
+				
+	}
+	
 	function bar($method,$corp){
 		if ($method!=$this->method){
 			$method = $this->method;

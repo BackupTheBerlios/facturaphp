@@ -355,7 +355,10 @@ class cat_emps{
 		return $tpl;
 	}
 	
-	function view ($id){
+	function view ($id,$tpl){
+		$this->read($id);
+		$tpl->assign('objeto',$this);
+		return $tpl;
 	
 	}
 	

@@ -69,12 +69,17 @@
                               </tr>
                               <tr height="15px">                                <td height="21" nowrap class="camposVistas">Url:</td>
                                 <td nowrap class="datosVista"><a href="{$objeto->url}">{$objeto->url}</a></td>
-								<td><table align="center">
-								<tr><td>
-								<a href="formularioClientes.htm"><img src="pics/btnmodify.gif" border="0"></a></td>								
-								<td><a href="#"><img src="pics/btndelete.gif" border="0" onClick="confirm('¿Desea borrar este registro?\nSi pulsa Sí se borrarán tambien los registros relacionados con este cliente (p.ej: datos de usuario)')"></a></td>
-								</tr>
-								</table></td>
+								<td><table align="center"><tr>
+<!-- Elegir el modo a hacer-->	
+								<!--{$acciones}-->
+								<!--{section name="indice" loop=$acciones}
+								<td>
+								<a href="index.php?module=emps&method={$acciones[indice]}&id={$objeto->id_group}">
+								<img src="pics/btn{$acciones[indice]}.gif" border="0"></a></td>
+								{/section}-->								
+								
+
+							</tr>	</table></td>
 								<td></td>
                               </tr>
 							  <tr>

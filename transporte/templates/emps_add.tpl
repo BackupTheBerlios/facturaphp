@@ -50,9 +50,9 @@ function hola(){
 						<br>
 	<table align="center" width="90%"><tr><td width ="40%"valign="top">
 		<tr><td>
-		<input type="hidden" name="id_emps">
+<!--		<input type="hidden" name="id_emps">
 		<input type="hidden" name="id_corp">
-		<input type="hidden" name="id_user">
+		<input type="hidden" name="id_user">-->
 		<table width="250px" align="center">
 
 					 <tr>
@@ -60,25 +60,25 @@ function hola(){
 				  </tr>
 				  <tr>
 						<td width="125" align="right" class="CampoFormulario">Nombre:</td>
-						<td> <input type="text" id="name" name="name" class="textoMenu"></td>
+						<td> <input type="text" id="{$objeto->ddbb_name}" name="{$objeto->ddbb_name}" class="textoMenu"></td>
 					</tr>
 					<tr>
 						<td width="125" class="CampoFormulario" >Primer apellido: </td>
-						<td > <input type="text" id="last_name" name="last_name" class="textoMenu"></td>
+						<td > <input type="text" id="{$objeto->ddbb_last_name}" name="{$objeto->ddbb_last_name}" class="textoMenu"></td>
 				  </tr>
 				  <tr>
 						<td width="125" class="CampoFormulario">Segundo apellido:</td>
-						<td > <input type="text" id="last_name" name="last_name2" class="textoMenu"></td>
+						<td > <input type="text" id="{$objeto->ddbb_last_name2}" name="{$objeto->ddbb_last_name2}" class="textoMenu"></td>
 				  </tr>
 				  <tr>
 						<td width="125" class="CampoFormulario" nowrap>Fecha de nacimiento:</td>
 						<td > <!--<input type="text" id="birthday"  name="fields[multi_edit][0][up]" class="textoMenu">-->						
 				 <input class="textoMenu" type="text" name="dateChanged" value="00-00-0000" "size="15" maxlength="99" class="textfield" onchange="alert(this.value)" id="dateChanged" readonly>
-				 <input class="textoMenu" type="hidden" name="birthday" value="0000-00-00" "size="15" maxlength="99" class="textfield" onchange="alert(this.value)" id="birthday">
+				 <input class="textoMenu" type="hidden" name="{$objeto->ddbb_birthday}" value="0000-00-00" size="15" maxlength="99" class="textfield" onchange="alert(this.value)" id="{$objeto->ddbb_birthday}">
                                     <script type="text/javascript">
                                     
                     <!--
-                    document.write('<a title="Calendario" href="javascript:openCalendar(\'lang=es-utf-8&amp;server=1\', \'form_central\', \'birthday\', \'dateChanged\', \'date\')"><img class="calendar" valign="center" src="pics/calendar.png" alt="Calendario"/></a>');
+                    document.write('<a title="Calendario" href="javascript:openCalendar(\'lang=es-utf-8&amp;server=1\', \'form_central\', \'{$objeto->ddbb_birthday}\', \'dateChanged\', \'date\')"><img class="calendar" valign="center" src="pics/calendar.png" alt="Calendario"/></a>');
                     //-->
                     </script>
 		    
@@ -87,23 +87,23 @@ function hola(){
 				 </tr>
 				  <tr>
 						<td width="125" class="CampoFormulario">Direcci&oacute;n:</td>
-						<td > <input type="text" id="last_name" name="address" class="textoMenu"></td>
+						<td > <input type="text" id="{$objeto->ddbb_address}" name="{$objeto->ddbb_address}" class="textoMenu"></td>
 				 </tr>
 				  <tr>
 						<td width="125" class="CampoFormulario">C&oacute;digo postal:</td>
-						<td > <input type="text" id="last_name" name="postal_code" class="textoMenu"></td>
+						<td > <input type="text" id="{$objeto->ddbb_postal_code}" name="{$objeto->ddbb_postal_code}" class="textoMenu"></td>
 				 </tr>
 				  <tr>
 						<td width="125" class="CampoFormulario">Localidad:</td>
-						<td > <input type="text" id="last_name" name="city" class="textoMenu"></td>
+						<td > <input type="text" id="{$objeto->ddbb_city}" name="{$objeto->ddbb_city}" class="textoMenu"></td>
 				 </tr>
 				  <tr>
 						<td width="125" class="CampoFormulario">Provincia:</td>
-						<td > <input type="text" id="last_name" name="state" class="textoMenu"></td>
+						<td > <input type="text" id="{$objeto->ddbb_state}" name="{$objeto->ddbb_state}" class="textoMenu"></td>
 				 </tr>
 				  <tr>
 						<td width="125" class="CampoFormulario">Pa&iacute;s:</td>
-						<td > <input type="text" id="last_name" name="country" class="textoMenu"></td>
+						<td > <input type="text" id="{$objeto->ddbb_country}" name="{$objeto->ddbb_country}" class="textoMenu"></td>
 				 </tr>
 				 
 				</table>
@@ -114,26 +114,26 @@ function hola(){
 			<tr><td cospan="2" class="cabeceraCampoFormulario"></td></tr>
 			 <tr>
 						<td width="125" class="CampoFormulario">Tel&eacute;fono:</td>
-						<td > <input type="text" id="last_name" name="phone" class="textoMenu"></td>
+						<td > <input type="text" id="{$objeto->ddbb_phone}" name="{$objeto->ddbb_phone}" class="textoMenu"></td>
 				 </tr>
 				  <tr>
 						<td width="125" class="CampoFormulario">Tel&eacute;fono m&oacute;vil:</td>
-						<td > <input type="text" id="last_name" name="mobile_phone" class="textoMenu"></td>
+						<td > <input type="text" id="{$objeto->ddbb_mobile_phone}" name="{$objeto->ddbb_mobile_phone}" class="textoMenu"></td>
 				 </tr>
 				<tr>
 						<td width="125" class="CampoFormulario">Fax:</td>
-						<td > <input type="text" id="last_name" name="fax" class="textoMenu"></td>
+						<td > <input type="text" id="{$objeto->ddbb_fax}" name="{$objeto->ddbb_fax}" class="textoMenu"></td>
 				 </tr>
 				  <tr>
 						<td width="125" class="CampoFormulario">E-mail:</td>
-						<td > <input name="mail" type="text" class="textoMenu" id="mail"></td>
+						<td > <input name="{$objeto->ddbb_mail}" type="text" class="textoMenu" id="{$objeto->ddbb_mail}"></td>
 				 </tr>
 				  <tr>
 						<td width="125" class="CampoFormulario">Categoria:</td>
 						<td><select name="category">
-						  <option>Administrador</option>
-						  <option>Conductores</option>
-						  <option>Nuevo...</option>
+						{section name="indice" loop=$categorias}
+						  <option value="{$categorias[indice].id_cat_emp}">{$categorias[indice].name}</option>						 
+						  {/section}
 						</select></td>
 				 </tr>
 			</table>
@@ -143,9 +143,9 @@ function hola(){
 				<input type="radio" checked name="user" id="user_exist" value="exist" onChange="enableDisable(this.value)"> Escoger un usuario existente
 			</td></tr>
 			<tr class="class="textoMenu" align="center"><td><select name="existUser" id="existUser">
-						  <option>admin | David Vaquero Santiago</option>
-						  <option>admin2 | Daniel González Zaballos</option>
-						  <option>Elena | Elena Resuival.</option>
+						{section name="indice" loop=$listado_usuarios}
+						  <option value="{$listado_usuarios[indice].id_user}">{$listado_usuarios[indice].login} :: {$listado_usuarios[indice].name} {$listado_usuarios[indice].last_name} {$listado_usuarios[indice].last_name2}</option>
+					  {/section}
 						</select></td>
 			</tr>
 			<tr class="textoMenu" align="center"><td>
@@ -311,7 +311,7 @@ function hola(){
 		</td>
 		</tr>
 		<tr>
-			<td align="center" colspan="2"><br><br><input type="submit" name="enviar" value="A&ntilde;adir/Modificar" class="botones">
+			<td align="center" colspan="2"><br><br><input type="submit" name="enviar" value="A&ntilde;adir" class="botones">
 			<input type="reset" Value="Borrar Datos" class="botones">
 			</td>
 		</tr>

@@ -65,7 +65,7 @@ class emps{
 	var $emps_users_list;
 	var $method;
 	var $obj_user;
-	
+	var $cat_emps;
   	//constructor
 	function emps(){
 		//coge las variables globales del fichero config.inc.php
@@ -181,6 +181,7 @@ class emps{
 	
 	function add(){
 		if(!isset($_POST['add_adduser'])){
+			
 			$this->obj_user=new users();
 			$this->obj_user->add();
 		}
@@ -189,7 +190,8 @@ class emps{
 			//Mostrar plantilla vacía	
 			//pasarle a la plantilla los modulos y grupos con sus respectivos checkbox a checked false
 			//Modulos
-
+			$this->cat_emps=new cat_emps();
+			
 			return 0;
 		}
 		//en el caso de que SI este definido submit_add
@@ -628,8 +630,10 @@ class emps{
 								$tpl=$this->listar($tpl);										
 								$tpl->assign("message","&nbsp;<br>Empleado a&ntilde;adido correctamente<br>&nbsp;");
 							}
+							$tpl->assign("categorias",$this->cat_emps->cat_emps_list);
 							$tpl->assign("objeto",$this);									
 							$tpl->assign("usuarios",$this->obj_user);
+							$tpl->assign("listado_usuarios",$this->obj_user->users_list);
 							$tpl->assign("modulos",$this->obj_user->checkbox);
 							$tpl->assign("grupos",$this->obj_user->checkbox_groups);
 							break;
@@ -681,7 +685,8 @@ class emps{
 		echo "<br>";
 		echo "hola2<br>";
 		return 0;
-	}
+	}	
+	
 
 	function bar($method,$corp){		
 		if ($corp != ""){
