@@ -56,11 +56,11 @@ class group_users{
 		//print_r($this);
 		//se puede acceder a los grupos por numero de campo o por nombre de campo
 		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
-		//crea una nueva conexi—n con una bbdd (mysql)
+		//crea una nueva conexin con una bbdd (mysql)
 		$this->db = NewADOConnection($this->db_type);
-		//le dice que no salgan los errores de conexi—n de la ddbb por pantalla
+		//le dice que no salgan los errores de conexin de la ddbb por pantalla
 		$this->db->debug=false;
-		//realiza una conexi—n permanente con la bbdd
+		//realiza una conexin permanente con la bbdd
 		$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
 		//mete la consulta
 		$this->sql="SELECT * FROM ".$this->table_prefix.$this->table_name;
@@ -80,11 +80,11 @@ class group_users{
 	function get_list_group_users (){
 		//se puede acceder a los grupos_usuarios por numero de campo o por nombre de campo
 		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
-		//crea una nueva conexi—n con una bbdd (mysql)
+		//crea una nueva conexin con una bbdd (mysql)
 		$this->db = NewADOConnection($this->db_type);
-		//le dice que no salgan los errores de conexi—n de la ddbb por pantalla
+		//le dice que no salgan los errores de conexin de la ddbb por pantalla
 		$this->db->debug=false;
-		//realiza una conexi—n permanente con la bbdd
+		//realiza una conexin permanente con la bbdd
 		$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
 		//mete la consulta
 		$this->sql="SELECT * FROM ".$this->table_prefix.$this->table_name;
@@ -144,11 +144,11 @@ class group_users{
 	
 		//se puede acceder a los gruposs por numero de campo o por nombre de campo
 		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
-		//crea una nueva conexi—n con una bbdd (mysql)
+		//crea una nueva conexin con una bbdd (mysql)
 		$this->db = NewADOConnection($this->db_type);
-		//le dice que no salgan los errores de conexi—n de la ddbb por pantalla
+		//le dice que no salgan los errores de conexin de la ddbb por pantalla
 		$this->db->debug=false;
-		//realiza una conexi—n permanente con la bbdd
+		//realiza una conexin permanente con la bbdd
 		$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
 		//mete la consulta
 		$this->sql="SELECT * FROM ".$this->table_prefix.$this->table_name." WHERE ".$this->ddbb_id_group_user."= \"".$id."\"";
@@ -174,11 +174,11 @@ class group_users{
 	function add(){
 	
 		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
-		//crea una nueva conexi—n con una bbdd (mysql)
+		//crea una nueva conexin con una bbdd (mysql)
 		$this->db = NewADOConnection($this->db_type);
-		//le dice que no salgan los errores de conexi—n de la ddbb por pantalla
+		//le dice que no salgan los errores de conexin de la ddbb por pantalla
 		$this->db->debug=false;
-		//realiza una conexi—n permanente con la bbdd
+		//realiza una conexin permanente con la bbdd
 		$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
 		//mete la consulta para coger los campos de la bbdd
 		$this->sql="SELECT * FROM ".$this->table_prefix.$this->table_name. " WHERE ".$this->ddbb_id_group_user." = -1" ;
@@ -195,7 +195,7 @@ class group_users{
 		$record[$this->ddbb_id_group] = $this->id_group;
 		$record[$this->ddbb_id_user]=$this->id_user;
 		$record[$this->ddbb_up]=$this->up;
-		//calculamos la sql de inserci—n respecto a los atributos
+		//calculamos la sql de insercin respecto a los atributos
 		$this->sql = $this->db->GetInsertSQL($this->result, $record);
 		//print($this->sql);
 		//insertamos el registro
@@ -219,11 +219,11 @@ class group_users{
 	function remove($id){
 	
 		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
-		//crea una nueva conexi—n con una bbdd (mysql)
+		//crea una nueva conexin con una bbdd (mysql)
 		$this->db = NewADOConnection($this->db_type);
-		//le dice que no salgan los errores de conexi—n de la ddbb por pantalla
+		//le dice que no salgan los errores de conexin de la ddbb por pantalla
 		$this->db->debug=false;
-		//realiza una conexi—n permanente con la bbdd
+		//realiza una conexin permanente con la bbdd
 		$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
 		//mete la consulta para coger los campos de la bbdd
 		//calcula la consulta de borrado.
@@ -248,11 +248,11 @@ class group_users{
 	function modify(){
 	
 		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
-		//crea una nueva conexi—n con una bbdd (mysql)
+		//crea una nueva conexin con una bbdd (mysql)
 		$this->db = NewADOConnection($this->db_type);
-		//le dice que no salgan los errores de conexi—n de la ddbb por pantalla
+		//le dice que no salgan los errores de conexin de la ddbb por pantalla
 		$this->db->debug=false;
-		//realiza una conexi—n permanente con la bbdd
+		//realiza una conexin permanente con la bbdd
 		$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
 		//mete la consulta para coger los campos de la bbdd
 		$this->sql="SELECT * FROM ".$this->table_prefix.$this->table_name. " WHERE ".$this->ddbb_id_group_user." = \"".$this->id_group_user."\"" ;
@@ -270,7 +270,7 @@ class group_users{
 		$record[$this->ddbb_id_group]=$this->id_group;
 		$record[$this->ddbb_id_user]=$this->id_user;				
 		$record[$this->ddbb_up]=$this->up;
-		//calculamos la sql de inserci—n respecto a los atributos
+		//calculamos la sql de insercin respecto a los atributos
 		$this->sql = $this->db->GetUpdateSQL($this->result, $record);
 		//insertamos el registro
 		$this->db->Execute($this->sql);
