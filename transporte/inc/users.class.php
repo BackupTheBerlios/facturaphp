@@ -253,21 +253,24 @@ class users{
 		//realiza una conexi—n permanente con la bbdd
 		$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
 		//mete la consulta
-		$this->sql="SELECT * FROM ".$this->table_prefix.$this->table_name." WHERE ".$this->ddbb_login."=\"".$user."\" AND ".$this->ddbb_passwd."= \"".$passwd."\"";
+		$this->sql="SELECT * FROM ".$this->table_prefix.$this->table_name." WHERE ".$this->ddbb_login."=\"".$user."\"";
 		//printf($this->sql);
 		//la ejecuta y guarda los resultados
 		$this->result = $this->db->Execute($this->sql);
 		//si falla
-		//print_r($this); 
+		//printf($this); 
 		if ($this->result === false){
+			//printf('no existe usuario o contrase–a');
 			$error=1;
 			$this->db->close();
 			return 0;
-		}  
-		//comprobamos si la contrase–a es correcta
-		if($this->result->fields[$this->ddbb_passwd]==$passwd){
+		}else{  
+		//la contrase–a es correcta
+			if($passwd==$this->result->fields[$this->ddbb_passwd]){
+			//printf('existe usuario o contrase–a');
 			$this->db->close();
 			return 1;
+			}
 		}
 		$this->db->close();
 		return 0;

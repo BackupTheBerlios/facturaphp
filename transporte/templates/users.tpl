@@ -9,7 +9,7 @@
 				{if $login == 1 }
 				
 				{if $error == 1}
-				Usuario o contrase–a invalidos<br>
+				Usuario o contrase&ntilde;a inv&aacute;lidos<br>
 				Vuelva a intentarlo<br>
 				{/if}
 				Usuario:<br> 
