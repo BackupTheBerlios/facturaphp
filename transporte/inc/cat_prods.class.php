@@ -4,7 +4,7 @@
 global $ADODB_DIR, $INSTALL_DIR;
 require_once ($INSTALL_DIR.'inc/config.inc.php');
 require_once ($INSTALL_DIR.'inc/table.class.php');
-require_once ($ADODB_DIR."adodb.inc.php");
+require_once ($ADODB_DIR.'adodb.inc.php');
 class cat_prods{
 //internal vars
 	var $id_cat_prod;
@@ -13,6 +13,7 @@ class cat_prods{
 	var	$id_parent_cat;
 	var $path_photo;
 	var $theme;
+
 //BBDD name vars
 	var $db_name;
 	var $db_ip;
@@ -38,7 +39,7 @@ class cat_prods{
 	var $empleados;
 	var $var_name = "id_cat_prod";	
 	var $table_names_modify;
-	var $table_names_delete = array ("rel_emps_cats");
+	var $table_names_delete = array ("rel_cat_prods");
   	//constructor
 	function cat_prods(){
 		//coge las variables globales del fichero config.inc.php
@@ -344,6 +345,7 @@ class cat_prods{
 			if($this->path_photo != "")
 				unlink($this->path_photo);
 			//Fin del borrado de la foto
+			$this->make_remove($this->id_cat_prod);
 			$this->error=0;
 			$this->db->close();
 			return 1;
@@ -352,14 +354,108 @@ class cat_prods{
 			}
 	}
 	
+	function make_remove($id){
+		//modificamos todos aquellos registros en los que hay un id_user;
+		for ($i=0;$i<count($this->table_names_modify);$i++){
+			$this->modify_all_id_cat_prod($id,$this->table_names_modify[$i]);
+		}
+		//borramos todos aquellos registros en los que hay un id_user;		
+		for ($i=0;$i<count($this->table_names_delete);$i++){
+			$this->delete_all_id_cat_prod($id,$this->table_names_delete[$i]);
+		}
+		$this->modify_parent_cats($id,$this->table_name);
+	}
+	
+	function modify_all_id_cat_prod($id,$table){
+			$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
+			//crea una nueva conexión con una bbdd (mysql)
+			$this->db = NewADOConnection($this->db_type);
+			//le dice que no salgan los errores de conexión de la ddbb por pantalla
+			$this->db->debug=false;
+			//realiza una conexión permanente con la bbdd
+			$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
+			//mete la consulta para coger los campos de la bbdd
+			//calcula la consulta de borrado.
+			$this->sql="UPDATE ".$table. " SET id_cat_prod = 0 WHERE id_cat_prod = ".$id;
+			//la ejecuta y guarda los resultados
+			$this->result = $this->db->Execute($this->sql);
+			//si falla 
+			if ($this->db->Affected_Rows() == 0){
+				$this->error=1;
+				$this->db->close();
+				return 0;
+			}else{
+			
+				$this->error=0;
+				$this->db->close();
+				return 1;
+				
+			}
+	}
+	//Modificamos todos aquellos registros que tengan como padre la categoria que se ha borrado
+	function modify_parent_cats($id,$table){
+			$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
+			//crea una nueva conexión con una bbdd (mysql)
+			$this->db = NewADOConnection($this->db_type);
+			//le dice que no salgan los errores de conexión de la ddbb por pantalla
+			$this->db->debug=false;
+			//realiza una conexión permanente con la bbdd
+			$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
+			//mete la consulta para coger los campos de la bbdd
+			//calcula la consulta de borrado.
+			$this->sql="UPDATE ".$table. " SET id_parent_cat = 0 WHERE id_parent_cat = ".$id;
+			//la ejecuta y guarda los resultados
+			$this->result = $this->db->Execute($this->sql);
+			//si falla 
+			if ($this->db->Affected_Rows() == 0){
+				$this->error=1;
+				$this->db->close();
+				return 0;
+			}else{
+			
+				$this->error=0;
+				$this->db->close();
+				return 1;
+				
+			}
+	}
+	
+	function delete_all_id_cat_prod($id,$table){
+		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
+			//crea una nueva conexión con una bbdd (mysql)
+			$this->db = NewADOConnection($this->db_type);
+			//le dice que no salgan los errores de conexión de la ddbb por pantalla
+			$this->db->debug=false;
+			//realiza una conexión permanente con la bbdd
+			$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
+			//mete la consulta para coger los campos de la bbdd
+			//calcula la consulta de borrado.
+
+			$this->sql="DELETE FROM ".$table. " WHERE id_cat_prod = ".$id;
+			//la ejecuta y guarda los resultados
+			$this->result = $this->db->Execute($this->sql);
+			//si falla 
+			if ($this->db->Affected_Rows() == 0){
+				$this->error=1;
+				$this->db->close();
+				return 0;
+			}else{
+			
+				$this->error=0;
+				$this->db->close();
+				return 1;
+				
+			}
+	}
+	
 	function view_prods($id){
 		
 			$product = new products();				
 				$result=$product->verify_products($id);
-				$this->empleados="";
+				$this->productos="";
 				if ($result!=0){
-					$this->empleados="<p>Atención este categor&iacute;a tiene asignados los siguientes productos:";
-					$this->empleados.="<br><br>";
+					$this->productos="<p>Atención este categor&iacute;a tiene asignados los siguientes productos:";
+					$this->productos.="<br><br>";
 					for($i=0;$i<$result;$i++){
 						$this->productos.="&nbsp;&nbsp;&nbsp;";
 						$this->productos.=$product->prod_cat_list[$i]["name"]."&nbsp;";					
@@ -378,6 +474,14 @@ class cat_prods{
 		}
 		else{
 			//Introducir los datos de post.
+			//Si se modificó la foto
+			if($_SESSION['ruta_temporal'] != "")
+				{
+   				$file = new upload_file( $_SESSION['nombre_photo'], $_SESSION['ruta_temporal'], $_SESSION['tamanno_photo'], $this->id_vehicle);
+   				$result = $file->upload( "images/cat_prods/" );
+   				}	
+			
+
 			$this->get_fields_from_post();
 			//$this->insert_post();
 			
@@ -435,6 +539,13 @@ class cat_prods{
 	
 	}
 	  
+	function show($id, $tpl)
+	{
+		$this->read($id);
+		$tpl->assign('objeto', $this);
+		return $tpl;
+	}
+	
 	function listar($tpl){
 		$num = $this->get_list_cat_prods();
 		$tabla_listado = new table(true);
@@ -517,10 +628,8 @@ class cat_prods{
 						case 'delete':
 									
 									$this->read($_GET['id']);
-									if ($this->remove($_GET['id'])==0){
-										$tpl->assign("message",$this->empleados);
-									}
-									else{
+									if ($this->remove($_GET['id'])!=0){
+									
 										$this->cat_prods_list="";
 										$this->method="list";
 										$tpl=$this->listar($tpl);
@@ -530,6 +639,9 @@ class cat_prods{
 									break;
 						case 'view':									
 									$tpl=$this->view($_GET['id'],$tpl);
+									break;
+						case 'show':
+									$tpl=$this->show($_GET['id'], $tpl);									
 									break;
 						default:
 									$this->method='list';
@@ -541,73 +653,7 @@ class cat_prods{
 		
 		return $tpl;
 	}
-	
-	function make_remove($id){
-		//modificamos todos aquellos registros en los que hay un id_user;
-		for ($i=0;$i<count($this->table_names_modify);$i++){
-			$this->modify_all_id_cat_prod($id,$this->table_names_modify[$i]);
-		}
-		//borramos todos aquellos registros en los que hay un id_user;		
-		for ($i=0;$i<count($this->table_names_delete);$i++){
-			$this->delete_all_id_cat_prod($id,$this->table_names_delete[$i]);
-		}
-	}
-	
-	function modify_all_id_cat_prod($id,$table){
-			$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
-			//crea una nueva conexión con una bbdd (mysql)
-			$this->db = NewADOConnection($this->db_type);
-			//le dice que no salgan los errores de conexión de la ddbb por pantalla
-			$this->db->debug=false;
-			//realiza una conexión permanente con la bbdd
-			$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
-			//mete la consulta para coger los campos de la bbdd
-			//calcula la consulta de borrado.
-			$this->sql="UPDATE ".$table. " SET id_user = 0 WHERE id_cat_prod = ".$id;
-			//la ejecuta y guarda los resultados
-			$this->result = $this->db->Execute($this->sql);
-			//si falla 
-			if ($this->db->Affected_Rows() == 0){
-				$this->error=1;
-				$this->db->close();
-				return 0;
-			}else{
-			
-				$this->error=0;
-				$this->db->close();
-				return 1;
-				
-			}
-	}
-	
-	function delete_all_id_cat_prod($id,$table){
-		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
-			//crea una nueva conexión con una bbdd (mysql)
-			$this->db = NewADOConnection($this->db_type);
-			//le dice que no salgan los errores de conexión de la ddbb por pantalla
-			$this->db->debug=false;
-			//realiza una conexión permanente con la bbdd
-			$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
-			//mete la consulta para coger los campos de la bbdd
-			//calcula la consulta de borrado.
-
-			$this->sql="DELETE FROM ".$table. " WHERE id_cat_prod = ".$id;
-			//la ejecuta y guarda los resultados
-			$this->result = $this->db->Execute($this->sql);
-			//si falla 
-			if ($this->db->Affected_Rows() == 0){
-				$this->error=1;
-				$this->db->close();
-				return 0;
-			}else{
-			
-				$this->error=0;
-				$this->db->close();
-				return 1;
-				
-			}
-	}
-	
+		
 	function view_emps($id){
 		
 			$emp = new rel_emps_cats();				
@@ -670,6 +716,9 @@ class cat_prods{
 									break;
 						case 'view':
 									$localice=" :: Ver Categor&iacute;a";									
+									break;
+						case 'show':
+									$localice=" :: Ver foto de la Categor&iacute;a";	
 									break;
 						default:
 									$localice=" :: Buscar Categor&iacute;a";

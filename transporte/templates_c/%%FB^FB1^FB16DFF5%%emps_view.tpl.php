@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.3, created on 2004-12-14 17:30:11
+<?php /* Smarty version 2.6.3, created on 2005-01-14 17:53:36
          compiled from emps_view.tpl */ ?>
 <td valign="top">
 <?php echo $this->_tpl_vars['cadena']; ?>

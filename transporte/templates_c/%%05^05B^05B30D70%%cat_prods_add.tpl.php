@@ -1,7 +1,7 @@
-<?php /* Smarty version 2.6.3, created on 2005-01-11 19:44:40
+<?php /* Smarty version 2.6.3, created on 2005-01-13 18:30:44
          compiled from cat_prods_add.tpl */ ?>
 <td valign="top">
-<form method="post" action="index.php?module=cat_prods&method=add" name="form_central">
+<form method="post" action="index.php?module=cat_prods&method=add" name="form_central" enctype="multipart/form-data">
 	  	<table align="center" width="100%">
 		<tr>
 		<td valign="top">
@@ -27,11 +27,10 @@
 " class="textoMenu"></td>
 					</tr>
 					<tr>
-						<td width="125px" align="right" class="CampoFormulario">Ruta de la foto:</td>
-						<td> <input type="text" id="<?php echo $this->_tpl_vars['objeto']->ddbb_path_photo; ?>
-" name="<?php echo $this->_tpl_vars['objeto']->ddbb_path_photo; ?>
-" class="textoMenu"></td>
-					</tr>
+				 	<td width="125px" class="CampoFormulario" >Imagen:</td>
+					<td><input type="file" name="<?php echo $this->_tpl_vars['objeto']->ddbb_path_photo; ?>
+"></input></td>	
+				</tr>
 					 <tr>
 						<td width="125px" align="right" class="CampoFormulario">Categoria Padre:</td>
 						<td> <select id="<?php echo $this->_tpl_vars['objeto']->ddbb_id_cat_emp; ?>
@@ -41,7 +40,7 @@
 						
 						<?php unset($this->_sections['nombre']);
 $this->_sections['nombre']['name'] = 'nombre';
-$this->_sections['nombre']['loop'] = is_array($_loop=$this->_tpl_vars['objeto']->list_cat_prods) ? count($_loop) : max(0, (int)$_loop); unset($_loop);
+$this->_sections['nombre']['loop'] = is_array($_loop=$this->_tpl_vars['objeto']->cat_prods_list) ? count($_loop) : max(0, (int)$_loop); unset($_loop);
 $this->_sections['nombre']['show'] = true;
 $this->_sections['nombre']['max'] = $this->_sections['nombre']['loop'];
 $this->_sections['nombre']['step'] = 1;
@@ -63,9 +62,9 @@ $this->_sections['nombre']['index_next'] = $this->_sections['nombre']['index'] +
 $this->_sections['nombre']['first']      = ($this->_sections['nombre']['iteration'] == 1);
 $this->_sections['nombre']['last']       = ($this->_sections['nombre']['iteration'] == $this->_sections['nombre']['total']);
 ?>
-							<option value="<?php echo $this->_tpl_vars['objeto']->list_cat_prods[$this->_sections['nombre']['index']]['id_cat_prod']; ?>
+							<option value="<?php echo $this->_tpl_vars['objeto']->cat_prods_list[$this->_sections['nombre']['index']]['id_cat_prod']; ?>
 ">
-								<?php echo $this->_tpl_vars['objeto']->list_cat_prods[$this->_sections['nombre']['index']]['name']; ?>
+								<?php echo $this->_tpl_vars['objeto']->cat_prods_list[$this->_sections['nombre']['index']]['name']; ?>
 
 							</option>
 						<?php endfor; endif; ?>						
@@ -83,7 +82,7 @@ $this->_sections['nombre']['last']       = ($this->_sections['nombre']['iteratio
 
 		<tr>
 			<td align="center"><br><br>
-			<input type="submit" name="submit_add" id =" name="submit_add" "value="A&ntilde;adir" class="botones">			
+			<input type="submit" name="submit_add" id="submit_add" value="A&ntilde;adir" class="botones">			
 			<input type="reset" Value="Limpiar Datos" class="botones">
 			</td>
 		</tr>
