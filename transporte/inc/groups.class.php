@@ -1,6 +1,8 @@
 <?php
 //clase que da soporte a los grupos del programa
 //enlaza con la bbdd 
+//Variables para el listado de grupos en el formulario de alta de "usuarios": groups_list
+
 global $ADODB_DIR, $INSTALL_DIR;
 require_once ($INSTALL_DIR.'inc/config.inc.php');
 require_once ($ADODB_DIR."adodb.inc.php");

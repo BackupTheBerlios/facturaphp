@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.3, created on 2004-07-07 00:31:43
+<?php /* Smarty version 2.6.3, created on 2004-08-09 19:10:28
          compiled from index.tpl */ ?>
 <?php $_smarty_tpl_vars = $this->_tpl_vars;
 $this->_smarty_include(array('smarty_include_tpl_file' => "head.tpl", 'smarty_include_vars' => array()));
@@ -13,7 +13,7 @@ $this->_smarty_include(array('smarty_include_tpl_file' => "left.tpl", 'smarty_in
 $this->_tpl_vars = $_smarty_tpl_vars;
 unset($_smarty_tpl_vars);
   $_smarty_tpl_vars = $this->_tpl_vars;
-$this->_smarty_include(array('smarty_include_tpl_file' => "central.tpl", 'smarty_include_vars' => array()));
+$this->_smarty_include(array('smarty_include_tpl_file' => "users_add.tpl", 'smarty_include_vars' => array()));
 $this->_tpl_vars = $_smarty_tpl_vars;
 unset($_smarty_tpl_vars);
   $_smarty_tpl_vars = $this->_tpl_vars;

@@ -1,3 +1,5 @@
+<?php /* Smarty version 2.6.3, created on 2004-08-09 19:30:13
+         compiled from users_add.tpl */ ?>
 <td valign="top">
 <form method="post" action="index.php?module=users&method=add">
 	  	<table align="center" width="100%">
@@ -19,36 +21,46 @@
 				  </tr>
 					<tr>
 						<td width="125px" align="right" class="CampoFormulario" nowrap>Login:</td>
-						<td > <input type="text" id="{$objeto->ddbb_login}" name="{$objeto->ddbb_login}" class="textoMenu"></td>
+						<td > <input type="text" id="<?php echo $this->_tpl_vars['objeto']->ddbb_login; ?>
+" name="<?php echo $this->_tpl_vars['objeto']->ddbb_login; ?>
+" class="textoMenu"></td>
 					</tr>
 					<tr>
 						<td width="125px" class="CampoFormulario">Password:</td>
-						<td > <input type="password" id="{$objeto->ddbb_passwd}" name="{$objeto->ddbb_passwd}" class="textoMenu"></td>
+						<td > <input type="password" id="<?php echo $this->_tpl_vars['objeto']->ddbb_passwd; ?>
+" name="<?php echo $this->_tpl_vars['objeto']->ddbb_passwd; ?>
+" class="textoMenu"></td>
 				  </tr>
 				  <tr>
 					  <td colspan="2" class="cabeceraCampoFormulario">Datos del Usuario:</td>
 				  </tr>
 				  <tr>
 						<td width="125px" align="right" class="CampoFormulario">Nombre:</td>
-						<td> <input type="text" id="{$objeto->ddbb_name}" name="{$objeto->ddbb_name}" class="textoMenu"></td>
+						<td> <input type="text" id="<?php echo $this->_tpl_vars['objeto']->ddbb_name; ?>
+" name="<?php echo $this->_tpl_vars['objeto']->ddbb_name; ?>
+" class="textoMenu"></td>
 					</tr>
 					<tr>
 						<td width="125px" class="CampoFormulario" >Primer Apellido:</td>
-						<td > <input type="text" id="{$objeto->ddbb_last_name}" name="{$objeto->ddbb_last_name}" class="textoMenu"></td>
+						<td > <input type="text" id="<?php echo $this->_tpl_vars['objeto']->ddbb_last_name; ?>
+" name="<?php echo $this->_tpl_vars['objeto']->ddbb_last_name; ?>
+" class="textoMenu"></td>
 				  </tr>
 				  <tr>
 						<td width="125px" class="CampoFormulario">Segundo Apellido:</td>
-						<td > <input type="text" id="{$objeto->ddbb_last_name2}" name="{$objeto->ddbb_last_name2}" class="textoMenu"></td>
+						<td > <input type="text" id="<?php echo $this->_tpl_vars['objeto']->ddbb_last_name2; ?>
+" name="<?php echo $this->_tpl_vars['objeto']->ddbb_last_name2; ?>
+" class="textoMenu"></td>
 				  </tr>
 				   <tr>
 					  <td colspan="2" class="cabeceraCampoFormulario">Otros datos: </td>
 				  </tr>
 				  <tr>
 						<td width="125px" class="CampoFormulario">Grupo:</td>
-						<td > <select class="textoMenu" id="{$objeto->ddbb_id_group}" name="{$objeto->ddbb_id_group}">
-							{foreach from=$groups_list item=$group_element}
-								<option value="{$group_element->id_group}">{$group_element->name_web}</option>
-							/foreach}							
+						<td > <select class="textoMenu" id="grupo" name="grupo">
+						  <option value="1">Administrador</option>
+						  <option value="2">Conductores</option>
+						  <option value="0">Nuevo</option>
 						</select></td>
 				  </tr>
 				</table>
