@@ -45,27 +45,29 @@
 				$i=0;
 				while($i!=$num)
 				{
-				{/php}
 				
-					<tr class="textoMenu">
-					<td width="10px">&nbsp;</td>
-					<td>
-				{php}
+				
 					if($user->per_modules[$i]->per == 1)
 					{
+					{/php}
+				
+						<tr class="textoMenu">
+						<td width="10px">&nbsp;</td>
+						<td>
+					{php}
 						$href ='-<a href ="index.php?module='.$user->per_modules[$i]->module_name.'" class="enlaceMenu">';
 	
 						print $href;
-					 	print $user->per_modules[$i]->name_web;
-					}
+					 	print $user->per_modules[$i]->web_name;
 					{/php}
-					</a><br></td></tr>
-				
-				{php}
+						</a><br></td></tr>
+					{php}
+					}
 					
 					$i++;
 					
 				}
+				
 			{/php}
 					
 			
