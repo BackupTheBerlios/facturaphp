@@ -17,7 +17,7 @@
 				</tr>
 			  </table>
 			  <table width="100%">
-			  <tr><td valign="top"><form method="post" action="index.php?module=corpss&method=list">
+			  <tr><td valign="top"><form method="post" action="index.php?module=corps&method=list">
 			  	<table width="250px" align="center">
 				 <tr>
 					  <td colspan="2" class="cabeceraCampoFormulario">Criterios de b&uacute;squeda:</td>
