@@ -50,11 +50,11 @@ class methods{
 		//este array de alguna manera aumatizada
 		************************/
 		$this->fields_list= new fields();
-		$this->fields_list->add($this->ddbb_id_method, $this->id_method, 'int', 11);
-		$this->fields_list->add($this->ddbb_id_module, $this->id_module, 'varchar', 20);
-		$this->fields_list->add($this->ddbb_name, $this->name, 'varchar', 20);
-		$this->fields_list->add($this->ddbb_name_web, $this->name_web, 'varchar', 20);
-		$this->fields_list->add($this->ddbb_id_type_method, $this->id_type_method, 'varchar', 100);		
+		$this->fields_list->add($this->ddbb_id_method, $this->id_method, 'int', 11,0);
+		$this->fields_list->add($this->ddbb_id_module, $this->id_module, 'int', 11,0);
+		$this->fields_list->add($this->ddbb_name, $this->name, 'varchar', 20,0);
+		$this->fields_list->add($this->ddbb_name_web, $this->name_web, 'varchar', 50,0);
+		$this->fields_list->add($this->ddbb_id_type_method, $this->id_type_method, 'int', 3,0);		
 		//print_r($this);
 		//se puede acceder a los usuarios por numero de campo o por nombre de campo
 		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;

@@ -7,7 +7,7 @@ class groups{
 //internal vars
 	var $id_group;
 	var $name;
-	var $desc;
+	var $descrip;
 	var $name_web;
 	var $theme;
 //BBDD name vars
@@ -22,7 +22,7 @@ class groups{
 	var $ddbb_id_group='id_group';
 	var $ddbb_name='name';
 	var $ddbb_name_web='name_web';
-  	var $ddbb_desc='desc';
+  	var $ddbb_descrip='descrip';
   	var $db;
 	var $result;  	
 //variables complementarias	
@@ -51,7 +51,7 @@ class groups{
 		$this->fields_list->add($this->ddbb_id_group, $this->id_group, 'int', 11,0);
 		$this->fields_list->add($this->ddbb_name, $this->name, 'varchar', 20,0);
 		$this->fields_list->add($this->ddbb_name_web, $this->name_web, 'varchar', 100,0);
-		$this->fields_list->add($this->ddbb_desc, $this->desc, 'text', 255,0);		
+		$this->fields_list->add($this->ddbb_descrip, $this->descrip, 'text', 255,0);		
 		//print_r($this);
 		//se puede acceder a los grupos por numero de campo o por nombre de campo
 		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
@@ -103,7 +103,7 @@ class groups{
 			$this->groups_list[$this->num][$this->ddbb_id_group]=$this->result->fields[$this->ddbb_id_group];
 			$this->groups_list[$this->num][$this->ddbb_name]=$this->result->fields[$this->ddbb_name];
 			$this->groups_list[$this->num][$this->ddbb_name_web]=$this->result->fields[$this->ddbb_name_web];
-			$this->groups_list[$this->num][$this->ddbb_desc]=$this->result->fields[$this->ddbb_desc];
+			$this->groups_list[$this->num][$this->ddbb_descrip]=$this->result->fields[$this->ddbb_descrip];
 			//nos movemos hasta el siguiente registro de resultado de la consulta
 			$this->result->MoveNext();
 			$this->num++;
@@ -162,7 +162,7 @@ class groups{
 			$this->id_group=$id;
 			$this->name=$this->result->fields[$this->ddbb_name];
 			$this->name_web=$this->result->fields[$this->ddbb_name_web];
-			$this->desc=$this->result->fields[$this->ddbb_desc];
+			$this->descrip=$this->result->fields[$this->ddbb_descrip];
 			$this->db->close();
 			return 1;
 		}
@@ -193,9 +193,10 @@ class groups{
 		$record = array();
 		$record[$this->ddbb_name] = $this->name;
 		$record[$this->ddbb_name_web]=$this->name_web;
-		$record[$this->ddbb_desc]=$this->desc;
+		$record[$this->ddbb_descrip]=$this->descrip;
 		//calculamos la sql de inserci—n respecto a los atributos
 		$this->sql = $this->db->GetInsertSQL($this->result, $record);
+		
 		//print($this->sql);
 		//insertamos el registro
 		$this->db->Execute($this->sql);
@@ -268,7 +269,7 @@ class groups{
 		$record[$this->ddbb_id_group]=$this->id_group;
 		$record[$this->ddbb_name]=$this->name;
 		$record[$this->ddbb_name_web]=$this->name_web;
-		$record[$this->ddbb_desc]=$this->desc;		
+		$record[$this->ddbb_descrip]=$this->descrip;		
 		//calculamos la sql de inserci—n respecto a los atributos
 		$this->sql = $this->db->GetUpdateSQL($this->result, $record);
 		//insertamos el registro

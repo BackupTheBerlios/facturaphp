@@ -7,8 +7,8 @@ class log_sessions{
 //internal vars
 	var $id_log_session;
 	var $id_session; 
-	var $in;
-	var $out;
+	var $date_in;
+	var $date_out;
 	var $timeout;
 	var $ip;
 	var $id_user;
@@ -24,8 +24,9 @@ class log_sessions{
 	var $table_prefix;
 	var $table_name='log_sessions';
 	var $ddbb_id_log_session='id_log_session';
-  	var $ddbb_in='in';
-  	var $ddbb_out='out';
+	var $ddbb_id_session='id_session';
+  	var $ddbb_date_in='date_in';
+  	var $ddbb_date_out='date_out';
   	var $ddbb_timeout='timeout';
   	var $ddbb_ip='ip';
   	var $ddbb_id_user='id_user';
@@ -55,14 +56,14 @@ class log_sessions{
 		//este array de alguna manera aumatizada
 		************************/
 		$this->fields_list= new fields();		
-		$this->fields_list->add($this->ddbb_id_log_session, $this->id_log_session, 'int', 11);
-		$this->fields_list->add($this->ddbb_id_session, $this->id_session, 'int', 11);		
-		$this->fields_list->add($this->ddbb_in, $this->in, 'datetime',11);
-		$this->fields_list->add($this->ddbb_out, $this->out, 'datetime',11);
-		$this->fields_list->add($this->ddbb_timeout, $this->timeout, 'datetime',11);		
-		$this->fields_list->add($this->ddbb_ip, $this->ip, 'varchar', 20);		
-		$this->fields_list->add($this->ddbb_id_user, $this->id_user, 'int', 11);		
-		$this->fields_list->add($this->ddbb_country, $this->country, 'varchar', 20);
+		$this->fields_list->add($this->ddbb_id_log_session, $this->id_log_session, 'int', 11,0);
+		$this->fields_list->add($this->ddbb_id_session, $this->id_session, 'int', 11,0);		
+		$this->fields_list->add($this->ddbb_date_in, $this->date_in, 'datetime',11,0);
+		$this->fields_list->add($this->ddbb_date_out, $this->date_out, 'datetime',11,0);
+		$this->fields_list->add($this->ddbb_timeout, $this->timeout, 'datetime',11,0);		
+		$this->fields_list->add($this->ddbb_ip, $this->ip, 'varchar', 20,0);		
+		$this->fields_list->add($this->ddbb_id_user, $this->id_user, 'int', 11,0);		
+		$this->fields_list->add($this->ddbb_country, $this->country, 'varchar', 20,0);
 		//print_r($this);
 		//se puede acceder a las sesiones por numero de campo o por nombre de campo
 		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
@@ -115,8 +116,8 @@ class log_sessions{
 
 			$this->sessions_list[$this->num][$this->ddbb_id_log_session]=$this->result->fields[$this->ddbb_id_log_session];
 			$this->sessions_list[$this->num][$this->ddbb_id_session]=$this->result->fields[$this->ddbb_id_session];			
-			$this->sessions_list[$this->num][$this->ddbb_in]=$this->result->fields[$this->ddbb_in];
-			$this->sessions_list[$this->num][$this->ddbb_out]=$this->result->fields[$this->ddbb_out];
+			$this->sessions_list[$this->num][$this->ddbb_date_in]=$this->result->fields[$this->ddbb_date_in];
+			$this->sessions_list[$this->num][$this->ddbb_date_out]=$this->result->fields[$this->ddbb_date_out];
 			$this->sessions_list[$this->num][$this->ddbb_timeout]=$this->result->fields[$this->ddbb_timeout];
 			$this->sessions_list[$this->num][$this->ddbb_ip]=$this->result->fields[$this->ddbb_ip];
 			$this->sessions_list[$this->num][$this->ddbb_id_user]=$this->result->fields[$this->ddbb_id_user];		
@@ -177,13 +178,14 @@ class log_sessions{
 			$this->db->close();
 		}else{
 			$this->id_log_session=$id;
-			$this->id_session=$this->result->fields[$this->ddbb_session];
-			$this->in=$this->result->fields[$this->ddbb_in];
-			$this->out=$this->result->fields[$this->ddbb_out];
-			$this->datetime=$this->result->fields[$this->ddbb_datetime];
+			$this->id_session=$this->result->fields[$this->ddbb_id_session];
+			$this->date_in=$this->result->fields[$this->ddbb_date_in];
+			$this->date_out=$this->result->fields[$this->ddbb_date_out];
+			$this->timeout=$this->result->fields[$this->ddbb_timeout];
 			$this->ip=$this->result->fields[$this->ddbb_ip];
 			$this->id_user=$this->result->fields[$this->ddbb_id_user];
-			$this->country=$this->result->fields[$this->ddbb_ip];
+			$this->country=$this->result->fields[$this->ddbb_country];
+			
 			
 			$this->db->close();
 			return 1;
@@ -213,10 +215,13 @@ class log_sessions{
 		}
 		//rellenamos el array con los datos de los atributos de la clase
 		$record = array();
-		$record[$this->ddbb_id_session_php] = $this->session_php;
-		$record[$this->ddbb_id_user]=$this->id_user;
-		$record[$this->ddbb_up]=$this->up;
-		$record[$this->ddbb_down]=$this->down;		
+		$record[$this->ddbb_id_session] = $this->id_session;
+		$record[$this->ddbb_date_in]=$this->date_in;
+		$record[$this->ddbb_date_out]=$this->date_out;		
+		$record[$this->ddbb_timeout]=$this->timeout;
+		$record[$this->ddbb_ip]=$this->ip;
+		$record[$this->ddbb_id_user]=$this->id_user;		
+		$record[$this->ddbb_country]=$this->country;
 		//calculamos la sql de inserci—n respecto a los atributos
 		$this->sql = $this->db->GetInsertSQL($this->result, $record);
 		//print($this->sql);
@@ -225,11 +230,11 @@ class log_sessions{
 		//si se ha insertado una fila
 		if($this->db->Insert_ID()>=0){
 			//capturammos el id de la linea insertada
-			$this->id_session=$this->db->Insert_ID();
+			$this->id_log_session=$this->db->Insert_ID();
 			//print("<pre>::".$this->id_user."::</pre>");
 			//devolvemos el id de la tabla ya que todo ha ido bien
 			$this->db->close();
-			return $this->id_session;
+			return $this->id_log_session;
 		}else {
 			//devolvemos 0 ya que no se ha insertado el registro
 			$this->error=-1;
@@ -249,7 +254,7 @@ class log_sessions{
 		$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
 		//mete la consulta para coger los campos de la bbdd
 		//calcula la consulta de borrado.
-		$this->sql="DELETE FROM ".$this->table_prefix.$this->table_name. " WHERE ".$this->ddbb_id_session." = ".$id." LIMIT 1";
+		$this->sql="DELETE FROM ".$this->table_prefix.$this->table_name. " WHERE ".$this->ddbb_id_log_session." = ".$id." LIMIT 1";
 		//la ejecuta y guarda los resultados
 		$this->result = $this->db->Execute($this->sql);
 		//si falla 
@@ -277,7 +282,7 @@ class log_sessions{
 		//realiza una conexi—n permanente con la bbdd
 		$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
 		//mete la consulta para coger los campos de la bbdd
-		$this->sql="SELECT * FROM ".$this->table_prefix.$this->table_name. " WHERE ".$this->ddbb_id_session." = \"".$this->id_group."\"" ;
+		$this->sql="SELECT * FROM ".$this->table_prefix.$this->table_name. " WHERE ".$this->ddbb_id_log_session." = \"".$this->id_log_session."\"" ;
 		//la ejecuta y guarda los resultados
 		$this->result = $this->db->Execute($this->sql);
 		//si falla 
@@ -288,11 +293,14 @@ class log_sessions{
 		}
 		//rellenamos el array con los datos de los atributos de la clase
 		$record = array();
+		$record[$this->ddbb_id_log_session]=$this->id_log_session;
 		$record[$this->ddbb_id_session]=$this->id_session;
-		$record[$this->ddbb_id_session_php]=$this->id_session_php;
+		$record[$this->ddbb_date_in]=$this->date_in;
+		$record[$this->ddbb_date_out]=$this->date_out;		
+		$record[$this->ddbb_timeout]=$this->timeout;
+		$record[$this->ddbb_ip]=$this->ip;		
 		$record[$this->ddbb_id_user]=$this->id_user;				
-		$record[$this->ddbb_up]=$this->up;
-		$record[$this->ddbb_down]=$this->down;		
+		$record[$this->ddbb_country]=$this->country;				
 		//calculamos la sql de inserci—n respecto a los atributos
 		$this->sql = $this->db->GetUpdateSQL($this->result, $record);
 		//insertamos el registro
@@ -302,7 +310,7 @@ class log_sessions{
 			//capturammos el id de la linea insertada
 			$this->db->close();
 			//devolvemos el id de la tabla ya que todo ha ido bien
-			return $this->id_session;
+			return $this->id_log_session;
 		}else {
 			//devolvemos 0 ya que no se ha insertado el registro
 			$this->error=-1;

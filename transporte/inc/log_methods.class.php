@@ -8,7 +8,9 @@ class log_methods{
 	var $id_log_method;
 	var $id_user;
 	var $id_method;
-	var $sql;
+	var $datetime;
+	var $sql_sentence;
+	var $afected;
 	var $theme;
 //BBDD name vars
 	var $db_name;
@@ -22,7 +24,9 @@ class log_methods{
 	var $ddbb_id_log_method='id_log_method';
   	var $ddbb_id_user='id_user';
   	var $ddbb_id_method='id_method';
-  	var $ddbb_sql='sql';
+	var $ddbb_datetime='datetime';
+  	var $ddbb_sql_sentence='sql_sentence';
+	var $ddbb_afected='afected';
 	var $db;
 	var $result;  	
 //variables complementarias	
@@ -48,10 +52,12 @@ class log_methods{
 		//este array de alguna manera aumatizada
 		************************/
 		$this->fields_list= new fields();
-		$this->fields_list->add($this->ddbb_id_log_method, $this->id_log_method, 'int', 11);
-		$this->fields_list->add($this->ddbb_id_user, $this->id_user, 'varchar', 20);
-		$this->fields_list->add($this->ddbb_id_method, $this->id_method, 'varchar', 20);
-		$this->fields_list->add($this->ddbb_sql, $this->sql, 'varchar', 100);		
+		$this->fields_list->add($this->ddbb_id_log_method, $this->id_log_method, 'int', 11,0);
+		$this->fields_list->add($this->ddbb_id_user, $this->id_user, 'varchar', 20,0);
+		$this->fields_list->add($this->ddbb_id_method, $this->id_method, 'varchar', 20,0);
+		$this->fields_list->add($this->ddbb_datetime, $this->datetime, 'datetime', 11,0);		
+		$this->fields_list->add($this->ddbb_sql_sentence, $this->sql_sentence, 'varchar', 100,0);		
+		$this->fields_list->add($this->ddbb_afected, $this->afected, 'tinyint', 3,0);				
 		//print_r($this);
 		//se puede acceder a los usuarios por numero de campo o por nombre de campo
 		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
@@ -103,7 +109,10 @@ class log_methods{
 			$this->log_methods_list[$this->num][$this->ddbb_id_log_method]=$this->result->fields[$this->ddbb_id_log_method];
 			$this->log_methods_list[$this->num][$this->ddbb_id_user]=$this->result->fields[$this->ddbb_id_user];
 			$this->log_methods_list[$this->num][$this->ddbb_id_method]=$this->result->fields[$this->ddbb_id_method];
-			$this->log_methods_list[$this->num][$this->ddbb_sql]=$this->result->fields[$this->ddbb_sql];
+			$this->log_methods_list[$this->num][$this->ddbb_sql_sentence]=$this->result->fields[$this->ddbb_sql_sentence];
+			$this->log_methods_list[$this->num][$this->ddbb_datetime]=$this->result->fields[$this->ddbb_datetime];
+			$this->log_methods_list[$this->num][$this->ddbb_afected]=$this->result->fields[$this->ddbb_afected];
+
 			//nos movemos hasta el siguiente registro de resultado de la consulta
 			$this->result->MoveNext();
 			$this->num++;
@@ -162,7 +171,9 @@ class log_methods{
 			$this->id_log_method=$id;
 			$this->id_user=$this->result->fields[$this->ddbb_id_user];
 			$this->id_method=$this->result->fields[$this->ddbb_id_method];
-			$this->sql=$this->result->fields[$this->ddbb_sql];
+			$this->datetime=$this->result->fields[$this->ddbb_datetime];
+			$this->sql_sentence=$this->result->fields[$this->ddbb_sql_sentence];
+			$this->afected=$this->result->fields[$this->ddbb_afected];
 			$this->db->close();
 			return 1;
 		}
@@ -193,7 +204,9 @@ class log_methods{
 		$record = array();
 		$record[$this->ddbb_id_user] = $this->id_user;
 		$record[$this->ddbb_id_method]=$this->id_method;
-		$record[$this->ddbb_sql]=$this->sql;
+		$record[$this->ddbb_sql_sentence]=$this->sql_sentence;
+		$record[$this->ddbb_datetime]=$this->datetime;
+		$record[$this->ddbb_afected]=$this->afected;
 		//calculamos la sql de inserci—n respecto a los atributos
 		$this->sql = $this->db->GetInsertSQL($this->result, $record);
 		//print($this->sql);
@@ -268,7 +281,10 @@ class log_methods{
 		$record[$this->ddbb_id_log_method]=$this->id_log_method;
 		$record[$this->ddbb_id_user] = $this->id_user;
 		$record[$this->ddbb_id_method]=$this->id_method;
-		$record[$this->ddbb_sql]=$this->sql;
+		$record[$this->ddbb_sql_sentence]=$this->sql_sentence;
+		$record[$this->ddbb_datetime]=$this->datetime;
+		$record[$this->ddbb_afected]=$this->afected;
+
 		//calculamos la sql de inserci—n respecto a los atributos
 		$this->sql = $this->db->GetUpdateSQL($this->result, $record);
 		//insertamos el registro

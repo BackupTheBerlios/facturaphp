@@ -19,14 +19,25 @@
 	define('DDBB_TYPE','mysql');
 	define('DDBB_PORT','3306');
 	*/
+	//**************************************************************
+	/*Configuración De Dani
 	$DDBB_NAME="transporte";
 	$DDBB_USER="root";
-	$DDBB_PASS="sta3war2";
+	$DDBB_PASS="aquelarre";
 	$IP_DDBB="127.0.0.1";
 	$TABLE_PREFIX="";
 	$DDBB_TYPE="mysql";
 	$DDBB_PORT="3306";
-	$INSTALL_DIR="/Users/david/Sites/transporte/";
+	$INSTALL_DIR="D:\\Archivos de programa\\EasyPHP1-7\\www\\transporte\\";
+	*/
+	$DDBB_NAME="transporte";
+	$DDBB_USER="root";
+	$DDBB_PASS="aquelarre";
+	$IP_DDBB="127.0.0.1";
+	$TABLE_PREFIX="";
+	$DDBB_TYPE="mysql";
+	$DDBB_PORT="3306";
+	$INSTALL_DIR="D:\\Archivos de programa\\EasyPHP1-7\\www\\transporte\\";
 	$WIN32=false;
 	$SLASH="/";
 	$ADODB_DIR=$INSTALL_DIR."inc/adodb/";
