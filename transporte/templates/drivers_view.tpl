@@ -42,7 +42,7 @@
 										<img src="pics/btn{$acciones[indice]}.gif" border="0"></a>
 									{else}
 										<a href="index.php?module=drivers&method={$acciones[indice]}&id={$objeto->id_driver}">
-										<img src="pics/btn{$acciones[indice]}.gif" border="0" onClick="confirm('¿Desea borrar este registro?\nSi pulsa Sí se borrarán tambien los registros relacionados con este vehículo (p.ej: datos de vehículo)')"></a>
+										<img src="pics/btn{$acciones[indice]}.gif" border="0" onClick="confirm('¿Desea borrar este registro?\nSi pulsa Sí se borrarán tambien los registros relacionados con este conductor')"></a>
 									{/if}	
 									{/section}
 								</td>
