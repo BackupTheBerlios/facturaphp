@@ -89,6 +89,7 @@ if(!isset($_SESSION['user']))
      		print getenv('REMOTE_ADDR');
    		}
 */
+		$_SESSION['expire']=0;
 		//Se busca registro de la sesión (ya se conoce al usuario) y se introduce al usuario
 		
 		//como el usuario esta validado asigna su nombre a la plantilla
@@ -155,7 +156,8 @@ else
 			$tpl->assign('corp_id',0);
 			$tpl->assign('error',0);
 			$tpl->assign('login',1);
-			$index_template='index.tpl';	
+			$index_template='index.tpl';
+			$_SESSION['expire'] = 1;	
 		} 
 		else
 		{
@@ -171,7 +173,7 @@ if(isset($_GET['module']))
 {
 	$module=$_GET['module'];
 	$_SESSION['module']=$module;
-
+/*
 	switch ($module)
 	{
 		case ('users'): 
@@ -179,7 +181,7 @@ if(isset($_GET['module']))
 			$object= new users;
 		}
 	
-	}
+	}*/
 }
 
 
@@ -191,6 +193,7 @@ $menu = new menu();
 $tpl->assign('modules_list',$menu->table_modules(-2));
 $tpl->assign('public_modules',$menu->table_modules(0));
 $module=new modules();
+
 //coge las operaciones de ese modulo disponibles
 if(isset($_SESSION['user']) && (isset($_GET['module'])||isset($_SESSION['module'])))
 {
@@ -207,56 +210,67 @@ if(isset($_SESSION['user']) && (isset($_GET['module'])||isset($_SESSION['module'
 
 
 /********************************* Comprobación de permisos **************************************************/
-
-//2 opciones:
-//- El usuario no está logeado pero el módulo es público, en cuyo caso no habría problema
-//- El usuario está logeado pero intenta entrar en un móudlo donde no tiene permisos
-if(!isset($_SESSION['user']) && isset($_GET['module'])&&($_GET['module']!='user_corps'))
+//Comprobar si no expiró la sesion
+if($_SESSION['expire'] == 0)
 {
-	//Se comprueba si el modulo es público, sino es así se indica el error
-	if($module->is_public_module($_GET['module']) == 0)
+	//2 opciones:
+	//- El usuario no está logeado pero el módulo es público, en cuyo caso no habría problema
+	//- El usuario está logeado pero intenta entrar en un móudlo donde no tiene permisos
+	if(!isset($_SESSION['user']) && isset($_GET['module'])&&($_GET['module']!='user_corps'))
 	{
-		$module_name = 'error';
-	}	
-}
-
-//Se comprueba que el usuario tenga permisos sobre el módulo que aparece en la barra de direccion
-if(isset($_SESSION['user']) && isset($_GET['module']))
-{
-	if((!$_SESSION['super']) && (!$_SESSION['admin']))
-	{
-		//Se comprueba si el modulo es público si es así se deja no hay problema, pero sino se tendrá que saber si tiene o no acceso a él
+		//Se comprueba si el modulo es público, sino es así se indica el error
 		if($module->is_public_module($_GET['module']) == 0)
 		{
-			$permiso = new permissions_modules();
+			$module_name = 'error';
+		}
+		else
+		{
+			$module_name=$_GET['module'];
+		}	
+	}
+
+	//Se comprueba que el usuario tenga permisos sobre el módulo que aparece en la barra de direccion
+	if(isset($_SESSION['user']) && isset($_GET['module']))
+	{
+		if((!$_SESSION['super']) && (!$_SESSION['admin']))
+		{
+			//Se comprueba si el modulo es público si es así se deja no hay problema, pero sino se tendrá que saber si tiene o no acceso a él
+			if($module->is_public_module($_GET['module']) == 0)
+			{
+				$permiso = new permissions_modules();
 			
-			//Se prepara para poder investigar los permisos en el modulo
-			if (!isset($_GET['method']))
-			{
-				$method=null;
-			}
-			else
-			{
-				$method=$_GET['method'];
-			}
-		
-			if(($_GET['module'] != 'user_corps') &&($method != 'select'))
-			{
-				if($permiso->validate_per($_SESSION['user'], $_GET['module'], $method) == 0)
+				//Se prepara para poder investigar los permisos en el modulo
+				if (!isset($_GET['method']))
 				{
-					$module_name = 'error';	
+					$method=null;
+				}
+				else
+				{
+					$method=$_GET['method'];
+				}
+		
+				if(($_GET['module'] != 'user_corps') &&($method != 'select'))
+				{
+					if($permiso->validate_per($_SESSION['user'], $_GET['module'], $method) == 0)
+					{
+						$module_name = 'error';	
+					}
 				}
 			}
 		}
-	}
-	else
-	if($_SESSION['admin'] && (!$_SESSION['super']) && ($_GET['module'] == 'modules' || $_GET['module'] == 'methods'))
-	{
-		$module_name = 'error';	
+		else
+		if($_SESSION['admin'] && (!$_SESSION['super']) && ($_GET['module'] == 'modules' || $_GET['module'] == 'methods'))
+		{
+			$module_name = 'error';	
+		}
 	}
 }
-
-
+else
+{
+	//Expiró la sesión
+	$module_name = 'expire';	
+	$_SESSION['expire'] = 0;
+}
 /******************************** Operaciones con modulos ***********************************************************************************/
 
 //Se comprueba si se pasa de nuevo a elegir empresa
@@ -340,7 +354,7 @@ else
 	$tpl->assign('title',$title);
 	$tpl->assign('nav_bar',$nav_bar);
 //Antes de ir a la plantilla se registra la hora máxima a la que puede estar el usuario en esa página
-$_SESSION['max_page_time'] = time()+60;
+$_SESSION['max_page_time'] = time()+300;
 
 $tpl->display($index_template);
 //print_r($post_user);

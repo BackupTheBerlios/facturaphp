@@ -54,6 +54,9 @@ function initialize_object($module)
 		case 'error':
 					$objeto=new error();
 					break;
+		case 'expire':
+					$objeto=new expire();
+					break;
 		case 'cat_prods':
 					$objeto=new cat_prods();
 					break;

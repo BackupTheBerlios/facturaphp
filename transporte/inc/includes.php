@@ -10,6 +10,7 @@ require_once('user_corps.class.php');
 require_once('groups.class.php');
 require_once('group_users.class.php');
 require_once('error.class.php');
+require_once('expire.class.php');
 require_once('per_group_modules.class.php');
 require_once('per_user_modules.class.php');
 require_once('per_group_methods.class.php');
