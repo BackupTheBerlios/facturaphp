@@ -347,6 +347,84 @@ class products{
 		}
 	}
 	
+	function modify(){
+	if (!isset($_POST['submit_modify'])){
+			//Mostrar plantilla vacía		
+			
+			return 0;
+		}
+		else{
+			//Introducir los datos de post.
+			//Si se modificó la foto
+			if($_SESSION['ruta_temporal'] != "")
+				{
+   				$file = new upload_file( $_SESSION['nombre_photo'], $_SESSION['ruta_temporal'], $_SESSION['tamanno_photo'], $this->id_vehicle);
+   				$result = $file->upload( "images/products/" );
+   				}	
+			
+
+			$this->get_fields_from_post();
+			//$this->insert_post();
+			
+			//Validacion
+			//$return=validate_fields();
+			
+			//En caso de que la validacion haya sido fallida se muestra la plantilla
+			//con los campos erroneos marcados con un *
+			$return=true; //Para pruebas dejar esta linea sin comentar
+			
+			if (!$return){
+				//Mostrar plantilla con datos erroneos
+				
+			}
+			else{
+		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
+		//crea una nueva conexin con una bbdd (mysql)
+		$this->db = NewADOConnection($this->db_type);
+		//le dice que no salgan los errores de conexin de la ddbb por pantalla
+		$this->db->debug=false;
+		//realiza una conexin permanente con la bbdd
+		$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
+		//mete la consulta para coger los campos de la bbdd
+		$this->sql="SELECT * FROM ".$this->table_prefix.$this->table_name. " WHERE ".$this->ddbb_id_cat_prod." = \"".$this->id_cat_prod."\"" ;
+		//la ejecuta y guarda los resultados
+		$this->result = $this->db->Execute($this->sql);
+		//si falla 
+		if ($this->result === false){
+			$this->error=1;
+			$this->db->close();
+			return 0;
+		}
+		//rellenamos el array con los datos de los atributos de la clase
+		$record = array();
+		$record[$this->ddbb_id_cat_prod]=$this->id_product;
+		$record[$this->ddbb_id_corp] = $this->id_corp;
+		$record[$this->ddbb_name]=$this->name;
+		$record[$this->ddbb_name_web]=$this->name_web;
+		$record[$this->ddbb_pvp]=$this->pvp;
+		$record[$this->ddbb_tax] = $this->tax;
+		$record[$this->ddbb_pvp_tax]=$this->pvp_tax;
+		$record[$this->ddbb_minimum_stock]=$this->minimum_stock;
+		//calculamos la sql de insercin respecto a los atributos
+		$this->sql = $this->db->GetUpdateSQL($this->result, $record);
+		//insertamos el registro
+		$this->db->Execute($this->sql);
+		//si se ha insertado una fila
+		if($this->db->Affected_Rows()==1){
+			//capturammos el id de la linea insertada
+			$this->db->close();
+			//devolvemos el id de la tabla ya que todo ha ido bien
+			return $this->id_product;
+		}else {
+			//devolvemos 0 ya que no se ha insertado el registro
+			$this->error=-1;
+			$this->db->close();
+			return 0;
+		}
+	}}
+	
+	}
+	
 		function remove($id){
 			if (!isset($_POST["submit_delete"])){
 			//Si hay que hacer alguna comprobacion antes del borrado
@@ -566,8 +644,16 @@ class products{
 									$tpl=$this->show($_GET['id'], $tpl);
 									break;
 						default:
-									$this->method='list';
-									$tpl=$this->listar($tpl);
+									if($_SESSION['ident_corp'] != 0)
+									{
+										$this->method='list';
+										$tpl=$this->listar($tpl);
+									}
+									else
+									{
+										$tpl->assign('plantilla','error_corp.tpl');	
+										return $tpl;
+									}	
 									break;
 					}
 				$tpl->assign('plantilla','products_'.$this->method.'.tpl');		
