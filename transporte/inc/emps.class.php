@@ -187,6 +187,7 @@ class emps{
 	function add(){
 		if((!isset($_POST['existUser']))||($_POST['existUser']=="new")){
 			$this->obj_user=new users();
+			$this->obj_user->get_list_users();
 			$this->obj_user->is_emps=true;
 			$this->obj_user->add();
 		}
@@ -279,6 +280,12 @@ class emps{
 					//print("<pre>::".$this->id_user."::</pre>");
 					//devolvemos el id de la tabla ya que todo ha ido bien
 					$this->db->close();
+					
+					//Se hace nueva imagen de las tablas de permiso para usuarios
+					$permisos = new permissions();
+					$_SESSION['permisos_user_modules'] = $permisos->get_per_user_modules();
+					$_SESSION['permisos_user_methods'] = $permisos->get_per_user_methods();
+					
 					return $this->id_emp;
 				}else {
 					
@@ -316,11 +323,13 @@ class emps{
 			
 				if(($_POST['existUser']=="new")||($this->id_user==0)||($this->id_user=="")){
 					$this->obj_user=new users();
+					$this->obj_user->get_list_users();
 					$this->obj_user->is_emps=true;
 					$user_changed=$this->obj_user->add();
 					}
 				if(($_POST['existUser']=="modify")||($this->id_user!=0)){
 					$this->obj_user=new users();
+					$this->obj_user->get_list_users();
 					$this->obj_user->is_emps=true;
 					$this->obj_user->read_fields($this->id_user);
 					$user_changed=$this->obj_user->modify();
@@ -406,6 +415,12 @@ class emps{
 				if(($Affected_Rows==1)||($user_changed!=0)||($this->sql=="")||($return_category!=0)||($return_holyday!=0)){
 					//capturammos el id de la linea insertada
 					$this->db->close();
+					
+					//Modificar variable de sesión con tabla de permisos
+					$permisos = new permissions();
+					$_SESSION['permisos_user_modules'] = $permisos->get_per_user_modules();
+					$_SESSION['permisos_user_methods'] = $permisos->get_per_user_methods();
+		
 					//devolvemos el id de la tabla ya que todo ha ido bien
 					return $this->id_emp;
 				}else {
