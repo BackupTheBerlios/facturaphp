@@ -8,22 +8,14 @@ require_once ($ADODB_DIR."adodb.inc.php");
 
 class drivers{
 //internal vars
+	var $id_driver;
 	var $id_emp;
-	var $id_corp;
-	var $id_user;
+	var $id_vehicle;
+	var $date;
 	var $name;
 	var $last_name;
 	var $last_name2;
-	var $birthday;
-	var $phone;
-	var $mobile_phone;
-	var $fax;
-	var $mail;
-	var $address;
-	var $city;
-	var $state;
-	var $postal_code;
-	var $country;
+	var $alias;
 //BBDD name vars
 	var $db_name;
 	var $db_ip;
@@ -32,11 +24,17 @@ class drivers{
 	var $db_port;
 	var $db_type;
 	var $table_prefix;
-	var $table_name='emps';
+	var $table_name='drivers';
 	var $ddbb_id_driver = 'id_driver';
 	var $ddbb_id_emp = 'id_emp';
 	var $ddbb_id_vehicle = 'id_vehicle';
-	var $ddbb_date = 'id_date';
+	var $ddbb_date = 'date';
+//Información necesaria sobre empleado conductor y vehículo conducido
+	var $ddbb_name = 'name';
+	var $ddbb_last_name = 'last_name';
+	var $ddbb_last_name2 = 'last_name2';
+	var $ddbb_alias = 'alias';
+//Consultas a la BBDD
 	var $db;
 	var $result; 
 	var $result1; 
@@ -47,10 +45,10 @@ class drivers{
   	var $num;
   	var $fields_list;
   	var $error;
-	var $corps_list;
-	var $num_corps;
+//	var $corps_list;
+//	var $num_corps;
 	var $drivers_emps_list;
-	var $emps_corp_list;
+//	var $emps_corp_list;
 	var $obj_emp;
 	var $come;
 	var $method;
@@ -100,13 +98,12 @@ class drivers{
 		
 		/*******************************/
 		
-		return $this->get_list_drivers($_SESSION['ident_corp']);	 
+		return $this->get_list_drivers(1);	 
 		
 	}
 	
-	function get_list_drivers ($id_corp)
+	function get_list_drivers ($id_vehicle)
 	{
-
 		//se puede acceder a los usuarios por numero de campo o por nombre de campo
 		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
 		//crea una nueva conexin con una bbdd (mysql)
@@ -116,7 +113,7 @@ class drivers{
 		//realiza una conexin permanente con la bbdd
 		$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
 		//mete la consulta
-		$this->sql="SELECT * FROM ".$this->table_prefix.$this->table_name." WHERE id_corp = ".$id_corp;
+		$this->sql="SELECT * FROM ".$this->table_prefix.$this->table_name." WHERE id_vehicle = ".$id_vehicle;
 
 		//la ejecuta y guarda los resultados
 		$this->result = $this->db->Execute($this->sql);
@@ -130,12 +127,14 @@ class drivers{
 		
 		$this->num=0;
 		while (!$this->result->EOF) {
-			//cogemos los datos del empleado
+			//cogemos los datos del conductor (directamente de la BBDD)
 			$this->drivers_list[$this->num][$this->ddbb_id_driver]=$this->result->fields[$this->ddbb_id_driver];
 			$this->drivers_list[$this->num][$this->ddbb_id_emp]=$this->result->fields[$this->ddbb_id_emp];
 			$this->drivers_list[$this->num][$this->ddbb_id_vehicle]=$this->result->fields[$this->ddbb_id_vehicle];
 			$this->drivers_list[$this->num][$this->ddbb_id_date]=$this->result->fields[$this->ddbb_id_date];
 			
+			//Tratamos los datos para poder presentarselos al usuario
+			$this->preparar_datos($this->drivers_list[$this->num][$this->ddbb_id_emp], $this->drivers_list[$this->num][$this->ddbb_id_vehicle]);
 			//nos movemos hasta el siguiente registro de resultado de la consulta
 			$this->result->MoveNext();
 			$this->num++;
@@ -143,6 +142,24 @@ class drivers{
 		$this->db->close();
 		return $this->num;
 	
+	}
+	
+	function preparar_datos($id_emp, $id_vehicle)
+	{
+		$empleado = new emps();
+		$empleado->read($id_emp);
+		$this->drivers_list[$this->num][$this->ddbb_name] = $empleado->name;
+		$this->drivers_list[$this->num][$this->ddbb_last_name] = $empleado->last_name;
+		$this->drivers_list[$this->num][$this->ddbb_last_name2] = $empleado->last_name2;
+		
+		$this->name = $empleado->name;
+		$this->last_name = $empleado->last_name;
+		$this->last_name2 = $empleado->last_name2;
+		
+		$vehiculo = new vehicles();
+		$vehiculo->read($id_vehicle);
+		$this->drivers_list[$this->num][$this->ddbb_alias] = $vehiculo->alias;
+		$this->alias = $vehiculo->alias;
 	}
 	/*
 	function add(){
@@ -633,7 +650,7 @@ class drivers{
 		//realiza una conexin permanente con la bbdd
 		$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
 		//mete la consulta
-		$this->sql="SELECT * FROM `drivers` WHERE `id_emp`= \"".$id."\"";
+		$this->sql="SELECT * FROM `drivers` WHERE `id_driver`=".$id;
 		//la ejecuta y guarda los resultados
 		$this->result = $this->db->Execute($this->sql);
 		//si falla 
@@ -649,6 +666,8 @@ class drivers{
 			$this->id_emp = $this->result->fields[$this->ddbb_id_emp];
 			$this->id_vehicle = $this->result->fields[$this->ddbb_id_vehicle];
 			$this->date = $this->result->fields[$this->ddbb_date];
+			//Prepara datos
+			$this->preparar_datos($this->id_emp, $this->id_vehicle);
 			
 			$this->db->close();
 				
@@ -659,128 +678,42 @@ class drivers{
 	}
 
 
-	//function view ($id,$tpl){
-	/*
-		Cosas que faltan por hacer:
-			De forma general, mirar los permisos del usuario que vaya a acceder aqui, para saber si tiene permisos de borrar editar ver etc...
-			Averiguar como pasar el numero de registros, si va a ser a grupos a grupos, si va a ser a modulos, a modulos
-			Order By (y mantener la búsqueda en el caso de que hubiera hecha una y averiguar la "pestaña" a la que hace referencia)
-			Busquedas
-	*/
-	/*		$cadena='';			
-			// Leemos el empleado y se lo pasamos a la plantilla
+	function view ($id,$tpl){
+			$cadena='';			
+			// Leemos el conductor y se lo pasamos a la plantilla
 			$this->read($id);
 			$tpl->assign('objeto',$this);
 
-			if(($this->id_user==0)||($this->id_user=='')){
-				$tpl->assign("user_emp","Sin Usuario");
+			//Puede darse el caso de contratar un condutor temporalmente y no asignarle un usuario de la empresa
+			$empleado = new emps();
+			$empleado->read($this->id_emp);
+			if(($empleado->id_user==0)||($empleado->id_user=='')){
+				$tpl->assign("emp_driver","Sin Usuario");
 			}
-			else{
+			else
+			{
 				$usuario = new users();
-				$usuario->read($this->id_user);
-				$tpl->assign("user_emp",$usuario->login);
+				$usuario->read($empleado->id_user);
+				$tpl->assign("emp_driver",$usuario->login);
 			}
 			
-			if ($this->birthday!="0000-00-00"){
-				list($anno,$mes,$dia)=sscanf($this->birthday,"%d-%d-%d");
-				$tpl->assign("cumplecambiado","$dia-$mes-$anno");
+			if ($this->date!="0000-00-00")
+			{
+				list($anno,$mes,$dia)=sscanf($this->date,"%d-%d-%d");
+				$tpl->assign("fechacambiada","$dia-$mes-$anno");
 			}
 			else{
-				$tpl->assign("cumplecambiado","00-00-0000");
+				$tpl->assign("fechacambiada","00-00-0000");
 			}	
 			
 			//Se comprueba si hay permiso para borrar o modificar
 			$permisos_mod_del = new permissions();
-			$permisos_mod_del->get_permissions_modify_delete('emps');
+			$permisos_mod_del->get_permissions_modify_delete('drivers');
 			$tpl->assign('acciones',$permisos_mod_del->per_mod_del);
 					
-			
-			if(!$_SESSION['super'] || !$_SESSION['admin'])
-			{	
-				
-				$holydays = false;
-			
-				$i=0;
-				while($i!=$this->num_modules)
-				{
-			
-					if(($this->per_modules[$i]->per == 1)&&($this->per_modules[$i]->module_name=='holydays'))
-					{
-					//Se comprueba si se tiene permiso para ver
-						$j=0;
-						while(($j<$this->per_modules[$i]->num_methods))
-						{
-							if(($this->per_modules[$i]->per_methods[$j]->per == 1)&&($this->per_modules[$i]->per_methods[$j]->method_name == 'view'))
-							{
-								$holydays = true;
-							}
-							$j++;
-						}
-					}
-					
-					
-					$i++;
-					
-				}
-
-			}
-			else
-			{
-				$holydays = true;
-			}
-			
-		
 			$mensaje = null;
 			$mensaje[0]['id_mensaje'] = 1;
 			$mensaje[0]['mes'] = "Sentimos informarle de que no tiene permiso para acceder a esta información";
-			
-			$cadena="";
-			$tabla_vacaciones = new table(false);
-			$tabla_vacaciones->parameter_add="&id_emp=".$this->id_emp;
-			if($holydays)
-			{
-				
-				//listado de holydays
-				if ($this->get_holydays($this->id_emp)==0)
-				{
-									$per = new permissions();
-					$num = $per->get_permissions_list('holydays');
-					$cadena=$cadena.$tabla_vacaciones->tabla_vacia('holydays',$per->add);
-					$variables_vacaciones=$tabla_vacaciones->nombres_variables;
-				}
-				else
-				{
-				$per = new permissions();
-					$num = $per->get_permissions_list('holydays');
-					
-					$permisos  ;	
-					$j=0;
-					for ($i=0;$i<count($per->permissions_module);$i++){
-						if(($per->permissions_module[$i]=="modify")||($per->permissions_module[$i]=="delete")){
-							$permisos[$j]=$per->permissions_module[$i];
-							$j++;
-						} 
-					}
-								
-					$cadena=$cadena.$tabla_vacaciones->make_tables('holydays',$this->holydays_list,array('Fecha de baja',25,'Fecha de alta',25,'Motivo',25),array('id_holy','gone','come','ill'),10,$permisos,$per->add);
-					$variables_vacaciones=$tabla_vacaciones->nombres_variables;
-				}
-			}
-			else
-			{
-				$cadena=$cadena.$tabla_vacaciones->make_tables('holydays',$mensaje,array('ACCION NO PERMITIDA',50),array('id_mensaje','mes'),10,null,false);
-				$variables_vacaciones=$tabla_vacaciones->nombres_variables;
-			}
-			
-			$i=0;
-			while($i<(count($variables_vacaciones))){
-				for($j=0;$j<count($variables_vacaciones);$j++){
-					$variables[$i]=$variables_vacaciones[$j];
-					
-					$i++;
-				}
-			}
-
 			
 			$tpl->assign('variables',$variables);
 			$tpl->assign('cadena',$cadena);
@@ -788,10 +721,10 @@ class drivers{
 			return $tpl;
 				
 	}
-*/
+
 	function listar($tpl)
 	{
-		$num = $this->get_list_drivers($_SESSION['ident_corp']);
+		$num = $this->get_list_drivers(1);
 	
 		$tabla_listado = new table(true);
 		$per = new permissions();
@@ -803,7 +736,7 @@ class drivers{
 		}
 		else
 		{	
-			$cadena=''.$tabla_listado->make_tables('drivers',$this->drivers_list,array('Nombre',20,'Primer Apellido',20,'Segundo Apellido',20),array($this->ddbb_id_driver, 'name', 'last_name', 'last_name2'),10,$per->permissions_module,$per->add);
+			$cadena=''.$tabla_listado->make_tables('drivers',$this->drivers_list,array('Nombre',20,'Primer Apellido',20,'Segundo Apellido',20),array($this->ddbb_id_driver, $this->ddbb_name, $this->ddbb_last_name, $this->ddbb_last_name2),10,$per->permissions_module,$per->add);
 			$variables=$tabla_listado->nombres_variables;	
 		}				
 		$tpl->assign('variables',$variables);

@@ -13,7 +13,7 @@
                           <!--<img src="pics/usuariosico.png" width="32" height="32">-->
 						</td>
 						<td width="93%" valign="middle"  nowrap>
-						  Buscar veh&iacute;culos </td>
+						  Buscar conductores </td>
 				</tr>
 			  </table>
 			  <table width="100%">
@@ -40,8 +40,8 @@
 						<td > <input type="text" id="{$objeto->ddbb_last_name2}" name="{$objeto->ddbb_last_name2}" class="textoMenu"></td>
 				  </tr>
 				  <tr>
-						<td width="125px" class="CampoFormulario" >Matr&iacute;cula del veh&iacute;culo que conduce:</td>
-						<td > <input type="text" id="{$objeto->ddbb_number_plate}" name="{$objeto->ddbb_number_plate}" class="textoMenu"></td>
+						<td width="125px" class="CampoFormulario" >Alias del veh&iacute;culo que conduce:</td>
+						<td > <input type="text" id="{$objeto->ddbb_alias}" name="{$objeto->ddbb_alias}" class="textoMenu"></td>
 				  </tr>
 				    <tr>
 						<td width="125" class="CampoFormulario">Nº de Registros por p&aacute;gina:</td>
