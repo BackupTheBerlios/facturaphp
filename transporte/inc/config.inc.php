@@ -30,6 +30,8 @@
 	$DDBB_PORT="3306";
 	$INSTALL_DIR="D:\\Archivos de programa\\EasyPHP1-7\\www\\transporte\\";
 	*/
+	/* *************************************************
+	Configuracion de David
 	$DDBB_NAME="transporte";
 	$DDBB_USER="root";
 	$DDBB_PASS="sta3war2";
@@ -38,6 +40,27 @@
 	$DDBB_TYPE="mysql";
 	$DDBB_PORT="3306";
 	$INSTALL_DIR="/Users/david/Sites/transporte/";
+	
+	*/
+	/* *************************************************
+	Configuracion de LUpus
+	$DDBB_NAME="transporte";
+	$DDBB_USER="root";
+	$DDBB_PASS="";
+	$IP_DDBB="127.0.0.1";
+	$TABLE_PREFIX="";
+	$DDBB_TYPE="mysql";
+	$DDBB_PORT="3306";
+	$INSTALL_DIR="C:\\Archivos de programa\\EasyPHP1-7\\www\\transporte\\";
+	*/
+	$DDBB_NAME="transporte";
+	$DDBB_USER="root";
+	$DDBB_PASS="";
+	$IP_DDBB="127.0.0.1";
+	$TABLE_PREFIX="";
+	$DDBB_TYPE="mysql";
+	$DDBB_PORT="3306";
+	$INSTALL_DIR="C:\\Archivos de programa\\EasyPHP1-7\\www\\transporte\\";
 	$WIN32=false;
 	$SLASH="/";
 	$ADODB_DIR=$INSTALL_DIR."inc/adodb/";

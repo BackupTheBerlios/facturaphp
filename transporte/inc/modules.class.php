@@ -1,8 +1,9 @@
 <?php
 //clase que da soporte a los usuarios del programa
 //enlaza con la bbdd 
-require_once ('config.inc.php');
-//require_once ("/Users/david/Sites/transporte/inc/adodb/adodb.inc.php");
+global $ADODB_DIR, $INSTALL_DIR;
+require_once ($INSTALL_DIR.'inc/config.inc.php');
+require_once ($ADODB_DIR."adodb.inc.php");
 class modules{
 //internal vars
 	var $id_module;
