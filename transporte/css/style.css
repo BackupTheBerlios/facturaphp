@@ -1,20 +1,41 @@
 a:link{
 	text-decoration:none;
 	font-family:arial;
-	font-size:12px;
+	font-size:10px;
 	color:#000000;
 }
 
 a:hover{
 	text-decoration:underline;
 	font-family:arial;
-	font-size:12px;
+	font-size:10px;
 	color:#000000;
 }
 
 a:visited{
 	text-decoration:none;
 	font-family:arial;
+	font-size:10px;
+	color:#000000;
+}
+
+a.enlaceMenu:link{
+	text-decoration:none;
+	font-family:verdana;
+	font-size:12px;
+	color:#000000;
+}
+
+a.enlaceMenu:hover{
+	text-decoration:underline;
+	font-family:verdana;
+	font-size:12px;
+	color:#000000;
+}
+
+a.enlaceMenu:visited{
+	text-decoration:none;
+	font-family:verdana;
 	font-size:12px;
 	color:#000000;
 }
@@ -56,4 +77,32 @@ a:visited{
 	font-size:10px;
 	color:#000000;
 	text-align:center;
+}
+
+.botones{
+	border=1px solid black;
+	background-color:#13A703;
+	font-family:Verdana;
+	font-size:10px;
+}
+
+.barraNavegacion{
+	background-color:#F3F7F3;
+	font-family:arial;
+	font-size:15px;
+	color:#000000;
+	font-weight:bold;
+}
+
+.Cabecera{
+	font-size=20px;
+	font-weight=bold;
+	font-family:Arial;
+	vertical-align=middle;
+	text-decoration:underline;
+}
+
+.divCentral{
+	border: 1 thin solid;
+	background-color: #EEEEEE;
 }
