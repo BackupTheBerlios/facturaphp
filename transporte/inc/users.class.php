@@ -265,9 +265,10 @@ class users{
 			$groups=new groups();
 			for($i=0;$i<$groups->num;$i++){
 				$this->checkbox_groups[$i]= new groups();
-				$this->checkbox_groups[$i]->read($groups->groups_list[$i][$groups->ddbb_id_group]);					
+				$this->checkbox_groups[$i]->read($groups->groups_list[$i][$groups->ddbb_id_group]);
+				echo $this->checkbox_groups[$i]->id_group;
 			}
-			echo $this->checkbox_groups[0]->name_web;
+
 			return 0;
 		}
 		//en el caso de que SI este definido submit_add
@@ -332,7 +333,7 @@ class users{
 					//$this->insert_per_groups();
 					//capturammos el id de la linea insertada
 					$this->id_user=$this->db->Insert_ID();
-
+					$this->add_group_users();
 					$this->add_per_modules_methods();
 					//print("<pre>::".$this->id_user."::</pre>");
 					//devolvemos el id de la tabla ya que todo ha ido bien
@@ -640,14 +641,30 @@ class users{
 		$this->last_name=trim($_POST[$this->ddbb_last_name]);
 		$this->last_name2=trim($_POST[$this->ddbb_last_name2]);		
 
-		//Cogemos los checkbox
-		//$this->get_groups_from_post();
+		//Cogemos los checkbox de grupos
+		$this->get_groups_from_post();
 		//Cogemos los checkboxn de modulos-grupos
-		$modules_methods=$this->get_modules_methods_from_post();
+		$this->get_modules_methods_from_post();
 
 		return 0;
 	}	
-
+	
+	function get_groups_from_post(){		
+		$groups=new groups();
+			for($i=0;$i<$groups->num;$i++){
+				$this->checkbox_groups[$i]= new groups();
+				$this->checkbox_groups[$i]->read($groups->groups_list[$i][$groups->ddbb_id_group]);
+				echo $this->checkbox_groups[$i]->id_group;
+			}
+			for($i=0;$i<$groups->num;$i++){
+				echo "grupo_".$this->checkbox_groups[$i]->id_group;
+				$this->checkbox_groups[$i]->belong=$_POST["grupo_".$this->checkbox_groups[$i]->id_group];
+				if($this->checkbox_groups[$i]->belong!=1){
+					$this->checkbox_groups[$i]->belong=0;
+				}
+			}
+			
+	}
 	function get_modules_methods_from_post(){		
 		
 		$this->checkbox=new permissions_modules();
@@ -660,14 +677,14 @@ class users{
 			}			
 			for($i=0;$i<$modules->num;$i++){			
 					$this->checkbox->per_modules[$i]->per=$_POST["modulo_".$this->checkbox->per_modules[$i]->id_module];
-					if (($this->checkbox->per_modules[$i]->per=="") || ($this->checkbox->per_modules[$i]->per==null)){
+					if ($this->checkbox->per_modules[$i]->per!=1){
 						$this->checkbox->per_modules[$i]->per=0;
 					}
 					//aqui hacemos lo mismo pero con los metodos.
 
 					for($j=0;$j<count($this->checkbox->per_modules[$i]->per_methods);$j++){
 								$this->checkbox->per_modules[$i]->per_methods[$j]->per=$_POST['modulo_'.$this->checkbox->per_modules[$i]->id_module.'_metodo_'.$this->checkbox->per_modules[$i]->per_methods[$j]->id_method];
-								if (($this->checkbox->per_modules[$i]->per_methods[$j]->per=="") || ($this->checkbox->per_modules[$i]->per_methods[$j]->per==null)){
+								if ($this->checkbox->per_modules[$i]->per_methods[$j]->per!=1){
 									$this->checkbox->per_modules[$i]->per_methods->per=0;
 								}								
 					}
@@ -780,6 +797,20 @@ class users{
 									break;
 		}
 		return $localice;
+	}
+	
+	
+	function add_group_users(){
+		$groups=new groups();
+		$group_users= new group_users();
+		for($i=0;$i<$groups->num;$i++){
+			echo $this->checkbox_groups[$i]->id_group."modulo->belong".$this->checkbox_groups[$i]->belong."<br>";
+			if($this->checkbox_groups[$i]->belong==1){
+				$group_users->id_group=$this->checkbox_groups[$i]->id_group;
+				$group_users->id_user=$this->id_user;
+				$group_users->add();
+			}
+		}
 	}
 	
 	function add_per_modules_methods(){
