@@ -10,8 +10,8 @@ session_start();
 
 //realiza todos los includes necesarios
 //Si estamos en windows comentar el config que tenga / si no comentar el config \\
-require_once('inc\\config.inc.php');
-//require_once('inc/config.inc.php');
+//require_once('inc\\config.inc.php');
+require_once('inc/config.inc.php');
 global $INSTALL_DIR;
 require_once('inc/index.inc.php');
 
@@ -23,6 +23,10 @@ $nav_bar="::Gesti&oacute;n::";
 
 //inicializa una plantilla
 $tpl= new template;
+
+
+
+/******************************************* Identificación de usuario ***************************************************/
 
 //comprueba si existe el usuario en la sesion
 if(!isset($_SESSION['user']))
@@ -47,12 +51,12 @@ if(!isset($_SESSION['user']))
 			if($user->groups_list[$i]['id_group'] == 2)
 			{
 				$_SESSION['admin'] = true;
-				//echo "admin";
+				echo "admin";
 			}
 			else
 			if($user->groups_list[$i]['id_group'] == 1)
 			{	
-				//echo "super";
+				echo "super";
 				$_SESSION['super'] = true;				
 			}
 		}
@@ -108,54 +112,8 @@ else
 		$index_template='index.tpl';
 	} 
 }
-/*
-//Cada vez que se entre en vehículos hay que saber cuál es el vehículo con mayor id  
-if((isset($_GET['module']))&&($_GET['module']=='vehicles'))
-{
-	$vehicle = new vehicles();	
-	$_SESSION['ident_vehicle'] = $vehicle->sig_id();
-}
-*/
 
-//Si se va a añadir un coche, entonces se toma el nombre del archivo que se le pasó y se copia al directorio images/vehicles con el 
-//identificador del coche como nombre
-//Los directorios images y vehicles deben tener permiso de escritura para los demás, ya que para poder copiar un archivo debe ser propietario de 
-//la aplicación root, y quien los va a manejar será el grupo www-data
-if((isset($_GET['module']))&& (isset($_GET['method']))&&($_GET['module']=='vehicles')&&($_GET['method']=='add'))
-{
-   $_SESSION['ruta_photo'] == "";
- //Se adelanta a entrar en la clase para poder introducir el nombre (id) de la foto
-   $vehicle = new vehicles();
-   if($vehicle->add()!=0)
-   {
- 	if($_FILES['path_photo']['tmp_name'] != "")
-	{
-   		$file = new upload_file( $_FILES['path_photo']['name'], $_FILES['path_photo']['tmp_name'], $_FILES['path_photo']['size'], $_SESSION['ident_vehicle']);
-   		$result = $file->upload( "images/vehicles/" );
-   		if($result == 1)
-   		{
-   			//modificar ruta de la foto
-			$vehicle->modify_photo($_SESSION['ident_vehicle']);
-			$_SESSION['add_photo'] = 1;
-		}
-   	}	
-   }
-   else
-   {
-   	$_SESSION['add_photo'] = 0;
-   }
- }
- 
-
-//Si se modifica la foto de un coche
-if((isset($_GET['module']))&& (isset($_GET['method']))&&($_GET['module']=='vehicles')&&($_GET['method']=='modify'))
-{
- $file = new upload_file( $_FILES['path_photo']['name'], $_FILES['path_photo']['tmp_name'], $_FILES['path_photo']['size'], $_GET['id']);
- $result = $file->upload( "images/vehicles/" );
-}
-
-
-//identifica el usuario el modulo y la operaci—n
+//identifica el usuario el modulo y la operacin
 if(isset($_GET['module']))
 {
 	$module=$_GET['module'];
@@ -170,19 +128,18 @@ if(isset($_GET['module']))
 	}
 }
 
+
+/************************************ Se preparan menus ************************************************/
+
 //coge el listado de modulos disponibles para el usuario
 $module= new modules();
 if(isset($_SESSION['user']))
-{
-	$modules_list=$module->get_list_modules_user($_SESSION['user']);
-}
-else
-{
-	$modules_list=$module->get_list_public_modules();
+$module->get_list_modules_menu();
+$module->get_list_public_modules();
 
-}
 
-$tpl->assign('modules_list',$modules_list);
+$tpl->assign('modules_list',$module->modules_list_menu);
+$tpl->assign('public_modules',$module->public_modules);
 
 //coge las operaciones de ese modulo disponibles
 if(isset($_GET['module'])||isset($_SESSION['module']))
@@ -198,26 +155,9 @@ if(isset($_GET['module'])||isset($_SESSION['module']))
 	$operations_list=$module->get_module_operations_list($module_name);
 }
 
-//Se comprueba si se pasa de nuevo a elegir empresa
-if(isset($_GET['module'])&& (!isset($_GET['method']))&&($_GET['module']=='user_corps'))
-{
-	//registra la variable de sesion ident_corp con el identificador nulo para diferenciar en los menús
-	$_SESSION['ident_corp']=0;
-}
 
+/********************************* Comprobación de permisos **************************************************/
 
-
-//Se indica si se trabaja con una empresa, con cuál se está trabajando
-
-//Se comprueba si estan eligiendo empresa
-if(isset($_GET['module'])&& isset($_GET['method'])&&(($_GET['module']=='user_corps')&&($_GET['method']=='select')))
-{	
-	//registra la variable de sesion user con el nombre de usuario
-	$_SESSION['ident_corp']=$_GET['id'];
-	
-}	
-
-		
 //2 opciones:
 //- El usuario no está logeado pero el módulo es público, en cuyo caso no habría problema
 //- El usuario está logeado pero intenta entrar en un móudlo donde no tiene permisos
@@ -249,7 +189,7 @@ if(isset($_SESSION['user']) && isset($_GET['module']))
 			{
 				$method=$_GET['method'];
 			}
-			
+		
 			if(($_GET['module'] != 'user_corps') &&($method != 'select'))
 			{
 				if($permiso->validate_per($_SESSION['user'], $_GET['module'], $method) == 0)
@@ -266,6 +206,51 @@ if(isset($_SESSION['user']) && isset($_GET['module']))
 	}
 }
 
+
+/******************************** Operaciones con modulos ***********************************************************************************/
+//Si se va a añadir un coche, entonces se toma el nombre del archivo que se le pasó y se copia al directorio images/vehicles con el 
+//identificador del coche como nombre
+//Los directorios images y vehicles deben tener permiso de escritura para los demás, ya que para poder copiar un archivo debe ser propietario de 
+//la aplicación root, y quien los va a manejar será el grupo www-data
+if((isset($_GET['module']))&& (isset($_GET['method']))&&($_GET['module']=='vehicles')&&($_GET['method']=='add'))
+{
+   $_SESSION['ruta_photo'] = "";
+   $_SESSION['nombre_photo'] = $_FILES['path_photo']['name'];
+   $_SESSION['ruta_temporal'] =  $_FILES['path_photo']['tmp_name'];
+   $_SESSION['tamanno_photo'] = $_FILES['path_photo']['size'];
+ }
+ 
+
+//Si se modifica la foto de un coche
+if((isset($_GET['module']))&& (isset($_GET['method']))&&($_GET['module']=='vehicles')&&($_GET['method']=='modify'))
+{
+ $_SESSION['ruta_photo'] = "";
+ $_SESSION['nombre_photo'] = $_FILES['path_photo']['name'];
+ $_SESSION['ruta_temporal'] =  $_FILES['path_photo']['tmp_name'];
+ $_SESSION['tamanno_photo'] = $_FILES['path_photo']['size'];
+}
+
+
+
+
+//Se comprueba si se pasa de nuevo a elegir empresa
+if(isset($_GET['module'])&& (!isset($_GET['method']))&&($_GET['module']=='user_corps'))
+{
+	//registra la variable de sesion ident_corp con el identificador nulo para diferenciar en los menús
+	$_SESSION['ident_corp']=0;
+}
+
+//Se indica si se trabaja con una empresa, con cuál se está trabajando
+//Se comprueba si estan eligiendo empresa
+if(isset($_GET['module'])&& isset($_GET['method'])&&(($_GET['module']=='user_corps')&&($_GET['method']=='select')))
+{	
+	//registra la variable de sesion user con el nombre de usuario
+	$_SESSION['ident_corp']=$_GET['id'];
+	
+}	
+
+		
+/*************************** Preparación de la plantilla a mostrar ***************************************************/
 
 //inicializar el objeto que corresponda
 //en el caso de que no haya modulo definido se deja la plantilla por defecto
@@ -295,13 +280,13 @@ else
 	
 	//En este orden
 	if (!isset($_GET['method']))
-			{
-				$method=null;
-			}
-			else
-			{
-				$method=$_GET['method'];
-			}
+	{
+		$method=null;
+	}
+	else
+	{
+		$method=$_GET['method'];
+	}
 	$tpl=$objeto->calculate_tpl($method,$tpl);
 	
 	

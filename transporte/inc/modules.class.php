@@ -35,6 +35,7 @@ class modules{
 	var $result;  	
 //variables complementarias	
   	var $modules_list;
+	var $modules_list_menu;
   	var $num;
   	var $fields_list;
 	var $error;
@@ -124,6 +125,158 @@ class modules{
 			$this->modules_list[$this->num][$this->ddbb_public]=$this->result->fields[$this->ddbb_public];
 			$this->modules_list[$this->num][$this->ddbb_parent]=$this->result->fields[$this->ddbb_parent];
 			$this->modules_list[$this->num][$this->ddbb_order]=$this->result->fields[$this->ddbb_order];
+			//nos movemos hasta el siguiente registro de resultado de la consulta
+			$this->result->MoveNext();
+			$this->num++;
+		}
+		$this->db->close();
+		return $this->num;
+	
+	}
+	
+	function get_list_modules_menu()
+	{
+		//se puede acceder a los usuarios por numero de campo o por nombre de campo
+		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
+		//crea una nueva conexin con una bbdd (mysql)
+		$this->db = NewADOConnection($this->db_type);
+		//le dice que no salgan los errores de conexin de la ddbb por pantalla
+		$this->db->debug=false;
+		//realiza una conexin permanente con la bbdd
+		$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
+		//mete la consulta
+		$uno = 1;
+		$cero = 0;
+		$name = modules;
+		$name1 = modules_gestion;
+		if($_SESSION['super'])
+			$this->sql="SELECT * FROM `modules` WHERE `active`=".$uno." AND `public`=".$cero." ORDER BY  `order`";
+		else if($_SESSION['admin'])
+			$this->sql="SELECT * FROM `modules` WHERE `active`=".$uno." AND `public`=".$cero." AND `name`<>\"".$name."\" AND `name`<>\"".$name1."\"ORDER BY  `order`";
+		else//usuario normal
+		{
+			$user= new users(); 
+			$id_user = $user->get_id($_SESSION['user']);
+			$user->validate_per_user($id_user);
+			$i=0;
+			$j=0;
+			$num_padres=0;
+			print "numero de modulos".$user->num_modules;
+			while($i!=$user->num_modules)
+			{
+				if($user->per_modules[$i]->per == 1)
+				{
+				if(($user->per_modules[$i]->active==1)&&($user->per_modules[$i]->publico==0))
+				{		
+					
+							
+					if($user->per_modules[$i]->parent != 0)
+					{
+						print "NO padre";
+						//Comprobamos que el padre no esté ya en la lísta, si no está lo incluimos
+						$k=0;
+						$esta=false;
+						while(($esta==false) &&($k!=$num_padres))
+						{
+							if($padres[$k]['id']==$user->per_modules[$i]->parent)
+								$esta=true;
+							$k++;
+						}
+								
+						//Comprobamos cómo se salió del while
+						if(!$esta)
+						{
+							print "metemos padre";
+							$padres[$num_padres]['id']=$user->per_modules[$i]->parent;
+							//Se introduce en la lista
+							//cogemos los datos del usuario
+							$this->read($user->per_modules[$i]->parent);
+							$this->modules_list_menu[$j][$this->ddbb_id_module]=$this->id_module;
+							$this->modules_list_menu[$j][$this->ddbb_name_web]=$this->name_web;
+							$this->modules_list_menu[$j][$this->ddbb_name]=$this->name;
+							$this->modules_list_menu[$j][$this->ddbb_path]=$this->path;
+							$this->modules_list_menu[$j][$this->ddbb_active]=$this->active;
+							$this->modules_list_menu[$j][$this->ddbb_public]=$this->publico;
+							$this->modules_list_menu[$j][$this->ddbb_parent]=$this->parent;
+							
+							//Nos adelantamos para seguir el orden de la bbdd
+							$j++;
+							$num_padres++;
+						}
+						//cogemos los datos del usuario
+						$this->modules_list_menu[$j][$this->ddbb_id_module]=$user->per_modules[$i]->id_module;
+						$this->modules_list_menu[$j][$this->ddbb_name_web]=$user->per_modules[$i]->web_name;
+						$this->modules_list_menu[$j][$this->ddbb_name]=$user->per_modules[$i]->name;
+						$this->modules_list_menu[$j][$this->ddbb_path]=$user->per_modules[$i]->path;
+						$this->modules_list_menu[$j][$this->ddbb_active]=$user->per_modules[$i]->active;
+						$this->modules_list_menu[$j][$this->ddbb_public]=$user->per_modules[$i]->publico;
+						$this->modules_list_menu[$j][$this->ddbb_parent]=$user->per_modules[$i]->parent;
+						
+					}
+					else
+					{
+						//Comprobamos que el padre no esté ya en la lísta, si no está lo incluimos
+						$k=0;
+						$esta=false;
+						while(($esta==false) &&($k!=$num_padres))
+						{
+							if($padres[$k]['id']==$user->per_modules[$i][$this->ddbb_id_module])
+								$esta=true;
+							$k++;
+						}
+								
+						//Comprobamos cómo se salió del while
+						if(!$esta)
+						{
+							print "padre";
+							$padres[$num_padres]['lista']=$user->per_modules[$i][$this->ddbb_parent];
+							
+							//Se introduce en la lista
+							//cogemos los datos del usuario
+							$this->modules_list_menu[$j][$this->ddbb_id_module]=$user->per_modules[$i]->id_module;
+							$this->modules_list_menu[$j][$this->ddbb_name_web]=$user->per_modules[$i]->web_name;
+							$this->modules_list_menu[$j][$this->ddbb_name]=$user->per_modules[$i]->name;
+							$this->modules_list_menu[$j][$this->ddbb_path]=$user->per_modules[$i]->path;
+							$this->modules_list_menu[$j][$this->ddbb_active]=$user->per_modules[$i]->active;
+							$this->modules_list_menu[$j][$this->ddbb_public]=$user->per_modules[$i]->publico;
+							$this->modules_list_menu[$j][$this->ddbb_parent]=$user->per_modules[$i]->parent;
+							
+							
+							$num_padres++;
+						}
+						
+						
+					}//else (ser padre)
+					
+					$j++;
+				}//if
+				}
+				$i++;
+			}//while
+			return $j;
+		}
+		
+		//la ejecuta y guarda los resultados
+		$this->result = $this->db->Execute($this->sql);
+		//si falla 
+		if ($this->result === false){
+			$this->error=1;
+			$this->db->close();
+
+			return 0;
+		}  
+		
+		$this->num=0;
+		while (!$this->result->EOF) {
+			//cogemos los datos del usuario
+			$this->modules_list_menu[$this->num][$this->ddbb_id_module]=$this->result->fields[$this->ddbb_id_module];
+			$this->modules_list_menu[$this->num][$this->ddbb_name_web]=$this->result->fields[$this->ddbb_name_web];
+			$this->modules_list_menu[$this->num][$this->ddbb_name]=$this->result->fields[$this->ddbb_name];
+			$this->modules_list_menu[$this->num][$this->ddbb_path]=$this->result->fields[$this->ddbb_path];
+			$this->modules_list_menu[$this->num][$this->ddbb_active]=$this->result->fields[$this->ddbb_active];
+			$this->modules_list_menu[$this->num][$this->ddbb_public]=$this->result->fields[$this->ddbb_public];
+			$this->modules_list_menu[$this->num][$this->ddbb_parent]=$this->result->fields[$this->ddbb_parent];
+			$this->modules_list_menu[$this->num][$this->ddbb_order]=$this->result->fields[$this->ddbb_order];
 			//nos movemos hasta el siguiente registro de resultado de la consulta
 			$this->result->MoveNext();
 			$this->num++;
