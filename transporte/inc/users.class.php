@@ -349,7 +349,7 @@ class users{
 			return 0;
 		}else{  
 		//la contrase–a es correcta
-			if($passwd==$this->result->fields[$this->ddbb_passwd]){
+			if($passwd==$this->result->fields[$this->ddbb_passwd]&&$user==$this->result->fields[$this->ddbb_login]){
 			//printf('existe usuario o contrase–a');
 			$this->db->close();
 			return 1;
