@@ -39,6 +39,11 @@ class groups{
 	var $num_modules;
 	var $users_list;
 	var $checkbox;
+	var $method;
+	//Estas variables corresponde a las tablas donde hay un "id_group" y dependiendo de las variables se modificara o borrara el valor.
+	var $var_name = "id_group";	
+	var $table_names_modify;
+	var $table_names_delete = array ("group_users","per_group_modules","per_group_methods");
   	//constructor
 	function groups(){
 		//coge las variables globales del fichero config.inc.php
@@ -346,34 +351,39 @@ class groups{
 	}
 	
 	function remove($id){
-	
-		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
-		//crea una nueva conexi—n con una bbdd (mysql)
-		$this->db = NewADOConnection($this->db_type);
-		//le dice que no salgan los errores de conexi—n de la ddbb por pantalla
-		$this->db->debug=false;
-		//realiza una conexi—n permanente con la bbdd
-		$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
-		//mete la consulta para coger los campos de la bbdd
-		//calcula la consulta de borrado.
-		$this->sql="DELETE FROM ".$this->table_prefix.$this->table_name. " WHERE ".$this->ddbb_id_group." = ".$id." LIMIT 1";
-		//la ejecuta y guarda los resultados
-		$this->result = $this->db->Execute($this->sql);
-		//si falla 
-		if ($this->db->Affected_Rows() == 0){
-			$this->error=1;
-			$this->db->close();
-			return 0;
-		}else{
-		
-			$this->error=0;
-			$this->db->close();
-			return 1;
-			
+		if (!isset($_POST["submit_delete"])){
+				//Miramos a ver si hay algun empleado que tenga este usuario						
+				
+				return 0;
+			}
+		else{
+			$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
+			//crea una nueva conexi—n con una bbdd (mysql)
+			$this->db = NewADOConnection($this->db_type);
+			//le dice que no salgan los errores de conexi—n de la ddbb por pantalla
+			$this->db->debug=false;
+			//realiza una conexi—n permanente con la bbdd
+			$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
+			//mete la consulta para coger los campos de la bbdd
+			//calcula la consulta de borrado.
+			$this->sql="DELETE FROM ".$this->table_prefix.$this->table_name. " WHERE ".$this->ddbb_id_group." = ".$id." LIMIT 1";
+			//la ejecuta y guarda los resultados
+			$this->result = $this->db->Execute($this->sql);
+			//si falla 
+			if ($this->db->Affected_Rows() == 0){
+				$this->error=1;
+				$this->db->close();
+				return 0;
+			}else{
+				$this->make_remove($id);
+				$this->error=0;
+				$this->db->close();
+				return 1;
+				
+			}
 		}
-		
 	}
-	
+		
 	function modify(){
 	if (!isset($_POST['submit_modify'])){
 			//Mostrar plantilla vacía	
@@ -386,9 +396,9 @@ class groups{
 				$this->checkbox->per_modules[$i]->module_name=$modules->modules_list[$i]['name_web'];
 				$this->checkbox->per_modules[$i]->validate_per_module_for_group($this->id_group);
 			}			
-			
+
 			//$tpl->assign('usuarios',$this->per_module_methods);
-			
+			echo "hola";
 			return 0;
 		}
 		else{
@@ -436,7 +446,7 @@ class groups{
 				//insertamos el registro
 				$this->db->Execute($this->sql);
 				//si se ha insertado una fila
-				if($this->db->Affected_Rows()==1){
+				if(($this->db->Affected_Rows()==1)||($this->sql=="")){
 					//capturammos el id de la linea insertada
 					$this->modify_module_methods();
 					$this->db->close();
@@ -503,23 +513,24 @@ class groups{
 	}
 	
 		function calculate_tpl($method, $tpl){
+				$this->method = $method;
 				switch($method){
 						case 'add':									
 									if ($this->add() !=0){
-										$method="list";
+										$this->method="list";
 										$tpl=$this->listar($tpl);										
 										$tpl->assign("message","&nbsp;<br>Grupo a&ntilde;adido correctamente<br>&nbsp;");
 									}
 									$tpl->assign("objeto",$this);
 									$tpl->assign("modulos",$this->checkbox);
-									break;									
+									break;
 						case 'list':
 									$tpl=$this->listar($tpl);
 									break;
 						case 'modify':
 									$this->read($_GET['id']);
 									if ($this->modify() !=0){
-										$method="list";
+										$this->method="list";
 										$tpl=$this->listar($tpl);										
 										$tpl->assign("message","&nbsp;<br>Grupo modificado correctamente<br>&nbsp;");
 									}
@@ -532,8 +543,8 @@ class groups{
 										$tpl->assign("message",$this->empleados);
 									}
 									else{
-										$this->users_list="";
-										$method="list";
+										$this->groups_list="";
+										$this->method="list";
 										$tpl=$this->listar($tpl);
 										$tpl->assign("message","&nbsp;<br>Grupo borrado correctamente<br>&nbsp;");
 									}
@@ -543,16 +554,19 @@ class groups{
 									$tpl=$this->view($_GET['id'],$tpl);
 									break;
 						default:
-									$method='list';
+									$this->method='list';
 									$tpl=$this->listar($tpl);
 									break;
 					}
-				$tpl->assign('plantilla','groups_'.$method.'.tpl');					
+				$tpl->assign('plantilla','groups_'.$this->method.'.tpl');					
 		
 		return $tpl;
 	}
 	
-	function bar($method,$corp){		
+	function bar($method,$corp){	
+		if ($method!=$this->method){
+			$method = $this->method;
+		}
 		if ($corp != ""){
 			$corp='<a href="index.php">'.$corp.' ::';
 		}
@@ -562,13 +576,16 @@ class groups{
 	}	
 
 	function title($method,$corp){
+		if ($method!=$this->method){
+			$method = $this->method;
+		}
 		if ($corp != ""){
 			$corp=$corp." ::";
 		}
 		$title = "Zona Privada :: $corp Grupos";
 		$title=$title.$this->localice($method);		
 		return $title;
-	}		
+	}
 	
 	function localice($method){	
 		switch($method){
@@ -749,6 +766,72 @@ class groups{
 				}					
 		}		
 		return 0;
+	}
+	
+	function make_remove($id){
+		//modificamos todos aquellos registros en los que hay un id_user;
+		for ($i=0;$i<count($this->table_names_modify);$i++){
+			$this->modify_all_id_group($id,$this->table_names_modify[$i]);
+		}
+		//borramos todos aquellos registros en los que hay un id_user;		
+		for ($i=0;$i<count($this->table_names_delete);$i++){
+			$this->delete_all_id_group($id,$this->table_names_delete[$i]);
+		}
+	}
+	
+	function modify_all_id_group($id,$table){
+			$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
+			//crea una nueva conexión con una bbdd (mysql)
+			$this->db = NewADOConnection($this->db_type);
+			//le dice que no salgan los errores de conexión de la ddbb por pantalla
+			$this->db->debug=false;
+			//realiza una conexión permanente con la bbdd
+			$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
+			//mete la consulta para coger los campos de la bbdd
+			//calcula la consulta de borrado.
+			$this->sql="UPDATE ".$table. " SET ".$this->var_name." = 0 WHERE ".$this->var_name." = ".$id;
+			//la ejecuta y guarda los resultados
+			$this->result = $this->db->Execute($this->sql);
+			//si falla 
+			if ($this->db->Affected_Rows() == 0){
+				$this->error=1;
+				$this->db->close();
+				return 0;
+			}else{
+			
+				$this->error=0;
+				$this->db->close();
+				return 1;
+				
+			}
+	}
+	
+	function delete_all_id_group($id,$table){
+		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
+			//crea una nueva conexión con una bbdd (mysql)
+			$this->db = NewADOConnection($this->db_type);
+			//le dice que no salgan los errores de conexión de la ddbb por pantalla
+			$this->db->debug=false;
+			//realiza una conexión permanente con la bbdd
+			$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
+			//mete la consulta para coger los campos de la bbdd
+			//calcula la consulta de borrado.
+
+			$this->sql="DELETE FROM ".$table. " WHERE ".$this->var_name." = ".$id;
+			//la ejecuta y guarda los resultados
+			$this->result = $this->db->Execute($this->sql);
+			//si falla 
+			if ($this->db->Affected_Rows() == 0){
+				$this->error=1;
+				$this->db->close();
+				return 0;
+			}else{
+			
+				$this->error=0;
+				$this->db->close();
+				return 1;
+				
+			}
 	}
 	
 	function admin ($id){

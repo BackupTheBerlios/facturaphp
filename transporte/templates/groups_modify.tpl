@@ -1,6 +1,6 @@
 <td valign="top">
 {include file=checkbox.tpl}
-<form method="post" action="index.php?module=groups&method=modify" name="form_central">
+<form method="post" action="index.php?module=groups&method=modify&id={$objeto->id_group}" name="form_central">
 	  	<table align="center" width="100%">
 		<tr>
 		<td valign="top">
@@ -99,7 +99,7 @@
 		</tr>
 		<tr>
 			<td align="center"><br><br>
-			<input type="submit" name="submit_add" id =" name="submit_modify" "value="Modificar" class="botones">			
+			<input type="submit" name="submit_modify" "value="Modificar" class="botones">			
 			<input type="reset" Value="Limpiar Datos" class="botones">
 			</td>
 		</tr>

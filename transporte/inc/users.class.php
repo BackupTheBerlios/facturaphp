@@ -44,6 +44,7 @@ class users{
   	var $num;
   	var $fields_list;
   	var $error;
+	var $method;
 //variables del listado de grupos al que pertenece el usuario	
 	var $groups_list;
 	var $checkbox;
@@ -608,10 +609,11 @@ class users{
 	
 	
 	function calculate_tpl($method, $tpl){
+		$this->method=$method;
 				switch($method){
 						case 'add':									
 									if ($this->add() !=0){
-										$method="list";
+										$this->method="list";
 										$tpl=$this->listar($tpl);										
 										$tpl->assign("message","&nbsp;<br>Usuario a&ntilde;adido correctamente<br>&nbsp;");
 									}
@@ -626,7 +628,7 @@ class users{
 						case 'modify':
 									$this->read($_GET['id']);
 									if ($this->modify() !=0){
-										$method="list";
+										$this->method="list";
 										$tpl=$this->listar($tpl);										
 										$tpl->assign("message","&nbsp;<br>Usuario modificado correctamente<br>&nbsp;");
 									}
@@ -651,11 +653,11 @@ class users{
 									$tpl=$this->view($_GET['id'],$tpl);
 									break;
 						default:
-									$method='list';
+									$this->method='list';
 									$tpl=$this->listar($tpl);
 									break;
 					}
-				$tpl->assign('plantilla','users_'.$method.'.tpl');					
+				$tpl->assign('plantilla','users_'.$this->method.'.tpl');					
 		
 		return $tpl;
 	}
@@ -770,7 +772,10 @@ class users{
 		return 0;
 	}
 
-	function bar($method,$corp){		
+	function bar($method,$corp){
+		if ($method!=$this->method){
+			$method = $this->method;
+		}		
 		if ($corp != ""){
 			$corp='<a href="index.php">'.$corp.' ::';
 		}
@@ -780,6 +785,9 @@ class users{
 	}	
 
 	function title($method,$corp){
+		if ($method!=$this->method){
+			$method = $this->method;
+		}
 		if ($corp != ""){
 			$corp=$corp." ::";
 		}

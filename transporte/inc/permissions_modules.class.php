@@ -412,7 +412,7 @@ class permissions_modules{
 
 	//Esta funcion hace lo mismo que validate_per_module pero su función es para grupos.
 	
-	function validate_per_module_for_group($group)
+	function validate_per_module_for_group($id_group)
 	{
 	
 		$this->inicializar_base_datos();
