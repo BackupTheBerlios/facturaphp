@@ -219,12 +219,8 @@ class products{
 			
 			if (!$return){
 				//Mostrar plantilla con datos erroneos
-				
 			}
 			else{
-			
-			
-			
 			$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
 			//crea una nueva conexi—n con una bbdd (mysql)
 			$this->db = NewADOConnection($this->db_type);
