@@ -123,7 +123,7 @@
 					     $variable=$variable.'<table align=\\"center\\"><tr><td><a href=\\"index.php?module='.$var_js.'&method=add\\"><img border=\\"0\\"src=\\"pics/btnnew.gif\\"></a></td></tr><table>';				
 				 }
 				elseif(!$this->listado){
-					$variable=$variable.'<table width=\\"80%\\" align=\\"center\\"><tr><tdwidth=\\"20%\\">';
+					$variable=$variable.'<table width=\\"80%\\" align=\\"center\\"><tr><td width=\\"20%\\">';
 					//si puede o no ejecutar nuevo
 					if (!$new) {
 					    $variable=$variable.'&nbsp;</td>';
@@ -203,7 +203,7 @@
 		
 		function tabla_vacia($var_js){
 			$cadena='<script>'."\n\r";
-			$cadena=$cadena.$var_js.'_1="<table align=\\"center\\"><tr align=\\"center\\"><td><a href=\\"index.php?module='.$var_js.'method=add\\"><img border=\\"0\\"src=\\"pics/btnnew.gif\\"></a></td></tr><tr align=\\"center\\"><td><h3>No hay registros</h3></td></tr></table>";';
+			$cadena=$cadena.$var_js.'_1="<table align=\\"center\\"><tr align=\\"center\\"><td><a href=\\"index.php?module='.$var_js.'&method=add\\"><img border=\\"0\\"src=\\"pics/btnnew.gif\\"></a></td></tr><tr align=\\"center\\"><td><h3>No hay registros</h3></td></tr></table>";';
 			$cadena=$cadena."\n\r".'</script>';
 			$this->nombres_variables=array(0=>$var_js.'_1');
 			return $cadena;

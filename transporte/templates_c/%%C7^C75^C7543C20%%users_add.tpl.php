@@ -1,7 +1,36 @@
-<?php /* Smarty version 2.6.3, created on 2004-08-27 12:19:43
+<?php /* Smarty version 2.6.3, created on 2004-10-21 18:00:53
          compiled from users_add.tpl */ ?>
 <td valign="top">
-<form method="post" action="index.php?module=users&method=add">
+<?php echo '
+<script>
+	
+	function clickCheckbox(){
+	
+	}
+	
+	function selectRow(){
+	
+	}
+	
+	function selectAll(){
+		for (var i=0;i<document.forms["form_central"].elements.length;i++){
+			if(document.forms["form_central"].elements[i].type=="checkbox"){
+				document.forms["form_central"].elements[i].checked=true;
+				}
+		}
+	}
+    function unselectAll(){
+		for (var i=0;i<document.forms["form_central"].elements.length;i++){
+			if(document.forms["form_central"].elements[i].type=="checkbox"){
+				document.forms["form_central"].elements[i].checked=false;
+				}
+		}
+	}
+    
+</script>
+'; ?>
+
+<form method="post" action="index.php?module=users&method=add" name="form_central">
 	  	<table align="center" width="100%">
 		<tr>
 		<td valign="top">
@@ -17,7 +46,7 @@
 		<table width="250px" align="center">
 
 					<tr>
-					  <td colspan="2" class="cabeceraCampoFormulario">Datos de Login:</td>
+					  <td colspan="2" class="cabeceraCampoFormulario">Datos de Empresa:</td>
 				  </tr>
 					<tr>
 						<td width="125px" align="right" class="CampoFormulario" nowrap>Login:</td>
@@ -53,121 +82,134 @@
 " class="textoMenu"></td>
 				  </tr>
 				   <tr>
-					  <td colspan="2" class="cabeceraCampoFormulario">Otros datos: </td>
+					  <td colspan="2" class="cabeceraCampoFormulario">Permisos: </td>
 				  </tr>
 				  <tr>
-				  	<!--
-					Colocarlo de forma que quede igual que con los listados de permisos más abajo puestos
-					<td colspan="2"><table border="0">
-						
-						</table></td>-->
-						<td width="125px" class="CampoFormulario">Grupo:</td>
-						<td > <select class="textoMenu" id="<?php echo $this->_tpl_vars['objeto']->ddbb_id_group; ?>
-" name="<?php echo $this->_tpl_vars['objeto']->ddbb_id_group; ?>
-">
-							<?php if (count($_from = (array)$this->_tpl_vars['groups_list'])):
-    foreach ($_from as $this->_tpl_vars['group_element']):
-?>
-								<option value="<?php echo $this->_tpl_vars['group_element']->id_group; ?>
-"><?php echo $this->_tpl_vars['group_element']->name_web; ?>
-</option>
-							<?php endforeach; unset($_from); endif; ?>							
-						</select></td>
+				  	<td colspan="2">
+				  		<input type="button" Value="Seleccionar Todos" class="botones" onClick="selectAll();">
+					<input type="button" Value="Deseleccionar Todos" class="botones" onClick="unselectAll();">
+				  	</td>
 				  </tr>
+				 
 				</table>
-</td>
+		</td>
 		</tr>		
 		<tr>
 
 			<td valign="top">
 			<br>
-				<table width="75%" align="center" border="0">
-				<tr class="cabeceraMultiLinea">
-					<td width="40%">Nombre de Modulo
-					</td>
-					<td Colspan="4" width="60%">Permisos</td>
-				</tr>
+			<br>    
+			
+			<table width="90%" align="center" border="0">
+			 <tr>
+					  <td colspan="2" class="cabeceraCampoFormulario">Permisos por modulos-metodos: </td>
+			</tr>
+			<tr class="cabeceraMultiLinea">
+				<td width="30%">Nombre de Modulo</td>
+				<td Colspan="4" width="70%">Metodos</td>
+			</tr>
+			
 			<?php 
-				$linea=0;
+				$linea = 0;
 			 ?>
-			<?php if (count($_from = (array)$this->_tpl_vars['modules_list'])):
-    foreach ($_from as $this->_tpl_vars['module_element']):
+			<?php unset($this->_sections['indice']);
+$this->_sections['indice']['name'] = 'indice';
+$this->_sections['indice']['loop'] = is_array($_loop=$this->_tpl_vars['modulos']->per_modules) ? count($_loop) : max(0, (int)$_loop); unset($_loop);
+$this->_sections['indice']['show'] = true;
+$this->_sections['indice']['max'] = $this->_sections['indice']['loop'];
+$this->_sections['indice']['step'] = 1;
+$this->_sections['indice']['start'] = $this->_sections['indice']['step'] > 0 ? 0 : $this->_sections['indice']['loop']-1;
+if ($this->_sections['indice']['show']) {
+    $this->_sections['indice']['total'] = $this->_sections['indice']['loop'];
+    if ($this->_sections['indice']['total'] == 0)
+        $this->_sections['indice']['show'] = false;
+} else
+    $this->_sections['indice']['total'] = 0;
+if ($this->_sections['indice']['show']):
+
+            for ($this->_sections['indice']['index'] = $this->_sections['indice']['start'], $this->_sections['indice']['iteration'] = 1;
+                 $this->_sections['indice']['iteration'] <= $this->_sections['indice']['total'];
+                 $this->_sections['indice']['index'] += $this->_sections['indice']['step'], $this->_sections['indice']['iteration']++):
+$this->_sections['indice']['rownum'] = $this->_sections['indice']['iteration'];
+$this->_sections['indice']['index_prev'] = $this->_sections['indice']['index'] - $this->_sections['indice']['step'];
+$this->_sections['indice']['index_next'] = $this->_sections['indice']['index'] + $this->_sections['indice']['step'];
+$this->_sections['indice']['first']      = ($this->_sections['indice']['iteration'] == 1);
+$this->_sections['indice']['last']       = ($this->_sections['indice']['iteration'] == $this->_sections['indice']['total']);
 ?>
-				<?php if ($this->_tpl_vars['linea'] == 0): ?>
-				<tr class="multiLinea1">
-					<?php 
-							$linea=1;
-					 ?>
+				<?php 
+				if ($linea==0){
+					$clase="multiLinea1";
+					$linea=1;
+				}				
+				else{
+					$clase="multiLinea2";	
+					$linea=0;
+				}				
+				print('<tr class="'.$clase.'">');
+				 ?>
+
+				<?php if ($this->_tpl_vars['modulos']->per_modules[$this->_sections['indice']['index']]->per == 1): ?>
+					<td nowrap><input type="checkbox" name="modulo_<?php echo $this->_tpl_vars['modulos']->per_modules[$this->_sections['indice']['index']]->id_module; ?>
+" value="1" onClick="selectRow()" checked> <?php echo $this->_tpl_vars['modulos']->per_modules[$this->_sections['indice']['index']]->module_name; ?>
+</td> 
 				<?php else: ?>
-				<tr class="multiLinea2">
-					<?php 
-							$linea=0;
-					 ?>
+					<td nowrap><input type="checkbox" name="modulo_<?php echo $this->_tpl_vars['modulos']->per_modules[$this->_sections['indice']['index']]->id_module; ?>
+" value="1" onClick="selectRow()"> <?php echo $this->_tpl_vars['modulos']->per_modules[$this->_sections['indice']['index']]->module_name; ?>
+</td> 				
 				<?php endif; ?>
-				
-					<td width="40%" nowrap><input type="checkbox" id="<?php echo $this->_tpl_vars['module_element']->id_module; ?>
-" name="<?php echo $this->_tpl_vars['module_element']->name; ?>
-" value="<?php echo $this->_tpl_vars['module_element']->id_module; ?>
-"> 
-					<?php echo $this->_tpl_vars['module_element']->name_web; ?>
- </td>
+				<td nowrap>						
+					<table width="100%"><tr class="<?php print($clase); ?>">				
+					 <?php unset($this->_sections['j']);
+$this->_sections['j']['name'] = 'j';
+$this->_sections['j']['loop'] = is_array($_loop=$this->_tpl_vars['modulos']->per_modules[$this->_sections['indice']['index']]->per_methods) ? count($_loop) : max(0, (int)$_loop); unset($_loop);
+$this->_sections['j']['show'] = true;
+$this->_sections['j']['max'] = $this->_sections['j']['loop'];
+$this->_sections['j']['step'] = 1;
+$this->_sections['j']['start'] = $this->_sections['j']['step'] > 0 ? 0 : $this->_sections['j']['loop']-1;
+if ($this->_sections['j']['show']) {
+    $this->_sections['j']['total'] = $this->_sections['j']['loop'];
+    if ($this->_sections['j']['total'] == 0)
+        $this->_sections['j']['show'] = false;
+} else
+    $this->_sections['j']['total'] = 0;
+if ($this->_sections['j']['show']):
 
-				<?php if (count($_from = (array)$this->_tpl_vars['methods_list'])):
-    foreach ($_from as $this->_tpl_vars['method_element']):
+            for ($this->_sections['j']['index'] = $this->_sections['j']['start'], $this->_sections['j']['iteration'] = 1;
+                 $this->_sections['j']['iteration'] <= $this->_sections['j']['total'];
+                 $this->_sections['j']['index'] += $this->_sections['j']['step'], $this->_sections['j']['iteration']++):
+$this->_sections['j']['rownum'] = $this->_sections['j']['iteration'];
+$this->_sections['j']['index_prev'] = $this->_sections['j']['index'] - $this->_sections['j']['step'];
+$this->_sections['j']['index_next'] = $this->_sections['j']['index'] + $this->_sections['j']['step'];
+$this->_sections['j']['first']      = ($this->_sections['j']['iteration'] == 1);
+$this->_sections['j']['last']       = ($this->_sections['j']['iteration'] == $this->_sections['j']['total']);
 ?>
-					<td width="15%"  nowrap><input type="checkbox" id="<?php echo $this->_tpl_vars['method_element']->id_method; ?>
-" name="<?php echo $this->_tpl_vars['module_element']->name; ?>
-_<?php echo $this->_tpl_vars['method_element']->name; ?>
-" value="<?php echo $this->_tpl_vars['method_element']->id_method; ?>
-">
-			        Listar</td>
-				<?php endforeach; unset($_from); endif; ?>
-					<!--
-					<td width="15%"  nowrap><input type="checkbox" name="checkbox" value="checkbox"> A&ntilde;adir</td>
-					<td width="15%"  nowrap><input type="checkbox" name="checkbox" value="checkbox"> Modificar</td>
-
-					<td width="15%"  nowrap><input type="checkbox" name="checkbox" value="checkbox"> Borrar</td>
-					-->
-				</tr>
-			<?php endforeach; unset($_from); endif; ?>
-<!--
-				<tr class="multiLinea2">
-					<td width="40%" nowrap><input type="checkbox" name="checkbox" value="checkbox"> 
-					Camiones</td>
-					<td width="15%"  nowrap><input type="checkbox" name="checkbox" value="checkbox">
-				     Listar</td>
-
-					<td width="15%"  nowrap><input type="checkbox" name="checkbox" value="checkbox"> A&ntilde;adir</td>
-					<td width="15%"  nowrap><input type="checkbox" name="checkbox" value="checkbox"> Modificar</td>
-					<td width="15%"  nowrap><input type="checkbox" name="checkbox" value="checkbox"> Borrar</td>
-				</tr>			
-				<tr class="multiLinea1">
-					<td width="40%" nowrap><input type="checkbox" name="checkbox" value="checkbox"> 
-					Nominas </td>
-
-					<td width="15%"  nowrap><input type="checkbox" name="checkbox" value="checkbox">
-				     Listar</td>
-					<td width="15%"  nowrap><input type="checkbox" name="checkbox" value="checkbox"> A&ntilde;adir</td>
-					<td width="15%"  nowrap><input type="checkbox" name="checkbox" value="checkbox"> Modificar</td>
-					<td width="15%"  nowrap><input type="checkbox" name="checkbox" value="checkbox"> Borrar</td>
-
-				</tr>	
-				<tr class="multiLinea2">
-					<td width="40%" nowrap><input type="checkbox" name="checkbox" value="checkbox"> 
-					Clientes</td>
-					<td width="15%"  nowrap><input type="checkbox" name="checkbox" value="checkbox">
-				     Listar</td>
-					<td width="15%"  nowrap><input type="checkbox" name="checkbox" value="checkbox"> A&ntilde;adir</td>
-
-					<td width="15%"  nowrap><input type="checkbox" name="checkbox" value="checkbox"> Modificar</td>
-					<td width="15%"  nowrap><input type="checkbox" name="checkbox" value="checkbox"> Borrar</td>
-				</tr>		-->
-			</table>			</td>
+						<?php if ($this->_tpl_vars['modulos']->per_modules[$this->_sections['indice']['index']]->per_methods[$this->_sections['j']['index']]->per == 1): ?>
+							<td width="20%"><input type="checkbox" name="modulo_<?php echo $this->_tpl_vars['modulos']->per_modules[$this->_sections['indice']['index']]->id_module; ?>
+_metodo_<?php echo $this->_tpl_vars['modulos']->per_modules[$this->_sections['indice']['index']]->per_methods[$this->_sections['j']['index']]->id_method; ?>
+" value="1" checked><?php echo $this->_tpl_vars['modulos']->per_modules[$this->_sections['indice']['index']]->per_methods[$this->_sections['j']['index']]->method_name_web; ?>
+</td>
+						<?php else: ?>
+							<td width="20%"><input type="checkbox" name="modulo_<?php echo $this->_tpl_vars['modulos']->per_modules[$this->_sections['indice']['index']]->id_module; ?>
+_metodo_<?php echo $this->_tpl_vars['modulos']->per_modules[$this->_sections['indice']['index']]->per_methods[$this->_sections['j']['index']]->id_method; ?>
+" value="1"><?php echo $this->_tpl_vars['modulos']->per_modules[$this->_sections['indice']['index']]->per_methods[$this->_sections['j']['index']]->method_name_web; ?>
+</td>
+						<?php endif; ?>
+					<?php endfor; endif; ?>   
+					</tr></table>
+				</td>				
+				</tr>				
+			<?php endfor; endif; ?>
+			<tr  class="cabeceraMultiLinea"><td colspan="2">&nbsp;</td></tr>
+			</table>
+		
+			<br>
+			<br> 								
+		</td>
 		</tr>
 		<tr>
-			<td align="center"><br><br><input type="submit" name="enviar" value="A&ntilde;adir/Modificar" class="botones">
-
-			<input type="reset" Value="Borrar Datos" class="botones">
+			<td align="center"><br><br>
+			<input type="submit" name="submit_add" id ="name="submit_add" "value="A&ntilde;adir" class="botones">			
+			<input type="reset" Value="Limpiar Datos" class="botones">
 			</td>
 		</tr>
 	  	</table> 

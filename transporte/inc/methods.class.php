@@ -296,6 +296,27 @@ class methods{
 
 	
 	}
-	  
+	
+	function translate_method($method){
+		$method=strtolower($method);
+		switch ($method){
+			case "add":
+						$spanish_method = "A&ntilde;adir";
+						break;
+			case "modify":
+						$spanish_method = "Modificar";
+						break;
+			case "delete":
+						$spanish_method = "Borrar";
+						break;
+			case "list":
+						$spanish_method = "Listar";
+						break;				
+			default:
+						$spanish_method = $method;
+						break;										
+		}
+		return $spanish_method;
+	}
 }
 ?>

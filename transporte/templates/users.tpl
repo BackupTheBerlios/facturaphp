@@ -13,9 +13,9 @@
 				Vuelva a intentarlo<br>
 				{/if}
 				Usuario:<br> 
-				<input type="text" class="textoMenuUsuarios"  name="user" id="user"><br>
+				<input type="text" class="textoMenuUsuarios"  name="user" id="user" size="17"><br>
 					
-			      Contrase&ntilde;a: <br> <input type="password" class="textoMenuUsuarios" name="passwd" id="pass"><br><br>
+			      Contrase&ntilde;a: <br> <input type="password" class="textoMenuUsuarios" name="passwd" id="pass" size="17"><br><br>
 				  <input type="submit" name="submit" value="Entrar" class="botones"><br>
 				  <a href="#">Recordar su contrase&ntilde;a</a>
 				{/if}

@@ -18,7 +18,7 @@
 			<tr class="textoMenu">
 			  <td width="10px">&nbsp;</td>
 			  <td>
-			  	- <a href="index.php?module=corpss" class="enlaceMenu">Empresas</a><br>
+			  	- <a href="index.php?module=corps" class="enlaceMenu">Empresas</a><br>
 			  </td>
 			</tr>
 			<tr class="textoMenu">

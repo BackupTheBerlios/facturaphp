@@ -1,8 +1,8 @@
 <?php
 
 //Comprueba si existe la bbdd
-//si no existe la bbdd va a la instalaci—n
-//aqui debe de irse a la instalaci—n de la aplicaci—n
+//si no existe la bbdd va a la instalación
+//aqui debe de irse a la instalación de la aplicación
 //si existe la bbdd ya puede conectarse con lo que sea
 
 //inicia o retoma una sesion
@@ -124,8 +124,7 @@ if ($objeto===null){
 }
 else
 {
-	//$nav_bar=$objeto->bar();
-	//$title=$objeto->title();
+	
 	//calculala plantilla a presentar
 	if (!isset($_GET['method'])){
 			$method=null;
@@ -133,6 +132,12 @@ else
 	else{
 			$method=$_GET['method'];
 		}
+		
+	//VER COMO CONSEGUIR EL NOMBRE DE LA EMPRESA CON LA QUE SE ESTA TRABAJANDO
+	$corp="";
+	///*************************************
+	$nav_bar=$objeto->bar($method,$corp);
+	$title=$objeto->title($method,$corp);
 	$tpl=$objeto->calculate_tpl($method,$tpl);
  
 	//elige la plantilla a presentar

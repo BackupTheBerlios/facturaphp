@@ -1,11 +1,10 @@
-<?php /* Smarty version 2.6.3, created on 2004-09-23 17:20:36
+<?php /* Smarty version 2.6.3, created on 2004-10-14 20:00:00
          compiled from users_view.tpl */ ?>
 <td valign="top">
+<?php echo $this->_tpl_vars['cadena']; ?>
 
-	<?php 
-		$mi_modulo=$this->_tpl_vars['objeto'];
-		echo $this->_tpl_vars['cadena'];	
-	 ?>
+<?php echo $this->_tpl_vars['usuarios']; ?>
+
 
 <?php $_smarty_tpl_vars = $this->_tpl_vars;
 $this->_smarty_include(array('smarty_include_tpl_file' => "capas.tpl", 'smarty_include_vars' => array()));
@@ -67,7 +66,7 @@ unset($_smarty_tpl_vars);
                               </tr>
                             </table>
 							<br>
-							<p align="center" class="cabeceraCampoFormulario">Listados de por m&oacute;dulos y grupos</p>
+							<p align="center" class="cabeceraCampoFormulario">Listados de por permisos m&oacute;dulos y grupos</p>
 							<br>
 					<a name="listado">
 					  <table align="center" width="400" cellspacing="0" cellpadding="0">

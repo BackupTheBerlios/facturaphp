@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.3, created on 2004-08-03 14:18:38
+<?php /* Smarty version 2.6.3, created on 2004-10-06 18:13:12
          compiled from users.tpl */ ?>
 	  	<table width="90%" class="cajaMenu" cellpadding="3" cellspacing="0">
 			<tr >
@@ -15,9 +15,9 @@
 				Vuelva a intentarlo<br>
 				<?php endif; ?>
 				Usuario:<br> 
-				<input type="text" class="textoMenuUsuarios"  name="user" id="user"><br>
+				<input type="text" class="textoMenuUsuarios"  name="user" id="user" size="17"><br>
 					
-			      Contrase&ntilde;a: <br> <input type="password" class="textoMenuUsuarios" name="passwd" id="pass"><br><br>
+			      Contrase&ntilde;a: <br> <input type="password" class="textoMenuUsuarios" name="passwd" id="pass" size="17"><br><br>
 				  <input type="submit" name="submit" value="Entrar" class="botones"><br>
 				  <a href="#">Recordar su contrase&ntilde;a</a>
 				<?php endif; ?>

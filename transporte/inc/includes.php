@@ -1,6 +1,7 @@
 <?php
 require_once('config.inc.php');
 require_once('users.class.php');
+require_once('corps.class.php');
 require_once('groups.class.php');
 require_once('group_users.class.php');
 require_once('per_group_modules.class.php');

@@ -1,9 +1,5 @@
 <td valign="top">
-
-	{php}
-		$mi_modulo=$this->_tpl_vars['objeto'];
-		echo $this->_tpl_vars['cadena'];	
-	{/php}
+{$cadena}
 
 {include file=capas.tpl}
 	
@@ -53,7 +49,7 @@
                               </tr>
                             </table>
 							<br>
-							<p align="center" class="cabeceraCampoFormulario">Listados de por permisos m&oacute;dulos y grupos</p>
+							<p align="center" class="cabeceraCampoFormulario">Listados de permisos por m&oacute;dulos y grupos</p>
 							<br>
 					<a name="listado">
 					  <table align="center" width="400" cellspacing="0" cellpadding="0">

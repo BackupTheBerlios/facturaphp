@@ -3,7 +3,7 @@
 //enlaza con la bbdd 
 global $ADODB_DIR, $INSTALL_DIR;
 require_once ($INSTALL_DIR.'inc/config.inc.php');
-require_once ($INSTALL_DIR.'table.class.php');
+require_once ($INSTALL_DIR.'inc/table.class.php');
 require_once ($ADODB_DIR."adodb.inc.php");
 
 class corps{
@@ -164,8 +164,7 @@ class corps{
 			$this->num++;
 		}
 		$this->db->close();
-		return $this->num;
-	
+		return $this->num;	
 	}
 	
 	function get_add_form(){
@@ -234,66 +233,120 @@ class corps{
 			$this->db->close();
 			return 1;
 		}
-		
+			
+	
 	
 	}
 	
-	function add(){
-	
-		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
-		//crea una nueva conexi—n con una bbdd (mysql)
-		$this->db = NewADOConnection($this->db_type);
-		//le dice que no salgan los errores de conexi—n de la ddbb por pantalla
-		$this->db->debug=false;
-		//realiza una conexi—n permanente con la bbdd
-		$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
-		//mete la consulta para coger los campos de la bbdd
-		$this->sql="SELECT * FROM ".$this->table_prefix.$this->table_name. " WHERE ".$this->ddbb_id_corp." = -1" ;
-		//la ejecuta y guarda los resultados
-		$this->result = $this->db->Execute($this->sql);
-		//si falla 
-		if ($this->result === false){
-			$this->error=1;
-			$this->db->close();
-			return 0;
+	function listar($tpl){
+
+		$tabla_listado = new table(true);
+		if (!$this->get_list_corps()){
+			$cadena=$cadena.$tabla_listado->tabla_vacia('corps');
+			$variables_modulos=$tabla_listado->nombres_variables;
 		}
-		//rellenamos el array con los datos de los atributos de la clase
-		$record = array();
-		$record[$this->ddbb_name] = $this->name;
-		$record[$this->ddbb_full_name]=$this->full_name;
-		$record[$this->ddbb_address]=$this->address;
-		$record[$this->ddbb_cif_nif]=$this->cif_nif;
-		$record[$this->ddbb_fiscal_address]=$this->fiscal_address;
-		$record[$this->ddbb_postal_address] = $this->postal_address;
-		$record[$this->ddbb_url]=$this->url;
-		$record[$this->ddbb_mail]=$this->mail;
-		$record[$this->ddbb_city]=$this->city;
-		$record[$this->ddbb_state]=$this->state;
-		$record[$this->ddbb_postal_code]=$this->postal_code;
-		$record[$this->ddbb_country] = $this->country;
-		$record[$this->ddbb_phone]=$this->phone;
-		$record[$this->ddbb_mobile_phone]=$this->mobile_phone;
-		$record[$this->ddbb_fax]=$this->fax;
-		$record[$this->ddbb_notes]=$this->notes;
-		//calculamos la sql de inserci—n respecto a los atributos
-		$this->sql = $this->db->GetInsertSQL($this->result, $record);
-		//print($this->sql);
-		//insertamos el registro
-		$this->db->Execute($this->sql);
-		//si se ha insertado una fila
-		if($this->db->Insert_ID()>=0){
-			//capturammos el id de la linea insertada
-			$this->id_corp=$this->db->Insert_ID();
-			//print("<pre>::".$this->id_corp."::</pre>");
-			//devolvemos el id de la tabla ya que todo ha ido bien
-			$this->db->close();
-			return $this->id_corp;
-		}else {
-			//devolvemos 0 ya que no se ha insertado el registro
-			$this->error=-1;
-			$this->db->close();
-			return 0;
-		}			
+		else{
+			$cadena=''.$tabla_listado->make_tables('corps',$this->corps_list,array('Nombre',20,'Nombre completo',20,'CIF|NIF',20,'Telefono',20),array($this->ddbb_id_corp,$this->ddbb_name,$this->ddbb_full_name,$this->ddbb_cif_nif,$this->ddbb_phone),20,array('view','modify','delete'),true);
+			$variables=$tabla_listado->nombres_variables;		
+		}		
+		$tpl->assign('variables',$variables);
+		$tpl->assign('cadena',$cadena);		
+		return $tpl;
+	}
+	
+	
+	function calculate_tpl($method, $tpl){
+		//vemos si el usuario tiene el permiso para hacer la accion requerida
+		$result=true;
+	//	$result=validate_per($method,$_SESSION['user'],$module);
+		if ($result){
+				switch($method){
+						case 'add':
+									break;
+						case 'list':
+									$tpl=$this->listar($tpl);
+									break;
+						case 'modify':
+									break;
+						case 'delete':
+									break;
+						case 'view':									
+									$tpl=$this->view($_GET['id'],$tpl);
+									break;
+						default:
+									$method='list';
+									$tpl=$this->listar($tpl);
+									break;
+					}
+				$tpl->assign('plantilla','corps_'.$method.'.tpl');					
+			}
+		else
+			{
+			
+			}
+		return $tpl;
+	}
+	function add(){
+		
+			
+			
+			
+			$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
+			//crea una nueva conexi—n con una bbdd (mysql)
+			$this->db = NewADOConnection($this->db_type);
+			//le dice que no salgan los errores de conexi—n de la ddbb por pantalla
+			$this->db->debug=false;
+			//realiza una conexi—n permanente con la bbdd
+			$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
+			//mete la consulta para coger los campos de la bbdd
+			$this->sql="SELECT * FROM ".$this->table_prefix.$this->table_name. " WHERE ".$this->ddbb_id_corp." = -1" ;
+			//la ejecuta y guarda los resultados
+			$this->result = $this->db->Execute($this->sql);
+			//si falla 
+			if ($this->result === false){
+				$this->error=1;
+				$this->db->close();
+				return 0;
+			}
+			//rellenamos el array con los datos de los atributos de la clase
+			$record = array();
+			$record[$this->ddbb_name] = $this->name;
+			$record[$this->ddbb_full_name]=$this->full_name;
+			$record[$this->ddbb_address]=$this->address;
+			$record[$this->ddbb_cif_nif]=$this->cif_nif;
+			$record[$this->ddbb_fiscal_address]=$this->fiscal_address;
+			$record[$this->ddbb_postal_address] = $this->postal_address;
+			$record[$this->ddbb_url]=$this->url;
+			$record[$this->ddbb_mail]=$this->mail;
+			$record[$this->ddbb_city]=$this->city;
+			$record[$this->ddbb_state]=$this->state;
+			$record[$this->ddbb_postal_code]=$this->postal_code;
+			$record[$this->ddbb_country] = $this->country;
+			$record[$this->ddbb_phone]=$this->phone;
+			$record[$this->ddbb_mobile_phone]=$this->mobile_phone;
+			$record[$this->ddbb_fax]=$this->fax;
+			$record[$this->ddbb_notes]=$this->notes;
+			//calculamos la sql de inserci—n respecto a los atributos
+			$this->sql = $this->db->GetInsertSQL($this->result, $record);
+			//print($this->sql);
+			//insertamos el registro
+			$this->db->Execute($this->sql);
+			//si se ha insertado una fila
+			if($this->db->Insert_ID()>=0){
+				//capturammos el id de la linea insertada
+				$this->id_corp=$this->db->Insert_ID();
+				//print("<pre>::".$this->id_corp."::</pre>");
+				//devolvemos el id de la tabla ya que todo ha ido bien
+				$this->db->close();
+				return $this->id_corp;
+			}else {
+				//devolvemos 0 ya que no se ha insertado el registro
+				$this->error=-1;
+				$this->db->close();
+				return 0;
+			}			
+		
+		
 	}
 	
 	function remove($id){
@@ -383,6 +436,47 @@ class corps{
 	
 	}
 	
+	function bar($method,$corp){		
+		if ($corp != ""){
+			$corp='<a href="index.php">'.$corp.' ::';
+		}
+		$nav_bar = '<a href="index.php">Zona privada</a> :: '.$corp.' <a href="index.php?module=corps">Empresas</a>';
+		$nav_bar=$nav_bar.$this->localice($method);
+		return $nav_bar;
+	}	
+
+	function title($method,$corp){
+		if ($corp != ""){
+			$corp=$corp." ::";
+		}
+		$title = "Zona Privada :: $corp Empresas";
+		$title=$title.$this->localice($method);		
+		return $title;
+	}		
+	
+	function localice($method){	
+		switch($method){
+						case 'add':
+									$localice=" :: A&ntilde;adir Empresa";
+									break;
+						case 'list':
+									$localice=" :: Buscar Empresas";
+									break;
+						case 'modify':
+									$localice=" :: Modificar Empresa";
+									break;
+						case 'delete':
+									$localice=" :: Borrar Empresa";
+									break;
+						case 'view':
+									$localice=" :: Ver Empresa";									
+									break;
+						default:
+									$localice=" :: Buscar Empresa";
+									break;
+		}
+		return $localice;
+	}
 	  
 }
 ?>
