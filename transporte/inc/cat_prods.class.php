@@ -513,10 +513,10 @@ class cat_prods{
 			//Introducir los datos de post.
 			//Si se modificó la foto
 			if($_SESSION['ruta_temporal'] != "")
-				{
-   				$file = new upload_file( $_SESSION['nombre_photo'], $_SESSION['ruta_temporal'], $_SESSION['tamanno_photo'], $this->id_vehicle, $this->path_photo);
+			{
+   				$file = new upload_file( $_SESSION['nombre_photo'], $_SESSION['ruta_temporal'], $_SESSION['tamanno_photo'], $this->id_cat_prod, $this->path_photo);
    				$result = $file->upload( "images/cat_prods/" );
-   				}	
+   			}	
 			
 
 			$this->get_fields_from_post();
@@ -669,13 +669,13 @@ class cat_prods{
 									$return=$this->modify();
 									switch ($return){										
 										case 0: //por defecto
-												$tpl->assign("tabla_checkbox",$this->table_categories(false));
+												//$tpl->assign("tabla_checkbox",$this->table_categories(false));
 												break;
 										case -1: //Errores al intentar añadir datos
 												for ($i=0;$i<count($this->fields_list->array_error);$i+=2){
 													$tpl->assign("error_".$this->fields_list->array_error[$i],$this->fields_list->array_error[$i+1]);
 												}
-												$tpl->assign("tabla_checkbox",$this->table_categories(false));
+												//$tpl->assign("tabla_checkbox",$this->table_categories(false));
 												break;
 										default: //Si se ha añadido
 												$this->method="list";
