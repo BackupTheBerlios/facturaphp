@@ -62,7 +62,7 @@
 						while($i!=$modules->num)
 						{
 					
-							if(($modules->modules_list[$i]['public']==0)&&($modules->modules_list[$i]['name'] != "error")&&($modules->modules_list[$i]['name'] != "emps")&&($modules->modules_list[$i]['name'] != "corps"))
+							if(($modules->modules_list[$i]['public']==0)&&($modules->modules_list[$i]['name'] != "error")&&($modules->modules_list[$i]['name'] != "emps"))
 							{
 							{/php}
 						
@@ -92,7 +92,7 @@
 						while($i!=$modules->num)
 						{
 					
-							if(($modules->modules_list[$i]['public']==0)&&($modules->modules_list[$i]['name'] != "error")&&($modules->modules_list[$i]['name'] != "emps")&&($modules->modules_list[$i]['name'] != "corps")&&($modules->modules_list[$i]['name'] != "modules"))
+							if(($modules->modules_list[$i]['public']==0)&&($modules->modules_list[$i]['name'] != "error"))
 							{
 							{/php}
 						
