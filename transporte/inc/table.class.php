@@ -195,7 +195,7 @@
 					while($col<=(count($cabecera)/2)-1){
 						$variable=$variable.'<td>';						
 						if($view){
-							$variable=$variable.'<A href=\\"index.php?module='.$var_js.'&method='.$acc["view"].'&id='.$list_name[$registro][$nombre_campos[0]].'\\">';
+							$variable=$variable.'<A href=\\"index.php?module='.$var_js.'&method=view&id='.$list_name[$registro][$nombre_campos[0]].'\\">';
 						}						
 						$variable=$variable.$list_name[$registro][$nombre_campos[$col+1]];
 						if($view){
