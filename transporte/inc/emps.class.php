@@ -1198,8 +1198,16 @@ class emps{
 							$tpl=$this->view($_GET['id'],$tpl);
 							break;
 				default:
-							$this->method='list';
-							$tpl=$this->listar($tpl);
+							if($_SESSION['ident_corp'] != 0)
+							{
+								$this->method='list';
+								$tpl=$this->listar($tpl);
+							}
+							else
+							{
+								$tpl->assign('plantilla','error_corp.tpl');	
+								return $tpl;
+							}			
 							break;
 			}
 		$tpl->assign('plantilla','emps_'.$this->method.'.tpl');					

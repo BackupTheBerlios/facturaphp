@@ -284,8 +284,17 @@ class vehicles{
 						//devolvemos el id de la tabla ya que todo ha ido bien
 						$this->db->close();
 					}
-					$_SESSION['ident_vehicle'] = $this->id_vehicle;
-					print "Se insertó el vehículo".$_SESSION['ident_vehicle'];
+					//se inserto el vehiculo, ahora se inserta la foto y se modifica el registro para indicar la ruta
+					if($_SESSION['ruta_temporal'] != "")
+					{
+   						$file = new upload_file( $_SESSION['nombre_photo'], $_SESSION['ruta_temporal'], $_SESSION['tamanno_photo'], $this->id_vehicle);
+   						$result = $file->upload( "images/vehicles/" );
+   						if($result == 1)
+   						{
+   							//modificar ruta de la foto
+							$this->modify_photo($this->id_vehicle);
+						}
+   					}	
 					return $this->id_vehicle;
 			
 				}
@@ -437,8 +446,9 @@ class vehicles{
 			}
 	}
 	
-	function modify_photo(){
-print 'modifica foto'.$_SESSION['ident_vehicle'];		
+	function modify_photo()
+	{
+	
 		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
 		//crea una nueva conexin con una bbdd (mysql)
 		$this->db = NewADOConnection($this->db_type);
@@ -447,7 +457,7 @@ print 'modifica foto'.$_SESSION['ident_vehicle'];
 		//realiza una conexin permanente con la bbdd
 		$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
 		//mete la consulta para coger los campos de la bbdd
-		$this->sql="SELECT * FROM ".$this->table_prefix.$this->table_name. " WHERE ".$this->ddbb_id_vehicle." = \"".$_SESSION['ident_vehicle']."\"" ;
+		$this->sql="SELECT * FROM ".$this->table_prefix.$this->table_name. " WHERE ".$this->ddbb_id_vehicle." = \"".$this->id_vehicle."\"" ;
 		//la ejecuta y guarda los resultados
 		$this->result = $this->db->Execute($this->sql);
 		//si falla 
@@ -459,7 +469,7 @@ print 'modifica foto'.$_SESSION['ident_vehicle'];
 		}
 		//rellenamos el array con los datos de los atributos de la clase
 		$record = array();
-		$record[$this->ddbb_id_vehicle]=$_SESSION['ident_vehicle'];
+		$record[$this->ddbb_id_vehicle]=$this_vehicle;
 		$record[$this->ddbb_path_photo]=$_SESSION['ruta_photo'];
 		//calculamos la sql de insercin respecto a los atributos
 		$this->sql = $this->db->GetUpdateSQL($this->result, $record);
@@ -492,6 +502,13 @@ print 'modifica foto'.$_SESSION['ident_vehicle'];
 		}
 		else{
 			//Introducir los datos de post.
+			//Si se modificó la foto
+			if($_SESSION['ruta_temporal'] != "")
+			{
+   				$file = new upload_file( $_SESSION['nombre_photo'], $_SESSION['ruta_temporal'], $_SESSION['tamanno_photo'], $this->id_vehicle);
+   				$result = $file->upload( "images/vehicles/" );
+   			}	
+			
 			$this->get_fields_from_post();
 			//$this->insert_post();
 			
@@ -625,17 +642,14 @@ print 'modifica foto'.$_SESSION['ident_vehicle'];
 		$this->method=$method;
 				switch($method){
 						case 'add':												
-									if ($_SESSION['add_photo'] == 1)
+									if ($this->add() != 0)
 									{
+										$this->vehicles_list = "";
 										$this->method="list";
 										$tpl=$this->listar($tpl);										
 										$tpl->assign("message","&nbsp;<br>Veh&iacute;culo a&ntilde;adido correctamente<br>&nbsp;");
-										$_SESSION['add_photo'] = 0;
 									}
-									else 
-									{
-										$this->add();
-									}															
+																							
 									$tpl->assign("objeto",$this);
 									$tpl->assign("categorias",$this->cat_vehicles->cat_vehicles_list);
 									break;		
@@ -644,7 +658,9 @@ print 'modifica foto'.$_SESSION['ident_vehicle'];
 									break;
 						case 'modify':
 									$this->read($_GET['id']);
-									if ($this->modify() !=0){
+									if ($this->modify() !=0)
+									{
+										$this->vehicles_list = "";
 										$this->method="list";
 										$tpl=$this->listar($tpl);										
 										$tpl->assign("message","&nbsp;<br>Veh&iacute;culo modificado correctamente<br>&nbsp;");
@@ -672,8 +688,16 @@ print 'modifica foto'.$_SESSION['ident_vehicle'];
 									$tpl=$this->show($_GET['id'], $tpl);									
 									break;
 						default:
-									$this->method='list';
-									$tpl=$this->listar($tpl);
+									if($_SESSION['ident_corp'] != 0)
+									{
+										$this->method='list';
+										$tpl=$this->listar($tpl);
+									}
+									else
+									{
+										$tpl->assign('plantilla','error_corp.tpl');	
+										return $tpl;
+									}	
 									break;
 					}
 				$tpl->assign('plantilla','vehicles_'.$this->method.'.tpl');					

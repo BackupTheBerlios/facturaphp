@@ -14,19 +14,9 @@
 			}
 			else
 			{
-				if($_SESSION['ident_corp'] == 0)
-				{//Se va a elegir empresa
-					{/php}
-						{include file=menu_corp.tpl}
-					{php}
-
-				}
-				else
-				{//Usuario logeado y eligió empresa
-					{/php}
-						{include file=menu_user.tpl}
-					{php}
-				}
+				{/php}
+					{include file=menu_user.tpl}
+				{php}
 			}
 		{/php}
 				
