@@ -14,6 +14,8 @@ session_start();
 require_once('inc/config.inc.php');
 global $INSTALL_DIR;
 require_once('inc/index.inc.php');
+
+//En inc/photos.php realizan las operaciones necesarias por cada modulo para el trabajo con las fotos
 require_once($INSTALL_DIR.'inc/photos.php');
 require_once($INSTALL_DIR.'inc/includes.php');
 //inicializamos algunas variables

@@ -5,6 +5,7 @@ if((isset($_GET['module']))&& (isset($_GET['method']))&&($_GET['module']=='vehic
    $_SESSION['nombre_photo'] = $_FILES['path_photo']['name'];
    $_SESSION['ruta_temporal'] =  $_FILES['path_photo']['tmp_name'];
    $_SESSION['tamanno_photo'] = $_FILES['path_photo']['size'];
+    
  }
  
 
@@ -18,7 +19,7 @@ if((isset($_GET['module']))&& (isset($_GET['method']))&&($_GET['module']=='vehic
 }
 
 //Si se añade la foto de una categoria de producto
-if((isset($_GET['module']))&& (isset($_GET['method']))&&($_GET['module']=='cat_prods ')&&($_GET['method']=='add'))
+if((isset($_GET['module']))&& (isset($_GET['method']))&&($_GET['module']=='cat_prods')&&($_GET['method']=='add'))
 {
    $_SESSION['ruta_photo'] = "";
    $_SESSION['nombre_photo'] = $_FILES['path_photo']['name'];
@@ -27,7 +28,7 @@ if((isset($_GET['module']))&& (isset($_GET['method']))&&($_GET['module']=='cat_p
 }
 
 //Si se modifica la foto de una categoria de producto
-if((isset($_GET['module']))&& (isset($_GET['method']))&&($_GET['module']=='cat_prods ')&&($_GET['method']=='modify'))
+if((isset($_GET['module']))&& (isset($_GET['method']))&&($_GET['module']=='cat_prods')&&($_GET['method']=='modify'))
 {
    $_SESSION['ruta_photo'] = "";
    $_SESSION['nombre_photo'] = $_FILES['path_photo']['name'];

@@ -56,7 +56,7 @@ class upload_file{
   var $cls_rename_file = 0;         // Set to 1 to rename file after upload.
   var $cls_file_rename_to = '';     // New name for the file after upload.
   var $cls_verbal = 0;              // Set to 1 to return an a string instead of an error code.
-
+  var $cls_name_dir_rename="";
   /** constructor()
    **
    ** @para String File name
@@ -215,7 +215,7 @@ class upload_file{
    if( !rename( $this->cls_upload_dir . $this->cls_filename, $this->cls_upload_dir . $this->cls_file_rename_to )){
 		return "RENAME_FAILURE";
     } else {
-		$_SESSION['ruta_photo'] = 'images/vehicles/'.$this->cls_file_rename_to;
+		$_SESSION['ruta_photo'] = $this->cls_name_dir_rename.$this->cls_file_rename_to;
       return 1;
     }
   }
@@ -228,7 +228,7 @@ class upload_file{
    ** @returns void
   **/
   function upload( $dir ){
-    
+    $this->cls_name_dir_rename=$dir;
     $ret = $this->isUploadedFile();
     
     if( $ret != 1 ){

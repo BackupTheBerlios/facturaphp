@@ -186,7 +186,7 @@ class cat_prods{
 		//Miramos a ver si esta definida el "submit_add" y si no lo esta, pasamos directamente a mostrar la plantilla
 		if (!isset($_POST['submit_add'])){
 			//Mostrar plantilla vacía	
-
+			
 			return 0;
 		}
 		//en el caso de que SI este definido submit_add
@@ -208,7 +208,7 @@ class cat_prods{
 			}
 			else{
 				//Si todo es correcto si meten los datos
-
+		
 		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
 		//crea una nueva conexin con una bbdd (mysql)
 		$this->db = NewADOConnection($this->db_type);
@@ -230,8 +230,11 @@ class cat_prods{
 		$record = array();
 		$record[$this->ddbb_name] = $this->name;
 		$record[$this->ddbb_descrip]=$this->descrip;
+		$record[$this->ddbb_path_photo]=$this->path_photo;
+		$record[$this->ddbb_id_parent_cat]=$this->id_parent_cat;
 		//calculamos la sql de insercin respecto a los atributos
 		$this->sql = $this->db->GetInsertSQL($this->result, $record);
+		
 		//print($this->sql);
 		//insertamos el registro
 		$this->db->Execute($this->sql);
@@ -242,6 +245,18 @@ class cat_prods{
 			//print("<pre>::".$this->descrip."::</pre>");
 			//devolvemos el id de la tabla ya que todo ha ido bien
 			$this->db->close();
+			
+			if($_SESSION['ruta_temporal'] != "")
+					{
+   						$file = new upload_file( $_SESSION['nombre_photo'], $_SESSION['ruta_temporal'], $_SESSION['tamanno_photo'], $this->id_cat_prod);
+   						$result = $file->upload( "images/cat_prods/" );
+						echo $result;
+   						if($result == 1)
+   						{
+   							//modificar ruta de la foto
+							$this->modify_photo($this->id_cat_prod);
+						}
+   					}	
 			return $this->id_cat_prod;
 		}else {
 			//devolvemos 0 ya que no se ha insertado el registro
@@ -251,6 +266,54 @@ class cat_prods{
 		}	
 		}
 		}				
+	}
+	
+	function modify_photo($id_cat_prod)
+	{
+	
+		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
+		//crea una nueva conexin con una bbdd (mysql)
+		$this->db = NewADOConnection($this->db_type);
+		//le dice que no salgan los errores de conexin de la ddbb por pantalla
+		$this->db->debug=false;
+		//realiza una conexin permanente con la bbdd
+		$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
+		//mete la consulta para coger los campos de la bbdd
+		$this->sql="SELECT * FROM ".$this->table_prefix.$this->table_name. " WHERE ".$this->ddbb_id_cat_prod." = \"".$this->id_cat_prod."\"" ;
+		//la ejecuta y guarda los resultados
+		$this->result = $this->db->Execute($this->sql);
+		//si falla 
+		if ($this->result === false)
+		{
+			$this->error=1;
+			$this->db->close();
+			return 0;
+		}
+		//rellenamos el array con los datos de los atributos de la clase
+		$record = array();
+		$record[$this->ddbb_id_vehicle]=$this_vehicle;
+		$record[$this->ddbb_path_photo]=$_SESSION['ruta_photo'];
+		//calculamos la sql de insercin respecto a los atributos
+		$this->sql = $this->db->GetUpdateSQL($this->result, $record);
+		//insertamos el registro				
+		$this->db->Execute($this->sql);
+		//si se ha insertado una fila
+		$Affected_Rows=$this->db->Affected_Rows();
+				
+		if(($Affected_Rows==1)||($this->sql==""))
+		{
+			//capturammos el id de la linea insertada
+			$this->db->close();
+			//devolvemos el id de la tabla ya que todo ha ido bien
+			return $this->id_cat_prod;
+		}
+		else 
+		{
+			//devolvemos 0 ya que no se ha insertado el registro
+			$this->error=-1;
+			$this->db->close();
+			return 0;
+		}
 	}
 	
 	function remove($id){
@@ -364,7 +427,7 @@ class cat_prods{
 		}
 		else
 		{	
-			$cadena=''.$tabla_listado->make_tables('cat_prods',$this->cat_prods_list,array('Nombre',20,'Descripci&oacute;n',60),array($this->ddbb_id_cat_prod,$this->ddbb_name,$this->ddbb_descrip),10,$per->permissions_module,$per->add);
+			$cadena=''.$tabla_listado->make_tables('cat_prods',$this->cat_prods_list,array('Nombre',20,'Imagen',20,'Descripci&oacute;n',40),array($this->ddbb_id_cat_prod,$this->ddbb_name,$this->ddbb_path_photo,$this->ddbb_descrip),10,$per->permissions_module,$per->add);
 			$variables=$tabla_listado->nombres_variables;
 		}		
 		$tpl->assign('variables',$variables);
@@ -390,6 +453,7 @@ class cat_prods{
 		//Cogemos los campos principales
 		$this->name=$_POST[$this->ddbb_name];
 		$this->descrip=$_POST[$this->ddbb_descrip];
+		$this->path_photo = $_SESSION['ruta_photo'];
 		
 		//Colocar de manera provisional hasta que se haga la validacion de fields
 		//************Bloque

@@ -1,5 +1,5 @@
 <td valign="top">
-<form method="post" action="index.php?module=cat_prods&method=add" name="form_central">
+<form method="post" action="index.php?module=cat_prods&method=add" name="form_central" enctype="multipart/form-data">
 	  	<table align="center" width="100%">
 		<tr>
 		<td valign="top">
@@ -23,9 +23,9 @@
 						<td> <input type="text" id="{$objeto->ddbb_name}" name="{$objeto->ddbb_name}" class="textoMenu"></td>
 					</tr>
 					<tr>
-						<td width="125px" align="right" class="CampoFormulario">Ruta de la foto:</td>
-						<td> <input type="text" id="{$objeto->ddbb_path_photo}" name="{$objeto->ddbb_path_photo}" class="textoMenu"></td>
-					</tr>
+				 	<td width="125px" class="CampoFormulario" >Imagen:</td>
+					<td><input type="file" name="{$objeto->ddbb_path_photo}"></input></td>	
+				</tr>
 					 <tr>
 						<td width="125px" align="right" class="CampoFormulario">Categoria Padre:</td>
 						<td> <select id="{$objeto->ddbb_id_cat_emp}" name="{$objeto->ddbb_id_cat_emp}">
@@ -48,7 +48,7 @@
 
 		<tr>
 			<td align="center"><br><br>
-			<input type="submit" name="submit_add" id =" name="submit_add" "value="A&ntilde;adir" class="botones">			
+			<input type="submit" name="submit_add" id="submit_add" value="A&ntilde;adir" class="botones">			
 			<input type="reset" Value="Limpiar Datos" class="botones">
 			</td>
 		</tr>

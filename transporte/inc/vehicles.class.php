@@ -283,7 +283,13 @@ class vehicles{
 						
 						//devolvemos el id de la tabla ya que todo ha ido bien
 						$this->db->close();
-					}
+					
+					}else {
+						//devolvemos 0 ya que no se ha insertado el registro
+						$this->error=-1;
+						$this->db->close();
+						return 0;
+					}	
 					//se inserto el vehiculo, ahora se inserta la foto y se modifica el registro para indicar la ruta
 					if($_SESSION['ruta_temporal'] != "")
 					{
