@@ -195,6 +195,34 @@ class modules{
 		return $this->num;	
 	}
 	
+	function is_public_module($name_module)
+	{
+	
+		//se puede acceder a los usuarios por numero de campo o por nombre de campo
+		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
+		//crea una nueva conexi—n con una bbdd (mysql)
+		$this->db = NewADOConnection($this->db_type);
+		//le dice que no salgan los errores de conexi—n de la ddbb por pantalla
+		$this->db->debug=false;
+		//realiza una conexi—n permanente con la bbdd
+		$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
+		//mete la consulta
+		$uno = 1;
+		$this->sql="SELECT `public` FROM `modules` WHERE `name` =\"".$name_module."\"";
+	
+		//la ejecuta y guarda los resultados
+		$this->result = $this->db->Execute($this->sql);
+		//si falla 
+		if ($this->result === false)
+		{
+			$this->error=1;
+			$this->db->close();
+			return 0;
+		}  
+		
+		return $this->result->fields['public'];	
+	}
+	
 	function get_add_form(){
 	
 		

@@ -29,7 +29,7 @@
 				
 					print $href;
 					 print $module->public_modules[$i][2];{/php}
-					</a><br></td></tr>'
+					</a><br></td></tr>
 				
 				{php}
 					
@@ -59,7 +59,7 @@
 					 	print $user->per_modules[$i]->name_web;
 					}
 					{/php}
-					</a><br></td></tr>'
+					</a><br></td></tr>
 				
 				{php}
 					

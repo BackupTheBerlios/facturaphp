@@ -23,12 +23,12 @@
 					<td>
 				{php}
 				
-					$href ='-<a href ="index.php?module='.$module->public_modules[$i][0].'" class="enlaceMenu">';
+					$href ='- <a href ="index.php?module='.$module->public_modules[$i][0].'" class="enlaceMenu">';
 				
 				
 					print $href;
 					 print $module->public_modules[$i][2];{/php}
-					</a><br></td></tr>'
+					</a><br></td></tr>
 				
 				{php}
 					
