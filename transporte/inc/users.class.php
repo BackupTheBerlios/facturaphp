@@ -1035,7 +1035,7 @@ class users{
 												break;
 									}
 									
-									$tpl->assign("objeto",$this);
+									
 									$tpl->assign("modulos",$this->checkbox);
 									$tpl->assign("grupos",$this->checkbox_groups);
 									$tpl->assign("objeto",$this);

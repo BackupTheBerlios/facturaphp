@@ -62,9 +62,9 @@ class groups{
 		//este array de alguna manera aumatizada
 		************************/
 		$this->fields_list= new fields();
-		$this->fields_list->add($this->ddbb_id_group, $this->id_group, 'int', 11,0);
-		$this->fields_list->add($this->ddbb_name, $this->name, 'varchar', 20,0);
-		$this->fields_list->add($this->ddbb_name_web, $this->name_web, 'varchar', 100,0);
+		$this->fields_list->add($this->ddbb_id_group, $this->id_group, 'int', 11,0,1);
+		$this->fields_list->add($this->ddbb_name, $this->name, 'varchar', 20,0,1);
+		$this->fields_list->add($this->ddbb_name_web, $this->name_web, 'varchar', 100,0,1);
 		$this->fields_list->add($this->ddbb_descrip, $this->descrip, 'text', 255,0);		
 		//print_r($this);
 		//se puede acceder a los grupos por numero de campo o por nombre de campo
@@ -296,18 +296,26 @@ class groups{
 		else{
 						
 			//Introducir los datos de post.
-			$this->get_fields_from_post();	
-						
+			$this->get_fields_from_post();
+			
+			$this->id_group=0;
+			$this->fields_list->modify_value($this->ddbb_id_group,$this->id_group);
+			$this->fields_list->modify_value($this->ddbb_name,$this->name);
+			$this->fields_list->modify_value($this->ddbb_name_web,$this->name_web);
+			$this->fields_list->modify_value($this->ddbb_descrip,$this->descrip);
+
+			//validamos
+			$return=$this->fields_list->validate();	
 			//Validacion
 			//$return=validate_fields();
 			
 			//En caso de que la validacion haya sido fallida se muestra la plantilla
 			//con los campos erroneos marcados con un *
-			$return=true; //Para pruebas dejar esta linea sin comentar
+			
 			
 			if (!$return){
 				//Mostrar plantilla con datos erroneos
-				
+				return -1;
 			}
 			else{
 				//Si todo es correcto si meten los datos						
@@ -417,15 +425,17 @@ class groups{
 			//$this->insert_post();
 			
 			//Validacion
-			//$return=validate_fields();
-			
-			//En caso de que la validacion haya sido fallida se muestra la plantilla
-			//con los campos erroneos marcados con un *
-			$return=true; //Para pruebas dejar esta linea sin comentar
+			$this->fields_list->modify_value($this->ddbb_id_group,$this->id_group);
+			$this->fields_list->modify_value($this->ddbb_name,$this->name);
+			$this->fields_list->modify_value($this->ddbb_name_web,$this->name_web);
+			$this->fields_list->modify_value($this->ddbb_descrip,$this->descrip);
+
+			//validamos
+			$return=$this->fields_list->validate();	 //Para pruebas dejar esta linea sin comentar
 			
 			if (!$return){
 				//Mostrar plantilla con datos erroneos
-				
+				return -1;
 			}
 			else{
 				$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
@@ -623,7 +633,7 @@ class groups{
 		function calculate_tpl($method, $tpl){
 				$this->method = $method;
 				switch($method){
-						case 'add':									
+						case 'add':	/*								
 									if ($this->add() !=0){
 										$this->method="list";
 										$tpl=$this->listar($tpl);										
@@ -631,16 +641,55 @@ class groups{
 									}
 									$tpl->assign("objeto",$this);
 									$tpl->assign("modulos",$this->checkbox);
+									break;*/
+									$return=$this->add();
+									switch ($return){										
+										case 0: //por defecto												
+												break;
+										case -1: //Errores al intentar añadir datos
+												for ($i=0;$i<count($this->fields_list->array_error);$i+=2){
+													$tpl->assign("error_".$this->fields_list->array_error[$i],$this->fields_list->array_error[$i+1]);
+												}												
+												break;
+										default: //Si se ha añadido
+												$this->method="list";
+												$tpl=$this->listar($tpl);										
+												$tpl->assign("message","&nbsp;<br>Grupo a&ntilde;adido correctamente<br>&nbsp;");
+												break;
+									}
+									
+									
+									$tpl->assign("modulos",$this->checkbox);
+									$tpl->assign("objeto",$this);
 									break;
 						case 'list':
 									$tpl=$this->listar($tpl);
 									break;
 						case 'modify':
-									$this->read($_GET['id']);
+									/*$this->read($_GET['id']);
 									if ($this->modify() !=0){
 										$this->method="list";
 										$tpl=$this->listar($tpl);										
 										$tpl->assign("message","&nbsp;<br>Grupo modificado correctamente<br>&nbsp;");
+									}
+									$tpl->assign("objeto",$this);
+									$tpl->assign("modulos",$this->checkbox);
+									break;*/
+									$this->read($_GET['id']);				
+									$return=$this->modify();
+									switch ($return){										
+										case 0: //por defecto
+												break;
+										case -1: //Errores al intentar añadir datos
+												for ($i=0;$i<count($this->fields_list->array_error);$i+=2){
+													$tpl->assign("error_".$this->fields_list->array_error[$i],$this->fields_list->array_error[$i+1]);
+												}
+												break;
+										default: //Si se ha añadido
+												$this->method="list";
+												$tpl=$this->listar($tpl);										
+												$tpl->assign("message","&nbsp;<br>Grupo modificado correctamente<br>&nbsp;");
+												break;
 									}
 									$tpl->assign("objeto",$this);
 									$tpl->assign("modulos",$this->checkbox);
@@ -723,23 +772,9 @@ class groups{
 	function get_fields_from_post(){
 		
 		//Cogemos los campos principales
-		$this->name=$_POST[$this->ddbb_name];
-		$this->name_web=$_POST[$this->ddbb_name_web];
-		$this->descrip=$_POST[$this->ddbb_descrip];
-		
-		//Colocar de manera provisional hasta que se haga la validacion de fields
-		//************Bloque
-		if ($this->name==""){
-			$this->name=" ";
-		}
-		if ($this->name_web==""){
-			$this->name_web=" ";
-		}
-		if ($this->descrip==""){
-			$this->descrip=" ";
-		}
-		//************Fin Bloque
-
+		$this->name=htmlentities($_POST[$this->ddbb_name]);
+		$this->name_web=htmlentities($_POST[$this->ddbb_name_web]);
+		$this->descrip=htmlentities($_POST[$this->ddbb_descrip]);
 		//Cogemos los checkboxn de modulos-grupos
 		$this->get_modules_methods_from_post();
 
@@ -767,7 +802,7 @@ class groups{
 					for($j=0;$j<count($this->checkbox->per_modules[$i]->per_methods);$j++){
 								$this->checkbox->per_modules[$i]->per_methods[$j]->per=$_POST['modulo_'.$this->checkbox->per_modules[$i]->id_module.'_metodo_'.$this->checkbox->per_modules[$i]->per_methods[$j]->id_method];
 								if ($this->checkbox->per_modules[$i]->per_methods[$j]->per!=1){
-									$this->checkbox->per_modules[$i]->per_methods->per=0;
+									$this->checkbox->per_modules[$i]->per_methods[$j]->per=0;
 								}								
 					}
 			}
