@@ -63,6 +63,9 @@ function initialize_object($module)
 		case 'drivers':
 					$objeto=new drivers();
 					break;		
+		case 'laborers':
+					$objeto=new laborers();
+					break;	
 		default:		
 					if(!isset($_SESSION['user']))
 					{

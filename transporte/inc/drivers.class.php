@@ -653,10 +653,10 @@ class drivers{
 	
 		$tabla_listado = new table(true);
 		$per = new permissions();
-		$num = $per->get_permissions_list('drivers');
+		$num_per = $per->get_permissions_list('drivers');
 		
 		$per_vi_del = null;
-		for($i=0; $i<$num;$i++)
+		for($i=0; $i<$num_per;$i++)
 			if($per->permissions_module[$i] == 'view')
 				$per_vi_del = array($per->permissions_module[$i]);
 			

@@ -40,6 +40,7 @@ require_once('vehicles.class.php');
 require_once('cat_vehicles.class.php');
 require_once('rel_vehicles_cats.class.php');
 require_once('drivers.class.php');
+require_once('laborers.class.php');
 require_once('rel_prods_cats.class.php')
 //require_once('laborers.class.php');
 ?>
