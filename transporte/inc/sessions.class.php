@@ -27,10 +27,12 @@ class sessions{
   	var $ddbb_id_user='id_user';
   	var $ddbb_up='up';
   	var $ddbb_down='down';
+	var $ddbb_name='name';
   	var $db;
 	var $result;  	
 //variables complementarias	
   	var $sessions_list;
+	var $conectados_list;
   	var $num;
   	var $fields_list;
   	var $error;
@@ -82,7 +84,7 @@ class sessions{
 	}
 	
 	function get_list_sessions (){
-		//se puede acceder a los grupos_usuarios por numero de campo o por nombre de campo
+		
 		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
 		//crea una nueva conexi—n con una bbdd (mysql)
 		$this->db = NewADOConnection($this->db_type);
@@ -109,7 +111,9 @@ class sessions{
 			$this->sessions_list[$this->num][$this->ddbb_id_session_php]=$this->result->fields[$this->ddbb_id_session_php];
 			$this->sessions_list[$this->num][$this->ddbb_id_user]=$this->result->fields[$this->ddbb_id_user];
 			$this->sessions_list[$this->num][$this->ddbb_up]=$this->result->fields[$this->ddbb_up];
-			$this->sessions_list[$this->num][$this->ddbb_down]=$this->result->fields[$this->ddbb_down];			
+			$this->sessions_list[$this->num][$this->ddbb_down]=$this->result->fields[$this->ddbb_down];		
+			
+			$this->preparar_datos($this->sessions_list[$this->num][$this->ddbb_id_user]);	
 			//nos movemos hasta el siguiente registro de resultado de la consulta
 			$this->result->MoveNext();
 			$this->num++;
@@ -117,6 +121,54 @@ class sessions{
 		$this->db->close();
 		return $this->num;
 	
+	}
+	
+	function preparar_datos($id_user)
+	{
+		$usuario = new users();
+		$usuario->read($id_user);
+		$this->sessions_list[$this->num][$this->ddbb_name] = $usuario->name." ".$usuario->last_name." ".$usuario->last_name2;
+
+		//Modificación del formato de las fechas para la presentación
+			list($anno,$mes,$dia,$hora,$minutos,$segundos)=sscanf($this->sessions_list[$this->num][$this->ddbb_up],"%d-%d-%d %d:%d:%d");
+			
+			if($mes < 10)
+				$mes = "0".$mes;
+			if($dia < 10)
+				$dia = "0".$dia;
+			if($hora < 10)
+				$hora = "0".$hora;
+			if($minutos < 10)
+				$minutos = "0".$minutos;
+			if($segundos < 10)
+				$segundos = "0".$segundos;
+				
+			$this->sessions_list[$this->num][$this->ddbb_up]="$dia-$mes-$anno $hora:$minutos:$segundos";
+		
+		
+		if ($this->sessions_list[$this->num][$this->ddbb_down] !="0000-00-00 00:00:00")
+		{
+			list($anno,$mes,$dia,$hora,$minutos,$segundos)=sscanf($this->sessions_list[$this->num][$this->ddbb_down],"%d-%d-%d %d:%d:%d");
+			
+			if($mes < 10)
+				$mes = "0".$mes;
+			if($dia < 10)
+				$dia = "0".$dia;
+			if($hora < 10)
+				$hora = "0".$hora;
+			if($minutos < 10)
+				$minutos = "0".$minutos;
+			if($segundos < 10)
+				$segundos = "0".$segundos;
+				
+			$this->sessions_list[$this->num][$this->ddbb_down]="$dia-$mes-$anno $hora:$minutos:$segundos";
+		}
+		else
+		{
+			$this->sessions_list[$this->num][$this->ddbb_down]="00-00-0000 00:00:00";
+		}
+			
+		
 	}
 	
 	function get_add_form(){
@@ -146,8 +198,6 @@ class sessions{
 	}
 	
 	function read($id){
-	
-		//se puede acceder a los gruposs por numero de campo o por nombre de campo
 		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
 		//crea una nueva conexi—n con una bbdd (mysql)
 		$this->db = NewADOConnection($this->db_type);
@@ -298,7 +348,37 @@ class sessions{
 	
 	}
 	  
-	
+	function listar($tpl){
+		$num = $this->get_list_sessions();
+		$tabla_listado = new table(true);			
+		$per = new permissions();
+		$per->get_permissions_list('sessions');
+		
+		//Toda persona con permso podrá modificar o borrar los datos del conductor, podrá hacerlo
+		$j=0;
+		for ($i=0;$i<count($per->permissions_module);$i++)
+		{
+			if($per->permissions_module[$i]=="delete")
+			{
+				$permisos[$j]=$per->permissions_module[$i];
+				$j++;
+			} 
+		}
+		
+		if ($num==0)
+		{
+			$cadena=''.$cadena.$tabla_listado->tabla_vacia('sessions', false);
+			$variables=$tabla_listado->nombres_variables;
+		}
+		else
+		{
+			$cadena=''.$tabla_listado->make_tables('sessions',$this->sessions_list,array('Usuario',20, 'Fecha/Hora conexión', 20, 'Fecha/Hora desconexión', 20),array($this->ddbb_id_session,$this->ddbb_name, $this->ddbb_up, $this->ddbb_down),10,$permisos,false);
+			$variables=$tabla_listado->nombres_variables;
+		}		
+		$tpl->assign('variables',$variables);
+		$tpl->assign('cadena',$cadena);		
+		return $tpl;
+	}
 	
 	function view ($id){
 	
@@ -311,6 +391,71 @@ class sessions{
 	function num(){
 	
 		return 0;
+	}
+	
+	function conectados()
+	{
+		//se puede acceder a los usuarios conectados
+		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
+		//crea una nueva conexin con una bbdd (mysql)
+		$this->db = NewADOConnection($this->db_type);
+		//le dice que no salgan los errores de conexin de la ddbb por pantalla
+		$this->db->debug=false;
+		//realiza una conexin permanente con la bbdd
+		$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
+		//mete la consulta
+		$this->sql="SELECT * FROM sessions WHERE down = '0000-00-00 00:00:00'";
+		//la ejecuta y guarda los resultados
+		$this->result = $this->db->Execute($this->sql);
+		//si falla 
+		if ($this->result === false){
+			$this->error=1;
+			$this->db->close();
+			return 0;
+		}  
+		
+		$this->num=0;
+		while (!$this->result->EOF) {
+			print "ENTRA";
+			//cogemos los datos del usuario
+			$this->conectados_list[$this->num][$this->ddbb_id_session]=$this->result->fields[$this->ddbb_id_session];
+			$this->conectados_list[$this->num][$this->ddbb_id_session_php]=$this->result->fields[$this->ddbb_id_session_php];
+			$this->conectados_list[$this->num][$this->ddbb_id_user]=$this->result->fields[$this->ddbb_id_user];
+			$this->conectados_list[$this->num][$this->ddbb_up]=$this->result->fields[$this->ddbb_up];
+				
+			
+			$this->preparar_datos_conectados($this->conectados_list[$this->num][$this->ddbb_id_user]);	
+			//nos movemos hasta el siguiente registro de resultado de la consulta
+			$this->result->MoveNext();
+			$this->num++;
+		}
+		$this->db->close();
+		return $this->num;
+	}
+	
+	function preparar_datos_conectados($id_user)
+	{
+		$usuario = new users();
+		$usuario->read($id_user);
+		$this->conectados_list[$this->num][$this->ddbb_name] = $usuario->name." ".$usuario->last_name." ".$usuario->last_name2;
+
+		//Modificación del formato de las fechas para la presentación
+		
+			list($anno,$mes,$dia,$hora,$minutos,$segundos)=sscanf($this->conectados_list[$this->num][$this->ddbb_up],"%d-%d-%d %d:%d:%d");
+			
+			if($mes < 10)
+				$mes = "0".$mes;
+			if($dia < 10)
+				$dia = "0".$dia;
+			if($hora < 10)
+				$hora = "0".$hora;
+			if($minutos < 10)
+				$minutos = "0".$minutos;
+			if($segundos < 10)
+				$segundos = "0".$segundos;
+				
+			$this->conectados_list[$this->num][$this->ddbb_up]="$dia-$mes-$anno $hora:$minutos:$segundos";
+		
 	}
 	
 	function register()
@@ -344,7 +489,7 @@ class sessions{
 						case 'delete':
 									$this->read($_GET['id']);
 									if ($this->remove($_GET['id'])==0){
-										//$tpl->assign("message",$this->emps);
+										
 									}
 									else{
 										$this->cat_vehicles_list = "";
@@ -353,9 +498,6 @@ class sessions{
 										$tpl->assign("message","&nbsp;<br>Sesi&oacute;n borrada correctamente<br>&nbsp;");
 									}
 									$tpl->assign("objeto",$this);
-									break;
-						case 'view':									
-									$tpl=$this->view($_GET['id'],$tpl);
 									break;
 						default:
 									$this->method='list';
@@ -396,16 +538,13 @@ class sessions{
 		switch($method){
 						
 						case 'list':
-									$localice=" :: Buscar Sesiones";
+									$localice=" :: Listar Sesiones";
 									break;
 						case 'delete':
 									$localice=" :: Borrar Sesiones";
 									break;
-						case 'view':
-									$localice=" :: Ver Sesiones";	
-									break;
 						default:
-									$localice=" :: Buscar Sesiones";
+									$localice=" :: Listar Sesiones";
 									break;
 		}
 		return $localice;
