@@ -306,5 +306,42 @@ class holydays{
 	
 	}
 	  
+	function get_come($id){
+		$gone="0000-00-00";
+		
+		//se puede acceder a los usuarios por numero de campo o por nombre de campo
+		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
+		//crea una nueva conexin con una bbdd (mysql)
+		$this->db = NewADOConnection($this->db_type);
+		//le dice que no salgan los errores de conexin de la ddbb por pantalla
+		$this->db->debug=false;
+		//realiza una conexin permanente con la bbdd
+		$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
+		//mete la consulta
+		$this->sql='SELECT * FROM '.$this->table_name.'  WHERE `'.$this->ddbb_id_emp.'` = \''.$id.'\' AND `'.$this->ddbb_gone.'` = \''.$gone.'\' LIMIT 1';
+		//la ejecuta y guarda los resultados
+		$this->result = $this->db->Execute($this->sql);
+		if ($this->result === false){
+			$this->error=1;
+			$this->db->close();
+			echo "hola";
+			return 0;
+		}  
+		
+		$this->num=0;
+		while (!$this->result->EOF) {
+			//cogemos los datos del usuario
+			$this->holydays_list[$this->num]['id_holyday']=$this->result->fields['id_holyday'];
+			$this->holydays_list[$this->num]['come']=$this->result->fields['come'];
+			//nos movemos hasta el siguiente registro de resultado de la consulta
+			$this->result->MoveNext();
+			$this->num++;
+		}
+		$this->db->close();
+		$this->read($this->holydays_list[0]['id_holyday']);
+		echo "<script>alert('".$this->come."');</script>";
+		return $this->num;
+	
+	}
 }
 ?>

@@ -308,14 +308,15 @@ class emps{
 		$user_changed=0;
 		if((!isset($_POST['existUser']))||($_POST['existUser']=="new")||($_POST['existUser']=="modify")){
 			
-				if(($_POST['existUser']=="new")||($this->id-user==0)||($this->id-user=="")){
+				if(($_POST['existUser']=="new")||($this->id_user==0)||($this->id_user=="")){
 					$this->obj_user=new users();
 					$this->obj_user->is_emps=true;
 					$user_changed=$this->obj_user->add();
 					}
-				if($_POST['existUser']=="modify"){
+				if(($_POST['existUser']=="modify")||($this->id_user!=0)){
 					$this->obj_user=new users();
 					$this->obj_user->is_emps=true;
+					$this->obj_user->read($this->id_user);
 					$user_changed=$this->obj_user->modify();
 					}
 		}
@@ -763,6 +764,7 @@ class emps{
 								$tpl->assign("message","&nbsp;<br>Empleado a&ntilde;adido correctamente<br>&nbsp;");
 							}
 							$vacaciones= new holydays();
+							
 							$tpl->assign("holyday",$vacaciones);
 							$tpl->assign("categorias",$this->cat_emps->cat_emps_list);
 							$tpl->assign("objeto",$this);									
@@ -782,9 +784,16 @@ class emps{
 								$tpl=$this->listar($tpl);										
 								$tpl->assign("message","&nbsp;<br>Empleado modificado correctamente<br>&nbsp;");
 							}
+							$vacaciones=new holydays();
+							$vacaciones->get_come($this->id_emp);
+							$tpl->assign("holyday",$vacaciones);
+							$tpl->assign("categorias",$this->cat_emps->cat_emps_list);
+							$tpl->assign("objeto",$this);									
+							$tpl->assign("usuarios",$this->obj_user);
 							$tpl->assign("objeto",$this);
-							$tpl->assign("modulos",$this->checkbox);
-							$tpl->assign("grupos",$this->checkbox_groups);
+							$tpl->assign("listado_usuarios",$this->obj_user->users_list);
+							$tpl->assign("modulos",$this->obj_user->checkbox);
+							$tpl->assign("grupos",$this->obj_user->checkbox_groups);
 							break;
 				case 'delete':
 							$this->read($_GET['id']);
