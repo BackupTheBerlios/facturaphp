@@ -63,10 +63,10 @@ class modules{
 		//este array de alguna manera aumatizada
 		************************/
 		$this->fields_list= new fields();
-		$this->fields_list->add($this->ddbb_id_module, $this->id_module, 'int', 11,0);
-		$this->fields_list->add($this->ddbb_name_web, $this->name_web, 'varchar', 50,0);
-		$this->fields_list->add($this->ddbb_name, $this->name, 'varchar', 50,0);
-		$this->fields_list->add($this->ddbb_path, $this->path, 'varchar', 255,0);
+		$this->fields_list->add($this->ddbb_id_module, $this->id_module, 'int', 11,0,1);
+		$this->fields_list->add($this->ddbb_name_web, $this->name_web, 'varchar', 50,0,1);
+		$this->fields_list->add($this->ddbb_name, $this->name, 'varchar', 50,0,1);
+		$this->fields_list->add($this->ddbb_path, $this->path, 'varchar', 255,0,1);
 		$this->fields_list->add($this->ddbb_active, $this->active, 'tinyint', 3,0);	
 		$this->fields_list->add($this->ddbb_public, $this->publico, 'tinyint', 3,0);
 		$this->fields_list->add($this->ddbb_parent, $this->parent, 'tinyint', 3,0);	
