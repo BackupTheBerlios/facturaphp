@@ -11,6 +11,7 @@ function enableDisable(value){
 	//Deshabilitamos/Habilitamos los campos de texto de usuarios
 	document.getElementById("user_login").disabled = action;
 	document.getElementById("user_passwd").disabled = action;
+	document.getElementById("user_retype").disabled = action;
 	document.getElementById("user_name").disabled = action;
 	document.getElementById("user_last_name").disabled = action;
 	document.getElementById("user_last_name2").disabled = action;
@@ -63,50 +64,49 @@ function enableDisable(value){
 					 
 				  <tr>
 						<td width="125" align="right" class="CampoFormulario">Nombre:</td>
-						<td> <input type="text" id="{$objeto->ddbb_name}" name="{$objeto->ddbb_name}" class="textoMenu" value="{$objeto->name}"></td>
+						<td> <input type="text" id="{$objeto->ddbb_name}" name="{$objeto->ddbb_name}" class="textoMenu" value="{$objeto->name}"><font class="error">{$error_name}</font></td>
 					</tr>
 					<tr>
 						<td width="125" class="CampoFormulario" >Primer apellido: </td>
-						<td > <input type="text" id="{$objeto->ddbb_last_name}" name="{$objeto->ddbb_last_name}" class="textoMenu" value="{$objeto->last_name}"></td>
+						<td > <input type="text" id="{$objeto->ddbb_last_name}" name="{$objeto->ddbb_last_name}" class="textoMenu" value="{$objeto->last_name}"><font class="error">{$error_last_name}</font></td>
 				  </tr>
 				  <tr>
 						<td width="125" class="CampoFormulario">Segundo apellido:</td>
-						<td > <input type="text" id="{$objeto->ddbb_last_name2}" name="{$objeto->ddbb_last_name2}" class="textoMenu" value="{$objeto->last_name2}"></td>
+						<td > <input type="text" id="{$objeto->ddbb_last_name2}" name="{$objeto->ddbb_last_name2}" class="textoMenu" value="{$objeto->last_name2}"><font class="error">{$error_last_name2}</font></td>
 				  </tr>
 				  <tr>
 						<td width="125" class="CampoFormulario" nowrap>Fecha de nacimiento:</td>
-						<td > <!--<input type="text" id="birthday"  name="fields[multi_edit][0][up]" class="textoMenu">-->						
-				 <input class="textoMenu" type="text" name="dateChanged" id="dateChanged" value="{$cumplecambiado}" "size="15" maxlength="99" class="textfield" onchange="alert(this.value)" id="dateChanged" readonly>
-				 <input class="textoMenu" type="hidden" id="{$objeto->ddbb_birthday}" name="{$objeto->ddbb_birthday}"  value="{$objeto->birthday}" size="15" maxlength="99" class="textfield" onchange="alert(this.value)" id="{$objeto->ddbb_birthday}">
+						<td > 
+							<input class="textoMenu" type="text" id="{$objeto->ddbb_birthday}" name="{$objeto->ddbb_birthday}"  value="{$objeto->birthday}" size="15" maxlength="99" class="textfield">
                                     <script type="text/javascript">
                                     
                     <!--
-                    document.write('<a title="Calendario" href="javascript:openCalendar(\'lang=es-utf-8&amp;server=1\', \'form_central\', \'{$objeto->ddbb_birthday}\', \'dateChanged\', \'date\')"><img class="calendar" valign="center" src="pics/calendar.png" alt="Calendario"/></a>');
+                    document.write('<a title="Calendario" href="javascript:openCalendar(\'lang=es-utf-8&amp;server=1\', \'form_central\', \'{$objeto->ddbb_birthday}\', \'date\')"><img class="calendar" valign="center" src="pics/calendar.png" alt="Calendario"/></a>');
                     //-->
                     </script>
 		    
-						
+						<font class="error">{$error_birthday}</font>
 						</td>
 				 </tr>
 				  <tr>
 						<td width="125" class="CampoFormulario">Direcci&oacute;n:</td>
-						<td > <input type="text" id="{$objeto->ddbb_address}" name="{$objeto->ddbb_address}" class="textoMenu" value="{$objeto->address}"></td>
+						<td > <input type="text" id="{$objeto->ddbb_address}" name="{$objeto->ddbb_address}" class="textoMenu" value="{$objeto->address}"><font class="error">{$error_address}</font></td>
 				 </tr>
 				  <tr>
 						<td width="125" class="CampoFormulario">C&oacute;digo postal:</td>
-						<td > <input type="text" id="{$objeto->ddbb_postal_code}" name="{$objeto->ddbb_postal_code}" class="textoMenu" value="{$objeto->postal_code}"></td>
+						<td > <input type="text" id="{$objeto->ddbb_postal_code}" name="{$objeto->ddbb_postal_code}" class="textoMenu" value="{$objeto->postal_code}"><font class="error">{$error_postal_code}</font></td>
 				 </tr>
 				  <tr>
 						<td width="125" class="CampoFormulario">Localidad:</td>
-						<td > <input type="text" id="{$objeto->ddbb_city}" name="{$objeto->ddbb_city}" class="textoMenu" value="{$objeto->city}"></td>
+						<td > <input type="text" id="{$objeto->ddbb_city}" name="{$objeto->ddbb_city}" class="textoMenu" value="{$objeto->city}"><font class="error">{$error_city}</font></td>
 				 </tr>
 				  <tr>
 						<td width="125" class="CampoFormulario">Provincia:</td>
-						<td > <input type="text" id="{$objeto->ddbb_state}" name="{$objeto->ddbb_state}" class="textoMenu"  value="{$objeto->state}"></td>
+						<td > <input type="text" id="{$objeto->ddbb_state}" name="{$objeto->ddbb_state}" class="textoMenu"  value="{$objeto->state}"><font class="error">{$error_state}</font></td>
 				 </tr>
 				  <tr>
 						<td width="125" class="CampoFormulario">Pa&iacute;s:</td>
-						<td > <input type="text" id="{$objeto->ddbb_country}" name="{$objeto->ddbb_country}" class="textoMenu"  value="{$objeto->country}"></td>
+						<td > <input type="text" id="{$objeto->ddbb_country}" name="{$objeto->ddbb_country}" class="textoMenu"  value="{$objeto->country}"><font class="error">{$error_country}</font></td>
 				 </tr>
 				 
 				</table>
@@ -118,19 +118,19 @@ function enableDisable(value){
 			<tr><td cospan="2" class="cabeceraCampoFormulario"></td></tr>
 			 <tr>
 						<td width="125" class="CampoFormulario">Tel&eacute;fono:</td>
-						<td > <input type="text" id="{$objeto->ddbb_phone}" name="{$objeto->ddbb_phone}" class="textoMenu"  value="{$objeto->phone}"></td>
+						<td > <input type="text" id="{$objeto->ddbb_phone}" name="{$objeto->ddbb_phone}" class="textoMenu"  value="{$objeto->phone}"><font class="error">{$error_phone}</font></td>
 				 </tr>
 				  <tr>
 						<td width="125" class="CampoFormulario">Tel&eacute;fono m&oacute;vil:</td>
-						<td > <input type="text" id="{$objeto->ddbb_mobile_phone}" name="{$objeto->ddbb_mobile_phone}" class="textoMenu"  value="{$objeto->mobile_phone}"></td>
+						<td > <input type="text" id="{$objeto->ddbb_mobile_phone}" name="{$objeto->ddbb_mobile_phone}" class="textoMenu"  value="{$objeto->mobile_phone}"><font class="error">{$error_mobile_phone}</font></td>
 				 </tr>
 				<tr>
 						<td width="125" class="CampoFormulario">Fax:</td>
-						<td > <input type="text" id="{$objeto->ddbb_fax}" name="{$objeto->ddbb_fax}" class="textoMenu" value="{$objeto->fax}"></td>
+						<td > <input type="text" id="{$objeto->ddbb_fax}" name="{$objeto->ddbb_fax}" class="textoMenu" value="{$objeto->fax}"><font class="error">{$error_fax}</font></td>
 				 </tr>
 				  <tr>
 						<td width="125" class="CampoFormulario">E-mail:</td>
-						<td > <input name="{$objeto->ddbb_mail}" type="text" class="textoMenu" id="{$objeto->ddbb_mail}"  value="{$objeto->mail}"></td>
+						<td > <input name="{$objeto->ddbb_mail}" type="text" class="textoMenu" id="{$objeto->ddbb_mail}"  value="{$objeto->mail}"><font class="error">{$error_mail}</font></td>
 				 </tr>
 				  <tr>
 						<td width="125" class="CampoFormulario">Categoria:</td>
@@ -144,18 +144,15 @@ function enableDisable(value){
 				 <tr>
 						<td width="125" class="CampoFormulario" nowrap>Fecha de alta:</td>
 						<td > <!--<input type="text" id="come"  name="fields[multi_edit][0][up]" class="textoMenu">-->						
-				 <input class="textoMenu" type="text" name="comeChanged" value="{$holycambiado}" "size="15" maxlength="99" class="textfield" id="comeChanged" readonly>
-				<input type="hidden" name="{$holyday->ddbb_ill}" id="{$holyday->ddbb_ill}" value="2">
-				 <input type="hidden" name="{$holyday->ddbb_id_holy}" id="{$holyday->ddbb_id_holyday}" value="{$holyday->id_holyday}">
-				 <input class="textoMenu" type="hidden" name="{$holyday->ddbb_come}" id="{$holyday->ddbb_come}" value="{$holyday->come}" size="15" maxlength="99" class="textfield" id="{$holyday->ddbb_come}"><!--{$holiday->ddbb_come}-->
+				 <input class="textoMenu" type="text" name="{$holyday->ddbb_come}" id="{$holyday->ddbb_come}" value="{$objeto->come}" size="15" maxlength="99" class="textfield" id="{$holyday->ddbb_come}">
                                     <script type="text/javascript">
                                     
                     <!--
-                    document.write('<a title="Calendario" href="javascript:openCalendar(\'lang=es-utf-8&amp;server=1\', \'form_central\', \'{$holyday->ddbb_come}\', \'comeChanged\', \'date\')"><img class="calendar" valign="center" src="pics/calendar.png" alt="Calendario"/></a>');
+                    document.write('<a title="Calendario" href="javascript:openCalendar(\'lang=es-utf-8&amp;server=1\', \'form_central\', \'{$holyday->ddbb_come}\', \'date\')"><img class="calendar" valign="center" src="pics/calendar.png" alt="Calendario"/></a>');
                     //-->
                     </script>
 		    
-						
+						<font class="error">{$error_come}</font>
 						</td>
 				 </tr>
 			</table>
@@ -165,9 +162,9 @@ function enableDisable(value){
 				<input type="radio" {if $usuarios->id_user==0 || $usuarios->id_user==""}checked {/if}name="user" id="user_exist" value="exist" onChange="enableDisable(this.value)"> Escoger un usuario existente
 			</td></tr>
 			<tr class="class="textoMenu" align="center"><td><select name="existUser" id="existUser">
-			 {if $usuarios->id_user==0 || $usuarios->id_user==""}
-						 <option value="0">Sin Usuario</option>
-						 {/if}
+			 
+						 <option value="0">Ninguno</option>
+			
 						{section name="indice" loop=$listado_usuarios}
 						
 						  <option {if $usuarios->id_user==$listado_usuarios[indice].id_user }selected{/if}  value="{$listado_usuarios[indice].id_user}">{$listado_usuarios[indice].login} :: {$listado_usuarios[indice].name} {$listado_usuarios[indice].last_name} {$listado_usuarios[indice].last_name2}</option>
@@ -192,26 +189,30 @@ function enableDisable(value){
 				  </tr>
 					<tr>
 						<td width="125px" align="right" class="CampoFormulario" nowrap>Login:</td>
-						<td > <input type="text" id="user_login" name="user_{$usuarios->ddbb_login}" class="textoMenu" value="{$usuarios->login}"></td>
+						<td > <input type="text" id="user_login" name="user_{$usuarios->ddbb_login}" value="{$usuarios->login}" class="textoMenu"><font class="error">{$user_error_login}</font></td>
 					</tr>
 					<tr>
 						<td width="125px" class="CampoFormulario">Password:</td>
-						<td > <input type="password" id="user_passwd" name="user_{$usuarios->ddbb_passwd}" class="textoMenu" value="{$usuarios->passwd}"></td>
+						<td > <input type="password" id="user_passwd" name="user_{$usuarios->ddbb_passwd}" value="{$usuarios->passwd}" class="textoMenu"><font class="error">{$user_error_passwd}</font></td>
+				  </tr>
+				  <tr>
+						<td width="125px" class="CampoFormulario">Password:</td>
+						<td > <input type="password" id="user_retype" name="user_retype" value="{$usuarios->retype}" class="textoMenu"><font class="error">{$user_error_retype}</font></td>
 				  </tr>
 				  <tr>
 					  <td colspan="2" class="cabeceraCampoFormulario">Datos del Usuario:</td>
 				  </tr>
 				  <tr>
 						<td width="125px" align="right" class="CampoFormulario">Nombre:</td>
-						<td> <input type="text" id="user_name" name="user_{$usuarios->ddbb_name}" class="textoMenu" value="{$usuarios->name}"></td>
+						<td> <input type="text" id="user_name" name="user_{$usuarios->ddbb_name}" value="{$usuarios->name}" class="textoMenu"><font class="error">{$user_error_name}</font></td>
 					</tr>
 					<tr>
 						<td width="125px" class="CampoFormulario" >Primer Apellido:</td>
-						<td > <input type="text" id="user_last_name" name="user_{$usuarios->ddbb_last_name}" class="textoMenu" value="{$usuarios->last_name}"></td>
+						<td > <input type="text" id="user_last_name" name="user_{$usuarios->ddbb_last_name}" value="{$usuarios->last_name}" class="textoMenu"><font class="error">{$user_error_last_name}</font></td>
 				  </tr>
 				  <tr>
 						<td width="125px" class="CampoFormulario">Segundo Apellido:</td>
-						<td > <input type="text" id="user_last_name2" name="user_{$usuarios->ddbb_last_name2}" class="textoMenu" value="{$usuarios->last_name2}"></td>
+						<td > <input type="text" id="user_last_name2" name="user_{$usuarios->ddbb_last_name2}" value="{$usuarios->last_name2}" class="textoMenu"><font class="error">{$user_error_last_name2}</font></td>
 				  </tr>
 				   <tr>
 					  <td colspan="2" class="cabeceraCampoFormulario">Permisos: </td>

@@ -270,8 +270,6 @@ class fields{
 		
 		if ($name!="" && html_entity_decode($name)==html_entity_decode($login))
 			return true;
-		echo "login es $login y name es $name";
-		print_r($array);
 		if (is_array($array))
 			for($i=0;$i<count($array);$i++){
 				if (html_entity_decode($login) == html_entity_decode($array[$i])){

@@ -68,6 +68,7 @@ class users{
 	var $table_names_delete = array ("group_users","per_user_modules","per_user_methods");
 	var $empleados;
 	var $is_emps=false;
+	var $return_validate_emps=true;
 	//log_methods ¿donde tiene que ir? a delete o a modify?
 	
   	//constructor
@@ -360,12 +361,7 @@ class users{
 		}
 	}
 	
-	function add(){
-		//Miramos a ver si esta definida el "submit_add" y si no lo esta, pasamos directamente a mostrar la plantilla
-		if (!isset($_POST['submit_add'])){
-			//Mostrar plantilla vacía	
-			//pasarle a la plantilla los modulos y grupos con sus respectivos checkbox a checked false
-			//Modulos
+	function get_checkbox_modules_from_bbdd(){
 			$this->checkbox=new permissions_modules;
 			$modules=new modules();
 			$num_modules = $modules->get_list_modules();
@@ -422,9 +418,11 @@ class users{
 					}
 				}
 			}
-			
-		
-			$groups=new groups();
+		return 0;
+	}
+	
+	function get_checkbox_groups_from_bbdd(){
+		$groups=new groups();
 			$groups->get_list_groups();
 			$this->get_groups($this->id_user);
 			$k=0;
@@ -453,6 +451,18 @@ class users{
 					}
 				}
 			}
+		return 0;
+	}
+	
+	function add(){
+		//Miramos a ver si esta definida el "submit_add" y si no lo esta, pasamos directamente a mostrar la plantilla
+		if (!isset($_POST['submit_add'])){
+			//Mostrar plantilla vacía	
+			
+			//Modulos
+			$this->get_checkbox_modules_from_bbdd();
+			//Grupos
+			$this->get_checkbox_groups_from_bbdd();			
 			return 0;
 		}
 		//en el caso de que SI este definido submit_add
@@ -480,8 +490,10 @@ class users{
 			//con los campos erroneos marcados con un *
 			
 			
-			if (!$return){
+			if (!$return || !$this->return_validate_emps){
+				//Se utiliza $return_validate_emps para el formulario de empleados, ya que si se han introducido bien los datos del usuario, pero no los del empleado, no se deberia de añadir.
 				//Mostrar plantilla con datos erroneos
+				
 				return -1;
 			}
 			else{
@@ -596,7 +608,7 @@ class users{
 		if (!isset($_POST['submit_modify'])){
 			//Mostrar plantilla vacía	
 			//pasarle a la plantilla los modulos y grupos con sus respectivos checkbox a checked false
-			$this->checkbox=new permissions_modules();
+			/*$this->checkbox=new permissions_modules();
 			$modules=new modules();
 			$num_modules = $modules->get_list_modules();
 		
@@ -686,7 +698,11 @@ class users{
 				}
 			}
 			//$tpl->assign('usuarios',$this->per_module_methods);
-			
+			*/
+			//Modulos
+			$this->get_checkbox_modules_from_bbdd();
+			//Grupos
+			$this->get_checkbox_groups_from_bbdd();	
 			return 0;
 		}
 		else{
@@ -1008,6 +1024,10 @@ class users{
 	
 	function calculate_tpl($method, $tpl){
 		$this->method=$method;
+		if ($this->is_emps)
+			$prefix="user_";
+		else
+			$prefix="";
 				switch($method){
 						case 'add':									
 									/*if ($this->add() !=0){
@@ -1024,8 +1044,10 @@ class users{
 										case 0: //por defecto												
 												break;
 										case -1: //Errores al intentar añadir datos
+												
 												for ($i=0;$i<count($this->fields_list->array_error);$i+=2){
-													$tpl->assign("error_".$this->fields_list->array_error[$i],$this->fields_list->array_error[$i+1]);
+													$tpl->assign($prefix."error_".$this->fields_list->array_error[$i],$this->fields_list->array_error[$i+1]);
+													//echo $prefix."error_".$this->fields_list->array_error[$i];
 												}												
 												break;
 										default: //Si se ha añadido

@@ -14,7 +14,7 @@ class emps{
 	var $name;
 	var $last_name;
 	var $last_name2;
-	var $birthday;
+	var $birthday="00-00-0000";
 	var $phone;
 	var $mobile_phone;
 	var $fax;
@@ -66,11 +66,13 @@ class emps{
 	var $method;
 	var $obj_user;
 	var $cat_emps;
-	var $come;
+	var $come="00-00-0000";
 	var $category;
 	var $table_names_modify=array();
 	var $table_names_delete=array("holydays","rel_emps_cats",);
 	var $holydays_list;
+	var $user_added;
+	var $radiobutton;
   	//constructor
 	function emps(){
 		//coge las variables globales del fichero config.inc.php
@@ -89,10 +91,10 @@ class emps{
 		//este array de alguna manera aumatizada
 		************************/
 		$this->fields_list= new fields();
-		$this->fields_list->add($this->ddbb_id_emp, $this->id_emp, 'int', 11,0);
-		$this->fields_list->add($this->ddbb_id_corp, $this->id_corp, 'int', 11,0);
-		$this->fields_list->add($this->ddbb_id_user, $this->id_user, 'int', 11,0);
-		$this->fields_list->add($this->ddbb_name, $this->name, 'varchar', 20,0);
+		$this->fields_list->add($this->ddbb_id_emp, $this->id_emp, 'int', 11,0,1);
+		$this->fields_list->add($this->ddbb_id_corp, $this->id_corp, 'int', 11,0,1);
+		$this->fields_list->add($this->ddbb_id_user, $this->id_user, 'int', 11,0,1);
+		$this->fields_list->add($this->ddbb_name, $this->name, 'varchar', 20,0,1);
 		$this->fields_list->add($this->ddbb_last_name, $this->last_name, 'varchar', 20,0);
 		$this->fields_list->add($this->ddbb_last_name2, $this->last_name2, 'varchar', 20,0 );
 		$this->fields_list->add($this->ddbb_birthday, $this->birthday, 'date', 0,0);
@@ -185,18 +187,20 @@ class emps{
 	}
 	
 	function add(){
-		if((!isset($_POST['existUser']))||($_POST['existUser']=="new")){
-			$this->obj_user=new users();
-			$this->obj_user->get_list_users();
-			$this->obj_user->is_emps=true;
-			$this->obj_user->add();
-		}
+		
 		//Miramos a ver si esta definida el "submit_add" y si no lo esta, pasamos directamente a mostrar la plantilla
 		if (!isset($_POST['submit_add'])){
 			//Mostrar plantilla vacía	
+			if((!isset($_POST['existUser']))||($_POST['existUser']=="new")){
+				$this->obj_user=new users();
+				$this->obj_user->get_list_users();
+				$this->obj_user->is_emps=true;
+				$this->obj_user->return_validate_emps=$return;
+				$this->user_added=$this->obj_user->add();
+			}
 			//pasarle a la plantilla los modulos y grupos con sus respectivos checkbox a checked false
 			//Modulos
-			$this->cat_emps=new cat_emps();
+			
 			return 0;
 		}
 		//en el caso de que SI este definido submit_add
@@ -207,16 +211,63 @@ class emps{
 						
 			//Validacion
 			//$return=validate_fields();
+			$this->id_emp=0;
+			$this->fields_list->modify_value($this->ddbb_id_emp,$this->id_emp);
+			$this->fields_list->modify_value($this->ddbb_id_user,$this->id_user);			
+			$this->fields_list->modify_value($this->ddbb_id_corp,$this->id_corp);
+			$this->fields_list->modify_value($this->ddbb_name,$this->name);
+			$this->fields_list->modify_value($this->ddbb_last_name,$this->last_name);
+			$this->fields_list->modify_value($this->ddbb_last_name2,$this->last_name2);
+			$this->fields_list->modify_value($this->ddbb_birthday,$this->birthday);
+			$this->fields_list->modify_value($this->ddbb_phone,$this->phone);
+			$this->fields_list->modify_value($this->ddbb_mobile_phone,$this->mobile_phone);
+			$this->fields_list->modify_value($this->ddbb_fax,$this->fax);
+			$this->fields_list->modify_value($this->ddbb_mail,$this->mail);
+			$this->fields_list->modify_value($this->ddbb_address,$this->address);
+			$this->fields_list->modify_value($this->ddbb_city,$this->city);
+			$this->fields_list->modify_value($this->ddbb_state,$this->state);
+			$this->fields_list->modify_value($this->ddbb_country,$this->country);
+			$this->fields_list->modify_value($this->ddbb_postal_code,$this->postal_code);
+			$return=$this->fields_list->validate();	
+			
+			//Validamos la fecha de alta.
+			$cadena=$this->fields_list->validate_date($this->come,1);
+			if(!is_int($cadena)){
+				array_push($this->fields_list->array_error,'come',$cadena);
+				$return=false;
+			}
+			
+			if((!isset($_POST['existUser']))||($_POST['existUser']=="new")){
+				$this->obj_user=new users();
+				$this->obj_user->get_list_users();
+				$this->obj_user->is_emps=true;
+				$this->obj_user->return_validate_emps=$return;
+				$this->user_added=$this->obj_user->add();
+				$this->radiobutton="new";
+			}
+			else{
+				$this->obj_user=new users();
+				$this->obj_user->get_list_users();
+				$this->obj_user->is_emps=true;
+				$this->obj_user->get_checkbox_modules_from_bbdd();
+				$this->obj_user->get_checkbox_groups_from_bbdd();
+				$this->radiobutton="exist";
+			}
+			
+			//Validacion
+			//$return=validate_fields();
 			
 			//En caso de que la validacion haya sido fallida se muestra la plantilla
 			//con los campos erroneos marcados con un *
-			$return=true; //Para pruebas dejar esta linea sin comentar
 			
-			if (!$return){
+			
+			if (!$return || $this->user_added==-1){
 				//Mostrar plantilla con datos erroneos
-				
+				return -1;
 			}
 		    else{
+				$this->come=$this->fields_list->change_date($this->come,"en");
+				$this->birthday=$this->fields_list->change_date($this->birthday,"en");
 				//Si todo es correcto si meten los datos
 				
 				$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
@@ -268,8 +319,7 @@ class emps{
 				if($this->db->Insert_ID()>=0){
 					//Cogemos el id del empleado insertado.
 					
-					$this->id_emp=$this->db->Insert_ID();
-					
+					$this->id_emp=$this->db->Insert_ID();					
 					//capturammos el id de la linea insertada
 					//Introducimos categorias;
 					$this->add_category($this->id_emp);
@@ -293,15 +343,12 @@ class emps{
 					$this->error=-1;
 					$this->db->close();
 					return 0;
-				}			
-				
-				
-				
+				}
 			}
 		}
 	}
 	
-		function add_category($id){
+	function add_category($id){
 		$category=new rel_emps_cats();
 		$category->id_emp=$id;
 		$category->id_cat_emp=$this->category;
@@ -337,24 +384,67 @@ class emps{
 		}
 		if (!isset($_POST['submit_modify'])){
 			
-			$this->cat_emps=new cat_emps();
+			
 			return 0;
 		}
 		else{
 			//Introducir los datos de post.
-			$this->get_fields_from_post();
-			//$this->insert_post();
+			$this->get_fields_from_post();	
+						
+			//Validacion
+			//$return=validate_fields();
+			$this->fields_list->modify_value($this->ddbb_id_emp,$this->id_emp);
+			$this->fields_list->modify_value($this->ddbb_id_user,$this->id_user);			
+			$this->fields_list->modify_value($this->ddbb_id_corp,$this->id_corp);
+			$this->fields_list->modify_value($this->ddbb_name,$this->name);
+			$this->fields_list->modify_value($this->ddbb_last_name,$this->last_name);
+			$this->fields_list->modify_value($this->ddbb_last_name2,$this->last_name2);
+			$this->fields_list->modify_value($this->ddbb_birthday,$this->birthday);
+			$this->fields_list->modify_value($this->ddbb_phone,$this->phone);
+			$this->fields_list->modify_value($this->ddbb_mobile_phone,$this->mobile_phone);
+			$this->fields_list->modify_value($this->ddbb_fax,$this->fax);
+			$this->fields_list->modify_value($this->ddbb_mail,$this->mail);
+			$this->fields_list->modify_value($this->ddbb_address,$this->address);
+			$this->fields_list->modify_value($this->ddbb_city,$this->city);
+			$this->fields_list->modify_value($this->ddbb_state,$this->state);
+			$this->fields_list->modify_value($this->ddbb_country,$this->country);
+			$this->fields_list->modify_value($this->ddbb_postal_code,$this->postal_code);
+			$return=$this->fields_list->validate();	
+			
+			//Validamos la fecha de alta.
+			$cadena=$this->fields_list->validate_date($this->come,1);
+			if(!is_int($cadena)){
+				array_push($this->fields_list->array_error,'come',$cadena);
+				$return=false;
+			}
+			
+			if((!isset($_POST['existUser']))||($_POST['existUser']=="new")){
+				$this->obj_user=new users();
+				$this->obj_user->get_list_users();
+				$this->obj_user->is_emps=true;
+				$this->obj_user->return_validate_emps=$return;
+				$this->user_added=$this->obj_user->add();
+				$this->radiobutton="new";
+			}
+			else{
+				$this->obj_user=new users();
+				$this->obj_user->get_list_users();
+				$this->obj_user->is_emps=true;
+				$this->obj_user->get_checkbox_modules_from_bbdd();
+				$this->obj_user->get_checkbox_groups_from_bbdd();
+				$this->radiobutton="exist";
+			}
 			
 			//Validacion
 			//$return=validate_fields();
 			
 			//En caso de que la validacion haya sido fallida se muestra la plantilla
 			//con los campos erroneos marcados con un *
-			$return=true; //Para pruebas dejar esta linea sin comentar
 			
-			if (!$return){
+			
+			if (!$return || $this->user_added==-1){
 				//Mostrar plantilla con datos erroneos
-				
+				return -1;
 			}
 			else{
 				$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
@@ -563,7 +653,7 @@ class emps{
 	}
 	
 	function belong_corp($id_corp){
-				//se puede acceder a los usuarios por numero de campo o por nombre de campo
+		//se puede acceder a los usuarios por numero de campo o por nombre de campo
 		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
 		//crea una nueva conexin con una bbdd (mysql)
 		$this->db = NewADOConnection($this->db_type);
@@ -962,13 +1052,33 @@ class emps{
 	{
 		$this->method=$method;
 		switch($method){
-				case 'add':									
-							if ($this->add() !=0){
-								$this->method="list";
-								$tpl=$this->listar($tpl);										
-								$tpl->assign("message","&nbsp;<br>Empleado a&ntilde;adido correctamente<br>&nbsp;");
+				case 'add':	
+							$vacaciones= new holydays();	
+							$this->cat_emps=new cat_emps();
+							$return=$this->add();
+							switch ($return){										
+								case 0: //por defecto												
+									break;
+								case -1: //Errores al intentar añadir datos
+										for ($i=0;$i<count($this->fields_list->array_error);$i+=2){
+											$tpl->assign("error_".$this->fields_list->array_error[$i],$this->fields_list->array_error[$i+1]);
+										}		
+										if ($this->user_added==-1){											
+											for ($i=0;$i<count($this->obj_user->fields_list->array_error);$i+=2){
+												
+													$tpl->assign("user_error_".$this->obj_user->fields_list->array_error[$i],$this->obj_user->fields_list->array_error[$i+1]);
+													//echo $prefix."error_".$this->fields_list->array_error[$i];
+												}
+										}
+										$tpl->assign("radio",$this->radiobutton);
+										break;
+								default: //Si se ha añadido
+										$this->method="list";
+										$tpl=$this->listar($tpl);										
+										$tpl->assign("message","&nbsp;<br>Empleado a&ntilde;adido correctamente<br>&nbsp;");
+										break;
 							}
-							$vacaciones= new holydays();
+							
 							
 							
 							$tpl->assign("holyday",$vacaciones);
@@ -984,6 +1094,7 @@ class emps{
 							$tpl=$this->listar($tpl);
 							break;
 				case 'modify':
+							/*
 							$this->read($_GET['id']);
 							if ($this->modify() !=0){
 								$this->method="list";
@@ -1013,13 +1124,43 @@ class emps{
 							}
 							else{
 								$tpl->assign("cumplecambiado","00-00-0000");
-							}
+							}*/
 							
+							$this->read($_GET['id']);
+							
+							$vacaciones= new holydays();	
+							$vacaciones->get_come($this->id_emp);
+							$this->cat_emps=new cat_emps();
+							$return=$this->modify();
+							switch ($return){										
+								case 0: //por defecto												
+									$this->come=$vacaciones->come;
+									$this->come=$this->fields_list->change_date($this->come,"es");
+									$this->birthday=$this->fields_list->change_date($this->birthday,"es");
+									break;
+								case -1: //Errores al intentar añadir datos
+										for ($i=0;$i<count($this->fields_list->array_error);$i+=2){
+											$tpl->assign("error_".$this->fields_list->array_error[$i],$this->fields_list->array_error[$i+1]);
+										}		
+										if ($this->user_added==-1){											
+											for ($i=0;$i<count($this->obj_user->fields_list->array_error);$i+=2){
+												
+													$tpl->assign("user_error_".$this->obj_user->fields_list->array_error[$i],$this->obj_user->fields_list->array_error[$i+1]);
+													//echo $prefix."error_".$this->fields_list->array_error[$i];
+												}
+										}
+										$tpl->assign("radio",$this->radiobutton);
+										break;
+								default: //Si se ha añadido
+										$this->method="list";
+										$tpl=$this->listar($tpl);										
+										$tpl->assign("message","&nbsp;<br>Empleado modificado correctamente<br>&nbsp;");
+										break;
+							}
 							$tpl->assign("holyday",$vacaciones);
 							$tpl->assign("categorias",$this->cat_emps->cat_emps_list);
 							$tpl->assign("objeto",$this);									
 							$tpl->assign("usuarios",$this->obj_user);
-							$tpl->assign("objeto",$this);
 							$tpl->assign("listado_usuarios",$this->obj_user->users_list);
 							$tpl->assign("modulos",$this->obj_user->checkbox);
 							$tpl->assign("grupos",$this->obj_user->checkbox_groups);
@@ -1060,20 +1201,20 @@ class emps{
 	}
 	
 	function get_fields_from_post(){		
-		$this->name=$_POST[$this->ddbb_name];
-		$this->last_name=$_POST[$this->ddbb_last_name];
-		$this->last_name2=$_POST[$this->ddbb_last_name2];
+		$this->name=htmlentities($_POST[$this->ddbb_name]);
+		$this->last_name=htmlentities($_POST[$this->ddbb_last_name]);
+		$this->last_name2=htmlentities($_POST[$this->ddbb_last_name2]);
 		$this->birthday=$_POST[$this->ddbb_birthday];
-		$this->address=$_POST[$this->ddbb_address];
+		$this->address=htmlentities($_POST[$this->ddbb_address]);
 		$this->id_corp=$_SESSION['ident_corp'];
-		$this->city=$_POST[$this->ddbb_city];
-		$this->state=$_POST[$this->ddbb_state];
-		$this->country=$_POST[$this->ddbb_country];
+		$this->city=htmlentities($_POST[$this->ddbb_city]);
+		$this->state=htmlentities($_POST[$this->ddbb_state]);
+		$this->country=htmlentities($_POST[$this->ddbb_country]);
 		$this->postal_code=$_POST[$this->ddbb_postal_code];
 		$this->phone=$_POST[$this->ddbb_phone];
 		$this->mobile_phone=$_POST[$this->ddbb_mobile_phone];
 		$this->fax=$_POST[$this->ddbb_fax];
-		$this->mail=$_POST[$this->ddbb_mail];
+		$this->mail=htmlentities($_POST[$this->ddbb_mail]);
 		
 		//Cogemos la fecha de alta
 		$this->come=$_POST["come"];
@@ -1082,6 +1223,8 @@ class emps{
 		if ($_POST["user"]=="exist"){
 			$this->id_user=$_POST["existUser"];
 		}		
+		
+		echo $this->birthday;
 		
 		//Cogemos la categoria
 		$this->category=$_POST["category"];
