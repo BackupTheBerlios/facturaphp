@@ -130,7 +130,7 @@ function vwVarFromInput()
         	if (empty($var))
 				{
             		return;}
-        	$ourvar = $var;
+        	$ourvar = $$var;
         	if (!isset($ourvar))
 				{
             	array_push($resarray, NULL);
