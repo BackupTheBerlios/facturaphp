@@ -195,13 +195,22 @@
 						$micol++;
 					}
 					while($col<=(count($cabecera)/2)-1){
-						$variable=$variable.'<td>';						
-						if($view){
-							$variable=$variable.'<A href=\\"index.php?module='.$var_js.'&method=view&id='.$list_name[$registro][$nombre_campos[0]].'\\">';
-						}						
-						$variable=$variable.$list_name[$registro][$nombre_campos[$col+1]];
-						if($view){
-							$variable=$variable.'</A>';
+						$variable=$variable.'<td align=\\"center\\">';	
+						if($nombre_campos[$col+1] != 'path_photo')	
+						{			
+							if($view){
+								$variable=$variable.'<A href=\\"index.php?module='.$var_js.'&method=view&id='.$list_name[$registro][$nombre_campos[0]].'\\">';
+							}						
+							$variable=$variable.$list_name[$registro][$nombre_campos[$col+1]];
+							if($view){
+								$variable=$variable.'</A>';
+							}
+						}
+						else
+						{
+							$ruta = $list_name[$registro][$nombre_campos[$col+1]];
+							$variable = $variable.'<img src=\\"'.$list_name[$registro][$nombre_campos[$col+1]].'\\" align=middle width=\\"120\\" height=\\"80\\">';
+							//print "******************Tabla hasta ahora: ".$variable."******************************";
 						}						
 						$variable=$variable.'</td>';
 						$col++;

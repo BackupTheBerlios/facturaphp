@@ -34,4 +34,6 @@ require_once('templates.class.php');
 require_once('fields.class.php');
 require_once('sessions.class.php');
 require_once('modules.class.php');
+require_once('upload_file.class.php');
+require_once('vehicles.class.php');
 ?>

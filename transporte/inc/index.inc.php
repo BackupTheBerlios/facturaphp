@@ -51,6 +51,9 @@ function initialize_object($module)
 		case 'error':
 					$objeto=new error();
 					break;
+		case 'vehicles':
+					$objeto=new vehicles();
+					break;		
 		default:		
 					if(!isset($_SESSION['user']))
 					{
