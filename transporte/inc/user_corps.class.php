@@ -75,7 +75,7 @@ var $num_corps;
 		$num = $emp->get_user_corps($id_user);
 
 		$tabla_listado = new table(true);
-		$cadena=''.$tabla_listado->make_tables('user_corps',$emp->corps_list,array('Nombre',50),array('id_user','name'),10,array('view'),true);
+		$cadena=''.$tabla_listado->make_tables('user_corps',$emp->corps_list,array('Nombre',50),array('id_user','name'),10,array('view'),false);
 		$variables=$tabla_listado->nombres_variables;		
 		$tpl->assign('variables',$variables);
 		$tpl->assign('cadena',$cadena);		
