@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.3, created on 2004-10-21 18:00:53
+<?php /* Smarty version 2.6.3, created on 2004-10-25 00:30:23
          compiled from users_add.tpl */ ?>
 <td valign="top">
 <?php echo '
@@ -93,7 +93,63 @@
 				 
 				</table>
 		</td>
-		</tr>		
+		</tr>	
+		<tr>
+		<td valign="top">
+			<br>
+			<table width="90%" align="center" border="0">
+			 <tr>
+					  <td colspan="2" class="cabeceraCampoFormulario">Permisos por modulos-metodos: </td>
+			</tr>
+			<tr class="cabeceraMultiLinea">
+				<td width="30%">Grupos</td>
+				
+			</tr>
+			
+			<?php 
+				$linea = 0;
+			 ?>
+			<?php unset($this->_sections['indice']);
+$this->_sections['indice']['name'] = 'indice';
+$this->_sections['indice']['loop'] = is_array($_loop=$this->_tpl_vars['grupos']) ? count($_loop) : max(0, (int)$_loop); unset($_loop);
+$this->_sections['indice']['show'] = true;
+$this->_sections['indice']['max'] = $this->_sections['indice']['loop'];
+$this->_sections['indice']['step'] = 1;
+$this->_sections['indice']['start'] = $this->_sections['indice']['step'] > 0 ? 0 : $this->_sections['indice']['loop']-1;
+if ($this->_sections['indice']['show']) {
+    $this->_sections['indice']['total'] = $this->_sections['indice']['loop'];
+    if ($this->_sections['indice']['total'] == 0)
+        $this->_sections['indice']['show'] = false;
+} else
+    $this->_sections['indice']['total'] = 0;
+if ($this->_sections['indice']['show']):
+
+            for ($this->_sections['indice']['index'] = $this->_sections['indice']['start'], $this->_sections['indice']['iteration'] = 1;
+                 $this->_sections['indice']['iteration'] <= $this->_sections['indice']['total'];
+                 $this->_sections['indice']['index'] += $this->_sections['indice']['step'], $this->_sections['indice']['iteration']++):
+$this->_sections['indice']['rownum'] = $this->_sections['indice']['iteration'];
+$this->_sections['indice']['index_prev'] = $this->_sections['indice']['index'] - $this->_sections['indice']['step'];
+$this->_sections['indice']['index_next'] = $this->_sections['indice']['index'] + $this->_sections['indice']['step'];
+$this->_sections['indice']['first']      = ($this->_sections['indice']['iteration'] == 1);
+$this->_sections['indice']['last']       = ($this->_sections['indice']['iteration'] == $this->_sections['indice']['total']);
+?>
+				<?php 
+				if ($linea==0){
+					$clase="multiLinea1";
+					$linea=1;
+				}				
+				else{
+					$clase="multiLinea2";	
+					$linea=0;
+				}				
+				print('<tr class="'.$clase.'">');
+				 ?>
+				
+				</tr>
+			<?php endfor; endif; ?>
+			</table>
+		</td>
+		</tr>	
 		<tr>
 
 			<td valign="top">

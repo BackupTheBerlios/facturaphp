@@ -325,7 +325,6 @@ class users{
 					//capturammos el id de la linea insertada
 					$this->id_user=$this->db->Insert_ID();
 					$this->add_per_modules_methods();
-					echo $this->id_user;
 					//print("<pre>::".$this->id_user."::</pre>");
 					//devolvemos el id de la tabla ya que todo ha ido bien
 					$this->db->close();
@@ -534,7 +533,7 @@ class users{
 		$this->get_list_users();
 
 		$tabla_listado = new table(true);
-		$cadena=''.$tabla_listado->make_tables('users',$this->users_list,array('Login',20,'Nombre',20,'Primer Apellido',20,'Segundo Apellido',20),array($this->ddbb_id_user,$this->ddbb_login,$this->ddbb_name,$this->ddbb_last_name,$this->ddbb_last_name2),20,array('view','modify','delete'),true);
+		$cadena=''.$tabla_listado->make_tables('users',$this->users_list,array('Login',20,'Nombre',20,'Primer Apellido',20,'Segundo Apellido',20),array($this->ddbb_id_user,$this->ddbb_login,$this->ddbb_name,$this->ddbb_last_name,$this->ddbb_last_name2),10,array('view','modify','delete'),true);
 		$variables=$tabla_listado->nombres_variables;		
 		$tpl->assign('variables',$variables);
 		$tpl->assign('cadena',$cadena);		
@@ -621,6 +620,7 @@ class users{
 								}								
 					}
 			}		
+		echo count($this->checkbox->per_modules);
 		return 0;			 			
 	}
 	
@@ -735,8 +735,10 @@ class users{
 		$this->checkbox=new permissions_modules();
 		$per_user_modules=new per_user_modules();
 		$per_user_methods=new per_user_methods();			
-			for($i=0;$i<count($checkbox->per_modules);$i++){								
-					if ($this->checkbox->per_modules[$i]->per==1){
+		
+			for($i=0;$i<count($this->checkbox->per_modules);$i++){																					
+					if ($this->checkbox->per_modules[$i]->per==1){			
+								
 						$per_user_modules->id_module=$this->checkbox->per_modules[$i]->id_module;
 						$per_user_modules->id_user=$this->id_user;
 						$per_user_modules->per=1;						

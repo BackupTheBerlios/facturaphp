@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.3, created on 2004-09-23 17:18:25
+<?php /* Smarty version 2.6.3, created on 2004-10-25 00:30:19
          compiled from users_list.tpl */ ?>
 <td valign="top">
 
@@ -23,6 +23,8 @@ unset($_smarty_tpl_vars);
 				</tr>
 			  </table>
 			  <table width="100%">
+			  <tr><td class="message" align="center"><?php echo $this->_tpl_vars['message']; ?>
+</td></tr>
 			  <tr><td valign="top"><form method="post" action="index.php?module=users&method=view">
 			  	<table width="250px" align="center">
 				 <tr>

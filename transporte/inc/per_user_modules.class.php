@@ -172,7 +172,7 @@ class per_user_modules{
 	}
 	
 	function add(){
-	
+
 		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
 		//crea una nueva conexi—n con una bbdd (mysql)
 		$this->db = NewADOConnection($this->db_type);
@@ -183,6 +183,7 @@ class per_user_modules{
 		//mete la consulta para coger los campos de la bbdd
 		$this->sql="SELECT * FROM ".$this->table_prefix.$this->table_name. " WHERE ".$this->ddbb_id_per_user_module." = -1" ;
 		//la ejecuta y guarda los resultados
+
 		$this->result = $this->db->Execute($this->sql);
 		//si falla 
 		if ($this->result === false){
