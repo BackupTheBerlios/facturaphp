@@ -38,7 +38,7 @@ class products{
 	var $db;
 	var $result;  
 	var $sql;
-		
+	
 //variables complementarias	
   	var $products_list;
   	var $num;
@@ -48,7 +48,8 @@ class products{
 	var $table_names_modify=array();
 	var $table_names_delete=array('rel_prods_cats');
 	var $prod_cat_list;
-	
+//variable para complementar las busquedas
+	var $sql_complement;
 
   	//constructor
 	function products()
@@ -210,8 +211,14 @@ class products{
 						
 			//Introducir los datos de post.
 			$this->get_fields_from_post();
-			//print_r($this->prod_cat_list);
+			
+			
 			//Validacion
+			
+			//Modificamos los datos del field_list
+			$this->field_list->modify_value();
+			
+			
 			//$return=validate_fields();
 			//En caso de que la validacion haya sido fallida se muestra la plantilla
 			//con los campos erroneos marcados con un *
@@ -597,8 +604,8 @@ class products{
 		//Cogemos los campos principales
 		$prefix="";
 		$this->id_corp=$_SESSION['ident_corp'];
-		$this->name=$_POST[$prefix.$this->ddbb_name];
-		$this->name_web=$_POST[$prefix.$this->ddbb_name_web];
+		$this->name=htmlentities($_POST[$prefix.$this->ddbb_name]);
+		$this->name_web=htmlentities($_POST[$prefix.$this->ddbb_name_web]);
 		$this->pvp=$_POST[$prefix.$this->ddbb_pvp];
 		$this->tax=$_POST[$prefix.$this->ddbb_tax];
 		$this->pvp_tax=$_POST[$prefix.$this->ddbb_pvp_tax];

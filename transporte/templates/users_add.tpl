@@ -13,7 +13,8 @@
 			  </tr>
 		  </table>
 						<br>
-		<table width="250px" align="center">
+		<table width="90%" align="center" border="0"><tr><td>
+		<table width="50%" align="left">
 
 					<tr>
 					  <td colspan="2" class="cabeceraCampoFormulario">Datos de Login:</td>
@@ -51,10 +52,10 @@
 				  	</td>
 				  </tr>
 
-				 <tr>
-		<td valign="top" colspan="2">
-			<br>
-			<table width="100%" align="center" border="0">
+			
+		</table>
+		</td><td>
+		<table width="100%" align="center" border="0">
 			 <tr>
 					  <td colspan="2" class="cabeceraCampoFormulario">Grupos: </td>
 			</tr>
@@ -96,9 +97,8 @@
 			{/section}
 			<tr class="cabeceraMultilinea"><td colspan="2">&nbsp</td></tr>
 			</table>
-		</td>
-		</tr>	
-		</table>
+		</td></tr></table>
+		
 		</td>
 		</tr>	
 		

@@ -1155,7 +1155,7 @@ class modules{
 	
 	function add_methods($id){
 		
-		for	($i=0;$i<count($this->module_methods);$i++){
+		for	($i=0;$i<count($this->module_methods)&&$this->module_methods!="";$i++){
 			$method = new methods();
 			$method->id_module=$id;
 			$method->name=$this->module_methods[$i]["name"];

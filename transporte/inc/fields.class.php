@@ -33,13 +33,26 @@ class fields{
 		
 	}
 	
-	function validate($fields_form){
+	function modify_value($name,$new_value){
+		$this->lista[$name]["value"]=$new_value;
+	}
 	
-		/*for ($i=0;i<$this->num;$i++){
-		
-		
-			
-		}*/		
+	function validate(){
+	
+		for ($i=0;$i<$this->num;$i++){
+			switch ($this->lista[$i]["type"]){
+				case "int": break;
+				case "text": break;
+				case "double": break;
+				case "varchar": break;
+				case "char": break;
+				case "long": break;
+				case "string": break;
+				case "real": break;
+				case "date": break;
+				default: break;
+			}			
+		}
 	
 	}
 }

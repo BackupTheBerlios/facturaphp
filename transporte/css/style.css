@@ -212,7 +212,7 @@ tr.multiLinea2 {
 	font-weight:bold;
 }
 
-.numerosBuscar{ 	
+.numerosBuscar{
 	color:#000000;
 	font-family:Verdana, Arial, Helvetica, sans-serif;
 	font-size:10px;
@@ -221,3 +221,10 @@ tr.multiLinea2 {
 .notaPequegna{font-family:Verdana, Arial, Helvetica, sans-serif;
 	font-size:9px;
 	}
+	
+.error{
+	font-family:arial;
+	font-size:9px;
+	color:#FF0000;
+	font-style:italic;
+}

@@ -13,7 +13,8 @@
 								</tr>
 						</table>
 						<br>
-		<table width="250px" align="center">
+		<table width="90%" align="center" border="0"><tr><td>
+		<table width="50%" align="center">
 
 					<tr>
 					  <td colspan="2" class="cabeceraCampoFormulario">Datos de Login:</td>
@@ -50,9 +51,9 @@
 					<input type="button" Value="Deseleccionar Todos" class="botones" onClick="unselectAll();">
 				  	</td>
 				  </tr>
-								 <tr>
-		<td valign="top" colspan="2">
-			<br>	
+		
+				</table>
+			</td><td>
 			<table width="100%" align="center" border="0">
 			 <tr>
 					  <td colspan="2" class="cabeceraCampoFormulario">Grupos: </td>
@@ -96,9 +97,7 @@
 			{/section}
 			<tr class="cabeceraMultilinea"><td colspan="2">&nbsp</td></tr>
 			</table>
-		</td>
-		</tr>	 
-				</table>
+			</td></tr></table>
 		</td>
 		</tr>				
 			

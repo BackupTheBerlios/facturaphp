@@ -1,5 +1,11 @@
 <?php
-
+$variable1='pepe';
+$variable2=is_int($variable1);
+echo $variable1." ".$variable2;
+if ($variable==NULL){
+	echo "es null";
+}
+return;
 //*********************************************************************************
 //Usuarios
 require_once('inc/includes.php');

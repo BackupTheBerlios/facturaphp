@@ -21,7 +21,8 @@
 			  </tr>
 		  </table>
 						<br>
-		<table width="250px" align="center">
+		<table width="90%" align="center" border="0"><tr><td>
+		<table width="50%" align="center">
 
 					<tr>
 					  <td colspan="2" class="cabeceraCampoFormulario">Datos del producto:</td>
@@ -57,37 +58,21 @@
 					<td> <input type="text" id="{$objeto->ddbb_minimun_stock}" name="{$objeto->ddbb_minimun_stock}" class="textoMenu"></td>
 				</tr>
 		</table>
-		</td>
-		</tr>	
-		<tr>
-		<td>
-		<br>
+		</td><td>
 		<table width="250px" align="center">
 
 					<tr>
 					  <td class="cabeceraCampoFormulario" align="center">Categor&iacute;as:</td>
 				  </tr>
-		</table><br>
-		
-		<table align="center"><tr><td>
-		
-		<table width="100%" align="center">
-
-					<tr class="cabeceraMultilinea">
-					  <td>&nbsp;</td>
-				  </tr>
-		</table><br>
-		{$tabla_checkbox}
-		<br>
-		<table width="100%" align="center">
-
-					<tr class="cabeceraMultilinea">
-					  <td>&nbsp;</td>
-				  </tr>
 		</table>
+		
+		<table align="center"><tr><td>		
+		{$tabla_checkbox}
+		</td></tr></table>
 		</td></tr></table>
 		</td>
-		</tr>
+		</tr>	
+		
 		<tr>
 			<td align="center"><br><br>
 			<input type="submit" name="submit_add" id="submit_add" value="A&ntilde;adir" class="botones">			
