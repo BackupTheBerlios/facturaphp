@@ -1,6 +1,6 @@
 <html>
 <head>
-	<title>Resuival :: Zona privada :: Inicio</title>
+	<title>Resuival :: Zona privada :: Usuarios :: Alta/Modificaci&oacute;n de usuarios </title>
 </head>
 <link rel="stylesheet" href="css/style.css"> 
 <body style="top-margin:0px; left-margin:0px" background="pics/fond.gif">
@@ -13,7 +13,7 @@
 	  				<td align="right" valign="middle"><img src="pics/dragdrop.png"></td>
 				</tr>
 				<tr class="barraNavegacion">
-					<td colspan="2" >Zona privada::Inicio</td>
+					<td colspan="2" >Zona privada :: Usuarios :: Alta/Modificaci&oacute;n de usuarios </td>
 				</tr>
 			</table>		
 		</td>	  
@@ -141,16 +141,115 @@
 			</tr>
 		</table>
 	  </td>
-	  <td valign="top"><table width="95%" align="center">
-	  <tr><td align="center">
-	  		<h3>ZONA PRIVADA</h3>
-	  		<br>
-	  		<br>
-	  		<br>
-	  		<img src="pics/logogrande.gif">
-	  </td>
-</tr>
-	  </table></td>
+	  <td valign="top"><form>
+	  	<table align="center" width="100%">
+		<tr>
+		<td valign="top">
+			<table width="100%" cellpadding="0" cellspacing="0"  bgcolor="#000000">
+						<tr>
+						<td width="7%">
+						 <img src="pics/usuariosico.png" width="32" height="32">
+						</td>
+						<td width="93%" valign="middle" Class="CabeceraModulo" nowrap>Alta/Modificaci&oacute;n de usuarios</td>
+								</tr>
+						</table>
+						<br>
+		<table width="250px" align="center">
+
+					<tr>
+					  <td colspan="2" class="cabeceraCampoFormulario">Datos de Login:</td>
+				  </tr>
+					<tr>
+						<td width="125px" align="right" class="CampoFormulario" nowrap>Login:</td>
+						<td > <input type="text" id="Login" name="Login" class="textoMenu"></td>
+					</tr>
+					<tr>
+						<td width="125px" class="CampoFormulario">Password:</td>
+						<td > <input type="password" id="passwd" name="passwd" class="textoMenu"></td>
+				  </tr>
+				  <tr>
+					  <td colspan="2" class="cabeceraCampoFormulario">Datos del Usuario:</td>
+				  </tr>
+				  <tr>
+						<td width="125px" align="right" class="CampoFormulario">Nombre:</td>
+						<td> <input type="text" id="name" name="name" class="textoMenu"></td>
+					</tr>
+					<tr>
+						<td width="125px" class="CampoFormulario" >Primer Apellido:</td>
+						<td > <input type="text" id="last_name" name="last_name" class="textoMenu"></td>
+				  </tr>
+				  <tr>
+						<td width="125px" class="CampoFormulario">Segundo Apellido:</td>
+						<td > <input type="text" id="last_name" name="last_name" class="textoMenu"></td>
+				  </tr>
+				   <tr>
+					  <td colspan="2" class="cabeceraCampoFormulario">Otros datos: </td>
+				  </tr>
+				  <tr>
+						<td width="125px" class="CampoFormulario">Grupo:</td>
+						<td > <select class="textoMenu" id="grupo" name="grupo">
+						  <option value="1" selected>Administrador</option>
+						  <option value="2">Conductores</option>
+						  <option value="0">Etc...</option>
+						</select></td>
+				  </tr>
+				</table>
+			</td>
+		</tr>		
+		<tr>
+			<td valign="top">
+			<br>
+				<table width="75%" align="center" border="0">
+				<tr class="cabeceraMultiLinea">
+					<td width="40%">Nombre de Modulo
+					</td>
+					<td Colspan="4" width="60%">Permisos</td>
+				</tr>
+				<tr class="multiLinea1">
+					<td width="40%" nowrap><input type="checkbox" name="checkbox" value="checkbox"> 
+					Usuarios </td>
+					<td width="15%"  nowrap><input type="checkbox" name="checkbox" value="checkbox">
+			        Listar</td>
+					<td width="15%"  nowrap><input type="checkbox" name="checkbox" value="checkbox"> A&ntilde;adir</td>
+					<td width="15%"  nowrap><input type="checkbox" name="checkbox" value="checkbox"> Modificar</td>
+					<td width="15%"  nowrap><input type="checkbox" name="checkbox" value="checkbox"> Borrar</td>
+				</tr>
+				<tr class="multiLinea2">
+					<td width="40%" nowrap><input type="checkbox" name="checkbox" value="checkbox"> 
+					Camiones</td>
+					<td width="15%"  nowrap><input type="checkbox" name="checkbox" value="checkbox">
+				     Listar</td>
+					<td width="15%"  nowrap><input type="checkbox" name="checkbox" value="checkbox"> A&ntilde;adir</td>
+					<td width="15%"  nowrap><input type="checkbox" name="checkbox" value="checkbox"> Modificar</td>
+					<td width="15%"  nowrap><input type="checkbox" name="checkbox" value="checkbox"> Borrar</td>
+				</tr>			
+				<tr class="multiLinea1">
+					<td width="40%" nowrap><input type="checkbox" name="checkbox" value="checkbox"> 
+					Nominas </td>
+					<td width="15%"  nowrap><input type="checkbox" name="checkbox" value="checkbox">
+				     Listar</td>
+					<td width="15%"  nowrap><input type="checkbox" name="checkbox" value="checkbox"> A&ntilde;adir</td>
+					<td width="15%"  nowrap><input type="checkbox" name="checkbox" value="checkbox"> Modificar</td>
+					<td width="15%"  nowrap><input type="checkbox" name="checkbox" value="checkbox"> Borrar</td>
+				</tr>	
+				<tr class="multiLinea2">
+					<td width="40%" nowrap><input type="checkbox" name="checkbox" value="checkbox"> 
+					Clientes</td>
+					<td width="15%"  nowrap><input type="checkbox" name="checkbox" value="checkbox">
+				     Listar</td>
+					<td width="15%"  nowrap><input type="checkbox" name="checkbox" value="checkbox"> A&ntilde;adir</td>
+					<td width="15%"  nowrap><input type="checkbox" name="checkbox" value="checkbox"> Modificar</td>
+					<td width="15%"  nowrap><input type="checkbox" name="checkbox" value="checkbox"> Borrar</td>
+				</tr>		
+			</table>			</td>
+		</tr>
+		<tr>
+			<td align="center"><br><br><input type="submit" name="enviar" value="A&ntilde;adir/Modificar" class="botones">
+			<input type="reset" Value="Borrar Datos" class="botones">
+			</td>
+		</tr>
+	  	</table> 
+		</form></td>
 	</tr>
 	<tr>
 	  <td colspan="2" height="100px" class="piePagina">
