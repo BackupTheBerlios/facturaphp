@@ -14,13 +14,31 @@ class permissions{
 	var $id_method;
 	var $per;
 	var $permissions_module;
+	var $per_group_methods;
+	var $per_group_modules;
+	var $per_user_methods;
+	var $per_user_modules;
 	var $per_mod_del;
 	var $add;
-
-
+//BBDD name vars
+	var $db_name;
+	var $db_ip;
+	var $db_user;
+	var $db_passwd;
+	var $db_port;
+	var $db_type;
+	var $table_prefix;
+	var $result;  	
+	var $ddbb_id_group = 'id_group';
+	var $ddbb_id_user = 'id_user';
+	var $ddbb_id_method = 'id_method';
+	var $ddbb_id_module = 'id_module';
+	var $ddbb_per = 'per';
+	
 	//constructor
 	function permissions()
 	{
+		$this->inicializar_base_datos();
 		return $this;
 	}
 	
@@ -137,5 +155,169 @@ class permissions{
 
 	}
 	
+	function inicializar_base_datos(){
+		//coge las variables globales del fichero config.inc.php
+		global $DDBB_TYPE, $DDBB_NAME, $IP_DDBB, $DDBB_USER, $DDBB_PASS, $DDBB_PORT, $TABLE_PREFIX;
+		$this->db_type=$DDBB_TYPE;
+		$this->db_name=$DDBB_NAME;
+		$this->db_ip=$IP_DDBB;
+		$this->db_user=$DDBB_USER;
+		$this->db_passwd=$DDBB_PASS;
+		$this->db_port=$DDBB_PORT;
+		$this->table_prefix=$TABLE_PREFIX;
+		
+	}
+	
+	function get_per_group_methods()
+	{
+		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
+		//crea una nueva conexin con una bbdd (mysql)
+		$this->db = NewADOConnection($this->db_type);
+		//le dice que no salgan los errores de conexin de la ddbb por pantalla
+		$this->db->debug=false;
+		//realiza una conexin permanente con la bbdd
+		$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
+		
+		//mete la consulta
+		$this->sql='SELECT * FROM `per_group_methods`';
+		
+		//la ejecuta y guarda los resultados
+		$this->result = $this->db->Execute($this->sql);
+		
+		if ($this->result === false)
+		{
+			$this->error=1;
+			$this->db->close();
+					
+			return false;
+		} 
+
+		while (!$this->result->EOF) {
+			
+			//cogemos los datos 
+			$this->per_group_methods[$this->result->fields[$this->ddbb_id_group]][$this->result->fields[$this->ddbb_id_method]]=$this->result->fields[$this->ddbb_per];
+			
+			//nos movemos hasta el siguiente registro de resultado de la consulta
+			$this->result->MoveNext();
+
+		}
+		$this->db->close();
+		
+		return $this->per_group_methods;
+	}
+	
+	function get_per_group_modules()
+	{
+		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
+		//crea una nueva conexin con una bbdd (mysql)
+		$this->db = NewADOConnection($this->db_type);
+		//le dice que no salgan los errores de conexin de la ddbb por pantalla
+		$this->db->debug=false;
+		//realiza una conexin permanente con la bbdd
+		$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
+		
+		//mete la consulta
+		$this->sql='SELECT * FROM `per_group_modules`';
+		
+		//la ejecuta y guarda los resultados
+		$this->result = $this->db->Execute($this->sql);
+		
+		if ($this->result === false)
+		{
+			$this->error=1;
+			$this->db->close();
+					
+			return false;
+		} 
+
+		while (!$this->result->EOF) {
+			
+			//cogemos los datos 
+			$this->per_group_modules[$this->result->fields[$this->ddbb_id_group]][$this->result->fields[$this->ddbb_id_module]]=$this->result->fields[$this->ddbb_per];
+			
+			//nos movemos hasta el siguiente registro de resultado de la consulta
+			$this->result->MoveNext();
+
+		}
+		$this->db->close();
+		
+		return $this->per_group_modules;
+	}
+	
+	function get_per_user_modules()
+	{
+		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
+		//crea una nueva conexin con una bbdd (mysql)
+		$this->db = NewADOConnection($this->db_type);
+		//le dice que no salgan los errores de conexin de la ddbb por pantalla
+		$this->db->debug=false;
+		//realiza una conexin permanente con la bbdd
+		$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
+		
+		//mete la consulta
+		$this->sql='SELECT * FROM `per_user_modules`';
+		
+		//la ejecuta y guarda los resultados
+		$this->result = $this->db->Execute($this->sql);
+		
+		if ($this->result === false)
+		{
+			$this->error=1;
+			$this->db->close();
+					
+			return false;
+		} 
+
+		while (!$this->result->EOF) {
+			
+			//cogemos los datos 
+			$this->per_user_modules[$this->result->fields[$this->ddbb_id_user]][$this->result->fields[$this->ddbb_id_module]]=$this->result->fields[$this->ddbb_per];
+			
+			//nos movemos hasta el siguiente registro de resultado de la consulta
+			$this->result->MoveNext();
+
+		}
+		$this->db->close();
+		
+		return $this->per_user_modules;
+	}
+	
+	function get_per_user_methods()
+	{
+		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
+		//crea una nueva conexin con una bbdd (mysql)
+		$this->db = NewADOConnection($this->db_type);
+		//le dice que no salgan los errores de conexin de la ddbb por pantalla
+		$this->db->debug=false;
+		//realiza una conexin permanente con la bbdd
+		$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
+		
+		//mete la consulta
+		$this->sql='SELECT * FROM `per_user_methods`';
+		
+		//la ejecuta y guarda los resultados
+		$this->result = $this->db->Execute($this->sql);
+		
+		if ($this->result === false)
+		{
+			$this->error=1;
+			$this->db->close();
+					
+			return false;
+		} 
+
+		while (!$this->result->EOF) {
+			
+			//cogemos los datos 
+			$this->per_user_methods[$this->result->fields[$this->ddbb_id_user]][$this->result->fields[$this->ddbb_id_method]]=$this->result->fields[$this->ddbb_per];
+			
+			//nos movemos hasta el siguiente registro de resultado de la consulta
+			$this->result->MoveNext();
+
+		}
+		$this->db->close();
+		
+		return $this->per_user_methods;
+	}
 }
 ?>

@@ -23,8 +23,9 @@ $nav_bar="::Gesti&oacute;n::";
 
 //inicializa una plantilla
 $tpl= new template;
+
 //Comprobar si la sesión debe caducar
-if(time() >= $_SESSION['max_page_time'])
+if(isset($_SESSION['max_page_time'])&& time() >= $_SESSION['max_page_time'])
 {
 	//Desconectar al usuario porque caducó su sesión
 	$session=new sessions();
@@ -102,6 +103,7 @@ if(!isset($_SESSION['user']))
            setcookie(session_name(), 1,time()+60);
        	}
 		
+		
 	/*	//Tomamos IP del cliente
 		if ($for = getenv('HTTP_X_FORWARDED_FOR'))
    		{
@@ -119,6 +121,26 @@ if(!isset($_SESSION['user']))
 		
 		//Se crea el menú de usuario	
 		$_SESSION['modules_list'] = $menu->table_modules(-2);
+		
+		$permisos = new permissions();
+		$_SESSION['permisos_group_methods'] = $permisos->get_per_group_methods();
+		$_SESSION['permisos_group_modules'] = $permisos->get_per_group_modules();
+		$_SESSION['permisos_user_modules'] = $permisos->get_per_user_modules();
+		$_SESSION['permisos_user_methods'] = $permisos->get_per_user_methods();
+		
+		/*
+		Para acceder a cualquier tabla se hace de la siguiente manera
+		$_SESSION['nombre_tabla'][id_user/id_group][id_module/id_method]
+		
+		Comprobar en el caso de que no esté en la lista y escribir en su caso un 0
+		if(!isset($_SESSION['permisos_group_methods'][9][21]))
+			print "permisos 0";
+		else
+			print "permisos ".$_SESSION['permisos_group_methods'][9][21];
+			
+		Ahora siempre que se necesite buscar algo se puede acceder de esta manera o creando un bucle 
+		que recorra los identificadores y compruebe si está o no en la lista y su valor
+		*/
 
 		//como el usuario esta validado asigna su nombre a la plantilla
 		$tpl->assign('user_name',$_SESSION['user']);
@@ -173,37 +195,13 @@ else
 		$tpl->assign('error',0);
 		$tpl->assign('login',1);
 		$index_template='index.tpl';
+		
 	}
 	else
 	{
-		//Comprobar si la sesión debe caducar
-		if(time() >= $_SESSION['max_page_time'])
-		{
-			//Desconectar al usuario porque caducó su sesión
-			$session=new sessions();
-			$session->unregister();
-			unset($_COOKIE[session_name()]);
-			session_unset();
-			session_destroy();
-			session_start();
-		
-			//Se recalcula los módulos públicos para el menú
-			$menu = new menu();
-			$_SESSION['public_modules'] = $menu->table_modules(0);
-		
-			$tpl->assign('user_name','');
-			$tpl->assign('corp_id',0);
-			$tpl->assign('error',0);
-			$tpl->assign('login',1);
-			$index_template='index.tpl';
-			$_SESSION['expire'] = 1;	
-		} 
-		else
-		{
-			$tpl->assign('user_name',$_SESSION['user']);
-			$tpl->assign('login',0);
-			$index_template='index.tpl';
-		}
+		$tpl->assign('user_name',$_SESSION['user']);
+		$tpl->assign('login',0);
+		$index_template='index.tpl';
 	} 
 }
 
