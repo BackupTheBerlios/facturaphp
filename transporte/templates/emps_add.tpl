@@ -143,6 +143,20 @@ function hola(){
 						</select></td>
 				 </tr>
 				 <tr>
+						<td width="125" class="CampoFormulario" nowrap>Expedici&oacute;n de carnet de conducir:</td>
+						<td > 
+							<input class="textoMenu" type="text" id="{$objeto->ddbb_license}" name="{$objeto->ddbb_license}"  value="{$objeto->license}" size="15" maxlength="99" class="textfield">
+                                    <script type="text/javascript">
+                                    
+                    <!--
+                    document.write('<a title="Calendario" href="javascript:openCalendar(\'lang=es-utf-8&amp;server=1\', \'form_central\', \'{$objeto->ddbb_license}\', \'date\')"><img class="calendar" valign="center" src="pics/calendar.png" alt="Calendario"/></a>');
+                    //-->
+                    </script>
+		    
+						<font class="error">{$error_birthday}</font>
+						</td>
+				 </tr>
+				 <tr>
 						<td width="125" class="CampoFormulario" nowrap>Fecha de alta:</td>
 						<td > <!--<input type="text" id="come"  name="fields[multi_edit][0][up]" class="textoMenu">-->						
 				 <input class="textoMenu" type="text" name="{$holyday->ddbb_come}" id="{$holyday->ddbb_come}" value="{$objeto->come}" size="15" maxlength="99" class="textfield" id="{$holyday->ddbb_come}">

@@ -15,6 +15,7 @@ class emps{
 	var $last_name;
 	var $last_name2;
 	var $birthday="00-00-0000";
+	var $license="00-00-0000";
 	var $phone;
 	var $mobile_phone;
 	var $fax;
@@ -40,6 +41,7 @@ class emps{
 	var $ddbb_last_name='last_name';
 	var $ddbb_last_name2='last_name2';
 	var $ddbb_birthday='birthday';
+	var $ddbb_license='license';
 	var $ddbb_phone='phone';
 	var $ddbb_mobile_phone='mobile_phone';
 	var $ddbb_fax='fax';
@@ -98,6 +100,7 @@ class emps{
 		$this->fields_list->add($this->ddbb_last_name, $this->last_name, 'varchar', 20,0);
 		$this->fields_list->add($this->ddbb_last_name2, $this->last_name2, 'varchar', 20,0 );
 		$this->fields_list->add($this->ddbb_birthday, $this->birthday, 'date', 0,0);
+		$this->fields_list->add($this->ddbb_license, $this->license, 'date', 0,0);
 		$this->fields_list->add($this->ddbb_phone, $this->phone, 'varchar', 15,0);		
 		$this->fields_list->add($this->ddbb_mobile_phone, $this->mobile_phone, 'varchar', 15,0 );
 		$this->fields_list->add($this->ddbb_fax, $this->fax, 'varchar', 15,0 );
@@ -167,6 +170,7 @@ class emps{
 			$this->emps_list[$this->num][$this->ddbb_last_name]=$this->result->fields[$this->ddbb_last_name];
 			$this->emps_list[$this->num][$this->ddbb_last_name2]=$this->result->fields[$this->ddbb_last_name2];
 			$this->emps_list[$this->num][$this->ddbb_birthday]=$this->result->fields[$this->ddbb_birthday];
+			$this->emps_list[$this->num][$this->ddbb_license]=$this->result->fields[$this->ddbb_license];
 			$this->emps_list[$this->num][$this->ddbb_phone]=$this->result->fields[$this->ddbb_phone];
 			$this->emps_list[$this->num][$this->ddbb_mobile_phone]=$this->result->fields[$this->ddbb_mobile_phone];
 			$this->emps_list[$this->num][$this->ddbb_fax]=$this->result->fields[$this->ddbb_fax];
@@ -219,6 +223,7 @@ class emps{
 			$this->fields_list->modify_value($this->ddbb_last_name,$this->last_name);
 			$this->fields_list->modify_value($this->ddbb_last_name2,$this->last_name2);
 			$this->fields_list->modify_value($this->ddbb_birthday,$this->birthday);
+			$this->fields_list->modify_value($this->ddbb_license,$this->license);
 			$this->fields_list->modify_value($this->ddbb_phone,$this->phone);
 			$this->fields_list->modify_value($this->ddbb_mobile_phone,$this->mobile_phone);
 			$this->fields_list->modify_value($this->ddbb_fax,$this->fax);
@@ -268,6 +273,7 @@ class emps{
 		    else{
 				$this->come=$this->fields_list->change_date($this->come,"en");
 				$this->birthday=$this->fields_list->change_date($this->birthday,"en");
+				$this->license=$this->fields_list->change_date($this->license,"en");
 				//Si todo es correcto si meten los datos
 				
 				$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
@@ -293,6 +299,7 @@ class emps{
 				$record[$this->ddbb_last_name]=$this->last_name;
 				$record[$this->ddbb_last_name2]=$this->last_name2;
 				$record[$this->ddbb_birthday]=$this->birthday;
+				$record[$this->ddbb_license]=$this->license;
 				$record[$this->ddbb_address]=$this->address;
 				$record[$this->ddbb_id_corp]=$this->id_corp;
 				$record[$this->ddbb_city]=$this->city;
@@ -400,6 +407,7 @@ class emps{
 			$this->fields_list->modify_value($this->ddbb_last_name,$this->last_name);
 			$this->fields_list->modify_value($this->ddbb_last_name2,$this->last_name2);
 			$this->fields_list->modify_value($this->ddbb_birthday,$this->birthday);
+			$this->fields_list->modify_value($this->ddbb_license,$this->license);
 			$this->fields_list->modify_value($this->ddbb_phone,$this->phone);
 			$this->fields_list->modify_value($this->ddbb_mobile_phone,$this->mobile_phone);
 			$this->fields_list->modify_value($this->ddbb_fax,$this->fax);
@@ -479,6 +487,7 @@ class emps{
 				$record[$this->ddbb_last_name]=$this->last_name;
 				$record[$this->ddbb_last_name2]=$this->last_name2;
 				$record[$this->ddbb_birthday]=$this->birthday;
+				$record[$this->ddbb_license]=$this->license;
 				$record[$this->ddbb_address]=$this->address;
 				$record[$this->ddbb_id_corp]=$this->id_corp;
 				$record[$this->ddbb_city]=$this->city;
@@ -841,6 +850,7 @@ class emps{
 			$this->last_name = $this->result->fields[$this->ddbb_last_name];
 			$this->last_name2 = $this->result->fields[$this->ddbb_last_name2];
 			$this->birthday = $this->result->fields[$this->ddbb_birthday];
+			$this->license = $this->result->fields[$this->ddbb_license];
 			$this->phone = $this->result->fields[$this->ddbb_phone];
 			$this->mobile_phone = $this->result->fields[$this->ddbb_mobile_phone];
 			$this->fax = $this->result->fields[$this->ddbb_fax];
@@ -1145,6 +1155,7 @@ class emps{
 									$this->come=$vacaciones->come;
 									$this->come=$this->fields_list->change_date($this->come,"es");
 									$this->birthday=$this->fields_list->change_date($this->birthday,"es");
+									$this->license=$this->fields_list->change_date($this->license,"es");
 									break;
 								case -1: //Errores al intentar añadir datos
 										for ($i=0;$i<count($this->fields_list->array_error);$i+=2){
@@ -1213,6 +1224,7 @@ class emps{
 		$this->last_name=htmlentities($_POST[$this->ddbb_last_name]);
 		$this->last_name2=htmlentities($_POST[$this->ddbb_last_name2]);
 		$this->birthday=$_POST[$this->ddbb_birthday];
+		$this->license=$_POST[$this->ddbb_license];
 		$this->address=htmlentities($_POST[$this->ddbb_address]);
 		$this->id_corp=$_SESSION['ident_corp'];
 		$this->city=htmlentities($_POST[$this->ddbb_city]);
