@@ -133,14 +133,10 @@ if(isset($_GET['module']))
 /************************************ Se preparan menus ************************************************/
 
 //coge el listado de modulos disponibles para el usuario
-$module= new modules();
-if(isset($_SESSION['user']))
-$module->get_list_modules_menu();
-$module->get_list_public_modules();
+$menu = new menu();
 
-
-$tpl->assign('modules_list',$module->modules_list_menu);
-$tpl->assign('public_modules',$module->public_modules);
+$tpl->assign('modules_list',$menu->table_modules(-2));
+$tpl->assign('public_modules',$menu->table_modules(0));
 
 //coge las operaciones de ese modulo disponibles
 if(isset($_GET['module'])||isset($_SESSION['module']))
