@@ -52,12 +52,12 @@ if(!isset($_SESSION['user']))
 			if($user->groups_list[$i]['id_group'] == 2)
 			{
 				$_SESSION['admin'] = true;
-				echo "admin";
+
 			}
 			else
 			if($user->groups_list[$i]['id_group'] == 1)
 			{	
-				echo "super";
+
 				$_SESSION['super'] = true;				
 			}
 		}

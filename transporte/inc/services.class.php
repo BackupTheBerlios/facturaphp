@@ -848,7 +848,7 @@ class services{
 			}
 		}
 		//Construimos la tabla con los arrays
-		if (count($array_cat)!=0)
+		if (count($array_cat)!=0 && $array_cat!="")
 			$table=$this->build_table($new,$array_cat);
 		else
 			$table='<p class="mensaje">No hay categorías</p>';
@@ -911,7 +911,7 @@ class services{
 		//Insertamos el nombre
 		$cadena=$cadena.$array_cat['name'];
 		$cadena=$cadena.'<input type="checkbox" value="1" name="'.$variable.'_'.$array_cat['id_cat_serv'].'" id="'.$variable.'_'.$array_cat['id_cat_serv'].'" ';		
-		//Si no es nuevo es por que puede que haya alguna categoria que este asignada al serviceo y hay que marcarla.
+		//Si no es nuevo es por que puede que haya alguna categoria que este asignada al servicio y hay que marcarla.
 		if (!$new){
 			for($k=0;$k<count($this->serv_cat_list);$k++){
 				if ($array_cat['id_cat_serv']==$this->serv_cat_list[$k]['id_cat_serv']){
