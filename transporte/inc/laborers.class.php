@@ -15,6 +15,7 @@ class laborers{
 	var $last_name;
 	var $last_name2;
 	var $num_vehicles;
+	var $date;
 //BBDD name vars
 	var $db_name;
 	var $db_ip;
@@ -241,9 +242,9 @@ class laborers{
 		$this->db->debug=false;
 		//realiza una conexin permanente con la bbdd
 		$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
-		$categoria = "Peón de carga";
+
 		//mete la consulta
-		$this->sql='SELECT emps.id_emp, emps.name, emps.last_name, emps.last_name2 FROM emps, rel_emps_cats, cat_emps WHERE emps.id_emp = rel_emps_cats.id_emp AND rel_emps_cats.id_cat_emp = cat_emps.id_cat_emp AND emps.id_corp = '.$_SESSION['ident_corp'].' AND cat_emps.name ='."\"".$categoria."\"";
+		$this->sql='SELECT emps.id_emp, emps.name, emps.last_name, emps.last_name2 FROM emps WHERE emps.id_corp = '.$_SESSION['ident_corp'];
 
 		//la ejecuta y guarda los resultados
 		$this->result = $this->db->Execute($this->sql);

@@ -15,6 +15,7 @@ class drivers{
 	var $last_name;
 	var $last_name2;
 	var $num_vehicles;
+	var $date;
 //BBDD name vars
 	var $db_name;
 	var $db_ip;
@@ -130,6 +131,7 @@ class drivers{
 		}  
 		
 		$num_emps=0;
+		$drivers = null;
 		$this->num = 0;
 		$temp = null;
 		$this->drivers_list = null;
@@ -167,7 +169,7 @@ class drivers{
 				$this->num++;
 			}
 			else
-				$drivers[$temp[$i][$this->ddbb_id_emp]]['cont'] --;
+				$drivers[$temp[$i][$this->ddbb_id_emp]]['cont']--;
 		}
 		
 		$this->db->close();
@@ -272,9 +274,9 @@ class drivers{
 		$this->db->debug=false;
 		//realiza una conexin permanente con la bbdd
 		$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
-		$categoria = "Transportista";
+
 		//mete la consulta
-		$this->sql='SELECT emps.id_emp, emps.name, emps.last_name, emps.last_name2 FROM emps, rel_emps_cats, cat_emps WHERE emps.id_emp = rel_emps_cats.id_emp AND rel_emps_cats.id_cat_emp = cat_emps.id_cat_emp AND emps.id_corp = '.$_SESSION['ident_corp'].' AND cat_emps.name ='."\"".$categoria."\"";
+		$this->sql='SELECT emps.id_emp, emps.name, emps.last_name, emps.last_name2 FROM emps WHERE emps.id_corp = '.$_SESSION['ident_corp'];
 
 		//la ejecuta y guarda los resultados
 		$this->result = $this->db->Execute($this->sql);
@@ -692,7 +694,7 @@ class drivers{
 		
 		if ($num==0)
 		{
-			$cadena=''.$cadena.$tabla_listado->tabla_vacia('drivers', $per->add);
+			$cadena=''.$tabla_listado->tabla_vacia('drivers', $per->add);
 			$variables=$tabla_listado->nombres_variables;
 		}
 		else

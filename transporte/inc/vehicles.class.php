@@ -676,7 +676,7 @@ class vehicles{
 
 				if ($num_drivers==0)
 				{
-					$cadena=$cadena.$cadena.$tabla_listado_drivers->tabla_vacia('drivers', false);
+					$cadena=$cadena.$tabla_listado_drivers->tabla_vacia('drivers', false);
 					$variables_drivers=$tabla_listado_drivers->nombres_variables;
 				}
 				else
@@ -746,7 +746,7 @@ class vehicles{
 		$per->get_permissions_list('vehicles');
 		if ($num==0)
 		{
-			$cadena=''.$cadena.$tabla_listado->tabla_vacia('vehicles', $per->add);
+			$cadena=''.$tabla_listado->tabla_vacia('vehicles', $per->add);
 			$variables=$tabla_listado->nombres_variables;
 		}
 		else

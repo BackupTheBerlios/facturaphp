@@ -325,6 +325,7 @@ class services{
 		*/
 		//Vemos los borrados
 		$k=0;
+		$borrados = null;
 		for ($i=0;$i<count($cats_in_bbdd);$i++){
 			$result=false;
 			for ($j=0;$j<count($this->serv_cat_list)&&$this->serv_cat_list!="";$j++){
@@ -345,6 +346,7 @@ class services{
 		
 		//Ahora vemos los nuevos
 		$k=0;
+		$nuevos = null;
 		for ($i=0;$i<count($this->serv_cat_list);$i++){
 			$result=false;
 			
@@ -435,7 +437,7 @@ class services{
 			//Si se modificó la foto
 			if($_SESSION['ruta_temporal'] != "")
 				{
-   				$file = new upload_file( $_SESSION['nombre_photo'], $_SESSION['ruta_temporal'], $_SESSION['tamanno_photo'], $this->id_vehicle);
+   				$file = new upload_file( $_SESSION['nombre_photo'], $_SESSION['ruta_temporal'], $_SESSION['tamanno_photo'], $this->id_service);
    				$result = $file->upload( "images/services/" );
    				}	
 			
@@ -446,7 +448,7 @@ class services{
 				//Validacion
 			
 			//Modificamos los todos los valores del objeto fields con los nuevos datos del objeto product, exceptuando path_photo que eso se deberia hacer mediante la clase upload.
-			$this->fields_list->modify_value($this->ddbb_id_product,$this->id_product);
+			$this->fields_list->modify_value($this->ddbb_id_service,$this->id_service);
 			$this->fields_list->modify_value($this->ddbb_id_corp,$this->id_corp);
 			$this->fields_list->modify_value($this->ddbb_minimun_stock,$this->minimun_stock);
 			$this->fields_list->modify_value($this->ddbb_name,$this->name);
@@ -997,6 +999,7 @@ class services{
 		
 		
 		$this->num=0;
+		$tabla = null;
 		while (!$this->result->EOF) {
 			//cogemos los datos de la categoria
 			$tabla[$this->num]['id_cat_serv']=$this->result->fields['id_cat_serv'];
