@@ -42,6 +42,7 @@ a.enlaceMenu:visited{
 }
 
 .cabeceraMenu{
+	background-image:url(../pics/fondoCabeceraMenu.gif);
 	background-color:#13A703;
 	color:#ffffff;
 	vertical-align:middle;
@@ -53,6 +54,7 @@ a.enlaceMenu:visited{
 }
 
 .textoMenu{
+
 	color:#000000;
 	vertical-align:middle;
 	font-family:verdana;
@@ -126,6 +128,7 @@ a.enlaceMenu:visited{
 }
 
 .CampoFormulario{
+	
 	background-color: #13A703;
 	color: #FFFFFF;
 	vertical-align: middle;
@@ -165,9 +168,16 @@ tr.multiLinea2 {
 }
 
 .camposVistas {
+	background-image:url(../pics/fondoCamposVistas.gif);
 	background-color:#9ECC99;
 	font-family: verdana;
 	font-size: 10px;
 	text-align:left;
 	font-weight:bold;
+}
+
+.numerosBuscar{ 	
+	color:#000000;
+	font-family:Verdana, Arial, Helvetica, sans-serif;
+	font-size:10px;
 }
