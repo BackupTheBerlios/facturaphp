@@ -34,6 +34,7 @@ class vehicles{
   	var $num;
   	var $fields_list;
 	var $cat_vehicles;
+	var $vehicle_cat_list;
 	var $category;
 	var $table_names_modify=array();
 	var $table_names_delete=array("rel_vehicles_cats",);
@@ -131,6 +132,153 @@ class vehicles{
 	
 	}
 	
+	
+	function table_categories($new){
+		//Esta funcion hara el listado de checkbox de las categorias jerarquizadas
+		//Buscamos las categorias jerarquizadas comenzando por las categorias padre.
+		
+		$array_cat=$this->get_categories();
+
+		//Si no es para nuevo: Buscamos las categorias relacionadas con el producto
+		if (!$new && (!is_array($this->vehicle_cat_list)||$this->vehicle_cat_list==""))
+		{		
+			if ($this->id_vehicle!="" && $this->id_vehicle!=0)
+			{
+				$rel = new rel_vehicles_cats();
+				$this->vehicle_cat_list=$rel->get_rel_vehicle_cat($this->id_vehicle);
+			}
+			else
+			{
+				$new=true;
+			}
+		}
+		//Construimos la tabla con los arrays
+		if (count($array_cat)!=0)
+			$table=$this->build_table($new,$array_cat);
+		else
+			$table='<p class="mensaje">No hay categorías</p>';
+		
+		//$table es una cadena
+		return $table;
+	}
+	
+	function build_table($new,$array_cat){
+		//Con esta funcion hacemos la tabla de los checkbox
+		//de categorias de producto.
+		//Hacemos las iniciaciones pertinentes para intentar
+		//aclarar un poco el codigo
+		$ini_fila="<tr>";
+		$fin_fila="</tr>";
+		$ini_col='<td valign="top" nowrap>';
+		$fin_col="</td>";
+		$NUM_MAX_COLS=1;
+		//Por cada columna un padre y sus hijos.
+		$cadena='<table border="0">';
+		$num_current_col=$NUM_MAX_COLS+1;		
+		for ($i=0;$i<count($array_cat);$i++)
+		{
+			if ($num_current_col==$NUM_MAX_COLS+1)
+			{
+				$num_current_col=1;
+				$cadena=$cadena.$ini_fila;
+			}
+			$cadena=$cadena.$ini_col;
+			//Damos el padre para que empiece la recursividad			
+			
+			$cadena=$cadena.$this->build_col($new,$array_cat[$i],0,"vehicles");		
+			//0 es el numero de tabulaciones inicial.
+			//"vehicles" es el nombre que tendran los checkbox.
+			$cadena=$cadena.$fin_col;
+			$num_current_col++;
+			if ($num_current_col==$NUM_MAX_COLS+1)
+			{
+				$cadena=$cadena.$fin_fila;
+			}
+		}
+		
+		//Si el numero de la columna actual es menor
+		//que el numero maximo de columnas +1 
+		//restamos al maximo la actual para saber cuantas faltan. 
+		if ($num_current_col<$NUM_MAX_COLS+1)
+		{			
+			$cadena=$cadena.'<td colspan="'.($NUM_MAX_COLS+1-$num_current_col).'">&nbsp;'.$fin_col.$fin_fila;
+		}
+		$cadena=$cadena.'</table>';
+		return $cadena;
+	}
+	
+	function build_col($new,$array_cat,$tabulaciones,$variable){
+		//Con esta funcion construimos el contenido de la columna
+		//Del listado de checkbox de categorias de vehiculos
+		$espacios="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+		$cadena="";
+			
+		//Hacemos las tabulaciones
+		for ($j=0;$j<$tabulaciones;$j++)
+			$cadena=$cadena.$espacios;
+		$cadena=$cadena.'<img src="pics/separador.gif">&nbsp;';
+		//Ponemos el checkbox. Si se quiere que haya una funcion que maneje por javascript su manejo, se debe incluir aqui
+		//Insertamos el nombre
+		$cadena=$cadena.$array_cat['name'];
+	
+		$cadena=$cadena.'<input type="checkbox" value="1" onClick="check_uncheck(this);" name="'.$variable.'_'.$array_cat['id_cat_vehicle'].'" id="'.$variable.'_'.$array_cat['id_cat_vehicle'].'" ';		
+	
+		//Si no es nuevo es por que puede que haya alguna categoria que este asignada al vehiculo y hay que marcarla.
+		if (!$new){
+			for($k=0;$k<count($this->vehicle_cat_list);$k++)
+			{
+				if ($array_cat['id_cat_vehicle']==$this->vehicle_cat_list[$k]['id_cat_vehicle'])
+				{
+					$cadena=$cadena.' checked ';
+					break;
+				}					
+			}					
+		}
+		//Cerramos el checkbox
+		$cadena=$cadena.'>';
+		return $cadena;
+	}
+	
+	function get_categories(){//Ojo funcion recursiva.
+		//El parametro $all nos indica si se quieren todos los hijos, nietos...
+		//a partir del id dado (0 para los padres), o solo los hijos de un solo padre.
+		//se puede acceder a los usuarios por numero de campo o por nombre de campo
+		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
+		//crea una nueva conexin con una bbdd (mysql)
+		$this->db = NewADOConnection($this->db_type);
+		//le dice que no salgan los errores de conexin de la ddbb por pantalla
+		$this->db->debug=false;
+		//realiza una conexin permanente con la bbdd
+		$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
+		//mete la consulta
+		$this->sql='SELECT * FROM `cat_vehicles`';
+		//la ejecuta y guarda los resultados
+		$this->result = $this->db->Execute($this->sql);
+		if ($this->result === false){
+			$this->error=1;
+			$this->db->close();
+			return 0;
+		}
+		
+		
+		$this->num=0;
+		$tabla = null;
+		
+		while (!$this->result->EOF) {
+			//cogemos los datos de la categoria
+			$tabla[$this->num]['id_cat_vehicle']=$this->result->fields['id_cat_vehicle'];
+			$tabla[$this->num]['name']=$this->result->fields['name'];
+	
+			//nos movemos hasta el siguiente registro de resultado de la consulta
+			$this->result->MoveNext();
+			$this->num++;
+		}
+		$this->db->close();
+		return $tabla;
+	}
+	
+
+	
 	function read($id){
 	
 		//se puede acceder a los usuarios por numero de campo o por nombre de campo
@@ -221,6 +369,7 @@ class vehicles{
 				//Entramos porque hemos introducido datos y aún no hemos preguntado por la foto
 				//Introducir los datos de post.
 				$this->get_fields_from_post();	
+				
 				$this->id_vehicle=0;
 				$this->fields_list->modify_value($this->ddbb_id_vehicle,$this->id_vehicle);
 				$this->fields_list->modify_value($this->ddbb_id_corp,$this->id_corp);
@@ -286,51 +435,65 @@ class vehicles{
 						$this->id_vehicle=$this->db->Insert_ID();
 						//capturammos el id de la linea insertada
 						//Introducimos categorias;
-						$this->add_category($this->id_vehicle);
-						
-						
+						$this->insert_categories($this->id_vehicle);
+												
 						//Se introduce consulta en la bbdd
 						
 						
 						$this->db->close();
-					
-					}else {
+						
+						//se inserto el vehiculo, ahora se inserta la foto y se modifica el registro para indicar la ruta
+						if($_SESSION['ruta_temporal'] != "")
+						{
+   							$file = new upload_file( $_SESSION['nombre_photo'], $_SESSION['ruta_temporal'], $_SESSION['tamanno_photo'], $this->id_vehicle);
+							$result = $file->upload( "images/vehicles/" );
+   							if($result == 1)
+   							{
+   								//modificar ruta de la foto
+								$this->modify_photo($this->id_vehicle);
+							}
+   						}	
+						else
+						{
+							$direccion = "C:\\wamp\\www\\transporte\\images\\vehicles\\".$this->id_vehicle.".GIF";
+							//Copiar fichero con no imagen
+							
+							if (!copy("C:\\wamp\\www\\transporte\\pics\\no-image.gif",$direccion))
+							{
+   								print("Error al copiar el fichero");
+							}
+							else
+							{
+								$_SESSION['ruta_photo'] = "images/vehicles/".$this->id_vehicle.".GIF";
+								//modificar ruta de la foto
+								$this->modify_photo($this->id_vehicle);
+							}
+						}
+						return $this->id_vehicle;
+					}
+					else 
+					{
 						//devolvemos 0 ya que no se ha insertado el registro
 						$this->error=-1;
 						$this->db->close();
 						return 0;
 					}	
-					//se inserto el vehiculo, ahora se inserta la foto y se modifica el registro para indicar la ruta
-					if($_SESSION['ruta_temporal'] != "")
-					{
-   						$file = new upload_file( $_SESSION['nombre_photo'], $_SESSION['ruta_temporal'], $_SESSION['tamanno_photo'], $this->id_vehicle);
-						$result = $file->upload( "images/vehicles/" );
-   						if($result == 1)
-   						{
-   							//modificar ruta de la foto
-							$this->modify_photo($this->id_vehicle);
-						}
-   					}	
-					else
-					{
-						$direccion = "C:\\wamp\\www\\transporte\\images\\vehicles\\".$this->id_vehicle.".gif";
-						//Copiar fichero con no imagen
-						if (!copy("C:\\wamp\\www\\transporte\\pics\\no-image.gif",$direccion))
-						{
-   							print("Error al copiar el fichero");
-						}
-						else
-						{
-							$_SESSION['ruta_photo'] = "images/vehicles/".$this->id_vehicle.".gif";
-							//modificar ruta de la foto
-							$this->modify_photo($this->id_vehicle);
-						}
-					}
-					return $this->id_vehicle;
-			
+					
 				}
 		}
 	}
+	
+	function insert_categories($id_vehicle){
+		$rel_vehicles_cat = new rel_vehicles_cats();
+		if (is_array($this->vehicle_cat_list))
+			foreach($this->vehicle_cat_list as $cat){
+				$rel_vehicles_cat->id_cat_vehicle=$cat['id_cat_vehicle'];
+				$rel_vehicles_cat->id_vehicle=$id_vehicle;
+				$rel_vehicles_cat->add();
+			}
+		return 0;
+	}
+
 	
 	function add_category($id)
 	{
@@ -393,12 +556,51 @@ class vehicles{
 		$this->alias=htmlentities($_POST[$this->ddbb_alias]);
 		$this->number_plate=htmlentities($_POST[$this->ddbb_number_plate]);
 		$this->path_photo = $_SESSION['ruta_photo'];	
-		//Cogemos la categoria
-		$this->category=$_POST["category"];
+		//Cogemos las categorias
+		//$this->category=$_POST["category"];
+		$this->get_categories_from_post();
+	
 		return 0;
 	}
 	
+		
+	function get_categories_from_post(){
+		//cogemos todas(true) las categorias que hay en bbdd desde los padres huerfanos(0)
+		
+		$categorias_bbdd=$this->get_categories();
+		
+		//Se inicia $this->num a 0 por que va a servir de indice para 
+		//la lista $this->categorias
+		$this->num=0;		
+		$this->vehicle_cat_list="";
+		//con esta lista cogemos los checkbox que esten señalados en el formulario
+		
+		$this->get_checkbox_categories($categorias_bbdd,'vehicles');
+		
+		return 0;
+	}
+	
+		
+	function get_checkbox_categories($cats,$variable){
+		//Recorremos el array de categorias q hay en bbdd
+		//para coger los checkbox activados en el formulario
+		for ($i=0;$i<count($cats);$i++){
+			//almacenamos el valor del checkbox
+			$checkbox=$_POST[$variable."_".$cats[$i]['id_cat_vehicle']];
+		
+			if ($checkbox==1){
+				//Si es = a 1 entonces es que esta seleccionado.
+				$this->vehicle_cat_list[$this->num]['id_cat_vehicle']=$cats[$i]['id_cat_vehicle'];
 			
+				//incrementamos el valor de num
+				$this->num++;				
+			}
+			
+		}		
+		return 0;
+	}
+
+		
 	function remove($id){
 		if (!isset($_POST["submit_delete"]))
 		{				
@@ -477,7 +679,6 @@ class vehicles{
 	
 	function modify_photo()
 	{
-	print "Entra";
 		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
 		//crea una nueva conexin con una bbdd (mysql)
 		$this->db = NewADOConnection($this->db_type);
@@ -519,7 +720,6 @@ class vehicles{
 			//devolvemos 0 ya que no se ha insertado el registro
 			$this->error=-1;
 			$this->db->close();
-			print "Salr";
 			return 0;
 		}
 	}
@@ -532,14 +732,23 @@ class vehicles{
 		}
 		else{
 			//Introducir los datos de post.
+			
+	
+			
 			//Si se modificó la foto
 			if($_SESSION['ruta_temporal'] != "")
 			{
    				$file = new upload_file( $_SESSION['nombre_photo'], $_SESSION['ruta_temporal'], $_SESSION['tamanno_photo'], $this->id_vehicle);
    				$result = $file->upload( "images/vehicles/" );
+				if($result == 1)
+   				{
+   					//modificar ruta de la foto
+					$this->modify_photo($this->id_vehicle);
+				}
    			}	
 			
 			$this->get_fields_from_post();
+			
 			//$this->insert_post();
 			$this->fields_list->modify_value($this->ddbb_id_vehicle,$this->id_vehicle);
 			$this->fields_list->modify_value($this->ddbb_id_corp,$this->id_corp);
@@ -575,6 +784,7 @@ class vehicles{
 				if ($this->result === false){
 					$this->error=1;
 					$this->db->close();
+				
 					return 0;
 				}
 				//rellenamos el array con los datos de los atributos de la clase
@@ -594,7 +804,7 @@ class vehicles{
 				 se debe de guardar en una variable el contenido de las filas afectadas y hacer
 				 la condicion del if con esa variable ya que al hacer las modificaciones ese valor varía.
 				*/
-				
+			/*	
 				$return_category=$this->modify_category($this->id_emp);
 			
 				if(($Affected_Rows==1)||($user_changed!=0)||($this->sql=="")||($return_category!=0))
@@ -610,10 +820,92 @@ class vehicles{
 					$this->error=-1;
 					$this->db->close();
 					return 0;
-				}
+				}*/
+				
+				$return_categories=$this->modify_categories();
+		if(($Affected_Rows==1)||($this->sql=="")||$return_categories==1){
+			//capturammos el id de la linea insertada
+			$this->db->close();
+			
+			//devolvemos el id de la tabla ya que todo ha ido bien
+			return $this->id_vehicle;
+		}else {
+			//devolvemos 0 ya que no se ha insertado el registro
+			$this->error=-1;
+			$this->db->close();
+			return 0;
+		}
 			}
 		}	
 	}
+	
+		
+	function modify_categories(){
+		$rel_vehicles_cats=new rel_vehicles_cats();
+		
+		//Leemos las categorias que estan en bbdd;
+		$cats_in_bbdd=$rel_vehicles_cats->get_rel_vehicle_cat($this->id_vehicle);
+		/**
+		Las categorias que estan en el formulario ya se han leido 
+		y estan en $this->vehicle_cat_list
+		Se crearan 2 arrays nuevos $nuevas y $borradas
+		Las categorias que esten en la bbdd y no esten en el formulario
+		seran las borradas, y las que esten en el formulario y no en la
+		bbdd son las nuevas
+		*/
+		//Vemos los borrados
+		$k=0;
+		for ($i=0;$i<count($cats_in_bbdd);$i++)
+		{
+			$result=false;
+			for ($j=0;$j<count($this->vehicle_cat_list);$j++)
+			{
+				if ($cats_in_bbdd[$i]['id_cat_vehicle']==$this->vehicle_cat_list[$j]['id_cat_vehicle'])
+				{
+					$result=true;
+					break;
+				}
+			}		
+			if (!$result)
+			{
+				$borrados[$k]['id_cat_vehicle']=$cats_in_bbdd[$i]['id_cat_vehicle'];
+				$borrados[$k]['id_rel_vehicle_cat']=$cats_in_bbdd[$i]['id_rel_vehicle_cat'];
+				$k++;
+			}
+		}
+		
+		//Ahora vemos los nuevos
+		$k=0;
+		for ($i=0;$i<count($this->vehicle_cat_list);$i++){
+			$result=false;
+			for ($j=0;$j<count($cats_in_bbdd);$j++){
+				if ($cats_in_bbdd[$i]['id_cat_vehicle']==$this->vehicle_cat_list[$j]['id_cat_vehicle']){
+					$result=true;
+					break;
+				}
+			}		
+			if (!$result){
+				$nuevos[$k]=$this->vehicle_cat_list[$i]['id_cat_vehicle'];
+				$k++;
+			}
+		}
+		//Borramos los que supuestamente se han borrado
+		for ($i=0;$i<count($borrados);$i++){
+			$rel_vehicles_cats->remove($borrados[$i]['id_rel_vehicle_cat']);			
+		}
+		//Añadimos los nuevos
+		for ($i=0;$i<count($nuevos);$i++){
+			$rel_vehicles_cats->id_vehicle=$this->id_vehicle;
+			$rel_vehicles_cats->id_cat_vehicle=$nuevos[$i];
+			$rel_vehicles_cats->add();
+		}
+		if ((count($nuevos)==0)&&(count($borrados)==0))
+			return 0;
+		else
+			return 1;
+	}
+
+	
 	
 	function modify_category($id)
 	{
@@ -793,7 +1085,7 @@ class vehicles{
 	function calculate_tpl($method, $tpl){
 		$this->method=$method;
 				switch($method){
-						case 'add':	
+						case 'add':	/*
 									$return=$this->add();
 									switch ($return){										
 										case 0: //por defecto												
@@ -813,6 +1105,26 @@ class vehicles{
 									$this->cat_vehicles=new cat_vehicles();
 									$tpl->assign("categorias",$this->cat_vehicles->cat_vehicles_list);
 									$tpl->assign("objeto",$this);
+									break;*/
+									$return=$this->add();
+									switch ($return){										
+										case 0: //por defecto
+												$tpl->assign("tabla_checkbox",$this->table_categories(true));
+												break;
+										case -1: //Errores al intentar añadir datos
+												for ($i=0;$i<count($this->fields_list->array_error);$i+=2){
+													$tpl->assign("error_".$this->fields_list->array_error[$i],$this->fields_list->array_error[$i+1]);
+												}
+												$tpl->assign("tabla_checkbox",$this->table_categories(false));
+												break;
+										default: //Si se ha añadido
+												$this->method="list";
+												$tpl=$this->listar($tpl);
+												$tpl->assign("message","&nbsp;<br>Producto a&ntilde;adido correctamente<br>&nbsp;");									
+												break;
+									}
+									//esto se hace independientemetne del valor que se obtenga
+									$tpl->assign("objeto",$this);
 									break;
 						case 'list':
 									$tpl=$this->listar($tpl);
@@ -829,6 +1141,7 @@ class vehicles{
 									$tpl->assign("objeto",$this);
 									$tpl->assign("categorias",$this->cat_vehicles->cat_vehicles_list);
 									break;*/
+									/*
 									$this->read($_GET['id']);									
 									$return=$this->modify();
 									switch ($return){										
@@ -849,7 +1162,30 @@ class vehicles{
 									$this->cat_vehicles=new cat_vehicles();
 									$tpl->assign("categorias",$this->cat_vehicles->cat_vehicles_list);
 									$tpl->assign("objeto",$this);
+									break;*/
+									
+									$this->read($_GET['id']);
+									$return=$this->modify();
+									switch ($return){										
+										case 0: //por defecto
+												$tpl->assign("tabla_checkbox",$this->table_categories(false));
+												break;
+										case -1: //Errores al intentar añadir datos
+												for ($i=0;$i<count($this->fields_list->array_error);$i+=2){
+													$tpl->assign("error_".$this->fields_list->array_error[$i],$this->fields_list->array_error[$i+1]);
+												}
+												$tpl->assign("tabla_checkbox",$this->table_categories(false));
+												break;
+										default: //Si se ha añadido
+												$this->method="list";
+												$tpl=$this->listar($tpl);
+												$tpl->assign("message","&nbsp;<br>Veh&iacute;culo modificado correctamente<br>&nbsp;");
+												break;
+									}
+									//esto se hace independientemetne del valor que se obtenga
+									$tpl->assign("objeto",$this);
 									break;
+									
 						case 'delete':
 									$this->read($_GET['id']);
 									if ($this->remove($_GET['id'])==0){

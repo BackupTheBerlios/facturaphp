@@ -221,12 +221,10 @@ class sessions{
 			while (!$this->result->EOF) 
 			{
 				$id = $this->result->fields[$this->ddbb_id_session];
-				print "identificadoe a quitar ".$id;
 				$this->read($id);
 				$this->down = gmdate("Y-m-d H:i:s");
 				$this->modify_other();
-			
-				print "Entra y modifica ".$id." ";
+	
 				//nos movemos hasta el siguiente registro de resultado de la consulta
 				$this->result->MoveNext();
 				$this->num++;
