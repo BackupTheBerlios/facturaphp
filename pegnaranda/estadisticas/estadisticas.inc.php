@@ -31,73 +31,7 @@ require_once("event.inc.php");
 		}
 
 	
-/*	function eventos($accion){
-		//Eventos
-		switch ($accion){
-			case "solicitud":
-			
-								"parametros" => array( "rid","uid","razon")),
-								
-		}
-						array ( "accion" => "verdoc",
-								"parametros" => array( "did")),
-						array ( "accion" => "verrsc",
-								"parametros" => array( "rid","uid","restringido")),
-						array ( "accion" => "conceder",
-								"parametros" => array( "rid","uid")),
-						array ( "accion" => "registro",
-								"parametros" => array ( 'uid','txtUName','txtClave','txtEmail','txtNombre',
-														'txtApellidos','txtCalle','txtPoblacion','txtProvincia',
-														'txtPais','txtCPostal','txtActividad','intNivel')),
-						array ( "accion" => "editar",
-								"parametros" => array ( 'uid','txtClave','txtEmail','txtNombre',
-														'txtApellidos','txtCalle','txtPoblacion','txtProvincia',
-														'txtPais','txtCPostal','txtActividad'))
-		
-		$Cols=array(
-					array ( "dbname"	=>	$col['did'],
-							"label"		=>	"id",
-							"width"		=>	"45px",
-							"sortable"	=>	false),
-					array ( "dbname"	=>	$col['visitas'],
-							"label"		=>	"Visitas",
-							"width"		=>	"45px",
-							"sortable"	=>	false,
-							"sort"		=>	"D"),				
-					array ( "dbname"	=>	$col['signatura'],
-							"label"		=> 	"Signatura",
-							"width"		=>	"200px",
-							"sortable"	=>	false));
 
-		$opciones=array();
-
-		$acciones=array();
-
-		$docuList=new Lister("admEventos",25,$Cols,$col['did'],$opciones,"dg-admdocumentos.css");
-		$docuList->GeneralActions=$acciones;
-
-		if ($sf!="")
-			{
-				$docuList->SetSort($sf,$up);}
-
-		if ($start!="")
-			{
-				$docuList->SetStart($start);}
-		
-		$listadoDocu=$docuList->render();
-		//****************	
-		
-		
-		
-		if (($listadoDocu===null)||(trim($listadoDocu)==""))
-			{
-				$listadoDocu="<br><center>No hay estadisticas a mostrar</a></center>";}
-		///********
-			return 0;
-	}*/
-	
-
-	
 
 	// Aqui empieza la definicion de las funciones referentes al administrador
 
@@ -203,14 +137,24 @@ require_once("event.inc.php");
 			{
 				$listadoDocu="<br><center>No hay estadisticas a mostrar</a></center>";}
 		///********
-		$listadoEventos=eventos('registro');
+		$listadoRegistros=eventos('registro');
+		$listadoVerdoc=eventos('verdoc');
+		$listadoVerrsc=eventos('verrsc');
+		$listadoSolicitudes=eventos('solicitud');
+		$listadoEdicion=eventos('editar');
+		$listadoConceder=eventos('conceder');
 		
 		///********		
 		$resultado= SmartyInit();
 		$plantilla="estadisticas/listarestadisticas.tpl";
 		$resultado->assign("listadoRecur",$listadoRecur);		
 		$resultado->assign("listadoDocu",$listadoDocu);
-		$resultado->assign("listadoEventos",$listadoEventos);
+		$resultado->assign("listadoRegistros",$listadoRegistros);
+		$resultado->assign("listadoVerdoc",$listadoVerdoc);
+		$resultado->assign("listadoVerrsc",$listadoVerrsc);	
+		$resultado->assign("listadoSolicitudes",$listadoSolicitudes);		
+		$resultado->assign("listadoConceder",$listadoConceder);
+		$resultado->assign("listadoEdicion",$listadoEdicion);
 		$salida=$resultado->fetch($plantilla);
 
 		vwSessionSetVar('urlantigua',CurrentUrl());
@@ -221,13 +165,20 @@ require_once("event.inc.php");
 		$i=0;
 		foreach ($array as $fila){
 			$miArray[$i]=msgToEvent($array[$i]['txtSuceso']);
+			
 		}
+		return $miArray;
 	}
 	function eventos($accion){
 		$miArray=lastNEntriesAction('registro',25);
 		$Rows=devuelveRows($miArray);
+		$col_id = 'did';
 		switch ($accion){
-			case "solicitud": $Cols=array(
+			case "solicitud": 
+			
+						$col=GetCols('recursos');
+									$col_id = $col['rid'];
+						$Cols=array(
 							array ( "dbname"	=>	$col['rid'],
 									"label"		=>	"id del recurso",
 									"width"		=>	"45px",
@@ -241,7 +192,9 @@ require_once("event.inc.php");
 									"width"		=>	"200px",
 									"sortable"	=>	false));
 							break;
-			case "verdoc":
+			case "verdoc":						
+								$col=GetCols('documentos');
+									$col_id = $col['did'];
 							 $Cols=array(
 							array ( "dbname"	=>	$col['did'],
 									"label"		=>	"id del documento",
@@ -249,7 +202,9 @@ require_once("event.inc.php");
 									"sortable"	=>	false));
 							break;
 				
-			case "verrsc": $Cols=array(
+			case "verrsc": 						$col=GetCols('recursos');
+									$col_id = $col['rid'];
+						$Cols=array(
 							array ( "dbname"	=>	$col['rid'],
 									"label"		=>	"id del recurso",
 									"width"		=>	"45px",
@@ -264,6 +219,8 @@ require_once("event.inc.php");
 									"sortable"	=>	false));
 							break;
 			case "conceder": 	
+									$col=GetCols('recursos');
+									$col_id = $col['rid'];
 							$Cols=array(
 							array ( "dbname"	=>	$col['rid'],
 									"label"		=>	"id del recurso",
@@ -274,7 +231,10 @@ require_once("event.inc.php");
 									"width"		=>	"45px",
 									"sortable"	=>	false,));
 							break;
-			case "registro": $Cols=array(
+			case "registro": 
+					$col=GetCols('usuarios');
+									$col_id = $col['uid'];
+					$Cols=array(
 							array ( "dbname"	=>	$col['uid'],
 									"label"		=>	"id del usuario",
 									"width"		=>	"45px",
@@ -284,11 +244,14 @@ require_once("event.inc.php");
 									"width"		=>	"45px",
 									"sortable"	=>	false,),				
 							array ( "dbname"	=>	$col['apellidos'],
-									"label"		=> 	"Restringido",
+									"label"		=> 	"Apellidos",
 									"width"		=>	"200px",
 									"sortable"	=>	false));
 							break;
-			case "editar": $Cols=array(
+			case "editar":
+									$col=GetCols('usuarios');
+									$col_id = $col['uid'];
+			 $Cols=array(
 							array ( "dbname"	=>	$col['uid'],
 									"label"		=>	"id del usuario",
 									"width"		=>	"45px",
@@ -298,7 +261,7 @@ require_once("event.inc.php");
 									"width"		=>	"45px",
 									"sortable"	=>	false,),				
 							array ( "dbname"	=>	$col['apellidos'],
-									"label"		=> 	"Restringido",
+									"label"		=> 	"Apellidos",
 									"width"		=>	"200px",
 									"sortable"	=>	false));
 							break;
@@ -307,8 +270,7 @@ require_once("event.inc.php");
 		$opciones=array();
 
 		$acciones=array();
-		$sql="";
-		$evento=new Lister("admEventos",25,$Cols,$col['did'],$opciones,"dg-admdocumentos.css");
+		$evento=new Lister("admEventos",$Rows, 25,$Cols,$col_id,$opciones,"dg-admeventos.css");
 		$evento->table="";
 		$evento->where="";
 		$evento->GeneralActions=$acciones;
@@ -321,7 +283,7 @@ require_once("event.inc.php");
 			{
 				$docuList->SetStart($start);}
 		
-		return $evento->render();
+		return $evento->render2();
 
 	}
 ?>

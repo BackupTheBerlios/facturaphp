@@ -86,7 +86,7 @@ class Lister
 					//generan los dropdowns
 		function Lister($idname,$sql,$rows,$ColsToShow,$keycol,$options,$stylesheet='datagrid-a.css')
 			{
-				if ((trim($sql)=="")||(trim($rows)=="")||(trim($ColsToShow)=="")||(trim($keycol)=="")||(trim($options)=="")||(trim($idname)==""))
+				if (/*(trim($sql)=="")||*/(trim($rows)=="")||(trim($ColsToShow)=="")||(trim($keycol)=="")||(trim($options)=="")||(trim($idname)==""))
 					{
 						print_r("Fatal Error: Void Parms");
 						die();
@@ -142,12 +142,40 @@ class Lister
 						}
 				return $exitz;
 				}
+		function renderRow2($registro)
+			{
+				$row=SmartyInit();
+				$regaux=array();
+				$registro=toHtml($registro);
+			foreach($this->ColsToShow as $k=>$v)
+					{
 
+						if (trim($v['dropcall']['funcion'])!="")
+							{
+
+								$funcion=$v['dropcall']['funcion'];
+								$auxv=$funcion(&$this,$registro[$v['dropcall']['valor']]);
+								$regaux[]=$auxv;
+								}
+						else
+							{
+
+
+								$regaux[]=$registro[$v['dbname']];}
+						}
+				$row->assign('data',$regaux);
+				$opciones=$this->caller($registro);
+				$row->assign('options',$opciones);
+				return $row->fetch("lister_rows.tpl");
+				}
+				
 		function renderRow($registro)
 			{
 				$row=SmartyInit();
 				$regaux=array();
 				$registro=toHtml($registro);
+	
+	
 				foreach($this->ColsToShow as $k=>$v)
 					{
 						if (trim($v['dropcall']['funcion'])!="")
@@ -158,6 +186,7 @@ class Lister
 								}
 						else
 							{
+	
 								$regaux[]=$registro[$v['dbname']];}
 						}
 				$row->assign('data',$regaux);
@@ -209,6 +238,45 @@ class Lister
 				return $orden;
 				}
 
+		function render2()
+			{
+				//$finalsql=$this->sql.$this->sorteval();
+				//list($db)=Getdb();
+				$salida=$this->renderFirstRow();
+			/*	$rs=$db->SelectLimit($finalsql,$this->rows,$this->start);
+
+				if (!($rs===false))
+					{
+						while ($arr = $rs->FetchRow())
+							{
+								$salida=$salida.$this->renderRow($arr);}
+						$salida=$salida.$this->renderPagerRow();
+						$salida=$salida.$this->renderGeneralActions();
+						}
+				else
+					{
+						return null;}*/
+				//OJO AQUI $THIS->SQL SE REFIERE A LAS ROWS PASADAS POR LA FUNCION DE EVENT.INC.PHP
+				//lastNEntriesAction
+				if (count($this->sql)!=0){
+					foreach ($this->sql as $arr){
+						$salida=$salida.$this->renderRow2($arr);
+						}
+						$salida=$salida.$this->renderPagerRow();
+						$salida=$salida.$this->renderGeneralActions();
+				}else{	
+
+						return null;
+				}
+				//$salida=$salida.renderPagerRow();
+				//$salida=$salida.renderLastRow();
+				$out=SmartyInit();
+				$out->assign('rows',$salida);
+				$out->assign('style',$this->StyleSheet);
+				$out->assign('idname',$this->idname);
+				$out->assign('rows',$salida);
+				return $out->fetch("lister_tbl.tpl");
+				}				
 		function render()
 			{
 				$finalsql=$this->sql.$this->sorteval();

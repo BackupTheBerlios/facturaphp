@@ -9,5 +9,41 @@
 {$listadoDocu}
 <br>
 <center>Listado de los ultimos Eventos</center>
-{$listadoEventos}
+
+{if $listadoRegistros != null}
+<br>
+<center>Relacion de los ultimos usuarios registrados</center>
+{$listadoRegistros}
+{/if}
+
+{if $listadoEdicion != null}
+<br>
+<center>Relacion de los ultimos usuarios editados</center>
+{$listadoEdicion}
+{/if}
+
+{if $listadoSolicitud != null}
+<br>
+<center>Relacion de las ultimas solicitudes</center>
+{$listadoSolicitud}
+{/if}
+
+{if $listadoConceder != null}
+<br>
+<center>Relacion de las ultimas solicitudes concedidas</center>
+{$listadoConceder}
+{/if}
+
+{if $listadoVerdoc != null}
+<br>
+<center>Relacion de los ultimos documentos vistos</center>
+{$listadoVerdoc}
+{/if}
+
+{if $listadoVerrsc != null}
+<br>
+<center>Relacion de los ultimos recursos vistos</center>
+{$listadoVerrsc}
+{/if}
+
 </div>

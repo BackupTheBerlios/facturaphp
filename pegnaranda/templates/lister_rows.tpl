@@ -1,5 +1,7 @@
 <tr>
+
 {section name=campo loop=$data}
+
 <td class="restrow">
 	{$data[campo]}
 </td>
