@@ -712,12 +712,10 @@ class users{
 			 *
 			 */
 			$login=$this->login;
-			//Introducir los datos de post.
+			$passwd=$this->passwd;//Introducir los datos de post.
 			$this->get_fields_from_post();
-			//$this->insert_post();
 			
 			//Validacion
-			//$return=validate_fields();
 			$this->fields_list->modify_value($this->ddbb_id_user,$this->id_user);
 			$this->fields_list->modify_value($this->ddbb_login,$this->login);
 			$this->fields_list->modify_value($this->ddbb_passwd,$this->passwd);
@@ -726,14 +724,15 @@ class users{
 			$this->fields_list->modify_value($this->ddbb_last_name2,$this->last_name2);
 			//validamos
 			$return=$this->fields_list->validate();	
-			$return=$return && $this->fields_list->compare_passwd($this->passwd,$this->retype);
+			//Si la contraseña es igual a la introducida entonces no ha habido cambios y no hace falta reescribirla y por tanto no hace falta una comprobacion.
+			if ($passwd!=$this->passwd)
+				$return=$return && $this->fields_list->compare_passwd($this->passwd,$this->retype);
+			//Se cogen los logins para comprobar que no se introduzca un login igual
 			$array=$this->take_logins();
 			$return_login=$this->fields_list->validate_login($this->login,$array,$login);
 			$return=$return && $return_login;
 			//En caso de que la validacion haya sido fallida se muestra la plantilla
-			//con los campos erroneos marcados con un *
-			
-			
+			//con los campos erroneos marcados con un *			
 			if (!$return){
 				//Mostrar plantilla con datos erroneos
 				return -1;

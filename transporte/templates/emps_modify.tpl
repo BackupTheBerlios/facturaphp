@@ -172,7 +172,7 @@ function enableDisable(value){
 						</select></td>
 			</tr>
 			<tr class="textoMenu" align="center"><td>
-				<input type="radio" {if $usuarios->id_user!=0 && $usuarios->id_user!=""}checked {/if} name="user" id="new_user" value="{if $usuarios->id_user==0 || $usuarios->id_user==""}new{else}modify{/if}" onChange="enableDisable(this.value)"> {if $usuarios->id_user==0 || $usuarios->id_user==""}Crear un nuevo usuario{else}Modificar el usuario{/if}
+				<input type="radio" {if ($usuarios->id_user!=0 && $usuarios->id_user!="") || $radio=="new" || $radio=="modify"}checked {/if} name="user" id="new_user" value="{if $usuarios->id_user==0 || $usuarios->id_user==""}new{else}modify{/if}" onChange="enableDisable(this.value)"> {if $usuarios->id_user==0 || $usuarios->id_user==""}Crear un nuevo usuario{else}Modificar el usuario{/if}
 			</td></tr>
 			</table>
 			</td>
@@ -196,7 +196,7 @@ function enableDisable(value){
 						<td > <input type="password" id="user_passwd" name="user_{$usuarios->ddbb_passwd}" value="{$usuarios->passwd}" class="textoMenu"><font class="error">{$user_error_passwd}</font></td>
 				  </tr>
 				  <tr>
-						<td width="125px" class="CampoFormulario">Password:</td>
+						<td width="125px" class="CampoFormulario">Reescriba password:</td>
 						<td > <input type="password" id="user_retype" name="user_retype" value="{$usuarios->retype}" class="textoMenu"><font class="error">{$user_error_retype}</font></td>
 				  </tr>
 				  <tr>

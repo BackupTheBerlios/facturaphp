@@ -61,7 +61,7 @@ class vehicles{
 		$this->fields_list->add($this->ddbb_id_vehicle, $this->id_vehicle, 'int', 11,0,1);
 		$this->fields_list->add($this->ddbb_id_corp, $this->id_corp, 'int', 11,0,1);
 		$this->fields_list->add($this->ddbb_number_plate, $this->number_plate, 'varchar', 10,0,1);
-		$this->fields_list->add($this->ddbb_alias, $this->alias, 'varchar', 255,0);
+		$this->fields_list->add($this->ddbb_alias, $this->alias, 'varchar', 255,0,1);
 		$this->fields_list->add($this->ddbb_path_photo, $this->path_photo, 'varchar', 255,0);
 	/*	
 		//se puede acceder a los vehiculos por numero de campo o por nombre de campo
@@ -747,16 +747,17 @@ class vehicles{
 				}
    			}	
 			
-			$this->get_fields_from_post();
-			
-			//$this->insert_post();
-			$this->fields_list->modify_value($this->ddbb_id_vehicle,$this->id_vehicle);
-			$this->fields_list->modify_value($this->ddbb_id_corp,$this->id_corp);
-			$this->fields_list->modify_value($this->ddbb_number_plate,$this->number_plate);
-			$this->fields_list->modify_value($this->ddbb_alias,$this->alias);
-				//validamos
+			//Introducir los datos de post.
+				$this->get_fields_from_post();	
 				
-			$return=$this->fields_list->validate();	
+
+				$this->fields_list->modify_value($this->ddbb_id_vehicle,$this->id_vehicle);
+				$this->fields_list->modify_value($this->ddbb_id_corp,$this->id_corp);
+				$this->fields_list->modify_value($this->ddbb_number_plate,$this->number_plate);
+				$this->fields_list->modify_value($this->ddbb_alias,$this->alias);
+				//validamos
+				echo "alias: ".$this->alias;
+				$return=$this->fields_list->validate();	
 			//Validacion
 			//$return=validate_fields();
 			
@@ -1118,12 +1119,14 @@ class vehicles{
 												$tpl->assign("tabla_checkbox",$this->table_categories(false));
 												break;
 										default: //Si se ha añadido
+												$this->vehicles_list = "";
 												$this->method="list";
-												$tpl=$this->listar($tpl);
-												$tpl->assign("message","&nbsp;<br>Producto a&ntilde;adido correctamente<br>&nbsp;");									
+												$tpl=$this->listar($tpl);										
+												$tpl->assign("message","&nbsp;<br>Veh&iacute;culo a&ntilde;adido correctamente<br>&nbsp;");
 												break;
 									}
 									//esto se hace independientemetne del valor que se obtenga
+									
 									$tpl->assign("objeto",$this);
 									break;
 						case 'list':

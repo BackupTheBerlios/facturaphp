@@ -365,8 +365,10 @@ class emps{
 	}
 	
 	function modify(){
-		$user_changed=0;
-		if((!isset($_POST['existUser']))||($_POST['existUser']=="new")||($_POST['existUser']=="modify")){
+		$this->user_changed=0;
+		
+		if (!isset($_POST['submit_modify'])){
+			if((!isset($_POST['existUser']))||($_POST['existUser']=="new")||($_POST['existUser']=="modify")){
 			
 				if(($_POST['existUser']=="new")||($this->id_user==0)||($this->id_user=="")){
 					$this->obj_user=new users();
@@ -382,8 +384,6 @@ class emps{
 					$user_changed=$this->obj_user->modify();
 					}
 		}
-		if (!isset($_POST['submit_modify'])){
-			
 			
 			return 0;
 		}
@@ -417,32 +417,40 @@ class emps{
 				array_push($this->fields_list->array_error,'come',$cadena);
 				$return=false;
 			}
-			
-			if((!isset($_POST['existUser']))||($_POST['existUser']=="new")){
+			if((!isset($_POST['user']))||($_POST['user']=="new")){
 				$this->obj_user=new users();
 				$this->obj_user->get_list_users();
 				$this->obj_user->is_emps=true;
 				$this->obj_user->return_validate_emps=$return;
-				$this->user_added=$this->obj_user->add();
+				$this->user_changed=$this->obj_user->add();
 				$this->radiobutton="new";
 			}
-			else{
-				$this->obj_user=new users();
-				$this->obj_user->get_list_users();
-				$this->obj_user->is_emps=true;
-				$this->obj_user->get_checkbox_modules_from_bbdd();
-				$this->obj_user->get_checkbox_groups_from_bbdd();
-				$this->radiobutton="exist";
-			}
+			elseif(($_POST['user']=="modify")||($this->id_user!=0)){
+					$this->obj_user=new users();
+					$this->obj_user->get_list_users();
+					$this->obj_user->is_emps=true;
+					$this->obj_user->read_fields($this->id_user);
+					$this->user_changed=$this->obj_user->modify();
+					$this->radiobutton="modify";
+				}			
+				else
+				{
+					$this->obj_user=new users();
+					$this->obj_user->get_list_users();
+					$this->obj_user->is_emps=true;
+					$this->obj_user->get_checkbox_modules_from_bbdd();
+					$this->obj_user->get_checkbox_groups_from_bbdd();
+					$this->radiobutton="exist";
+				}
 			
-			//Validacion
-			//$return=validate_fields();
+			
+			
 			
 			//En caso de que la validacion haya sido fallida se muestra la plantilla
 			//con los campos erroneos marcados con un *
 			
 			
-			if (!$return || $this->user_added==-1){
+			if (!$return || $this->user_changed==-1){
 				//Mostrar plantilla con datos erroneos
 				return -1;
 			}
@@ -502,7 +510,7 @@ class emps{
 				$return_holyday=$this->modify_holyday($this->id_emp);
 			
 			
-				if(($Affected_Rows==1)||($user_changed!=0)||($this->sql=="")||($return_category!=0)||($return_holyday!=0)){
+				if(($Affected_Rows==1)||($this->user_changed!=0)||($this->sql=="")||($return_category!=0)||($return_holyday!=0)){
 					//capturammos el id de la linea insertada
 					$this->db->close();
 					
@@ -1142,7 +1150,7 @@ class emps{
 										for ($i=0;$i<count($this->fields_list->array_error);$i+=2){
 											$tpl->assign("error_".$this->fields_list->array_error[$i],$this->fields_list->array_error[$i+1]);
 										}		
-										if ($this->user_added==-1){											
+										if ($this->user_changed==-1){											
 											for ($i=0;$i<count($this->obj_user->fields_list->array_error);$i+=2){
 												
 													$tpl->assign("user_error_".$this->obj_user->fields_list->array_error[$i],$this->obj_user->fields_list->array_error[$i+1]);
@@ -1223,8 +1231,6 @@ class emps{
 		if ($_POST["user"]=="exist"){
 			$this->id_user=$_POST["existUser"];
 		}		
-		
-		echo $this->birthday;
 		
 		//Cogemos la categoria
 		$this->category=$_POST["category"];
