@@ -39,7 +39,8 @@ class modules{
 	var $module_methods;
 	var $public_modules;
 	var $method;
-	
+	var $module_meth;
+	var $module_methods;
   	//constructor
 	function modules(){
 		//coge las variables globales del fichero config.inc.php
@@ -283,6 +284,8 @@ class modules{
 			$this->name=$this->result->fields[$this->ddbb_name];
 			$this->path=$this->result->fields[$this->ddbb_path];
 			$this->active=$this->result->fields[$this->ddbb_active];
+			$this->publico=$this->result->fields[$this->ddbb_public];
+			$this->parent=$this->result->fields[$this->ddbb_parent];
 			$this->db->close();
 			return 1;
 		}
@@ -291,7 +294,31 @@ class modules{
 	}
 	
 	function add(){
-	
+	if (!isset($_POST['submit_add'])){
+			//Mostrar plantilla vacía				
+			
+			return 0;
+		}
+		//en el caso de que SI este definido submit_add
+		else{
+						
+			//Introducir los datos de post.
+			$this->get_fields_from_post();	
+						
+			//Validacion
+			//$return=validate_fields();
+			
+			//En caso de que la validacion haya sido fallida se muestra la plantilla
+			//con los campos erroneos marcados con un *
+			$return=true; //Para pruebas dejar esta linea sin comentar
+			
+			if (!$return){
+				//Mostrar plantilla con datos erroneos
+				
+			}
+			else{
+				//Si todo es correcto si meten los datos
+				
 		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
 		//crea una nueva conexi—n con una bbdd (mysql)
 		$this->db = NewADOConnection($this->db_type);
@@ -315,6 +342,8 @@ class modules{
 		$record[$this->ddbb_name]=$this->name;
 		$record[$this->ddbb_path]=$this->path;
 		$record[$this->ddbb_active]=$this->active;
+		$record[$this->ddbb_public]=$this->publico;
+		$record[$this->ddbb_parent]=$this->parent;
 		//calculamos la sql de inserci—n respecto a los atributos
 		$this->sql = $this->db->GetInsertSQL($this->result, $record);
 		//print($this->sql);
@@ -324,6 +353,7 @@ class modules{
 		if($this->db->Insert_ID()>=0){
 			//capturammos el id de la linea insertada
 			$this->id_module=$this->db->Insert_ID();
+			$this->add_methods($this->id_module);
 			//print("<pre>::".$this->id_module."::</pre>");
 			//devolvemos el id de la tabla ya que todo ha ido bien
 			$this->db->close();
@@ -333,7 +363,8 @@ class modules{
 			$this->error=-1;
 			$this->db->close();
 			return 0;
-		}			
+		}	
+	}}		
 	}
 	
 	function calculate_tpl($method, $tpl){
@@ -343,11 +374,10 @@ class modules{
 									if ($this->add() !=0){
 										$this->method="list";
 										$tpl=$this->listar($tpl);										
-										$tpl->assign("message","&nbsp;<br>Usuario a&ntilde;adido correctamente<br>&nbsp;");
+										$tpl->assign("message","&nbsp;<br>M&oacute;dulo a&ntilde;adido correctamente<br>&nbsp;");
 									}
+									$tpl->assign("padres",$this->modules_list);
 									$tpl->assign("objeto",$this);
-									$tpl->assign("modulos",$this->checkbox);
-									$tpl->assign("grupos",$this->checkbox_groups);
 									break;
 									
 						case 'list':
@@ -358,11 +388,11 @@ class modules{
 									if ($this->modify() !=0){
 										$this->method="list";
 										$tpl=$this->listar($tpl);										
-										$tpl->assign("message","&nbsp;<br>Usuario modificado correctamente<br>&nbsp;");
+										$tpl->assign("message","&nbsp;<br>M&oacute;dulo modificado correctamente<br>&nbsp;");
 									}
 									$tpl->assign("objeto",$this);
-									$tpl->assign("modulos",$this->checkbox);
-									$tpl->assign("grupos",$this->checkbox_groups);
+									$tpl->assign("module_methods",$this->module_methods);
+									$tpl->assign("padres",$this->modules_list);
 									break;
 						case 'delete':
 									$this->read($_GET['id']);
@@ -373,7 +403,7 @@ class modules{
 										$this->users_list="";
 										$this->method="list";
 										$tpl=$this->listar($tpl);
-										$tpl->assign("message","&nbsp;<br>Usuario borrado correctamente<br>&nbsp;");
+										$tpl->assign("message","&nbsp;<br>M&oacute;dulo borrado correctamente<br>&nbsp;");
 									}
 									$tpl->assign("objeto",$this);
 									break;
@@ -391,36 +421,67 @@ class modules{
 	}
 	
 	function remove($id){
-	
-		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
-		//crea una nueva conexi—n con una bbdd (mysql)
-		$this->db = NewADOConnection($this->db_type);
-		//le dice que no salgan los errores de conexi—n de la ddbb por pantalla
-		$this->db->debug=false;
-		//realiza una conexi—n permanente con la bbdd
-		$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
-		//mete la consulta para coger los campos de la bbdd
-		//calcula la consulta de borrado.
-		$this->sql="DELETE FROM ".$this->table_prefix.$this->table_name. " WHERE ".$this->ddbb_id_module." = ".$id." LIMIT 1";
-		//la ejecuta y guarda los resultados
-		$this->result = $this->db->Execute($this->sql);
-		//si falla 
-		if ($this->db->Affected_Rows() == 0){
-			$this->error=1;
-			$this->db->close();
-			return 0;
-		}else{
-		
-			$this->error=0;
-			$this->db->close();
-			return 1;
-			
+		if (!isset($_POST["submit_delete"])){
+			//Miramos a ver si hay algun empleado que tenga este modulo
+				return 0;
 		}
-		
+		else{
+			$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
+			//crea una nueva conexi—n con una bbdd (mysql)
+			$this->db = NewADOConnection($this->db_type);
+			//le dice que no salgan los errores de conexi—n de la ddbb por pantalla
+			$this->db->debug=false;
+			//realiza una conexi—n permanente con la bbdd
+			$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
+			//mete la consulta para coger los campos de la bbdd
+			//calcula la consulta de borrado.
+			$this->sql="DELETE FROM ".$this->table_prefix.$this->table_name. " WHERE ".$this->ddbb_id_module." = ".$id." LIMIT 1";
+			//la ejecuta y guarda los resultados
+			$this->result = $this->db->Execute($this->sql);
+			//si falla 
+			if ($this->db->Affected_Rows() == 0){			
+				$this->error=1;
+				$this->db->close();
+				return 0;
+			}else{
+				$this->delete_methods($id);
+				$this->delete_per_methods($id);
+
+				
+				$this->error=0;
+				$this->db->close();
+				return 1;
+				
+			}
+		}
 	}
 	
 	function modify(){
-	
+	if (!isset($_POST['submit_modify'])){
+			//Mostrar plantilla vacía	
+			//pasarle a la plantilla los modulos y grupos con sus respectivos checkbox a checked false
+			$this->get_methods($this->id_module);			
+			
+			
+			return 0;
+		}
+		else{
+			//Introducir los datos de post.
+			$this->get_fields_from_post();
+			//$this->insert_post();
+			
+			//Validacion
+			//$return=validate_fields();
+			
+			//En caso de que la validacion haya sido fallida se muestra la plantilla
+			//con los campos erroneos marcados con un *
+			$return=true; //Para pruebas dejar esta linea sin comentar
+			
+			if (!$return){
+				//Mostrar plantilla con datos erroneos
+				
+			}
+			else{
 		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
 		//crea una nueva conexi—n con una bbdd (mysql)
 		$this->db = NewADOConnection($this->db_type);
@@ -445,12 +506,15 @@ class modules{
 		$record[$this->ddbb_name]=$this->name;
 		$record[$this->ddbb_path]=$this->path;
 		$record[$this->ddbb_active]=$this->active;
+		$record[$this->ddbb_public]=$this->publico;
+		$record[$this->ddbb_parent]=$this->parent;
 		//calculamos la sql de inserci—n respecto a los atributos
 		$this->sql = $this->db->GetUpdateSQL($this->result, $record);
 		//insertamos el registro
 		$this->db->Execute($this->sql);
 		//si se ha insertado una fila
-		if($this->db->Affected_Rows()==1){
+		if(($this->db->Affected_Rows()==1)||($this->sql=="")){
+			$this->modify_methods();
 			//capturammos el id de la linea insertada
 			$this->db->close();
 			//devolvemos el id de la tabla ya que todo ha ido bien
@@ -462,7 +526,7 @@ class modules{
 			return 0;
 		}
 
-	
+			}}
 	}
 	
 	function bar($method,$corp){
@@ -539,13 +603,262 @@ class modules{
 		return $tpl;
 	}
 	
+		function get_fields_from_post(){
+		
+		//Cogemos los campos principales
+		$this->name=$_POST[$this->ddbb_name];
+		$this->name_web=$_POST[$this->ddbb_name_web];
+		$this->path=$_POST[$this->ddbb_path];
+		$this->active=$_POST[$this->ddbb_active];
+		$this->publico=$_POST[$this->ddbb_public];	
+	
+		$this->parent=$_POST[$this->ddbb_parent];
+		
+		//Colocar de manera provisional hasta que se haga la validacion de fields
+		//************Bloque
+		if ($this->name==""){
+			$this->name=" ";
+		}
+		if ($this->name_web==""){
+			$this->name_web=" ";
+		}
+		if ($this->path==""){
+			$this->path=" ";
+		}
+		//************Fin Bloque
+		
+		//Cogemos los modulos.
+		$i=0;
+		$this->module_methods="";
+		$meth=array("list","select","view","add","modify","delete");
+		for($j=0;$j<count($meth);$j++)
+		{	//echo "<script>alert('".$_POST[$meth[$j]]."')</script>";
+			if ($_POST[$meth[$j]]!=""){
+				$this->module_methods[$i]["name"]=$meth[$j];
+				$this->module_methods[$i]["name_web"]=$_POST[$meth[$j]];
+				$i++;
+			}
+		}		
+
+		return 0;
+	}	
+	
 	  function get_list_modules_user($user){
 	
 		return 0;
 		
 	}
 	
+	function modify_methods(){		
 
+		$this->delete_methods($this->id_module);
+		$this->add_methods($this->id_module);
+		$this->module_methods="";
+		
+		$this->get_methods($this->id_module);		
+		//Leer los metodos desde bbdd
+		$this->get_methods($this->id_module);	
+		//Leer los metodos que hay en el formulario
+		$formulario="";
+		$i=0;
+		$meth=array("list","select","view","add","modify","delete");
+		for($j=0;$j<count($meth);$j++)
+		{	//echo "<script>alert('".$_POST[$meth[$j]]."')</script>";
+			if ($_POST[$meth[$j]]!=""){
+				$formulario[$i]["name"]=$meth[$j];
+				$formulario[$i]["name_web"]=$_POST[$meth[$j]];
+				$i++;
+			}
+		}	
+
+		//Los que haya en la bbdd y no haya en los nuevos, seran los borrados
+		for ($i=0;count($this->module_methods);$i++){
+			$result=false;
+			for ($j=0;count($formulario);$j++){
+				if($formulario[$j]["name"]==$this->module_methods[$i]["name"]){
+					$result=true;
+					break;
+				}
+			}
+			if(!$result){
+				$borrados[$i]["id_method"]=$this->module_methods[$i]["id_method"];
+			}
+		}		
+		
+		//Los que haya en los nuevos y no en la bbdd seran los añadidos.
+		$nuevos="";
+		for ($i=0;count($formulario);$i++){
+			$result=false;
+			for ($j=0;count($this->module_methods);$j++){
+				if($formulario[$i]["name"]==$this->module_methods[$j]["name"]){
+					$result=true;
+					break;
+				}
+			}
+			if(!$result){
+				$nuevos[$i]["name"]=$formulario[$i]["name"];
+				$nuevos[$i]["name_web"]=$formulario[$i]["name_web"];
+			}
+		}
+		
+		
+		//Borramos
+		for($i=0;$i<count($borrados);$i++){
+			$this->delete_per_group_user_methods('per_user_methods',$borrados[$i]['id_method'],'id_method');
+			$this->delete_per_group_user_methods('per_user_methods',$borrados[$i]['id_method'],'id_method');
+		}
+		//Añadimos los nuevos
+		for	($i=0;$i<count($nuevos);$i++){
+			$method = new methods();
+			$method->id_module=$this->id_module;
+			$method->name=$nuevos[$i]["name"];
+			//echo "<script>alert('".$this->module_methods[$i]["name"]."')</script>";
+			$method->name_web=$nuevos[$i]["name_web"];
+			$method->add();
+		}
+		return 0;
+	}
+	
+	
+	function delete_methods($id){
+		//se puede acceder a los usuarios por numero de campo o por nombre de campo
+		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
+		//crea una nueva conexin con una bbdd (mysql)
+		$this->db = NewADOConnection($this->db_type);
+		//le dice que no salgan los errores de conexin de la ddbb por pantalla
+		$this->db->debug=false;
+		//realiza una conexin permanente con la bbdd
+		$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
+		//mete la consulta
+		$this->sql='DELETE FROM `methods` WHERE `id_module` = \''.$id.'\'';
+		//la ejecuta y guarda los resultados
+		$this->result = $this->db->Execute($this->sql);
+		if ($this->result === false){
+			$this->error=1;
+			$this->db->close();
+			return 0;
+		}  
+				
+		return 1;
+	}
+	
+	function get_methods($id){
+		//se puede acceder a los usuarios por numero de campo o por nombre de campo
+		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
+		//crea una nueva conexin con una bbdd (mysql)
+		$this->db = NewADOConnection($this->db_type);
+		//le dice que no salgan los errores de conexin de la ddbb por pantalla
+		$this->db->debug=false;
+		//realiza una conexin permanente con la bbdd
+		$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
+		//mete la consulta
+		$this->sql='SELECT `id_method` , `name_web`, `name` FROM `methods` WHERE `id_module` = \''.$id.'\'';
+		//la ejecuta y guarda los resultados
+		$this->result = $this->db->Execute($this->sql);
+		if ($this->result === false){
+			$this->error=1;
+			$this->db->close();
+			return 0;
+		}  
+		
+		$this->num=0;
+		$this->module_methods="";
+		while (!$this->result->EOF) {
+			//cogemos los datos del usuario
+//			echo "hola";
+			$this->module_methods[$this->result->fields['name']]['id_method']=$this->result->fields['id_method'];
+			$this->module_methods[$this->result->fields['name']]['name']=$this->result->fields['name'];
+			$this->module_methods[$this->result->fields['name']]['name_web']=$this->result->fields['name_web'];
+			$this->module_meth[$this->num]['id_method']=$this->result->fields['id_method'];
+			$this->module_meth[$this->num]['name']=$this->result->fields['name'];
+			$this->module_meth[$this->num]['name_web']=$this->result->fields['name_web'];
+			//nos movemos hasta el siguiente registro de resultado de la consulta
+			$this->result->MoveNext();
+			$this->num++;
+		}
+		$this->db->close();
+		return $this->num;
+	}
+	
+	
+	function add_methods($id){
+		
+		for	($i=0;$i<count($this->module_methods);$i++){
+			$method = new methods();
+			$method->id_module=$id;
+			$method->name=$this->module_methods[$i]["name"];
+			//echo "<script>alert('".$this->module_methods[$i]["name"]."')</script>";
+			$method->name_web=$this->module_methods[$i]["name_web"];
+			$method->add();
+		}
+	}
+	
+	function delete_per($table,$id){
+		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
+		//crea una nueva conexin con una bbdd (mysql)
+		$this->db = NewADOConnection($this->db_type);
+		//le dice que no salgan los errores de conexin de la ddbb por pantalla
+		$this->db->debug=false;
+		//realiza una conexin permanente con la bbdd
+		$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
+		//mete la consulta para coger los campos de la bbdd
+		//calcula la consulta de borrado.
+		$this->sql="DELETE FROM ".$table. " WHERE ".$this->ddbb_id_module." = ".$id." LIMIT 1";
+		//la ejecuta y guarda los resultados
+		$this->result = $this->db->Execute($this->sql);
+		//si falla 
+		if ($this->db->Affected_Rows() == 0){			
+			$this->error=1;
+			$this->db->close();
+			return 0;
+		}else{
+	
+			$this->error=0;
+			$this->db->close();
+			return 1;
+			
+		}
+	}
+	
+	function delete_per_methods($id){
+		
+		//Borramos los permisos de los metodos relacionados con el modulo
+		for($i=0;$i<count($this->module_meth);$i++){
+			$this->delete_per_group_user_methods('per_user_methods',$this->module_meth[$i]['id_method'],'id_method');
+			$this->delete_per_group_user_methods('per_group_methods',$this->module_meth[$i]['id_method'],'id_method');
+		}
+		//Borramos los permisos con el modulo.
+		$this->delete_per_group_user_methods('per_user_modules',$id,'id_module');
+		$this->delete_per_group_user_methods('per_group_modules',$id,'id_module');
+	}
+	
+	
+	function delete_per_group_user_methods($table,$id,$column){
+		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
+		//crea una nueva conexin con una bbdd (mysql)
+		$this->db = NewADOConnection($this->db_type);
+		//le dice que no salgan los errores de conexin de la ddbb por pantalla
+		$this->db->debug=false;
+		//realiza una conexin permanente con la bbdd
+		$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
+		//mete la consulta para coger los campos de la bbdd
+		//calcula la consulta de borrado.
+		$this->sql="DELETE FROM ".$table. " WHERE ".$column." = ".$id." LIMIT 1";
+		//la ejecuta y guarda los resultados
+		$this->result = $this->db->Execute($this->sql);
+		//si falla 
+		if ($this->db->Affected_Rows() == 0){			
+			$this->error=1;
+			$this->db->close();
+			return 0;
+		}else{
+	
+			$this->error=0;
+			$this->db->close();
+			return 1;
+			
+		}
+	}
 	
 	function get_module_operations_list($module_name){
 	

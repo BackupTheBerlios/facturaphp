@@ -177,7 +177,7 @@ class methods{
 	}
 	
 	function add(){
-	
+
 		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
 		//crea una nueva conexi—n con una bbdd (mysql)
 		$this->db = NewADOConnection($this->db_type);
@@ -187,6 +187,7 @@ class methods{
 		$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
 		//mete la consulta para coger los campos de la bbdd
 		$this->sql="SELECT * FROM ".$this->table_prefix.$this->table_name. " WHERE ".$this->ddbb_id_method." = -1" ;
+
 		//la ejecuta y guarda los resultados
 		$this->result = $this->db->Execute($this->sql);
 		//si falla 
@@ -206,6 +207,7 @@ class methods{
 		//print($this->sql);
 		//insertamos el registro
 		$this->db->Execute($this->sql);
+		
 		//si se ha insertado una fila
 		if($this->db->Insert_ID()>=0){
 			//capturammos el id de la linea insertada
