@@ -64,11 +64,11 @@ class users{
 			$error=1;
 			return 0;
 		}  
-		return list_users();	 
+		return $this->list_users();	 
 		
 	}
 	
-	function list_users (){
+	function get_list_users (){
 		//se puede acceder a los usuarios por numero de campo o por nombre de campo
 		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
 		//crea una nueva conexi—n con una bbdd (mysql)
@@ -90,18 +90,18 @@ class users{
 		$this->num=0;
 		while (!$this->result->EOF) {
 			//cogemos los datos del usuario
-			$this->users_list[$this->num][$field_id_user]=$this->result->fields[$field_id_user];
-			$this->users_list[$this->num][$field_login]=$this->result->fields[$field_login];
-			$this->users_list[$this->num][$field_passwd]=$this->result->fields[$field_passwd];
-			$this->users_list[$this->num][$field_name]=$this->result->fields[$field_name];
-			$this->users_list[$this->num][$field_last_name]=$this->result->fields[$field_last_name];
-			$this->users_list[$this->num][$field_last_name2]=$this->result->fields[$field_last_name2];
-			$this->users_list[$this->num][$field_full_name]=$this->result->fields[$field_full_name];
+			$this->users_list[$this->num][$this->ddbb_id_user]=$this->result->fields[$this->ddbb_id_user];
+			$this->users_list[$this->num][$this->ddbb_login]=$this->result->fields[$this->ddbb_login];
+			$this->users_list[$this->num][$this->ddbb_passwd]=$this->result->fields[$this->ddbb_passwd];
+			$this->users_list[$this->num][$this->ddbb_name]=$this->result->fields[$this->ddbb_name];
+			$this->users_list[$this->num][$this->ddbb_last_name]=$this->result->fields[$this->ddbb_last_name];
+			$this->users_list[$this->num][$this->ddbb_last_name2]=$this->result->fields[$this->ddbb_last_name2];
+			$this->users_list[$this->num][$this->ddbb_full_name]=$this->result->fields[$this->ddbb_full_name];
 			//nos movemos hasta el siguiente registro de resultado de la consulta
 			$this->result->MoveNext();
-			$num++;
+			$this->num++;
 		}
-		return $num;
+		return $this->num;
 	
 	}
 	
@@ -145,7 +145,11 @@ class users{
 	
 	}  
 	
-	function admin (){
+	function view ($id){
+	
+	}
+	
+	function admin ($id){
 	
 	}
 }
