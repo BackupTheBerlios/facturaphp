@@ -28,6 +28,7 @@ require_once('log_methods.class.php');
 require_once('methods.class.php');
 require_once('rel_emps_cats.class.php');
 require_once('services.class.php');
+require_once('search.class.php');
 require_once('cat_emps.class.php');
 require_once('holydays.class.php');
 global 	$INSTALL_DIR,$SMARTY_DIR, $ADODB_DIR;
