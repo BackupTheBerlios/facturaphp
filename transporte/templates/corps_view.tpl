@@ -74,7 +74,7 @@
 								<!--{$acciones}-->
 								<!--{section name="indice" loop=$acciones}
 								<td>
-								<a href="index.php?module=emps&method={$acciones[indice]}&id={$objeto->id_group}">
+								<a href="index.php?module=corps&method={$acciones[indice]}&id={$objeto->id_group}">
 								<img src="pics/btn{$acciones[indice]}.gif" border="0"></a></td>
 								{/section}-->								
 								
@@ -95,15 +95,15 @@
 					  <tr>
 					
 					  	<td align="center" valign="baseline">
-					<img src="pics/pestagna-personalsobre.gif" id="emps" onClick="Ocultar(this,'emps_1')" name="boton">
+					<img src="pics/pestagna-empssobre.gif" id="emps" onClick="Ocultar(this,'emps_1')" name="boton">
 						</td>
 						  	<td  align="center">
-					<img src="pics/pestagna-clientes.gif" id="Clientes" onClick="Ocultar(this,'Clientes')" name="boton"> 					</td>
+					<img src="pics/pestagna-clients.gif" id="clients" onClick="Ocultar(this,'Clientes')" name="boton"> 					</td>
 					  	<td   align="center" >
-					<img src="pics/pestagna-facturaspen.gif" id="FacturasPen" onClick="Ocultar(this,'FacturasPen')" name="boton">
+					<img src="pics/pestagna-facturaspen.gif" id="facturaspen" onClick="Ocultar(this,'facturaspen_1')" name="boton">
 					</td>
 					  	<td  align="center">
-					<img src="pics/pestagna-facturascob.gif" id="FacturasCob" onClick="Ocultar(this,'FacturasCob')" name="boton">
+					<img src="pics/pestagna-facturascob.gif" id="facturascob" onClick="Ocultar(this,'facturascob_1')" name="boton">
 					</td>
 					</tr>
 										  <tr>
@@ -111,15 +111,15 @@
 				</tr>
 					<tr>
 					<td  align="center">
-					<img src="pics/pestagna-productos.gif" id="Productos" onClick="Ocultar(this,'Productos')" name="boton"> 					</td>
+					<img src="pics/pestagna-products.gif" id="products" onClick="Ocultar(this,'products_1')" name="boton"> 					</td>
 					  	<td   align="center">
-					<img src="pics/pestagna-servicios.gif" id="Servicios" onClick="Ocultar(this,'Servicios')" name="boton">
+					<img src="pics/pestagna-services.gif" id="services" onClick="Ocultar(this,'services_1')" name="boton">
 						</td>
 					  	
 					  	<td align="center">
-					<img src="pics/pestagna-gestionAlm.gif" id="GestionAlm" onClick="Ocultar(this,'GestionAlm')" name="boton"> 					</td>
+					<img src="pics/pestagna-gestionalm.gif" id="gestionalm" onClick="Ocultar(this,'gestionalm_1')" name="boton"> 					</td>
 					<td  align="center" >
-					<img src="pics/pestagna-partes.gif" id="Partes" onClick="Ocultar(this,'Partes')" name="boton">
+					<img src="pics/pestagna-partes.gif" id="partes" onClick="Ocultar(this,'partes_1')" name="boton">
 					</td>
 					  </tr>
 					  <tr>
