@@ -79,12 +79,12 @@ class sessions{
 		}  
 		$this->db->close();
 		
-		return $this->get_list_sessions();	 
+		return $this;	 
 		
 	}
 	
 	function get_list_sessions (){
-		
+	
 		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
 		//crea una nueva conexi—n con una bbdd (mysql)
 		$this->db = NewADOConnection($this->db_type);
@@ -103,7 +103,7 @@ class sessions{
 
 			return 0;
 		}  
-		
+		$usuario = new users();
 		$this->num=0;
 		while (!$this->result->EOF) {
 			//cogemos los datos del usuario
@@ -112,8 +112,49 @@ class sessions{
 			$this->sessions_list[$this->num][$this->ddbb_id_user]=$this->result->fields[$this->ddbb_id_user];
 			$this->sessions_list[$this->num][$this->ddbb_up]=$this->result->fields[$this->ddbb_up];
 			$this->sessions_list[$this->num][$this->ddbb_down]=$this->result->fields[$this->ddbb_down];		
+
+			$usuario->read($this->sessions_list[$this->num][$this->ddbb_id_user]);
+			$this->sessions_list[$this->num][$this->ddbb_name] = $usuario->name." ".$usuario->last_name." ".$usuario->last_name2;
+
+			//Modificación del formato de las fechas para la presentación
+	    	list($anno,$mes,$dia,$hora,$minutos,$segundos)=sscanf($this->sessions_list[$this->num][$this->ddbb_up],"%d-%d-%d %d:%d:%d");
 			
-			$this->preparar_datos($this->sessions_list[$this->num][$this->ddbb_id_user]);	
+			if($mes < 10)
+				$mes = "0".$mes;
+			if($dia < 10)
+				$dia = "0".$dia;
+			if($hora < 10)
+				$hora = "0".$hora;
+			if($minutos < 10)
+				$minutos = "0".$minutos;
+			if($segundos < 10)
+				$segundos = "0".$segundos;
+				
+			$this->sessions_list[$this->num][$this->ddbb_up]="$dia-$mes-$anno $hora:$minutos:$segundos";
+		
+		
+			if ($this->sessions_list[$this->num][$this->ddbb_down] !="0000-00-00 00:00:00")
+			{
+				list($anno,$mes,$dia,$hora,$minutos,$segundos)=sscanf($this->sessions_list[$this->num][$this->ddbb_down],"%d-%d-%d %d:%d:%d");
+				
+				if($mes < 10)
+					$mes = "0".$mes;
+				if($dia < 10)
+					$dia = "0".$dia;
+				if($hora < 10)
+					$hora = "0".$hora;
+				if($minutos < 10)
+					$minutos = "0".$minutos;
+				if($segundos < 10)
+					$segundos = "0".$segundos;
+				
+				$this->sessions_list[$this->num][$this->ddbb_down]="$dia-$mes-$anno $hora:$minutos:$segundos";
+			}
+			else
+			{
+				$this->sessions_list[$this->num][$this->ddbb_down]="00-00-0000 00:00:00";
+			}		
+			
 			//nos movemos hasta el siguiente registro de resultado de la consulta
 			$this->result->MoveNext();
 			$this->num++;
@@ -122,9 +163,9 @@ class sessions{
 		return $this->num;
 	
 	}
-	
+/*	
 	function preparar_datos($id_user)
-	{/*
+	{
 		$usuario = new users();
 		$usuario->read($id_user);
 		$this->sessions_list[$this->num][$this->ddbb_name] = $usuario->name." ".$usuario->last_name." ".$usuario->last_name2;
@@ -166,11 +207,9 @@ class sessions{
 		else
 		{
 			$this->sessions_list[$this->num][$this->ddbb_down]="00-00-0000 00:00:00";
-		}
-			
-		*/
+		}		
 	}
-	
+	*/
 	function get_add_form(){
 	
 		
@@ -413,10 +452,11 @@ class sessions{
 			$this->db->close();
 			return 0;
 		}  
-		
+			$usuario = new users();
 		$this->num=0;
-		while (!$this->result->EOF) {
-			print "ENTRA";
+		$this->conectados_list = null;
+		while (!$this->result->EOF)
+		{
 			//cogemos los datos del usuario
 			$this->conectados_list[$this->num][$this->ddbb_id_session]=$this->result->fields[$this->ddbb_id_session];
 			$this->conectados_list[$this->num][$this->ddbb_id_session_php]=$this->result->fields[$this->ddbb_id_session_php];
@@ -424,7 +464,25 @@ class sessions{
 			$this->conectados_list[$this->num][$this->ddbb_up]=$this->result->fields[$this->ddbb_up];
 				
 			
-			$this->preparar_datos_conectados($this->conectados_list[$this->num][$this->ddbb_id_user]);	
+		
+			$usuario->read($this->conectados_list[$this->num][$this->ddbb_id_user]);
+			$this->conectados_list[$this->num][$this->ddbb_name] = $usuario->name." ".$usuario->last_name." ".$usuario->last_name2;
+
+			//Modificación del formato de las fechas para la presentación
+			list($anno,$mes,$dia,$hora,$minutos,$segundos)=sscanf($this->conectados_list[$this->num][$this->ddbb_up],"%d-%d-%d %d:%d:%d");
+			
+			if($mes < 10)
+				$mes = "0".$mes;
+			if($dia < 10)
+				$dia = "0".$dia;
+			if($hora < 10)
+				$hora = "0".$hora;
+			if($minutos < 10)
+				$minutos = "0".$minutos;
+			if($segundos < 10)
+				$segundos = "0".$segundos;
+				
+			$this->conectados_list[$this->num][$this->ddbb_up]="$dia-$mes-$anno $hora:$minutos:$segundos";	
 			//nos movemos hasta el siguiente registro de resultado de la consulta
 			$this->result->MoveNext();
 			$this->num++;
@@ -432,10 +490,10 @@ class sessions{
 		$this->db->close();
 		return $this->num;
 	}
-	
+/*	
 	function preparar_datos_conectados($id_user)
 	{
-	/*	$usuario = new users();
+		$usuario = new users();
 		$usuario->read($id_user);
 		$this->conectados_list[$this->num][$this->ddbb_name] = $usuario->name." ".$usuario->last_name." ".$usuario->last_name2;
 
@@ -454,10 +512,10 @@ class sessions{
 			if($segundos < 10)
 				$segundos = "0".$segundos;
 				
-			$this->conectados_list[$this->num][$this->ddbb_up]="$dia-$mes-$anno $hora:$minutos:$segundos";*/
+			$this->conectados_list[$this->num][$this->ddbb_up]="$dia-$mes-$anno $hora:$minutos:$segundos";
 		
 	}
-	
+	*/
 	function register()
 	{
 		$this->id_session_php = session_id();

@@ -76,7 +76,19 @@ if(!isset($_SESSION['user']))
            // Should be enough :-)
            setcookie(session_name(), 1,time()+60);
        	}
-
+		
+	/*	//Tomamos IP del cliente
+		if ($for = getenv('HTTP_X_FORWARDED_FOR'))
+   		{
+    		 $afor = explode(",", $for);
+    		 print trim($afor[0]);
+  		}
+  		 else
+   		{
+			print "aquí tamos";
+     		print getenv('REMOTE_ADDR');
+   		}
+*/
 		//Se busca registro de la sesión (ya se conoce al usuario) y se introduce al usuario
 		
 		//como el usuario esta validado asigna su nombre a la plantilla
@@ -128,9 +140,29 @@ else
 	}
 	else
 	{
-		$tpl->assign('user_name',$_SESSION['user']);
-		$tpl->assign('login',0);
-		$index_template='index.tpl';
+		//Comprobar si la sesión debe caducar
+		if(time() >= $_SESSION['max_page_time'])
+		{
+			//Desconectar al usuario porque caducó su sesión
+			$session=new sessions();
+			$session->unregister();
+			unset($_COOKIE[session_name()]);
+			session_unset();
+			session_destroy();
+			session_start();
+		
+			$tpl->assign('user_name','');
+			$tpl->assign('corp_id',0);
+			$tpl->assign('error',0);
+			$tpl->assign('login',1);
+			$index_template='index.tpl';	
+		} 
+		else
+		{
+			$tpl->assign('user_name',$_SESSION['user']);
+			$tpl->assign('login',0);
+			$index_template='index.tpl';
+		}
 	} 
 }
 
@@ -160,7 +192,7 @@ $tpl->assign('modules_list',$menu->table_modules(-2));
 $tpl->assign('public_modules',$menu->table_modules(0));
 $module=new modules();
 //coge las operaciones de ese modulo disponibles
-if(isset($_GET['module'])||isset($_SESSION['module']))
+if(isset($_SESSION['user']) && (isset($_GET['module'])||isset($_SESSION['module'])))
 {
 	if(isset($_GET['module']))
 	{
@@ -179,7 +211,7 @@ if(isset($_GET['module'])||isset($_SESSION['module']))
 //2 opciones:
 //- El usuario no está logeado pero el módulo es público, en cuyo caso no habría problema
 //- El usuario está logeado pero intenta entrar en un móudlo donde no tiene permisos
-if(!isset($_SESSION['user']) && isset($_GET['module']))
+if(!isset($_SESSION['user']) && isset($_GET['module'])&&($_GET['module']!='user_corps'))
 {
 	//Se comprueba si el modulo es público, sino es así se indica el error
 	if($module->is_public_module($_GET['module']) == 0)
@@ -228,7 +260,7 @@ if(isset($_SESSION['user']) && isset($_GET['module']))
 /******************************** Operaciones con modulos ***********************************************************************************/
 
 //Se comprueba si se pasa de nuevo a elegir empresa
-if(isset($_GET['module'])&& (!isset($_GET['method']))&&($_GET['module']=='user_corps'))
+if((isset($_SESSION['user']))&& (isset($_GET['module'])&& (!isset($_GET['method']))&&($_GET['module']=='user_corps')))
 {
 	//registra la variable de sesion ident_corp con el identificador nulo para diferenciar en los menús
 	$_SESSION['ident_corp']=0;
@@ -236,7 +268,7 @@ if(isset($_GET['module'])&& (!isset($_GET['method']))&&($_GET['module']=='user_c
 
 //Se indica si se trabaja con una empresa, con cuál se está trabajando
 //Se comprueba si estan eligiendo empresa
-if(isset($_GET['module'])&& isset($_GET['method'])&&(($_GET['module']=='user_corps')&&($_GET['method']=='select')))
+if((isset($_SESSION['user']))&&(isset($_GET['module'])&& isset($_GET['method'])&&(($_GET['module']=='user_corps')&&($_GET['method']=='select'))))
 {	
 	//registra la variable de sesion user con el nombre de usuario
 	$_SESSION['ident_corp']=$_GET['id'];
@@ -307,7 +339,8 @@ else
 
 	$tpl->assign('title',$title);
 	$tpl->assign('nav_bar',$nav_bar);
-
+//Antes de ir a la plantilla se registra la hora máxima a la que puede estar el usuario en esa página
+$_SESSION['max_page_time'] = time()+60;
 
 $tpl->display($index_template);
 //print_r($post_user);
