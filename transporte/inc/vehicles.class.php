@@ -281,7 +281,10 @@ class vehicles{
 						//Introducimos categorias;
 						$this->add_category($this->id_vehicle);
 						
-						//devolvemos el id de la tabla ya que todo ha ido bien
+						
+						//Se introduce consulta en la bbdd
+						
+						
 						$this->db->close();
 					
 					}else {
@@ -294,13 +297,28 @@ class vehicles{
 					if($_SESSION['ruta_temporal'] != "")
 					{
    						$file = new upload_file( $_SESSION['nombre_photo'], $_SESSION['ruta_temporal'], $_SESSION['tamanno_photo'], $this->id_vehicle);
-   						$result = $file->upload( "images/vehicles/" );
+						$result = $file->upload( "images/vehicles/" );
    						if($result == 1)
    						{
    							//modificar ruta de la foto
 							$this->modify_photo($this->id_vehicle);
 						}
    					}	
+					else
+					{
+						$direccion = "C:\\wamp\\www\\transporte\\images\\vehicles\\".$this->id_vehicle.".gif";
+						//Copiar fichero con no imagen
+						if (!copy("C:\\wamp\\www\\transporte\\pics\\no-image.gif",$direccion))
+						{
+   							print("Error al copiar el fichero");
+						}
+						else
+						{
+							$_SESSION['ruta_photo'] = "images/vehicles/".$this->id_vehicle.".gif";
+							//modificar ruta de la foto
+							$this->modify_photo($this->id_vehicle);
+						}
+					}
 					return $this->id_vehicle;
 			
 				}
@@ -454,7 +472,7 @@ class vehicles{
 	
 	function modify_photo()
 	{
-	
+	print "Entra";
 		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
 		//crea una nueva conexin con una bbdd (mysql)
 		$this->db = NewADOConnection($this->db_type);
@@ -496,6 +514,7 @@ class vehicles{
 			//devolvemos 0 ya que no se ha insertado el registro
 			$this->error=-1;
 			$this->db->close();
+			print "Salr";
 			return 0;
 		}
 	}

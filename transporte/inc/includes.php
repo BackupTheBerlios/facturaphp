@@ -24,6 +24,7 @@ require_once('modules.class.php');
 require_once('news.class.php');
 require_once('sessions.class.php');
 require_once('log_methods.class.php');
+require_once('log_methods.class.php');
 require_once('methods.class.php');
 require_once('rel_emps_cats.class.php');
 require_once('services.class.php');

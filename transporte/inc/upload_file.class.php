@@ -65,7 +65,7 @@ class upload_file{
    ** @para String file rename to
   **/
   function upload_file( $file_name, $tmp_file_name, $file_size, $file_rename_to = '' ){
-    $this->cls_filename = $file_name;
+	$this->cls_filename = $file_name;
     $this->cls_tmp_filename = $tmp_file_name;
     $this->cls_filesize = $file_size;
     $this->cls_file_rename_to = $file_rename_to;
@@ -100,7 +100,6 @@ class upload_file{
    ** @returns string
   **/
   function setDir( $dir ){
-    
     if( !is_writable( $dir ) ){
       return "DIRECTORY_FAILURE";
     } else { 
@@ -158,13 +157,13 @@ class upload_file{
       }
     }
 	
-     // if flag to check if the file exists is set to 1
+     	// if flag to check if the file exists is set to 1
     if( move_uploaded_file( $this->cls_tmp_filename, $this->cls_upload_dir . $this->cls_filename ) == false ){
-      return "MOVE_UPLOADED_FILE_FAILURE";
-    } else {
-      return 1;
-    }
-
+     	return "MOVE_UPLOADED_FILE_FAILURE";
+   	} 
+	else 
+		return 1;
+	
   }
 
   /** checkFileExists()
@@ -229,13 +228,12 @@ class upload_file{
   **/
   function upload( $dir ){
     $this->cls_name_dir_rename=$dir;
-    $ret = $this->isUploadedFile();
-    
-    if( $ret != 1 ){
-      return $this->resultUpload( $ret );
+	$ret = $this->isUploadedFile();
+    if($ret != 1 ){
+     	 return $this->resultUpload( $ret );
     }
-
-    $ret = $this->setDir( $dir );
+		
+	$ret = $this->setDir( $dir );
     if( $ret != 1 ){
       return $this->resultUpload( $ret );
     }
