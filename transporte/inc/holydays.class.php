@@ -461,7 +461,7 @@ class holydays{
 		$empleado=new emps();
 		if ($empleado->read($_GET["id_emp"])==0)
 			$empleado->read($this->id_emp);
-		$nav_bar = '<a href="index.php?module=corps&method=view&id='.$_SESSION['ident_corp'].'">Zona privada</a> :: '.$corp.' <a href="index.php?module=emps">Empleados</a> :: <a href="index.php?module=emps&method=view&id='.$empleado->id_emp.'">Ver Empleados</a>';
+		$nav_bar = '<a href="index.php?module=user_corps">Zona privada</a> :: '.$corp.' <a href="index.php?module=emps">Empleados</a> :: <a href="index.php?module=emps&method=view&id='.$empleado->id_emp.'">Ver Empleados</a>';
 		$nav_bar=$nav_bar.$this->localice($method);
 		return $nav_bar;
 	}	

@@ -1240,9 +1240,9 @@ class emps{
 			$method=$this->method;
 		}	
 		if ($corp != ""){
-			$corp='<a href="index.php?module=user_corps&method=select&id='.$_SESSION['ident_corp'].'">'.$corp.'</a> ::';
+			$corp='<a href="index.php?module=corps&method=view&id='.$_SESSION['ident_corp'].'">'.$corp.' ::';
 		}
-		$nav_bar = '<a href="index.php?module=corps&method=view&id='.$_SESSION['ident_corp'].'">Zona privada</a> :: '.$corp.' <a href="index.php?module=emps">Empleados</a>';
+		$nav_bar = '<a href="index.php?module=user_corps">Zona privada</a> :: '.$corp.' <a href="index.php?module=emps">Empleados</a>';
 		$nav_bar=$nav_bar.$this->localice($method);
 		return $nav_bar;
 	}	

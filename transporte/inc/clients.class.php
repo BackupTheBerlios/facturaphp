@@ -28,9 +28,9 @@ class clients{
 			$method = $this->method;
 		}		
 		if ($corp != ""){
-			$corp='<a href="index.php?module=user_corps&method=select&id='.$_SESSION['ident_corp'].'">'.$corp.' ::';
+			$corp='<a href="index.php?module=corps&method=view&id='.$_SESSION['ident_corp'].'">'.$corp.' ::';
 		}
-		$nav_bar = '<a>Zona privada</a> :: '.$corp.' <a href="index.php?module=clients">Clientes</a>';
+		$nav_bar = '<a href="index.php?module=user_corps">Zona privada</a> :: '.$corp.' <a href="index.php?module=clients">Clientes</a>';
 	
 		return $nav_bar;
 	}	

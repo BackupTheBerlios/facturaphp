@@ -27,9 +27,9 @@ class services{
 			$method = $this->method;
 		}		
 		if ($corp != ""){
-			$corp='<a href="index.php?module=user_corps&method=select&id='.$_SESSION['ident_corp'].'">'.$corp.' ::';
+			$corp='<a href="index.php?module=corps&method=view&id='.$_SESSION['ident_corp'].'">'.$corp.' ::';
 		}
-		$nav_bar = 'Zona Privada :: '.$corp.' <a href="index.php?module=uservices">Servicios</a>';
+		$nav_bar = 'Zona Privada :: '.$corp.' <a href="index.php?module=services">Servicios</a>';
 	
 		return $nav_bar;
 	}	

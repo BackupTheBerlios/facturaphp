@@ -27,7 +27,7 @@ class news{
 			$method = $this->method;
 		}		
 		if ($corp != ""){
-			$corp='<a href="index.php?module=user_corps&method=select&id='.$_SESSION['ident_corp'].'">'.$corp.' ::';
+			$corp='<a href="index.php?module=corps&method=view&id='.$_SESSION['ident_corp'].'">'.$corp.' ::';
 		}
 		$nav_bar = 'Zona Pública :: '.$corp.' <a href="index.php?module=news">Noticias</a>';
 

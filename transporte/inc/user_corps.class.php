@@ -97,7 +97,7 @@ var $emp;
 	
 	function bar($method,$corp){		
 		if ($corp != ""){
-			$corp='<a href="index.php?module=user_corps&method=select&id='.$_SESSION['ident_corp'].'">'.$corp.' ::';
+			$corp='<a href="index.php?module=corps&method=view&id='.$_SESSION['ident_corp'].'">'.$corp.' ::';
 		}
 		$nav_bar = 'Zona privada :: '.$corp.' <a href="index.php?module=user_corps">Usuario empresas</a>';
 		$nav_bar=$nav_bar;
