@@ -209,7 +209,7 @@ if(isset($_SESSION['user']) && isset($_GET['module']))
 		}
 	}
 	else
-	if($_SESSION['admin'] && ($_GET['module'] == 'modules' || $_GET['module'] == 'methods'))
+	if($_SESSION['admin'] && (!$_SESSION['super']) && ($_GET['module'] == 'modules' || $_GET['module'] == 'methods'))
 	{
 		$module_name = 'error';	
 	}
