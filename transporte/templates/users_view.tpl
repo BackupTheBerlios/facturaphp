@@ -26,7 +26,7 @@
                                 <td width="25%"  nowrap class="camposVistas">Login:</td>
                                 <td nowrap width="25%" class="datosVista">{$objeto->login}</td>
 								<td height="21" nowrap class="camposVistas">Contrase&ntilde;a:</td>
-                                <td nowrap class="datosVista"> {$objeto->passwd}</td>
+                                <td nowrap class="datosVista"> <!--{$objeto->passwd}-->********</td>
                                 
                               </tr>
                               
