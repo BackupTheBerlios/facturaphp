@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.3, created on 2005-01-19 13:50:14
+<?php /* Smarty version 2.6.3, created on 2005-03-22 12:40:54
          compiled from vehicles_modify.tpl */ ?>
 <td valign="top">
 <?php $_smarty_tpl_vars = $this->_tpl_vars;
@@ -30,14 +30,16 @@ unset($_smarty_tpl_vars);
 						<td > <input type="text" id="<?php echo $this->_tpl_vars['objeto']->ddbb_alias; ?>
 " name="<?php echo $this->_tpl_vars['objeto']->ddbb_alias; ?>
 " class="textoMenu" value="<?php echo $this->_tpl_vars['objeto']->alias; ?>
-"></td>
+"><font class="error"><?php echo $this->_tpl_vars['error_alias']; ?>
+</font></td>
 				  </tr>
 				  <tr>
 						<td width="125px" align="right" class="CampoFormulario">Matr&iacute;cula:</td>
 						<td> <input type="text" id="<?php echo $this->_tpl_vars['objeto']->ddbb_number_plate; ?>
 " name="<?php echo $this->_tpl_vars['objeto']->ddbb_number_plate; ?>
 " class="textoMenu" value="<?php echo $this->_tpl_vars['objeto']->number_plate; ?>
-"></td>
+"><font class="error"><?php echo $this->_tpl_vars['error_number_plate']; ?>
+</font></td>
 				  </tr>
 				  <tr>
 						<td width="125" class="CampoFormulario">Categor&iacute;a:</td>

@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.3, created on 2005-02-09 00:39:24
+<?php /* Smarty version 2.6.3, created on 2005-03-16 12:33:14
          compiled from modules_modify.tpl */ ?>
 <td valign="top">
 <form method="post" action="index.php?module=modules&method=modify&id=<?php echo $this->_tpl_vars['objeto']->id_module; ?>
@@ -25,21 +25,24 @@
 						<td> <input type="text" id="<?php echo $this->_tpl_vars['objeto']->ddbb_name_web; ?>
 " name="<?php echo $this->_tpl_vars['objeto']->ddbb_name_web; ?>
 " class="textoMenu" value="<?php echo $this->_tpl_vars['objeto']->name_web; ?>
-"></td>
+"><font class="error"><?php echo $this->_tpl_vars['error_name_web']; ?>
+</font></td>
 					</tr>				  			
 				  <tr>
 						<td width="125px" align="right" class="CampoFormulario">Nombre:</td>
 						<td> <input type="text" id="<?php echo $this->_tpl_vars['objeto']->ddbb_name; ?>
 " name="<?php echo $this->_tpl_vars['objeto']->ddbb_name; ?>
 " class="textoMenu" value="<?php echo $this->_tpl_vars['objeto']->name; ?>
-"></td>
+"><font class="error"><?php echo $this->_tpl_vars['error_name']; ?>
+</font></td>
 					</tr>
 				  <tr>
 						<td width="125px" align="right" class="CampoFormulario">Ruta:</td>
 						<td> <input type="text" id="<?php echo $this->_tpl_vars['objeto']->ddbb_path; ?>
 " name="<?php echo $this->_tpl_vars['objeto']->ddbb_path; ?>
 " class="textoMenu" value="<?php echo $this->_tpl_vars['objeto']->path; ?>
-"></td>
+"><font class="error"><?php echo $this->_tpl_vars['error_path']; ?>
+</font></td>
 					</tr>
 				 <tr>
 						<td width="125px" align="right" class="CampoFormulario">Activo:</td>
@@ -110,6 +113,7 @@ $this->_sections['indice']['last']       = ($this->_sections['indice']['iteratio
 					  <td colspan="6">&nbsp;</td>
 				  </tr>
 				  <tr class="multilinea1">
+				  
 						<td align="center" class="multilinea1"><input type="checkbox" name="list" value="Listar" <?php if ($this->_tpl_vars['module_methods']['list']['name'] == 'list'): ?>checked<?php endif; ?>>Listar</td>
 						<td align="center" class="multilinea1"><input type="checkbox" name="select" value="Seleccionar" <?php if ($this->_tpl_vars['module_methods']['select']['name'] == 'select'): ?>checked<?php endif; ?>>Seleccionar</td>
 						<td align="center" class="multilinea1"><input type="checkbox" name="view" value="Ver" <?php if ($this->_tpl_vars['module_methods']['view']['name'] == 'view'): ?>checked<?php endif; ?>>Ver</td>

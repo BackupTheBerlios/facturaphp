@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.3, created on 2005-01-26 17:20:04
+<?php /* Smarty version 2.6.3, created on 2005-03-04 18:42:26
          compiled from cat_prods_add.tpl */ ?>
 <td valign="top">
 <form method="post" action="index.php?module=cat_prods&method=add" name="form_central" enctype="multipart/form-data">
@@ -24,7 +24,8 @@
 						<td width="125px" align="right" class="CampoFormulario">Nombre:</td>
 						<td> <input type="text" id="<?php echo $this->_tpl_vars['objeto']->ddbb_name; ?>
 " name="<?php echo $this->_tpl_vars['objeto']->ddbb_name; ?>
-" class="textoMenu"></td>
+" class="textoMenu"><<font class="error"><?php echo $this->_tpl_vars['error_name']; ?>
+</font>/td>
 					</tr>
 					<tr>
 				 	<td width="125px" class="CampoFormulario" >Imagen:</td>
@@ -67,14 +68,16 @@ $this->_sections['nombre']['last']       = ($this->_sections['nombre']['iteratio
 								<?php echo $this->_tpl_vars['objeto']->cat_prods_list[$this->_sections['nombre']['index']]['name']; ?>
 
 							</option>
-						<?php endfor; endif; ?>						
+						<?php endfor; endif; ?>	<font class="error"><?php echo $this->_tpl_vars['error_id_parent_cat']; ?>
+</font>					
 						</td>
 					</tr>
 					  <tr>
 						<td width="125" align="right" class="CampoFormulario">Descripcion:</td>
 						<td rowspan="2" ><textarea name="<?php echo $this->_tpl_vars['objeto']->ddbb_descrip; ?>
 " class="textoMenu" id="<?php echo $this->_tpl_vars['objeto']->ddbb_descrip; ?>
-"></textarea> </td>
+"></textarea> <font class="error"><?php echo $this->_tpl_vars['error_descrip']; ?>
+</font></td>
 					</tr>
 		</table>
 		</td>

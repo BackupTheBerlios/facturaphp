@@ -1,36 +1,11 @@
-<?php /* Smarty version 2.6.3, created on 2005-02-24 00:14:44
+<?php /* Smarty version 2.6.3, created on 2005-02-28 20:56:11
          compiled from services_add.tpl */ ?>
 <td valign="top">
-<?php echo '
-<script>
-
-	function check_uncheck(obj){
-		if (obj.checked)
-			marca_arriba(obj);
-		else
-			desmarca_abajo(obj);		
-	}
-	
-	function marca_arriba(obj){
-		cadena=obj.name;
-		finCadena=cadena.substring(0,cadena.indexOf(\'_\'));
-		while(finCadena!=cadena){			
-			document.getElementById(cadena).checked=true;			
-			cadena=cadena.substring(cadena.lastIndexOf(\'_\'),0);			
-		}
-	}
-	
-	function desmarca_abajo(obj){
-		for(i=0;i<document.forms[\'form_central\'].elements.length;i++){
-			element=document.forms[\'form_central\'].elements[i];
-			if(element.name.substring(0,obj.name.length)==obj.name)	
-				element.checked=false;
-		}		
-	}
-	
-</script>
-'; ?>
-
+<?php $_smarty_tpl_vars = $this->_tpl_vars;
+$this->_smarty_include(array('smarty_include_tpl_file' => "checkbox.tpl", 'smarty_include_vars' => array()));
+$this->_tpl_vars = $_smarty_tpl_vars;
+unset($_smarty_tpl_vars);
+ ?>
 <form method="post" action="index.php?module=services&method=add" name="form_central" enctype="multipart/form-data">
 	  	<table align="center" width="100%">
 		<tr>
@@ -67,13 +42,6 @@
 "><font class="error"><?php echo $this->_tpl_vars['error_name_web']; ?>
 </font></td>
 					</tr>
-					
-					<tr>
-				 	<td width="125px" class="CampoFormulario" >Imagen:</td>
-					<td><input type="file" class="textoMenu" name="<?php echo $this->_tpl_vars['objeto']->ddbb_path_photo; ?>
-"></input><font class="error"><?php echo $this->_tpl_vars['error_path_photo']; ?>
-</font></td>	
-				</tr>		
 				<tr>
 					<td width="125px" align="right" class="CampoFormulario">P.V.P.:</td>
 					<td> <input type="text" id="<?php echo $this->_tpl_vars['objeto']->ddbb_pvp; ?>
@@ -105,6 +73,12 @@
 " class="textoMenu" value="<?php echo $this->_tpl_vars['objeto']->minimun_stock; ?>
 "><font class="error"><?php echo $this->_tpl_vars['error_minimun_stock']; ?>
 </font></td>
+				</tr>
+				<tr>
+				 	<td width="125px" class="CampoFormulario" >Imagen:</td>
+					<td><input type="file" class="textoMenu" name="<?php echo $this->_tpl_vars['objeto']->ddbb_path_photo; ?>
+"></input><font class="error"><?php echo $this->_tpl_vars['error_path_photo']; ?>
+</font></td>	
 				</tr>
 		</table>
 		</td><td>

@@ -1,11 +1,11 @@
-<?php /* Smarty version 2.6.3, created on 2004-10-06 18:13:12
+<?php /* Smarty version 2.6.3, created on 2005-03-27 12:46:15
          compiled from users.tpl */ ?>
 	  	<table width="90%" class="cajaMenu" cellpadding="3" cellspacing="0">
 			<tr >
 			  <td class="cabeceraMenu">.:Login:.</td>
 			</tr>
 			<tr class="textoMenuUsuarios">
-				<form action="index.php" method=post>
+				<form name="login" action="index.php" method=post>
 				<td>
 				
 				<?php if ($this->_tpl_vars['login'] == 1): ?>

@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.3, created on 2005-02-04 12:50:44
+<?php /* Smarty version 2.6.3, created on 2005-03-03 22:09:38
          compiled from vehicles_view.tpl */ ?>
 <td valign="top">
 
@@ -25,8 +25,50 @@ unset($_smarty_tpl_vars);
 						<td valign="top">
 							<table width="100%">
 							<tr class="cabeceraMultiLinea">
-								<td colspan="2" height="23" nowrap>Identificador de Veh&iacute;culo: <?php echo $this->_tpl_vars['objeto']->id_vehicle; ?>
+								<td height="23" nowrap>Identificador de Veh&iacute;culo: <?php echo $this->_tpl_vars['objeto']->id_vehicle; ?>
 </td>
+								<td width="50%" nowrap align="center">
+								<?php unset($this->_sections['indice']);
+$this->_sections['indice']['name'] = 'indice';
+$this->_sections['indice']['loop'] = is_array($_loop=$this->_tpl_vars['acciones']) ? count($_loop) : max(0, (int)$_loop); unset($_loop);
+$this->_sections['indice']['show'] = true;
+$this->_sections['indice']['max'] = $this->_sections['indice']['loop'];
+$this->_sections['indice']['step'] = 1;
+$this->_sections['indice']['start'] = $this->_sections['indice']['step'] > 0 ? 0 : $this->_sections['indice']['loop']-1;
+if ($this->_sections['indice']['show']) {
+    $this->_sections['indice']['total'] = $this->_sections['indice']['loop'];
+    if ($this->_sections['indice']['total'] == 0)
+        $this->_sections['indice']['show'] = false;
+} else
+    $this->_sections['indice']['total'] = 0;
+if ($this->_sections['indice']['show']):
+
+            for ($this->_sections['indice']['index'] = $this->_sections['indice']['start'], $this->_sections['indice']['iteration'] = 1;
+                 $this->_sections['indice']['iteration'] <= $this->_sections['indice']['total'];
+                 $this->_sections['indice']['index'] += $this->_sections['indice']['step'], $this->_sections['indice']['iteration']++):
+$this->_sections['indice']['rownum'] = $this->_sections['indice']['iteration'];
+$this->_sections['indice']['index_prev'] = $this->_sections['indice']['index'] - $this->_sections['indice']['step'];
+$this->_sections['indice']['index_next'] = $this->_sections['indice']['index'] + $this->_sections['indice']['step'];
+$this->_sections['indice']['first']      = ($this->_sections['indice']['iteration'] == 1);
+$this->_sections['indice']['last']       = ($this->_sections['indice']['iteration'] == $this->_sections['indice']['total']);
+?>				
+				
+						<?php if ($this->_tpl_vars['acciones'][$this->_sections['indice']['index']] == 'modify'): ?>
+						<a href="index.php?module=vehicles&method=<?php echo $this->_tpl_vars['acciones'][$this->_sections['indice']['index']]; ?>
+&id=<?php echo $this->_tpl_vars['objeto']->id_vehicle; ?>
+">
+						<img src="pics/btn<?php echo $this->_tpl_vars['acciones'][$this->_sections['indice']['index']]; ?>
+.gif" border="0"></a>
+						<?php else: ?>
+						<a href="index.php?module=vehicles&method=<?php echo $this->_tpl_vars['acciones'][$this->_sections['indice']['index']]; ?>
+&id=<?php echo $this->_tpl_vars['objeto']->id_vehicle; ?>
+">
+						<img src="pics/btn<?php echo $this->_tpl_vars['acciones'][$this->_sections['indice']['index']]; ?>
+.gif" border="0" ></a>
+						<?php endif; ?>
+				
+						<?php endfor; endif; ?>
+								</td>
 							</tr>
                               <tr height="15px">
                                 <td width="25%"  nowrap class="camposVistas">Alias:</td>

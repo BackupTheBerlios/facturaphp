@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.3, created on 2005-01-12 17:38:37
+<?php /* Smarty version 2.6.3, created on 2005-03-22 12:40:05
          compiled from vehicles_add.tpl */ ?>
 <td valign="top">
 <?php $_smarty_tpl_vars = $this->_tpl_vars;
@@ -19,26 +19,33 @@ unset($_smarty_tpl_vars);
 		    </table>
 		    <br>
 		    <table width="250px" align="center">
+				 
 				<tr>
-					<td colspan="2" class="cabeceraCampoFormulario">Datos del veh&iacute;culo:</td>
-				</tr> 
-				<tr>
-					<td width="125px" align="right" class="CampoFormulario">Matr&iacute;cula:</td>
-					<td> <input type="text" id="<?php echo $this->_tpl_vars['objeto']->ddbb_number_plate; ?>
-" name="<?php echo $this->_tpl_vars['objeto']->ddbb_number_plate; ?>
-" value = "<?php echo $this->_tpl_vars['objeto']->number_plate; ?>
-" class="textoMenu"></td>
-				</tr>
-				<tr>
-					<td width="125px" class="CampoFormulario" >Alias:</td>
-					<td > <input type="text" id="<?php echo $this->_tpl_vars['objeto']->ddbb_alias; ?>
+					  <td colspan="2" class="cabeceraCampoFormulario">Datos del veh&iacute;culo:</td>
+				  </tr>
+					<tr>
+						<td width="125px" class="CampoFormulario">Alias:</td>
+						<td > <input type="text" id="<?php echo $this->_tpl_vars['objeto']->ddbb_alias; ?>
 " name="<?php echo $this->_tpl_vars['objeto']->ddbb_alias; ?>
-" value = "<?php echo $this->_tpl_vars['objeto']->alias; ?>
-" class="textoMenu"></td>		
-				 </tr>
-				 <tr>
-						<td " class="CampoFormulario">Categor&iacute;a:</td>
-						<td width="125px"><select name="category">
+" class="textoMenu" value="<?php echo $this->_tpl_vars['objeto']->alias; ?>
+"><font class="error"><?php echo $this->_tpl_vars['error_alias']; ?>
+</font></td>
+				  </tr>
+				  <tr>
+						<td width="125px" align="right" class="CampoFormulario">Matr&iacute;cula:</td>
+						<td> <input type="text" id="<?php echo $this->_tpl_vars['objeto']->ddbb_number_plate; ?>
+" name="<?php echo $this->_tpl_vars['objeto']->ddbb_number_plate; ?>
+" class="textoMenu" value="<?php echo $this->_tpl_vars['objeto']->number_plate; ?>
+"><font class="error"><?php echo $this->_tpl_vars['error_number_plate']; ?>
+</font></td>
+				  </tr>
+				  <tr>
+						<td width="125" class="CampoFormulario">Categor&iacute;a:</td>
+						<td><select name="category">
+						<input type="hidden" name="<?php echo $this->_tpl_vars['categoria']->ddbb_id_cat_vehicle; ?>
+" id="<?php echo $this->_tpl_vars['categoria']->ddbb_id_cat_vehicle; ?>
+" value="<?php echo $this->_tpl_vars['categoria']->id_cat_vehicle; ?>
+"}
 						<?php unset($this->_sections['indice']);
 $this->_sections['indice']['name'] = 'indice';
 $this->_sections['indice']['loop'] = is_array($_loop=$this->_tpl_vars['categorias']) ? count($_loop) : max(0, (int)$_loop); unset($_loop);
@@ -64,16 +71,16 @@ $this->_sections['indice']['first']      = ($this->_sections['indice']['iteratio
 $this->_sections['indice']['last']       = ($this->_sections['indice']['iteration'] == $this->_sections['indice']['total']);
 ?>
 						  <option value="<?php echo $this->_tpl_vars['categorias'][$this->_sections['indice']['index']]['id_cat_vehicle']; ?>
-"><?php echo $this->_tpl_vars['categorias'][$this->_sections['indice']['index']]['name']; ?>
+"<?php if ($this->_tpl_vars['categoria']->id_cat_vehicle == $this->_tpl_vars['categorias'][$this->_sections['indice']['index']]['id_cat_vehicle']): ?> selected<?php endif; ?>><?php echo $this->_tpl_vars['categorias'][$this->_sections['indice']['index']]['name']; ?>
 </option>						 
 						  <?php endfor; endif; ?>
 						</select></td>
 				 </tr>
-				 <tr>
-				 	<td width="125px" class="CampoFormulario" >Fotograf&iacute;a:</td>
-					<td><input type="file" name="<?php echo $this->_tpl_vars['objeto']->ddbb_path_photo; ?>
+				  <tr>
+						<td width="125px" align="right" class="CampoFormulario">Fotograf&iacute;a:</td>						
+						<td><input type="file" name="<?php echo $this->_tpl_vars['objeto']->ddbb_path_photo; ?>
 "></input></td>	
-				</tr>		
+				  </tr>		
 			</table>
 		</td>
 		</tr>	

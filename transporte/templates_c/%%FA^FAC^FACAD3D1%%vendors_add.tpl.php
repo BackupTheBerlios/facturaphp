@@ -1,7 +1,7 @@
-<?php /* Smarty version 2.6.3, created on 2005-03-10 12:45:16
-         compiled from corps_add.tpl */ ?>
+<?php /* Smarty version 2.6.3, created on 2005-03-17 12:22:13
+         compiled from vendors_add.tpl */ ?>
 <td valign="top">
-<form method="post" action="index.php?module=corps&method=add" name="form_central">
+<form method="post" action="index.php?module=vendors&method=add" name="form_central">
 	  	<table align="center" width="100%">
 		<tr>
 		<td valign="top">
@@ -10,7 +10,7 @@
 						<td width="7%">
 						 <img src="pics/usuariosico.png" width="32" height="32">
 						</td>
-						<td width="93%" valign="middle"  nowrap>A&ntilde;adir Empresa</td>
+						<td width="93%" valign="middle"  nowrap>A&ntilde;adir Provedor</td>
 			  </tr>
 		  </table>
 						<br>

@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.3, created on 2004-11-15 19:46:34
+<?php /* Smarty version 2.6.3, created on 2005-03-09 14:29:02
          compiled from cat_emps_modify.tpl */ ?>
 <td valign="top">
 <form method="post" action="index.php?module=cat_emps&method=modify&id=<?php echo $this->_tpl_vars['objeto']->id_cat_emp; ?>
@@ -11,7 +11,7 @@
 						<td width="7%">
 						 <img src="pics/usuariosico.png" width="32" height="32">
 						</td>
-						<td width="93%" valign="middle"  nowrap>Modificar Catego&iacute;a de empleado</td>
+						<td width="93%" valign="middle"  nowrap>Modificar Categor&iacute;a de empleado</td>
 			  </tr>
 		  </table>
 						<br>
@@ -26,14 +26,16 @@
 						<td> <input type="text" id="<?php echo $this->_tpl_vars['objeto']->ddbb_name; ?>
 " name="<?php echo $this->_tpl_vars['objeto']->ddbb_name; ?>
 " class="textoMenu" value="<?php echo $this->_tpl_vars['objeto']->name; ?>
-"></td>
+"><font class="error"><?php echo $this->_tpl_vars['error_name']; ?>
+</font></td>
 					</tr>
 					  <tr>
 						<td width="125" align="right" class="CampoFormulario">Descripcion:</td>
 						<td rowspan="2" ><textarea name="<?php echo $this->_tpl_vars['objeto']->ddbb_descrip; ?>
 " class="textoMenu" id="<?php echo $this->_tpl_vars['objeto']->ddbb_descrip; ?>
 "><?php echo $this->_tpl_vars['objeto']->descrip; ?>
-</textarea> </td>
+</textarea> <font class="error"><?php echo $this->_tpl_vars['error_descrip']; ?>
+</font></td>
 					</tr>				  
 		</table>
 		</td>

@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.3, created on 2005-02-23 12:28:27
+<?php /* Smarty version 2.6.3, created on 2005-03-10 12:44:56
          compiled from expire.tpl */ ?>
 <td valign="top">
 
@@ -12,4 +12,4 @@
 				</tr>
 			  </table>
 				
-				
+</td>				

@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.3, created on 2005-02-09 01:29:43
+<?php /* Smarty version 2.6.3, created on 2005-03-29 12:45:16
          compiled from emps_modify.tpl */ ?>
 <td valign="top">
 <script>
@@ -13,6 +13,7 @@ function enableDisable(value){
 	//Deshabilitamos/Habilitamos los campos de texto de usuarios
 	document.getElementById("user_login").disabled = action;
 	document.getElementById("user_passwd").disabled = action;
+	document.getElementById("user_retype").disabled = action;
 	document.getElementById("user_name").disabled = action;
 	document.getElementById("user_last_name").disabled = action;
 	document.getElementById("user_last_name2").disabled = action;
@@ -74,41 +75,42 @@ unset($_smarty_tpl_vars);
 						<td> <input type="text" id="<?php echo $this->_tpl_vars['objeto']->ddbb_name; ?>
 " name="<?php echo $this->_tpl_vars['objeto']->ddbb_name; ?>
 " class="textoMenu" value="<?php echo $this->_tpl_vars['objeto']->name; ?>
-"></td>
+"><font class="error"><?php echo $this->_tpl_vars['error_name']; ?>
+</font></td>
 					</tr>
 					<tr>
 						<td width="125" class="CampoFormulario" >Primer apellido: </td>
 						<td > <input type="text" id="<?php echo $this->_tpl_vars['objeto']->ddbb_last_name; ?>
 " name="<?php echo $this->_tpl_vars['objeto']->ddbb_last_name; ?>
 " class="textoMenu" value="<?php echo $this->_tpl_vars['objeto']->last_name; ?>
-"></td>
+"><font class="error"><?php echo $this->_tpl_vars['error_last_name']; ?>
+</font></td>
 				  </tr>
 				  <tr>
 						<td width="125" class="CampoFormulario">Segundo apellido:</td>
 						<td > <input type="text" id="<?php echo $this->_tpl_vars['objeto']->ddbb_last_name2; ?>
 " name="<?php echo $this->_tpl_vars['objeto']->ddbb_last_name2; ?>
 " class="textoMenu" value="<?php echo $this->_tpl_vars['objeto']->last_name2; ?>
-"></td>
+"><font class="error"><?php echo $this->_tpl_vars['error_last_name2']; ?>
+</font></td>
 				  </tr>
 				  <tr>
 						<td width="125" class="CampoFormulario" nowrap>Fecha de nacimiento:</td>
-						<td > <!--<input type="text" id="birthday"  name="fields[multi_edit][0][up]" class="textoMenu">-->						
-				 <input class="textoMenu" type="text" name="dateChanged" id="dateChanged" value="<?php echo $this->_tpl_vars['cumplecambiado']; ?>
-" "size="15" maxlength="99" class="textfield" onchange="alert(this.value)" id="dateChanged" readonly>
-				 <input class="textoMenu" type="hidden" id="<?php echo $this->_tpl_vars['objeto']->ddbb_birthday; ?>
+						<td > 
+							<input class="textoMenu" type="text" id="<?php echo $this->_tpl_vars['objeto']->ddbb_birthday; ?>
 " name="<?php echo $this->_tpl_vars['objeto']->ddbb_birthday; ?>
 "  value="<?php echo $this->_tpl_vars['objeto']->birthday; ?>
-" size="15" maxlength="99" class="textfield" onchange="alert(this.value)" id="<?php echo $this->_tpl_vars['objeto']->ddbb_birthday; ?>
-">
+" size="15" maxlength="99" class="textfield">
                                     <script type="text/javascript">
                                     
                     <!--
                     document.write('<a title="Calendario" href="javascript:openCalendar(\'lang=es-utf-8&amp;server=1\', \'form_central\', \'<?php echo $this->_tpl_vars['objeto']->ddbb_birthday; ?>
-\', \'dateChanged\', \'date\')"><img class="calendar" valign="center" src="pics/calendar.png" alt="Calendario"/></a>');
+\', \'date\')"><img class="calendar" valign="center" src="pics/calendar.png" alt="Calendario"/></a>');
                     //-->
                     </script>
 		    
-						
+						<font class="error"><?php echo $this->_tpl_vars['error_birthday']; ?>
+</font>
 						</td>
 				 </tr>
 				  <tr>
@@ -116,35 +118,40 @@ unset($_smarty_tpl_vars);
 						<td > <input type="text" id="<?php echo $this->_tpl_vars['objeto']->ddbb_address; ?>
 " name="<?php echo $this->_tpl_vars['objeto']->ddbb_address; ?>
 " class="textoMenu" value="<?php echo $this->_tpl_vars['objeto']->address; ?>
-"></td>
+"><font class="error"><?php echo $this->_tpl_vars['error_address']; ?>
+</font></td>
 				 </tr>
 				  <tr>
 						<td width="125" class="CampoFormulario">C&oacute;digo postal:</td>
 						<td > <input type="text" id="<?php echo $this->_tpl_vars['objeto']->ddbb_postal_code; ?>
 " name="<?php echo $this->_tpl_vars['objeto']->ddbb_postal_code; ?>
 " class="textoMenu" value="<?php echo $this->_tpl_vars['objeto']->postal_code; ?>
-"></td>
+"><font class="error"><?php echo $this->_tpl_vars['error_postal_code']; ?>
+</font></td>
 				 </tr>
 				  <tr>
 						<td width="125" class="CampoFormulario">Localidad:</td>
 						<td > <input type="text" id="<?php echo $this->_tpl_vars['objeto']->ddbb_city; ?>
 " name="<?php echo $this->_tpl_vars['objeto']->ddbb_city; ?>
 " class="textoMenu" value="<?php echo $this->_tpl_vars['objeto']->city; ?>
-"></td>
+"><font class="error"><?php echo $this->_tpl_vars['error_city']; ?>
+</font></td>
 				 </tr>
 				  <tr>
 						<td width="125" class="CampoFormulario">Provincia:</td>
 						<td > <input type="text" id="<?php echo $this->_tpl_vars['objeto']->ddbb_state; ?>
 " name="<?php echo $this->_tpl_vars['objeto']->ddbb_state; ?>
 " class="textoMenu"  value="<?php echo $this->_tpl_vars['objeto']->state; ?>
-"></td>
+"><font class="error"><?php echo $this->_tpl_vars['error_state']; ?>
+</font></td>
 				 </tr>
 				  <tr>
 						<td width="125" class="CampoFormulario">Pa&iacute;s:</td>
 						<td > <input type="text" id="<?php echo $this->_tpl_vars['objeto']->ddbb_country; ?>
 " name="<?php echo $this->_tpl_vars['objeto']->ddbb_country; ?>
 " class="textoMenu"  value="<?php echo $this->_tpl_vars['objeto']->country; ?>
-"></td>
+"><font class="error"><?php echo $this->_tpl_vars['error_country']; ?>
+</font></td>
 				 </tr>
 				 
 				</table>
@@ -159,28 +166,32 @@ unset($_smarty_tpl_vars);
 						<td > <input type="text" id="<?php echo $this->_tpl_vars['objeto']->ddbb_phone; ?>
 " name="<?php echo $this->_tpl_vars['objeto']->ddbb_phone; ?>
 " class="textoMenu"  value="<?php echo $this->_tpl_vars['objeto']->phone; ?>
-"></td>
+"><font class="error"><?php echo $this->_tpl_vars['error_phone']; ?>
+</font></td>
 				 </tr>
 				  <tr>
 						<td width="125" class="CampoFormulario">Tel&eacute;fono m&oacute;vil:</td>
 						<td > <input type="text" id="<?php echo $this->_tpl_vars['objeto']->ddbb_mobile_phone; ?>
 " name="<?php echo $this->_tpl_vars['objeto']->ddbb_mobile_phone; ?>
 " class="textoMenu"  value="<?php echo $this->_tpl_vars['objeto']->mobile_phone; ?>
-"></td>
+"><font class="error"><?php echo $this->_tpl_vars['error_mobile_phone']; ?>
+</font></td>
 				 </tr>
 				<tr>
 						<td width="125" class="CampoFormulario">Fax:</td>
 						<td > <input type="text" id="<?php echo $this->_tpl_vars['objeto']->ddbb_fax; ?>
 " name="<?php echo $this->_tpl_vars['objeto']->ddbb_fax; ?>
 " class="textoMenu" value="<?php echo $this->_tpl_vars['objeto']->fax; ?>
-"></td>
+"><font class="error"><?php echo $this->_tpl_vars['error_fax']; ?>
+</font></td>
 				 </tr>
 				  <tr>
 						<td width="125" class="CampoFormulario">E-mail:</td>
 						<td > <input name="<?php echo $this->_tpl_vars['objeto']->ddbb_mail; ?>
 " type="text" class="textoMenu" id="<?php echo $this->_tpl_vars['objeto']->ddbb_mail; ?>
 "  value="<?php echo $this->_tpl_vars['objeto']->mail; ?>
-"></td>
+"><font class="error"><?php echo $this->_tpl_vars['error_mail']; ?>
+</font></td>
 				 </tr>
 				  <tr>
 						<td width="125" class="CampoFormulario">Categoria:</td>
@@ -222,30 +233,21 @@ $this->_sections['indice']['last']       = ($this->_sections['indice']['iteratio
 				 <tr>
 						<td width="125" class="CampoFormulario" nowrap>Fecha de alta:</td>
 						<td > <!--<input type="text" id="come"  name="fields[multi_edit][0][up]" class="textoMenu">-->						
-				 <input class="textoMenu" type="text" name="comeChanged" value="<?php echo $this->_tpl_vars['holycambiado']; ?>
-" "size="15" maxlength="99" class="textfield" id="comeChanged" readonly>
-				<input type="hidden" name="<?php echo $this->_tpl_vars['holyday']->ddbb_ill; ?>
-" id="<?php echo $this->_tpl_vars['holyday']->ddbb_ill; ?>
-" value="2">
-				 <input type="hidden" name="<?php echo $this->_tpl_vars['holyday']->ddbb_id_holy; ?>
-" id="<?php echo $this->_tpl_vars['holyday']->ddbb_id_holyday; ?>
-" value="<?php echo $this->_tpl_vars['holyday']->id_holyday; ?>
-">
-				 <input class="textoMenu" type="hidden" name="<?php echo $this->_tpl_vars['holyday']->ddbb_come; ?>
+				 <input class="textoMenu" type="text" name="<?php echo $this->_tpl_vars['holyday']->ddbb_come; ?>
 " id="<?php echo $this->_tpl_vars['holyday']->ddbb_come; ?>
-" value="<?php echo $this->_tpl_vars['holyday']->come; ?>
+" value="<?php echo $this->_tpl_vars['objeto']->come; ?>
 " size="15" maxlength="99" class="textfield" id="<?php echo $this->_tpl_vars['holyday']->ddbb_come; ?>
-"><!--<?php echo $this->_tpl_vars['holiday']->ddbb_come; ?>
--->
+">
                                     <script type="text/javascript">
                                     
                     <!--
                     document.write('<a title="Calendario" href="javascript:openCalendar(\'lang=es-utf-8&amp;server=1\', \'form_central\', \'<?php echo $this->_tpl_vars['holyday']->ddbb_come; ?>
-\', \'comeChanged\', \'date\')"><img class="calendar" valign="center" src="pics/calendar.png" alt="Calendario"/></a>');
+\', \'date\')"><img class="calendar" valign="center" src="pics/calendar.png" alt="Calendario"/></a>');
                     //-->
                     </script>
 		    
-						
+						<font class="error"><?php echo $this->_tpl_vars['error_come']; ?>
+</font>
 						</td>
 				 </tr>
 			</table>
@@ -255,9 +257,9 @@ $this->_sections['indice']['last']       = ($this->_sections['indice']['iteratio
 				<input type="radio" <?php if ($this->_tpl_vars['usuarios']->id_user == 0 || $this->_tpl_vars['usuarios']->id_user == ""): ?>checked <?php endif; ?>name="user" id="user_exist" value="exist" onChange="enableDisable(this.value)"> Escoger un usuario existente
 			</td></tr>
 			<tr class="class="textoMenu" align="center"><td><select name="existUser" id="existUser">
-			 <?php if ($this->_tpl_vars['usuarios']->id_user == 0 || $this->_tpl_vars['usuarios']->id_user == ""): ?>
-						 <option value="0">Sin Usuario</option>
-						 <?php endif; ?>
+			 
+						 <option value="0">Ninguno</option>
+			
 						<?php unset($this->_sections['indice']);
 $this->_sections['indice']['name'] = 'indice';
 $this->_sections['indice']['loop'] = is_array($_loop=$this->_tpl_vars['listado_usuarios']) ? count($_loop) : max(0, (int)$_loop); unset($_loop);
@@ -314,14 +316,22 @@ $this->_sections['indice']['last']       = ($this->_sections['indice']['iteratio
 					<tr>
 						<td width="125px" align="right" class="CampoFormulario" nowrap>Login:</td>
 						<td > <input type="text" id="user_login" name="user_<?php echo $this->_tpl_vars['usuarios']->ddbb_login; ?>
-" class="textoMenu" value="<?php echo $this->_tpl_vars['usuarios']->login; ?>
-"></td>
+" value="<?php echo $this->_tpl_vars['usuarios']->login; ?>
+" class="textoMenu"><font class="error"><?php echo $this->_tpl_vars['user_error_login']; ?>
+</font></td>
 					</tr>
 					<tr>
 						<td width="125px" class="CampoFormulario">Password:</td>
 						<td > <input type="password" id="user_passwd" name="user_<?php echo $this->_tpl_vars['usuarios']->ddbb_passwd; ?>
-" class="textoMenu" value="<?php echo $this->_tpl_vars['usuarios']->passwd; ?>
-"></td>
+" value="<?php echo $this->_tpl_vars['usuarios']->passwd; ?>
+" class="textoMenu"><font class="error"><?php echo $this->_tpl_vars['user_error_passwd']; ?>
+</font></td>
+				  </tr>
+				  <tr>
+						<td width="125px" class="CampoFormulario">Password:</td>
+						<td > <input type="password" id="user_retype" name="user_retype" value="<?php echo $this->_tpl_vars['usuarios']->retype; ?>
+" class="textoMenu"><font class="error"><?php echo $this->_tpl_vars['user_error_retype']; ?>
+</font></td>
 				  </tr>
 				  <tr>
 					  <td colspan="2" class="cabeceraCampoFormulario">Datos del Usuario:</td>
@@ -329,20 +339,23 @@ $this->_sections['indice']['last']       = ($this->_sections['indice']['iteratio
 				  <tr>
 						<td width="125px" align="right" class="CampoFormulario">Nombre:</td>
 						<td> <input type="text" id="user_name" name="user_<?php echo $this->_tpl_vars['usuarios']->ddbb_name; ?>
-" class="textoMenu" value="<?php echo $this->_tpl_vars['usuarios']->name; ?>
-"></td>
+" value="<?php echo $this->_tpl_vars['usuarios']->name; ?>
+" class="textoMenu"><font class="error"><?php echo $this->_tpl_vars['user_error_name']; ?>
+</font></td>
 					</tr>
 					<tr>
 						<td width="125px" class="CampoFormulario" >Primer Apellido:</td>
 						<td > <input type="text" id="user_last_name" name="user_<?php echo $this->_tpl_vars['usuarios']->ddbb_last_name; ?>
-" class="textoMenu" value="<?php echo $this->_tpl_vars['usuarios']->last_name; ?>
-"></td>
+" value="<?php echo $this->_tpl_vars['usuarios']->last_name; ?>
+" class="textoMenu"><font class="error"><?php echo $this->_tpl_vars['user_error_last_name']; ?>
+</font></td>
 				  </tr>
 				  <tr>
 						<td width="125px" class="CampoFormulario">Segundo Apellido:</td>
 						<td > <input type="text" id="user_last_name2" name="user_<?php echo $this->_tpl_vars['usuarios']->ddbb_last_name2; ?>
-" class="textoMenu" value="<?php echo $this->_tpl_vars['usuarios']->last_name2; ?>
-"></td>
+" value="<?php echo $this->_tpl_vars['usuarios']->last_name2; ?>
+" class="textoMenu"><font class="error"><?php echo $this->_tpl_vars['user_error_last_name2']; ?>
+</font></td>
 				  </tr>
 				   <tr>
 					  <td colspan="2" class="cabeceraCampoFormulario">Permisos: </td>

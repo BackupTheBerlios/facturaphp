@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.3, created on 2005-02-03 19:28:47
+<?php /* Smarty version 2.6.3, created on 2005-03-09 14:44:29
          compiled from cat_servs_modify.tpl */ ?>
 <td valign="top">
 <form method="post" action="index.php?module=cat_servs&method=modify&id=<?php echo $this->_tpl_vars['objeto']->id_cat_serv; ?>
@@ -26,7 +26,8 @@
 						<td> <input type="text" id="<?php echo $this->_tpl_vars['objeto']->ddbb_name; ?>
 " name="<?php echo $this->_tpl_vars['objeto']->ddbb_name; ?>
 " class="textoMenu" value="<?php echo $this->_tpl_vars['objeto']->name; ?>
-"></td>
+"><font class="error"><?php echo $this->_tpl_vars['error_name']; ?>
+</font></td>
 					</tr>
 					<tr>
 						<td width="125px" align="right" class="CampoFormulario">Fotograf&iacute;a:</td>
@@ -72,7 +73,8 @@ $this->_sections['nombre']['last']       = ($this->_sections['nombre']['iteratio
 								<?php echo $this->_tpl_vars['objeto']->cat_servs_list[$this->_sections['nombre']['index']]['name']; ?>
 
 							</option>
-						<?php endfor; endif; ?>						
+						<?php endfor; endif; ?>	<font class="error"><?php echo $this->_tpl_vars['error_id_parent_cat']; ?>
+</font>					
 						</td>
 					</tr>
 					  <tr>
@@ -80,7 +82,8 @@ $this->_sections['nombre']['last']       = ($this->_sections['nombre']['iteratio
 						<td rowspan="2" ><textarea name="<?php echo $this->_tpl_vars['objeto']->ddbb_descrip; ?>
 " class="textoMenu" id="<?php echo $this->_tpl_vars['objeto']->ddbb_descrip; ?>
 "><?php echo $this->_tpl_vars['objeto']->descrip; ?>
-</textarea> </td>
+</textarea><font class="error"><?php echo $this->_tpl_vars['error_descrip']; ?>
+</font></td>
 					</tr>
 		</table>
 		</td>

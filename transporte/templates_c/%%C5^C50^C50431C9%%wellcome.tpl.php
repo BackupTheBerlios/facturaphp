@@ -1,9 +1,6 @@
-<?php /* Smarty version 2.6.3, created on 2004-10-25 17:33:38
+<?php /* Smarty version 2.6.3, created on 2005-03-10 12:16:52
          compiled from wellcome.tpl */ ?>
 <td valign="top">
-
-	
-
 <table width="100%" cellpadding="10" cellspacing="10"  bgcolor="#F0FFFF">
 	<tr class="barraNavegacion">
 		<td align="middle" valign="middle"><font color="#000000">Bienvenid@ a esta aplicación</font></td>
@@ -18,6 +15,7 @@
 		<td align="middle" valign="middle"><img src="pics/copiarPegar.png"></td>
 	</tr>
 </table>
+</td>
 
 
 	

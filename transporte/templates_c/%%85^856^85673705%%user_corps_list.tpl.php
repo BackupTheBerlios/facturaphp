@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.3, created on 2004-11-10 17:47:45
+<?php /* Smarty version 2.6.3, created on 2005-03-10 12:12:32
          compiled from user_corps_list.tpl */ ?>
 <td valign="top">
 
@@ -20,5 +20,6 @@ unset($_smarty_tpl_vars);
 	 <script>	
 	  	document.getElementById("divMostrar").innerHTML = user_corps_1;
 	  </script>
+</td>
   
 			

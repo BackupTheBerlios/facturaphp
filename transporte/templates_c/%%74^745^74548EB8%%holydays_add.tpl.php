@@ -1,11 +1,10 @@
-<?php /* Smarty version 2.6.3, created on 2005-02-24 01:08:27
+<?php /* Smarty version 2.6.3, created on 2005-03-01 21:14:20
          compiled from holydays_add.tpl */ ?>
 <td valign="top">
 <?php echo '
 <script>
 	function setToCero(cad){
-		document.getElementById(cad).value="0000-00-00";
-		document.getElementById(cad+"Changed").value="00-00-0000";
+		document.getElementById(cad).value="00-00-0000";
 	}
 </script>
 '; ?>
@@ -42,14 +41,12 @@
 " value="<?php echo $this->_tpl_vars['objeto']->gone; ?>
 " "size="15" maxlength="99" class="textfield"  id="<?php echo $this->_tpl_vars['objeto']->ddbb_gone; ?>
 ">
-				 	<!--<input class="textoMenu" type="hidden" name="<?php echo $this->_tpl_vars['objeto']->ddbb_gone; ?>
-" value="0000-00-00" size="15" maxlength="99" class="textfield"  id="<?php echo $this->_tpl_vars['objeto']->ddbb_gone; ?>
-">-->
+				 	
                                     <script type="text/javascript">
                                     
                     <!--
-                    document.write('<a title="Calendario" href="javascript:openCalendar2(\'lang=es-utf-8&amp;server=1\', \'form_central\', \'<?php echo $this->_tpl_vars['objeto']->ddbb_gone; ?>
-\', \'goneChanged\', \'date\')"><img class="calendar" valign="center" src="pics/calendar.png" alt="Calendario"/></a>');
+                    document.write('<a title="Calendario" href="javascript:openCalendar(\'lang=es-utf-8&amp;server=1\', \'form_central\', \'<?php echo $this->_tpl_vars['objeto']->ddbb_gone; ?>
+\', \'date\')"><img class="calendar" valign="center" src="pics/calendar.png" alt="Calendario"/></a>');
                     //-->
                     </script><font class="error"><?php echo $this->_tpl_vars['error_gone']; ?>
 </font>
@@ -62,14 +59,12 @@
 " value="<?php echo $this->_tpl_vars['objeto']->come; ?>
 " "size="15" maxlength="99" class="textfield"  id="<?php echo $this->_tpl_vars['objeto']->ddbb_come; ?>
 ">
-				 <!--<input class="textoMenu" type="hidden" name="<?php echo $this->_tpl_vars['objeto']->ddbb_come; ?>
-" value="0000-00-00" size="15" maxlength="99" class="textfield"  id="<?php echo $this->_tpl_vars['objeto']->ddbb_come; ?>
-">-->
+				
                                     <script type="text/javascript">
                                     
                     <!--
-                    document.write('<a title="Calendario" href="javascript:openCalendar2(\'lang=es-utf-8&amp;server=1\', \'form_central\', \'<?php echo $this->_tpl_vars['objeto']->ddbb_come; ?>
-\', \'comeChanged\', \'date\')"><img class="calendar" valign="center" src="pics/calendar.png" alt="Calendario"/></a>');
+                    document.write('<a title="Calendario" href="javascript:openCalendar(\'lang=es-utf-8&amp;server=1\', \'form_central\', \'<?php echo $this->_tpl_vars['objeto']->ddbb_come; ?>
+\', \'date\')"><img class="calendar" valign="center" src="pics/calendar.png" alt="Calendario"/></a>');
                     //-->
                     </script><font class="error"><?php echo $this->_tpl_vars['error_come']; ?>
 </font>

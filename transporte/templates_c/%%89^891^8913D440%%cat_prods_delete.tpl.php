@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.3, created on 2005-01-19 14:07:05
+<?php /* Smarty version 2.6.3, created on 2005-03-04 19:08:56
          compiled from cat_prods_delete.tpl */ ?>
 <td valign="top">
 
@@ -18,7 +18,7 @@
 			  <br>
 			  <p>Se va a proceder al borrado de la categor&iacute;a: <?php echo $this->_tpl_vars['objeto']->name; ?>
 </p>
-			  <p>Todas las categor$iacute;as que puedan tener a &eacute;sta como categor&iacute;a padre, no se borrar&aacute;n.
+			  <p>Todas las categor&iacute;as que puedan tener a &eacute;sta como categor&iacute;a padre, no se borrar&aacute;n.
 			  <?php echo $this->_tpl_vars['message']; ?>
 
   			  <br>

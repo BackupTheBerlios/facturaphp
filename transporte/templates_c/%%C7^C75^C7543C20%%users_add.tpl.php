@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.3, created on 2005-02-09 16:59:20
+<?php /* Smarty version 2.6.3, created on 2005-03-23 10:54:07
          compiled from users_add.tpl */ ?>
 <td valign="top">
 <?php $_smarty_tpl_vars = $this->_tpl_vars;
@@ -29,34 +29,50 @@ unset($_smarty_tpl_vars);
 						<td width="125px" align="right" class="CampoFormulario" nowrap>Login:</td>
 						<td > <input type="text" id="<?php echo $this->_tpl_vars['objeto']->ddbb_login; ?>
 " name="<?php echo $this->_tpl_vars['objeto']->ddbb_login; ?>
-" class="textoMenu"></td>
+" class="textoMenu" value="<?php echo $this->_tpl_vars['objeto']->login; ?>
+"><font class="error"><?php echo $this->_tpl_vars['error_login']; ?>
+</font></td>
 					</tr>
 					<tr>
 						<td width="125px" class="CampoFormulario">Password:</td>
 						<td > <input type="password" id="<?php echo $this->_tpl_vars['objeto']->ddbb_passwd; ?>
 " name="<?php echo $this->_tpl_vars['objeto']->ddbb_passwd; ?>
-" class="textoMenu"></td>
+" class="textoMenu" value="<?php echo $this->_tpl_vars['objeto']->passwd; ?>
+"><font class="error"><?php echo $this->_tpl_vars['error_passwd']; ?>
+</font></td>
+				  </tr>
+				  <tr>
+						<td width="125px" class="CampoFormulario">Re-escriba password:</td>
+						<td > <input type="password" id="retype" name="retype" class="textoMenu" value="<?php echo $this->_tpl_vars['objeto']->retype; ?>
+"><font class="error"><?php echo $this->_tpl_vars['error_retype']; ?>
+</font></td>
 				  </tr>
 				  <tr>
 					  <td colspan="2" class="cabeceraCampoFormulario">Datos del Usuario:</td>
 				  </tr>
-				  <tr>
+				 <tr>
 						<td width="125px" align="right" class="CampoFormulario">Nombre:</td>
 						<td> <input type="text" id="<?php echo $this->_tpl_vars['objeto']->ddbb_name; ?>
 " name="<?php echo $this->_tpl_vars['objeto']->ddbb_name; ?>
-" class="textoMenu"></td>
+" class="textoMenu" value="<?php echo $this->_tpl_vars['objeto']->name; ?>
+"><font class="error"><?php echo $this->_tpl_vars['error_name']; ?>
+</font></td>
 					</tr>
 					<tr>
 						<td width="125px" class="CampoFormulario" >Primer Apellido:</td>
 						<td > <input type="text" id="<?php echo $this->_tpl_vars['objeto']->ddbb_last_name; ?>
 " name="<?php echo $this->_tpl_vars['objeto']->ddbb_last_name; ?>
-" class="textoMenu"></td>
+" class="textoMenu" value="<?php echo $this->_tpl_vars['objeto']->last_name; ?>
+"><font class="error"><?php echo $this->_tpl_vars['error_last_name']; ?>
+</font></td>
 				  </tr>
 				  <tr>
 						<td width="125px" class="CampoFormulario">Segundo Apellido:</td>
 						<td > <input type="text" id="<?php echo $this->_tpl_vars['objeto']->ddbb_last_name2; ?>
 " name="<?php echo $this->_tpl_vars['objeto']->ddbb_last_name2; ?>
-" class="textoMenu"></td>
+" class="textoMenu" value="<?php echo $this->_tpl_vars['objeto']->last_name2; ?>
+"><font class="error"><?php echo $this->_tpl_vars['error_last_name2']; ?>
+</font></td>
 				  </tr>
 				   <tr>
 					  <td colspan="2" class="cabeceraCampoFormulario">Permisos: </td>

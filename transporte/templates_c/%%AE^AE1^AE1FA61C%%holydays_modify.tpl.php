@@ -1,14 +1,10 @@
-<?php /* Smarty version 2.6.3, created on 2004-12-14 17:35:17
+<?php /* Smarty version 2.6.3, created on 2005-03-02 18:31:40
          compiled from holydays_modify.tpl */ ?>
 <td valign="top">
 <?php echo '
 <script>
-	function setToCero(cad){
-		alert(cad);
-		alert(document.getElementById(cad).value);
-		document.getElementById(cad).value="0000-00-00";
-		alert(document.getElementById(cad).value);
-		document.getElementById(cad+"Changed").value="00-00-0000";
+	function setToCero(cad){	
+		document.getElementById(cad).value="00-00-0000";
 	}
 </script>
 '; ?>
@@ -42,37 +38,37 @@
 					
 				  <tr>
 						<td width="125px" align="right" class="CampoFormulario">Baja:</td>
-						<td> <input class="textoMenu" type="text" name="goneChanged" value="<?php echo $this->_tpl_vars['gonecambiado']; ?>
-" "size="15" maxlength="99" class="textfield"  id="goneChanged" readonly>
-				 <input class="textoMenu" type="hidden" name="<?php echo $this->_tpl_vars['objeto']->ddbb_gone; ?>
+						<td> <input class="textoMenu" type="text" name="<?php echo $this->_tpl_vars['objeto']->ddbb_gone; ?>
 " value="<?php echo $this->_tpl_vars['objeto']->gone; ?>
-" size="15" maxlength="99" class="textfield"  id="<?php echo $this->_tpl_vars['objeto']->ddbb_gone; ?>
+" "size="15" maxlength="99" class="textfield"  id="<?php echo $this->_tpl_vars['objeto']->ddbb_gone; ?>
 ">
-                                    <script type="text/javascript">
-                                    
-                    <!--
-                    document.write('<a title="Calendario" href="javascript:openCalendar(\'lang=es-utf-8&amp;server=1\', \'form_central\', \'<?php echo $this->_tpl_vars['objeto']->ddbb_gone; ?>
-\', \'goneChanged\', \'date\')"><img class="calendar" valign="center" src="pics/calendar.png" alt="Calendario"/></a>');
-                    //-->
+                        <script type="text/javascript">
+	                    <!--
+    	                document.write('<a title="Calendario" href="javascript:openCalendar(\'lang=es-utf-8&amp;server=1\', \'form_central\', \'<?php echo $this->_tpl_vars['objeto']->ddbb_gone; ?>
+\', \'date\')"><img class="calendar" valign="center" src="pics/calendar.png" alt="Calendario"/></a>');
+        	            //-->
                     </script>
+                    </script><font class="error"><?php echo $this->_tpl_vars['error_gone']; ?>
+</font>
                     <input type="button" value="Poner a 0" class="botones" onclick="setToCero('gone');">
                     </td>
 					</tr>
 					<tr>
 						<td width="125px" align="right" class="CampoFormulario">Alta:</td>
-						<td> <input class="textoMenu" type="text" name="comeChanged" value="<?php echo $this->_tpl_vars['comecambiado']; ?>
-" "size="15" maxlength="99" class="textfield"  id="comeChanged" readonly>
-				 <input class="textoMenu" type="hidden" name="<?php echo $this->_tpl_vars['objeto']->ddbb_come; ?>
-" value="<?php echo $this->_tpl_vars['objeto']->ddbb_come; ?>
-" size="15" maxlength="99" class="textfield"  id="<?php echo $this->_tpl_vars['objeto']->ddbb_come; ?>
+						<td> <input class="textoMenu" type="text" name="<?php echo $this->_tpl_vars['objeto']->ddbb_come; ?>
+" value="<?php echo $this->_tpl_vars['objeto']->come; ?>
+" "size="15" maxlength="99" class="textfield"  id="<?php echo $this->_tpl_vars['objeto']->ddbb_come; ?>
 ">
                                     <script type="text/javascript">
                                     
                     <!--
                     document.write('<a title="Calendario" href="javascript:openCalendar(\'lang=es-utf-8&amp;server=1\', \'form_central\', \'<?php echo $this->_tpl_vars['objeto']->ddbb_come; ?>
-\', \'comeChanged\', \'date\')"><img class="calendar" valign="center" src="pics/calendar.png" alt="Calendario"/></a>');
+\', \'date\')"><img class="calendar" valign="center" src="pics/calendar.png" alt="Calendario"/></a>');
                     //-->
-                    </script>                    <input type="button" value="Poner a 0" class="botones" onclick="setToCero('come');">
+                    </script>                 
+                    </script><font class="error"><?php echo $this->_tpl_vars['error_come']; ?>
+</font>   
+                    <input type="button" value="Poner a 0" class="botones" onclick="setToCero('come');">
                     </td>
 					</tr>
 					 <tr>
@@ -91,7 +87,8 @@
 						<td rowspan="2" ><textarea name="<?php echo $this->_tpl_vars['objeto']->ddbb_descrip; ?>
 " class="textoMenu" id="<?php echo $this->_tpl_vars['objeto']->ddbb_descrip; ?>
 "><?php echo $this->_tpl_vars['objeto']->descrip; ?>
-</textarea> </td>
+</textarea> <font class="error"><?php echo $this->_tpl_vars['error_descrip']; ?>
+</font></td>
 					</tr>				  
 		</table>
 		</td>

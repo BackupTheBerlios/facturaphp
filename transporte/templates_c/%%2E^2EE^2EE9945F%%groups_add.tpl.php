@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.3, created on 2004-11-05 19:36:30
+<?php /* Smarty version 2.6.3, created on 2005-03-23 13:05:31
          compiled from groups_add.tpl */ ?>
 <td valign="top">
 <?php $_smarty_tpl_vars = $this->_tpl_vars;
@@ -28,19 +28,25 @@ unset($_smarty_tpl_vars);
 						<td width="125" align="right" class="CampoFormulario" nowrap>Nombre:</td>
 						<td > <input type="text" id="<?php echo $this->_tpl_vars['objeto']->ddbb_name; ?>
 " name="<?php echo $this->_tpl_vars['objeto']->ddbb_name; ?>
-" class="textoMenu"></td>
+" class="textoMenu" value="<?php echo $this->_tpl_vars['objeto']->name; ?>
+"><font class="error"><?php echo $this->_tpl_vars['error_name']; ?>
+</font></td>
 					</tr>
 					<tr>
 						<td width="125" class="CampoFormulario">Nombre web: </td>
 						<td > <input type="text" id="<?php echo $this->_tpl_vars['objeto']->ddbb_name_web; ?>
 " name="<?php echo $this->_tpl_vars['objeto']->ddbb_name_web; ?>
-" class="textoMenu"></td>
+" class="textoMenu" value="<?php echo $this->_tpl_vars['objeto']->name_web; ?>
+"><font class="error"><?php echo $this->_tpl_vars['error_name_web']; ?>
+</font></td>
 				  </tr>
 				  <tr>
 						<td width="125" align="right" class="CampoFormulario">Descripcion:</td>
 						<td rowspan="2" ><textarea name="<?php echo $this->_tpl_vars['objeto']->ddbb_descrip; ?>
 " class="textoMenu" id="<?php echo $this->_tpl_vars['objeto']->ddbb_descrip; ?>
-"></textarea> </td>
+"><?php echo $this->_tpl_vars['objeto']->descrip; ?>
+</textarea> <font class="error"><?php echo $this->_tpl_vars['error_descrip']; ?>
+</font></td>
 					</tr>
 					<tr>
 					  <td colspan="2" >&nbsp;</td>
