@@ -14,7 +14,7 @@
 			  </table>
 			  <table width="100%">
 			  <tr><td class="message" align="center">{$message}</td></tr>
-			  <tr><td valign="top"><form method="post" action="index.php?module=users&method=view">
+			  <tr><td valign="top"><form method="post" action="index.php?module=users&method=list">
 			  	<table width="250px" align="center">
 				 <tr>
 					  <td colspan="2" class="cabeceraCampoFormulario">Criterios de b&uacute;squeda:</td>
@@ -23,8 +23,6 @@
 						<td width="125px" class="CampoFormulario">Login:</td>
 						<td > <input type="text" id="{$objeto->ddbb_login}" name="{$objeto->ddbb_login}" class="textoMenu"></td>
 				  </tr>
-				  <tr>
-					
 				  <tr>
 						<td width="125px" align="right" class="CampoFormulario">Nombre:</td>
 						<td> <input type="text" id="{$objeto->ddbb_name}" name="{$objeto->ddbb_name}" class="textoMenu"></td>

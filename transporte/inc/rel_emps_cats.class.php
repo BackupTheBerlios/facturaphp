@@ -29,6 +29,7 @@ class rel_emps_cats{
   	var $num;
   	var $fields_list;
   	var $error;
+	var $emps_cats_list;
   	//constructor
 	function rel_emps_cats(){
 		//coge las variables globales del fichero config.inc.php
@@ -134,6 +135,42 @@ class rel_emps_cats{
 	
 	function validate_modify_form(){
 	
+	}
+	
+		function verify_emps($id){
+		//se puede acceder a los usuarios por numero de campo o por nombre de campo
+		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
+		//crea una nueva conexin con una bbdd (mysql)
+		$this->db = NewADOConnection($this->db_type);
+		//le dice que no salgan los errores de conexin de la ddbb por pantalla
+		$this->db->debug=false;
+		//realiza una conexin permanente con la bbdd
+		$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
+		//mete la consulta
+		$this->sql='SELECT * FROM `rel_emps_cats` WHERE `id_cat_emp` = \''.$id.'\'';
+		//la ejecuta y guarda los resultados
+		$this->result = $this->db->Execute($this->sql);
+		if ($this->result === false){
+			$this->error=1;
+			$this->db->close();
+			return 0;
+		}  
+		
+		$this->num=0;
+		$emp = new emps();
+		while (!$this->result->EOF) {
+			//cogemos los datos del usuario
+			$emp->read($this->result->fields['id_emp']);
+			$this->emps_cats_list[$this->num]['id_emp']=$emp->id_emp;
+			$this->emps_cats_list[$this->num]['name']=$emp->name;
+			$this->emps_cats_list[$this->num]['last_name']=$emp->last_name;
+			$this->emps_cats_list[$this->num]['last_name2']=$emp->last_name2;
+			//nos movemos hasta el siguiente registro de resultado de la consulta
+			$this->result->MoveNext();
+			$this->num++;
+		}
+		$this->db->close();
+		return $this->num;
 	}
 	
 	function read($id){

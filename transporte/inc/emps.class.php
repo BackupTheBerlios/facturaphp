@@ -680,7 +680,7 @@ class emps{
 									}
 									else{
 										$this->emps_list="";
-										$method="list";
+										$this->method="list";
 										$tpl=$this->listar($tpl);
 										$tpl->assign("message","&nbsp;<br>Empleado borrado correctamente<br>&nbsp;");
 									}

@@ -27,6 +27,9 @@ function initialize_object($module)
 		case 'emps':
 					$objeto=new emps();
 					break;
+		case 'cat_emps':
+					$objeto=new cat_emps();
+					break;
 		case 'holidays':
 					$objeto=new holidays();
 					break;
