@@ -81,10 +81,10 @@ class vendors{
 		//este array de alguna manera aumatizada
 		************************/
 		$this->fields_list= new fields();
-		$this->fields_list->add($this->ddbb_id_vendor, $this->id_vendor, 'int', 11,0);
-		$this->fields_list->add($this->ddbb_id_corp, $this->id_corp, 'int', 11,0);
-		$this->fields_list->add($this->ddbb_name, $this->name, 'varchar', 20,0);
-		$this->fields_list->add($this->ddbb_full_name, $this->full_name, 'varchar', 50,0);
+		$this->fields_list->add($this->ddbb_id_vendor, $this->id_vendor, 'int', 11,0,1);
+		$this->fields_list->add($this->ddbb_id_corp, $this->id_corp, 'int', 11,0,1);
+		$this->fields_list->add($this->ddbb_name, $this->name, 'varchar', 20,0,1);
+		$this->fields_list->add($this->ddbb_full_name, $this->full_name, 'varchar', 50,0,1);
 		$this->fields_list->add($this->ddbb_cif_nif, $this->cif_nif, 'cif_nif', 10,0);		
 		$this->fields_list->add($this->ddbb_address, $this->address, 'varchar', 255,0);	
 		$this->fields_list->add($this->ddbb_postal_address, $this->postal_address, 'varchar', 255,0);		
@@ -276,25 +276,51 @@ class vendors{
 				switch($method){
 
 						case 'add':
-									if ($this->add() !=0){
-										$this->method="list";
-										$tpl=$this->listar($tpl);										
-										$tpl->assign("message","&nbsp;<br>Proveedor a&ntilde;adido correctamente<br>&nbsp;");
+									
+									$return=$this->add();
+									switch ($return){										
+										case 0: //por defecto
+												break;
+										case -1: //Errores al intentar añadir datos
+												for ($i=0;$i<count($this->fields_list->array_error);$i+=2){
+													$tpl->assign("error_".$this->fields_list->array_error[$i],$this->fields_list->array_error[$i+1]);
+												}
+												break;
+										default: //Si se ha añadido
+												$this->method="list";
+												$tpl=$this->listar($tpl);										
+												$tpl->assign("message","&nbsp;<br>Proveedor a&ntilde;adido correctamente<br>&nbsp;");
+												break;
 									}
+									//esto se hace independientemetne del valor que se obtenga
 									$tpl->assign("objeto",$this);
-									break;
+									break;				
+									
 						case 'list':
 									$tpl=$this->listar($tpl);
 									break;
 						case 'modify':
+									
 									$this->read($_GET['id']);
-									if ($this->modify() !=0){
-										$this->method="list";
-										$tpl=$this->listar($tpl);										
-										$tpl->assign("message","&nbsp;<br>Proveedor modificado correctamente<br>&nbsp;");
+									$return=$this->modify();
+									switch ($return){										
+										case 0: //por defecto
+												break;
+										case -1: //Errores al intentar añadir datos
+												for ($i=0;$i<count($this->fields_list->array_error);$i+=2){
+													$tpl->assign("error_".$this->fields_list->array_error[$i],$this->fields_list->array_error[$i+1]);
+												}
+												break;
+										default: //Si se ha añadido
+												$this->method="list";
+												$tpl=$this->listar($tpl);										
+												$tpl->assign("message","&nbsp;<br>Proveedor modificado correctamente<br>&nbsp;");
+												break;
 									}
+									//esto se hace independientemetne del valor que se obtenga
 									$tpl->assign("objeto",$this);
 									break;
+									
 						case 'delete':
 									$this->read($_GET['id']);
 									if ($this->remove($_GET['id'])!=0){				
@@ -339,19 +365,42 @@ class vendors{
 		//en el caso de que SI este definido submit_add
 		else{
 						
-			//Introducir los datos de post.
 			$this->get_fields_from_post();	
 						
 			//Validacion
-			//$return=validate_fields();
+			/*
+	var $fax;
+	var $notes;
+			*/
+			$this->id_vendor=0;
+			
+			$this->fields_list->modify_value($this->ddbb_id_vendor,$this->id_vendor);
+			$this->fields_list->modify_value($this->ddbb_id_corp,$this->id_corp);
+			$this->fields_list->modify_value($this->ddbb_name,$this->name);
+			$this->fields_list->modify_value($this->ddbb_full_name,$this->full_name);
+			$this->fields_list->modify_value($this->ddbb_cif_nif,$this->cif_nif);
+			$this->fields_list->modify_value($this->ddbb_address,$this->address);
+			$this->fields_list->modify_value($this->ddbb_fiscal_address,$this->fiscal_address);
+			$this->fields_list->modify_value($this->ddbb_postal_address,$this->postal_address);
+			$this->fields_list->modify_value($this->ddbb_url,$this->url);
+			$this->fields_list->modify_value($this->ddbb_mail,$this->mail);
+			$this->fields_list->modify_value($this->ddbb_city,$this->city);
+			$this->fields_list->modify_value($this->ddbb_state,$this->state);
+			$this->fields_list->modify_value($this->ddbb_postal_code,$this->postal_code);
+			$this->fields_list->modify_value($this->ddbb_country,$this->country);
+			$this->fields_list->modify_value($this->ddbb_phone,$this->phone);
+			$this->fields_list->modify_value($this->ddbb_mobile_phone,$this->mobile_phone);
+			$this->fields_list->modify_value($this->ddbb_fax,$this->fax);
+			$this->fields_list->modify_value($this->ddbb_notes,$this->notes);
+			$return=$this->fields_list->validate();		
 			
 			//En caso de que la validacion haya sido fallida se muestra la plantilla
 			//con los campos erroneos marcados con un *
-			$return=true; //Para pruebas dejar esta linea sin comentar
+			
 			
 			if (!$return){
 				//Mostrar plantilla con datos erroneos
-				
+				return -1;
 			}
 			else{
 			
@@ -421,22 +470,23 @@ class vendors{
 	function get_fields_from_post(){
 		
 		//Cogemos los campos principales
-		$this->name=$_POST[$this->ddbb_name];
-		$this->full_name=$_POST[$this->ddbb_full_name];
-		$this->address=$_POST[$this->ddbb_address];		
-		$this->cif_nif=$_POST[$this->ddbb_cif_nif];		
-		$this->fiscal_address=$_POST[$this->ddbb_fiscal_address];	
-		$this->postal_address=$_POST[$this->ddbb_postal_address];
-		$this->url=$_POST[$this->ddbb_url];
-		$this->mail=$_POST[$this->ddbb_mail];
-		$this->city=$_POST[$this->ddbb_city];
-		$this->state=$_POST[$this->ddbb_state];
-		$this->postal_code=$_POST[$this->ddbb_postal_code];
-		$this->country=$_POST[$this->ddbb_country];
-		$this->phone=$_POST[$this->ddbb_phone];
-		$this->mobile_phone=$_POST[$this->ddbb_mobile_phone];
-		$this->fax=$_POST[$this->ddbb_fax];
-		$this->notes=$_POST[$this->ddbb_notes];
+		$this->id_corp=$_SESSION['ident_corp'];
+		$this->name=htmlentities($_POST[$this->ddbb_name]);
+		$this->full_name=htmlentities($_POST[$this->ddbb_full_name]);
+		$this->address=htmlentities($_POST[$this->ddbb_address]);		
+		$this->cif_nif=htmlentities($_POST[$this->ddbb_cif_nif]);
+		$this->fiscal_address=htmlentities($_POST[$this->ddbb_fiscal_address]);	
+		$this->postal_address=htmlentities($_POST[$this->ddbb_postal_address]);
+		$this->url=htmlentities($_POST[$this->ddbb_url]);
+		$this->mail=htmlentities($_POST[$this->ddbb_mail]);
+		$this->city=htmlentities($_POST[$this->ddbb_city]);
+		$this->state=htmlentities($_POST[$this->ddbb_state]);
+		$this->postal_code=htmlentities($_POST[$this->ddbb_postal_code]);
+		$this->country=htmlentities($_POST[$this->ddbb_country]);
+		$this->phone=htmlentities($_POST[$this->ddbb_phone]);
+		$this->mobile_phone=htmlentities($_POST[$this->ddbb_mobile_phone]);
+		$this->fax=htmlentities($_POST[$this->ddbb_fax]);
+		$this->notes=htmlentities($_POST[$this->ddbb_notes]);
 
 
 		return 0;
@@ -490,15 +540,33 @@ class vendors{
 			//$this->insert_post();
 			
 			//Validacion
-			//$return=validate_fields();
+			$this->fields_list->modify_value($this->ddbb_id_vendor,$this->id_vendor);
+			$this->fields_list->modify_value($this->ddbb_id_corp,$this->id_corp);
+			$this->fields_list->modify_value($this->ddbb_name,$this->name);
+			$this->fields_list->modify_value($this->ddbb_full_name,$this->full_name);
+			$this->fields_list->modify_value($this->ddbb_cif_nif,$this->cif_nif);
+			$this->fields_list->modify_value($this->ddbb_address,$this->address);
+			$this->fields_list->modify_value($this->ddbb_fiscal_address,$this->fiscal_address);
+			$this->fields_list->modify_value($this->ddbb_postal_address,$this->postal_address);
+			$this->fields_list->modify_value($this->ddbb_url,$this->url);
+			$this->fields_list->modify_value($this->ddbb_mail,$this->mail);
+			$this->fields_list->modify_value($this->ddbb_city,$this->city);
+			$this->fields_list->modify_value($this->ddbb_state,$this->state);
+			$this->fields_list->modify_value($this->ddbb_postal_code,$this->postal_code);
+			$this->fields_list->modify_value($this->ddbb_country,$this->country);
+			$this->fields_list->modify_value($this->ddbb_phone,$this->phone);
+			$this->fields_list->modify_value($this->ddbb_mobile_phone,$this->mobile_phone);
+			$this->fields_list->modify_value($this->ddbb_fax,$this->fax);
+			$this->fields_list->modify_value($this->ddbb_notes,$this->notes);
+			$return=$this->fields_list->validate();	
 			
 			//En caso de que la validacion haya sido fallida se muestra la plantilla
 			//con los campos erroneos marcados con un *
-			$return=true; //Para pruebas dejar esta linea sin comentar
+			
 			
 			if (!$return){
 				//Mostrar plantilla con datos erroneos
-				
+				return -1;
 			}
 			else{
 		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
@@ -590,9 +658,9 @@ class vendors{
 			$method = $this->method;
 		}		
 		if ($corp != ""){
-			$corp='<a href="index.php?module=corps&method=view&id='.$_SESSION['ident_corp'].'">'.$corp.' ::';
+			$corp='<a href="index.php?module=corps&method=view&id='.$_SESSION['ident_corp'].'">'.$corp.'</a> ::';
 		}
-		$nav_bar = '<a href="index.php?module=user_corps">Zona privada</a> :: '.$corp.' <a href="index.php?module=corps">Empresas</a>';
+		$nav_bar = '<a href="index.php?module=user_corps">Zona privada</a> :: '.$corp.' <a href="index.php?module=vendors">Proveedores</a>';
 		$nav_bar=$nav_bar.$this->localice($method);
 		return $nav_bar;
 	}		

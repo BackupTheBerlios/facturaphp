@@ -33,15 +33,14 @@
 					</tr>
 					<tr>
 						<td width="125" class="CampoFormulario" nowrap>Fecha de asignación:</td>
-						<td > <!--<input type="text" id="date"  name="fields[multi_edit][0][up]" class="textoMenu">-->						
-				 <input class="textoMenu" type="text" name="dateChanged" value="00-00-0000" "size="15" maxlength="99" class="textfield" onchange="alert(this.value)" id="dateChanged" readonly>
-				 <input class="textoMenu" type="hidden" name="{$objeto->ddbb_date}" value="0000-00-00" size="15" maxlength="99" class="textfield" onchange="alert(this.value)" id="{$objeto->ddbb_date}">
+						<td ><input class="textoMenu" type="text" name="{$objeto->ddbb_date}" value="{$objeto->date}" "size="15" maxlength="99" class="textfield"  id="{$objeto->ddbb_date}">
+				 	
                                     <script type="text/javascript">
                                     
                     <!--
-                    document.write('<a title="Calendario" href="javascript:openCalendar(\'lang=es-utf-8&amp;server=1\', \'form_central\', \'{$objeto->ddbb_date}\', \'dateChanged\', \'date\')"><img class="calendar" valign="center" src="pics/calendar.png" alt="Calendario"/></a>');
+                    document.write('<a title="Calendario" href="javascript:openCalendar(\'lang=es-utf-8&amp;server=1\', \'form_central\', \'{$objeto->ddbb_gone}\', \'date\')"><img class="calendar" valign="center" src="pics/calendar.png" alt="Calendario"/></a>');
                     //-->
-                    </script>
+                    </script><font class="error">{$error_date}</font>
 		    
 						
 						</td>

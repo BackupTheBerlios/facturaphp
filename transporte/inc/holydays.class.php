@@ -326,10 +326,7 @@ class holydays{
 			$this->fields_list->modify_value($this->ddbb_descrip,$this->descrip);
 			//validamos
 			$return=$this->fields_list->validate();		
-			if ($return)
-				echo "Verdadero";
-			else
-				echo "Falso";
+			
 		
 			//En caso de que la validacion haya sido fallida se muestra la plantilla
 			//con los campos erroneos marcados con un *

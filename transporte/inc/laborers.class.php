@@ -15,7 +15,7 @@ class laborers{
 	var $last_name;
 	var $last_name2;
 	var $num_vehicles;
-	var $date;
+	var $date="00-00-0000";
 //BBDD name vars
 	var $db_name;
 	var $db_ip;
@@ -73,9 +73,9 @@ class laborers{
 		//este array de alguna manera aumatizada
 		************************/
 		$this->fields_list= new fields();
-		$this->fields_list->add($this->ddbb_id_laborer, $this->id_laborer, 'int', 11,0);
-		$this->fields_list->add($this->ddbb_id_emp, $this->id_emp, 'int', 11,0);
-		$this->fields_list->add($this->ddbb_id_vehicle, $this->id_vehicle, 'int', 11,0);
+		$this->fields_list->add($this->ddbb_id_laborer, $this->id_laborer, 'int', 11,0,1);
+		$this->fields_list->add($this->ddbb_id_emp, $this->id_emp, 'int', 11,0,1);
+		$this->fields_list->add($this->ddbb_id_vehicle, $this->id_vehicle, 'int', 11,0,1);
 		$this->fields_list->add($this->ddbb_date, $this->date, 'date', 20,0);
 	
 		//se puede acceder a los usuarios por numero de campo o por nombre de campo
@@ -348,18 +348,24 @@ class laborers{
 			$this->get_fields_from_post();	
 						
 			//Validacion
-			//$return=validate_fields();
 			
-			//En caso de que la validacion haya sido fallida se muestra la plantilla
-			//con los campos erroneos marcados con un *
-			$return=true; //Para pruebas dejar esta linea sin comentar
+			//Modificamos los todos los valores del objeto fields con los nuevos datos del objeto product, exceptuando path_photo que eso se deberia hacer mediante la clase upload.
+			//Al id_product se le da 0 por quse neecesita un valor para que 
+			$this->id_laborer=0;
+			$this->fields_list->modify_value($this->ddbb_id_laborer,$this->id_laborer);
+			$this->fields_list->modify_value($this->ddbb_id_emp,$this->id_emp);
+			$this->fields_list->modify_value($this->ddbb_id_vehicle,$this->id_vehicle);
+			$this->fields_list->modify_value($this->ddbb_date,$this->date);
+			//validamos
+			$return=$this->fields_list->validate();	//Para pruebas dejar esta linea sin comentar
 			
 			if (!$return){
 				//Mostrar plantilla con datos erroneos
-				
+				return -1;
 			}
 		    else{
 				//Si todo es correcto si meten los datos
+				$this->date=$this->fields_list->change_date($this->date,"en");
 				
 				$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
 				//crea una nueva conexin con una bbdd (mysql)
@@ -423,18 +429,20 @@ class laborers{
 			$this->get_fields_from_post();
 			//$this->insert_post();
 			
-			//Validacion
-			//$return=validate_fields();
-			
-			//En caso de que la validacion haya sido fallida se muestra la plantilla
-			//con los campos erroneos marcados con un *
-			$return=true; //Para pruebas dejar esta linea sin comentar
+
+			$this->fields_list->modify_value($this->ddbb_id_laborer,$this->id_laborer);
+			$this->fields_list->modify_value($this->ddbb_id_emp,$this->id_emp);
+			$this->fields_list->modify_value($this->ddbb_id_vehicle,$this->id_vehicle);
+			$this->fields_list->modify_value($this->ddbb_date,$this->date);
+			//validamos
+			$return=$this->fields_list->validate();	//Para pruebas dejar esta linea sin comentar
 			
 			if (!$return){
 				//Mostrar plantilla con datos erroneos
-				
+				return -1;
 			}
 			else{
+				$this->date=$this->fields_list->change_date($this->date,"en");
 				$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
 				//crea una nueva conexin con una bbdd (mysql)
 				$this->db = NewADOConnection($this->db_type);
@@ -690,6 +698,30 @@ class laborers{
 							$tpl->assign("empleados",$this->emps_trans);
 							$tpl->assign("vehiculos", $this->vehicles_corp->vehicles_list);
 							break;
+							/*
+							$return=$this->add();
+									switch ($return){										
+										case 0:
+											$tpl->assign("empleados",$this->emps_trans);
+											$tpl->assign("vehiculos", $this->vehicles_corp->vehicles_list);											
+												break;
+										case -1: //Errores al intentar añadir datos
+												for ($i=0;$i<count($this->fields_list->array_error);$i+=2){
+													$tpl->assign("error_".$this->fields_list->array_error[$i],$this->fields_list->array_error[$i+1]);
+												}												
+												break;
+										default: //Si se ha añadido
+												$this->method="emps_view";																				
+												$tpl->assign("message","&nbsp;<br>Baja a&ntilde;adida correctamente<br>&nbsp;");			
+												$tpl=$empleado->view($this->id_emp,$tpl);																	
+												$tpl->assign("plantilla","emps_view.tpl");
+												return $tpl;
+												break;
+									}
+									//esto se hace independientemetne del valor que se obtenga
+									$tpl->assign("objeto",$this);
+									break;
+							*/
 							
 				case 'list':
 							$tpl=$this->listar($tpl);
