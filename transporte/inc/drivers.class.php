@@ -11,7 +11,6 @@ class drivers{
 	var $id_driver;
 	var $id_emp;
 	var $id_vehicle;
-	var $date;
 	var $name;
 	var $last_name;
 	var $last_name2;
@@ -28,6 +27,7 @@ class drivers{
 	var $ddbb_id_driver = 'id_driver';
 	var $ddbb_id_emp = 'id_emp';
 	var $ddbb_id_vehicle = 'id_vehicle';
+	var $ddbb_alias = 'alias';
 	var $ddbb_date = 'date';
 //Información necesaria sobre empleado conductor y vehículo conducido
 	var $ddbb_name = 'name';
@@ -41,6 +41,7 @@ class drivers{
 		
 //variables complementarias	
   	var $drivers_list;
+	var $vehicles_list;
   	var $num;
   	var $fields_list;
   	var $error;
@@ -220,19 +221,63 @@ class drivers{
 		$this->last_name = $empleado->last_name;
 		$this->last_name2 = $empleado->last_name2;
 		
+		$this->get_list_vehicles($id_emp);
 		
 	}
 	
-	function get_list_vehicles($id_driver)
+	function get_list_vehicles($id_emp)
 	{
 		//Buscar todos los id_drivers asociados al empleado
+
+		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
+		//crea una nueva conexin con una bbdd (mysql)
+		$this->db = NewADOConnection($this->db_type);
+		//le dice que no salgan los errores de conexin de la ddbb por pantalla
+		$this->db->debug=false;
+		//realiza una conexin permanente con la bbdd
+		$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
+		//mete la consulta
+		$this->sql="SELECT id_vehicle, id_driver, date FROM ".$this->table_prefix.$this->table_name." WHERE id_emp = ".$id_emp;
+
+		//la ejecuta y guarda los resultados
+		$this->result = $this->db->Execute($this->sql);
+		//si falla 
+		if ($this->result === false){
+			$this->error=1;
+			$this->db->close();
+
+			return 0;
+		}  
 		
-		//Por cada uno buscar el alias y demás datos (enlazar con vehículos)
-		$vehiculo = new vehicles();
-		$vehiculo->read($id_vehicle);
-		//Añadir vehículo al listado
-		/*$this->drivers_list[$this->num][$this->ddbb_alias] = $vehiculo->alias;
-		$this->alias = $vehiculo->alias;*/
+		$this->num_vehicles=0;
+		while (!$this->result->EOF) {
+			//cogemos los datos del conductor (directamente de la BBDD)
+			$this->vehicles_list[$this->num_vehicles][$this->ddbb_id_driver]=$this->result->fields[$this->ddbb_id_driver];
+			$this->vehicles_list[$this->num_vehicles][$this->ddbb_alias]=$this->result->fields[$this->ddbb_id_emp];
+			$this->vehicles_list[$this->num_vehicles][$this->ddbb_id_vehicle]=$this->result->fields[$this->ddbb_id_vehicle];
+			$this->vehicles_list[$this->num_vehicles][$this->ddbb_date]=$this->result->fields[$this->ddbb_date];
+			
+			//Por cada uno buscar el alias y demás datos (enlazar con vehículos)
+			$vehiculo = new vehicles();
+			$vehiculo->read($this->vehicles_list[$this->num_vehicles][$this->ddbb_id_vehicle]);
+			//Añadir vehículo al listado		
+			$this->vehicles_list[$this->num_vehicles][$this->ddbb_alias]=$vehiculo->alias;
+
+			//Se cambia el formato de la fecha
+			if ($this->vehicles_list[$this->num_vehicles][$this->ddbb_date]!="0000-00-00")
+			{
+				list($anno,$mes,$dia)=sscanf($this->vehicles_list[$this->num_vehicles][$this->ddbb_date],"%d-%d-%d");
+				$this->vehicles_list[$this->num_vehicles]['fecha_cambiada']="$dia-$mes-$anno";
+			}
+			else{
+				$this->vehicles_list[$this->num_vehicles]['fecha_cambiada']="00-00-0000";
+			}	
+			
+			//nos movemos hasta el siguiente registro de resultado de la consulta
+			$this->result->MoveNext();
+			$this->num_vehicles++;
+		}
+		$this->db->close();
 		return $this->num_vehicles;
 	}
 	/*
@@ -771,19 +816,44 @@ class drivers{
 				$tpl->assign("emp_driver",$usuario->login);
 			}
 			
-			if ($this->date!="0000-00-00")
-			{
-				list($anno,$mes,$dia)=sscanf($this->date,"%d-%d-%d");
-				$tpl->assign("fechacambiada","$dia-$mes-$anno");
-			}
-			else{
-				$tpl->assign("fechacambiada","00-00-0000");
-			}	
+			
 			
 			//Se comprueba si hay permiso para borrar o modificar
 			$permisos_mod_del = new permissions();
 			$permisos_mod_del->get_permissions_modify_delete('drivers');
 			$tpl->assign('acciones',$permisos_mod_del->per_mod_del);
+			
+			//Se prepara la lista de vehiculos
+			$tabla_listado = new table(true);
+			$per = new permissions();
+			$per->get_permissions_list('vehicles');
+	
+		/*		
+			//Toda persona con permso podrá modificar los datos del vehículo, por precaución para borrar solo se podrá hacer desde vehicles 
+			//para no borrar conductores de los que no se tenga conocimiento
+			$j=0;
+			for ($i=0;$i<count($per->permissions_module);$i++)
+			{
+				if(($per->permissions_module[$i]=="modify")||($per->permissions_module[$i]=="view"))
+				{
+					$permisos[$j]=$per->permissions_module[$i];
+					$j++;
+				} 
+			}
+
+		*/
+			if ($this->num_vehicles==0)
+			{
+				$cadena=''.$cadena.$tabla_listado->tabla_vacia('vehicles', $per->add);
+				$variables=$tabla_listado->nombres_variables;
+			}
+			else
+			{	
+				$cadena=''.$tabla_listado->make_tables('vehicles',$this->vehicles_list,array('Identificador del conductor',20,'Alias del vehículo',20,'Fecha de asignacion',20),array($this->ddbb_id_vehicle, $this->ddbb_id_driver, $this->ddbb_alias, 'fecha_cambiada'),10,$per->permissions_module,$per->add);
+				$variables=$tabla_listado->nombres_variables;	
+			}				
+			$tpl->assign('variables',$variables);
+			$tpl->assign('cadena',$cadena);		
 						
 			return $tpl;
 				

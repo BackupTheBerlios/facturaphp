@@ -148,8 +148,8 @@ class vehicles{
 		//si falla 
 		if ($this->result === false){
 			$error=1;
-			return 0;
 			$this->db->close();
+			return 0;		
 		}else{
 			$this->id_vehicle=$id;
 			$this->id_corp=$this->result->fields[$this->ddbb_id_corp];
@@ -157,8 +157,8 @@ class vehicles{
 			$this->alias=$this->result->fields[$this->ddbb_alias];
 			$this->path_photo=$this->result->fields[$this->ddbb_path_photo];
 			$this->category = $this->category_vehicles($id);
+		
 			$this->db->close();
-
 			return 1;
 		}
 		

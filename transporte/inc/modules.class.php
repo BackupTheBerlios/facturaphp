@@ -161,7 +161,7 @@ class modules{
 			$i=0;
 			$j=0;
 			$num_padres=0;
-			print "numero de modulos".$user->num_modules;
+
 			while($i!=$user->num_modules)
 			{
 				if($user->per_modules[$i]->per == 1)
@@ -172,7 +172,6 @@ class modules{
 							
 					if($user->per_modules[$i]->parent != 0)
 					{
-						print "NO padre";
 						//Comprobamos que el padre no esté ya en la lísta, si no está lo incluimos
 						$k=0;
 						$esta=false;
@@ -186,7 +185,6 @@ class modules{
 						//Comprobamos cómo se salió del while
 						if(!$esta)
 						{
-							print "metemos padre";
 							$padres[$num_padres]['id']=$user->per_modules[$i]->parent;
 							//Se introduce en la lista
 							//cogemos los datos del usuario
@@ -228,7 +226,6 @@ class modules{
 						//Comprobamos cómo se salió del while
 						if(!$esta)
 						{
-							print "padre";
 							$padres[$num_padres]['lista']=$user->per_modules[$i][$this->ddbb_parent];
 							
 							//Se introduce en la lista
