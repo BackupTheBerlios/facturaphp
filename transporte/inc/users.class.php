@@ -21,6 +21,9 @@ class users{
 	var $theme;
 	var $registrados;
 	var $retype;
+	var $search;
+	var $search_query;
+	
 //BBDD name vars
 	var $db_name;
 	var $db_ip;
@@ -39,6 +42,7 @@ class users{
   	var $ddbb_full_name='full_name';
 	var $ddbb_internal='internal';
 	var $ddbb_active='active';
+	var $ddbb_search='search';
 	var $db;
 	var $result;  	
 //variables complementarias	
@@ -98,6 +102,14 @@ class users{
 		$this->fields_list->add($this->ddbb_full_name, $this->full_name, 'varchar', 100,0);		
 		$this->fields_list->add($this->ddbb_internal, $this->internal, 'tinyint', 3,0 );
 		$this->fields_list->add($this->ddbb_active, $this->active, 'tinyint', 3,0 );
+		
+		
+		$this->search[0]= 'name';
+		$this->search[1]= 'login';
+		$this->search[2]= 'last_name';
+		$this->search[3]= 'last_name2';
+		
+
 		//print_r($this);
 		//se puede acceder a los usuarios por numero de campo o por nombre de campo
 	/*	$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
@@ -123,27 +135,112 @@ class users{
 	}
 	
 	function get_list_users (){
-		//se puede acceder a los usuarios por numero de campo o por nombre de campo
-		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
-		//crea una nueva conexi—n con una bbdd (mysql)
-		$this->db = NewADOConnection($this->db_type);
-		//le dice que no salgan los errores de conexi—n de la ddbb por pantalla
-		$this->db->debug=false;
-		//realiza una conexi—n permanente con la bbdd
-		$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
-		//mete la consulta
-		$this->sql="SELECT * FROM ".$this->table_prefix.$this->table_name;
-		//la ejecuta y guarda los resultados
-		$this->result = $this->db->Execute($this->sql);
-		//si falla 
-		if ($this->result === false){
-			$this->error=1;
-			$this->db->close();
+		
+		if (isset($_POST['submit_users_search']))
+		{
+			//Obtener datos del formulario de búsqueda
+			$this->get_fields_from_search_post();
+			//Generar consulta
+			/*
+			if($this->search_query[0]=='\\')
+			{*/
+				/************PRUEBAS**********************************/
+			//	print "Cadena ****".$this->search_query."**** ";
+			//	print "numero de caracteres ".strlen($this->search_query);
+			/*	for($i=0;$i<=strlen($this->search_query);$i++)
+				print $this->search_query[$i];
+			*/	
+				
+				/***********************************************/
+				
+			/*	
+				
+				switch($this->search_query[1])
+				{
+					case '"': 	$empiece = "comilla_doble";
+								//Guardar consulta para no modificar la variable 
+								//que se mande denuevo al formulario
+								$query =  $this->search_query;
+								
+								//Se va creando la nueva query que se mandará mas tarde 
+								//al formulario (se busca la siquiente ocurrencia de comillas)
+								$query = substr ($this->search_query, 2);
+								$cadena = substr ($this->search_query, 2, stripos($query, '"'));
+								
+								//Preparar la cadena para volver a mostrarla sin caracteres de PHP
+								$this->search_query = stripslashes($cadena);
+								
+								print "DOBLE";
+								break;
+					case '\'':	$empiece = "comilla_simple";
+								//Guardar consulta para no modificar la variable 
+								//que se mande denuevo al formulario
+								$query =  $this->search_query;
+								
+								//Se va creando la nueva query que se mandará mas tarde 
+								//al formulario (se busca la siquiente ocurrencia de comillas)
+								$query = substr ($this->search_query, 2);
+								$cadena = substr ($this->search_query, 2, stripos($query, '\''));
+								
+								//Preparar la cadena para volver a mostrarla sin caracteres de PHP
+								$this->search_query = stripslashes($cadena);
+													
+								print "SIMPLE";
+								break;
+					default: break;
+				}
+			}*/
+			
+			//Crear query
+			$my_search = new search();
+			$query = $my_search->get_query($this->search_query, FALSE, $this->search, $this->fields_list);
+				
+			//se puede acceder a los usuarios por numero de campo o por nombre de campo
+			$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
+			//crea una nueva conexi—n con una bbdd (mysql)
+			$this->db = NewADOConnection($this->db_type);
+			//le dice que no salgan los errores de conexi—n de la ddbb por pantalla
+			$this->db->debug=false;
+			//realiza una conexi—n permanente con la bbdd
+			$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
+			//mete la consulta
+			$this->sql="SELECT * FROM ".$this->table_prefix.$this->table_name." WHERE ".$query;
+	
+			//la ejecuta y guarda los resultados
+			$this->result = $this->db->Execute($this->sql);
+			//si falla 
+			if ($this->result === false)
+			{
+				$this->error=1;
+				$this->db->close();
 
-			return 0;
-		}  
-		
-		
+				return 0;
+			}  
+		}
+		//en el caso de que SI este definido submit_add
+		else
+		{
+			//se puede acceder a los usuarios por numero de campo o por nombre de campo
+			$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
+			//crea una nueva conexi—n con una bbdd (mysql)
+			$this->db = NewADOConnection($this->db_type);
+			//le dice que no salgan los errores de conexi—n de la ddbb por pantalla
+			$this->db->debug=false;
+			//realiza una conexi—n permanente con la bbdd
+			$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
+			//mete la consulta
+			$this->sql="SELECT * FROM ".$this->table_prefix.$this->table_name;
+			//la ejecuta y guarda los resultados
+			$this->result = $this->db->Execute($this->sql);
+			//si falla 
+			if ($this->result === false)
+			{
+				$this->error=1;
+				$this->db->close();
+
+				return 0;
+			}  
+		}
 		//cogemos los datos del usuario
 		if(!$_SESSION['super'] && !$_SESSION['admin'])
 		{
@@ -162,18 +259,15 @@ class users{
 				
 				//nos movemos hasta el siguiente registro de resultado de la consulta
 				$this->result->MoveNext();
-				$this->num++;
-				
+				$this->num++;	
 			}
 			$this->registrados = $this->num;
 			$num_usuarios = $this->num;
 			$k=0;	
 			for($i = 0; $i < $num_usuarios; $i++)
 			{
-		
 				$num_groups = $this->get_groups($users[$i][$this->ddbb_id_user]);
 				$per = true;
-
 				for($j = 0; $j < $num_groups; $j++)
 				{	
 					if($this->groups_list[$j]['id_group'] == 2) 
@@ -218,7 +312,7 @@ class users{
 				$this->users_list[$this->num][$this->ddbb_full_name]=$this->result->fields[$this->ddbb_full_name];
 				$this->users_list[$this->num][$this->ddbb_internal]=$this->result->fields[$this->ddbb_internal];
 				$this->users_list[$this->num][$this->ddbb_active]=$this->result->fields[$this->ddbb_active];
-				
+			
 				//nos movemos hasta el siguiente registro de resultado de la consulta
 				$this->result->MoveNext();
 				$this->num++;
@@ -227,9 +321,15 @@ class users{
 		}
 		
 		$this->db->close();
-		
 		return $this->num;
 	
+	}
+	
+	function get_fields_from_search_post(){
+		//Cogemos los campos principales de búsqueda
+		$this->search_query=$_POST[$this->ddbb_search];
+		print "BUSQUEDA ".$this->search_query;
+		return 0;
 	}
 	
 	function get_id($login)
@@ -732,7 +832,7 @@ class users{
 			$return_login=$this->fields_list->validate_login($this->login,$array,$login);
 			$return=$return && $return_login;
 			//En caso de que la validacion haya sido fallida se muestra la plantilla
-			//con los campos erroneos marcados con un *			
+			//con los campos erroneos marcados con un *					
 			if (!$return){
 				//Mostrar plantilla con datos erroneos
 				return -1;
@@ -846,7 +946,7 @@ class users{
 			// Leemos el usuario y se lo pasamos a la plantilla
 			$this->read($id);
 			$tpl->assign('objeto',$this);
-				
+		
 			
 			
 			if(!$_SESSION['super'] || !$_SESSION['admin'])
@@ -1064,6 +1164,7 @@ class users{
 									
 						case 'list':
 									$tpl=$this->listar($tpl);
+									$tpl->assign("objeto",$this);
 									break;
 						case 'modify':
 									/*$this->read($_GET['id']);
@@ -1115,6 +1216,7 @@ class users{
 						default:
 									$this->method='list';
 									$tpl=$this->listar($tpl);
+									$tpl->assign("objeto",$this);
 									break;
 					}
 				$tpl->assign('plantilla','users_'.$this->method.'.tpl');					

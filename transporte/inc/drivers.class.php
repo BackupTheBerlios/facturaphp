@@ -233,7 +233,7 @@ class drivers{
 				$this->drivers_list[$this->num][$this->ddbb_id_date]=$temp[$i][$this->ddbb_id_date];
 			
 				//Tratamos los datos para poder presentarselos al usuario
-				$this->preparar_datos($this->drivers_list[$this->num][$this->ddbb_id_emp]);
+				$this->preparar_datos_vehicle($this->drivers_list[$this->num][$this->ddbb_id_emp]);
 	
 				$this->num++;
 			}
@@ -245,6 +245,21 @@ class drivers{
 		return $this->num;
 	
 	}
+	
+	function preparar_datos_vehicle($id_emp)
+	{
+		$empleado = new emps();
+		$empleado->read($id_emp);
+		
+		$this->drivers_list[$this->num][$this->ddbb_name] = $empleado->name;
+		$this->drivers_list[$this->num][$this->ddbb_last_name] = $empleado->last_name;
+		$this->drivers_list[$this->num][$this->ddbb_last_name2] = $empleado->last_name2;
+		
+		$this->name = $empleado->name;
+		$this->last_name = $empleado->last_name;
+		$this->last_name2 = $empleado->last_name2;
+	}
+	
 	
 	function preparar_datos($id_emp)
 	{

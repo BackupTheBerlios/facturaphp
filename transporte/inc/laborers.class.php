@@ -196,23 +196,63 @@ class laborers{
 			return 0;
 		}  
 		
-		$this->num=0;
-		while (!$this->result->EOF) {
-			//cogemos los datos del conductor (directamente de la BBDD)
-			$this->laborers_list[$this->num][$this->ddbb_id_laborer]=$this->result->fields[$this->ddbb_id_laborer];
-			$this->laborers_list[$this->num][$this->ddbb_id_emp]=$this->result->fields[$this->ddbb_id_emp];
-			$this->laborers_list[$this->num][$this->ddbb_id_vehicle]=$this->result->fields[$this->ddbb_id_vehicle];
-			$this->laborers_list[$this->num][$this->ddbb_id_date]=$this->result->fields[$this->ddbb_id_date];
-			
-			//Tratamos los datos para poder presentarselos al usuario
-			$this->preparar_datos($this->laborers_list[$this->num][$this->ddbb_id_emp], $this->laborers_list[$this->num][$this->ddbb_id_vehicle]);
+		$num_emps=0;
+		$this->num = 0;
+		$temp = null;
+		$this->laborers_list = null;
+		while (!$this->result->EOF) 
+		{	
+			//Si hay más de un id_driver asociado a un empleado de la empresa evitamos que salga más de una vez, 
+			//para ello por cada emp nuevo se incrementa en uno su contador
+			$temp[$num_emps][$this->ddbb_id_laborer]=$this->result->fields[$this->ddbb_id_laborer];
+			$temp[$num_emps][$this->ddbb_id_emp]=$this->result->fields[$this->ddbb_id_emp];
+			$temp[$num_emps][$this->ddbb_id_vehicle]=$this->result->fields[$this->ddbb_id_vehicle];
+			$temp[$num_emps][$this->ddbb_id_date]=$this->result->fields[$this->ddbb_id_date];
+
+			$laborers[$temp[$num_emps][$this->ddbb_id_emp]]['cont']++;
+
+		
 			//nos movemos hasta el siguiente registro de resultado de la consulta
 			$this->result->MoveNext();
-			$this->num++;
+			$num_emps++;		
+		}	//while
+		
+		for($i=0; $i<=$num_emps;$i++)
+		{
+			if(($laborers[$temp[$i][$this->ddbb_id_emp]]['cont'] == 1))
+			{
+				//Si aparece y cont es 1 entonces es la primera vez que aparece
+				//cogemos los datos del conductor (directamente de la BBDD)
+				$this->laborers_list[$this->num][$this->ddbb_id_laborer]=$temp[$i][$this->ddbb_id_laborer];
+				$this->laborers_list[$this->num][$this->ddbb_id_emp]=$temp[$i][$this->ddbb_id_emp];
+				$this->laborers_list[$this->num][$this->ddbb_id_vehicle]=$temp[$i][$this->ddbb_id_vehicle];
+				$this->laborers_list[$this->num][$this->ddbb_id_date]=$temp[$i][$this->ddbb_id_date];
+			
+				//Tratamos los datos para poder presentarselos al usuario
+				$this->preparar_datos_vehicle($this->laborers_list[$this->num][$this->ddbb_id_emp]);
+	
+				$this->num++;
+			}
+			else
+				$laborers[$temp[$i][$this->ddbb_id_emp]]['cont'] --;
 		}
+		
 		$this->db->close();
 		return $this->num;
+
+	}
 	
+	function preparar_datos_vehicle($id_emp)
+	{
+		$empleado = new emps();
+		$empleado->read($id_emp);
+		$this->laborers_list[$this->num][$this->ddbb_name] = $empleado->name;
+		$this->laborers_list[$this->num][$this->ddbb_last_name] = $empleado->last_name;
+		$this->laborers_list[$this->num][$this->ddbb_last_name2] = $empleado->last_name2;
+		
+		$this->name = $empleado->name;
+		$this->last_name = $empleado->last_name;
+		$this->last_name2 = $empleado->last_name2;
 	}
 	
 	function preparar_datos($id_emp)

@@ -14,6 +14,8 @@ class groups{
 	var $descrip;
 	var $name_web;
 	var $theme;
+	var $search;
+	var $search_query;
 //BBDD name vars
 	var $db_name;
 	var $db_ip;
@@ -27,6 +29,7 @@ class groups{
 	var $ddbb_name='name';
 	var $ddbb_name_web='name_web';
   	var $ddbb_descrip='descrip';
+	var $ddbb_search='search';
   	var $db;
 	var $result;
 //variables complementarias	
@@ -66,6 +69,10 @@ class groups{
 		$this->fields_list->add($this->ddbb_name, $this->name, 'varchar', 20,0,1);
 		$this->fields_list->add($this->ddbb_name_web, $this->name_web, 'varchar', 100,0,1);
 		$this->fields_list->add($this->ddbb_descrip, $this->descrip, 'text', 255,0);		
+		
+		$this->search[0]= 'name';
+		$this->search[1]= 'web_name';
+				
 		//print_r($this);
 		//se puede acceder a los grupos por numero de campo o por nombre de campo
 /*		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
