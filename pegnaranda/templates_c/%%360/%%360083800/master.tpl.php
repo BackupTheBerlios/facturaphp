@@ -1,7 +1,7 @@
-<?php /* Smarty version 2.6.1, created on 2004-03-24 11:42:40
+<?php /* Smarty version 2.6.1, created on 2004-08-31 20:37:44
          compiled from master.tpl */ ?>
 <?php require_once(SMARTY_DIR . 'core' . DIRECTORY_SEPARATOR . 'core.load_plugins.php');
-smarty_core_load_plugins(array('plugins' => array(array('function', 'popup_init', 'master.tpl', 23, false),)), $this); ?>
+smarty_core_load_plugins(array('plugins' => array(array('function', 'popup_init', 'master.tpl', 24, false),)), $this); ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 	<head>
@@ -11,6 +11,7 @@ smarty_core_load_plugins(array('plugins' => array(array('function', 'popup_init'
 		<meta name="GENERATOR" content="Quanta Plus" >
 		<meta name="Keywords" content="Peñaranda,Penyaranda,Historia" >
 		<link type="text/css" rel="stylesheet" href="penaranda.css" >
+		<script language="javascript" src="estiloEnlace.js"></script>
 	<?php echo '
 	<SCRIPT SRC="qformslib/qforms.js"></SCRIPT>
 	<SCRIPT LANGUAGE="JavaScript">
@@ -52,4 +53,4 @@ smarty_core_load_plugins(array('plugins' => array(array('function', 'popup_init'
 			</td>
 		</tr>
 	</body>
-</html>
+</html>

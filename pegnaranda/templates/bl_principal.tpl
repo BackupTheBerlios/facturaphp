@@ -1,9 +1,9 @@
 {* Menu Principal *}
-	<div class="Bloque" align="left">
-		<h1>Men&uacute; Principal</h1>
-		&nbsp;<a link href="index.php?actor=static&accion=mostrar&sujeto=inicio">Inicio</a><br>
-		&nbsp;<a link href="index.php?actor=static&accion=mostrar&sujeto=ayuda">Ayuda</a><br>
-		&nbsp;<a link href="index.php?actor=buscador&accion=buscar">Busqueda</a><br>
-		&nbsp;<a link href="index.php?actor=static&accion=mostrar&sujeto=equipo">Equipo</a><br>
+	<div style="background-color: #feeab1; color: #106010; width: 140px;" align="left">
+		<h1 style="background-color: #106010; color:#fdcf51; font-weight: bold; text-align: left; font-size: 13px;">Men&uacute; Principal</h1>
+		&nbsp;<a style="color: #106010; font-size:11px; text-decoration: none; margin: 2px;" link href="index.php?actor=static&accion=mostrar&sujeto=inicio" onMouseOver="enlaceEntra(this);" onMouseOut="enlaceSale(this);">Inicio</a><br>
+		&nbsp;<a style="color: #106010; font-size:11px; text-decoration: none; margin: 2px;" link href="index.php?actor=static&accion=mostrar&sujeto=ayuda" onMouseOver="enlaceEntra(this);" onMouseOut="enlaceSale(this);">Ayuda</a><br>
+		&nbsp;<a style="color: #106010; font-size:11px; text-decoration: none; margin: 2px;" link href="index.php?actor=buscador&accion=buscar" onMouseOver="enlaceEntra(this);" onMouseOut="enlaceSale(this);">Busqueda</a><br>
+		&nbsp;<a style="color: #106010; font-size:11px; text-decoration: none; margin: 2px;" link href="index.php?actor=static&accion=mostrar&sujeto=equipo" onMouseOver="enlaceEntra(this);" onMouseOut="enlaceSale(this);">Equipo</a><br>
 		<br/>
 	</div>

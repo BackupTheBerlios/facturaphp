@@ -6,6 +6,7 @@
 		<meta name="GENERATOR" content="Quanta Plus" >
 		<meta name="Keywords" content="Peñaranda,Penyaranda,Historia" >
 		<link type="text/css" rel="stylesheet" href="penaranda.css" >
+		<script language="javascript" src="estiloEnlace.js"></script>
 	{literal}
 	<SCRIPT SRC="qformslib/qforms.js"></SCRIPT>
 	<SCRIPT LANGUAGE="JavaScript">

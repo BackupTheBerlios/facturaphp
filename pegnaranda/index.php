@@ -25,7 +25,7 @@
 			$UserName=vwSessionGetVar("UserName");
 			}
 
-	if ($actor=="") // Si no se especifica actor alguno, se va a la pantalla de inicio
+	if (!isset($actor)|| (isset($actor)&& $actor=="")) // Si no se especifica actor alguno, se va a la pantalla de inicio
 		{
 			$actor="static";
 			$accion="mostrar";

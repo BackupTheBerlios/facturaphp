@@ -175,7 +175,7 @@ function Initconn()
 							echo $querys['sql'][$aux];
 					die();
 					return false;};
-			if ($modname=="")
+			if (isset($modname) && $modname=="")
 				{
 					MakeSessionTable();}
 			installdbData($modName);
