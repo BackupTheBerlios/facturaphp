@@ -32,7 +32,9 @@ class users{
   	var $ddbb_theme='theme';
 	var $db;
 	var $result;  	
+//variables complementarias	
   	var $users_list;
+  	var $num;
   	//constructor
 	function users(){
 		global $DDBB_TYPE, $DDBB_NAME, $IP_DDBB, $DDBB_USER, $DDBB_PASS, $DDBB_PORT, $DDBB_PREFIX;
@@ -45,22 +47,61 @@ class users{
 		$this->db_port=$DDBB_PORT;
 		$this->db_prefix=$DDBB_PREFIX;
 		//print_r($this);
+		//se puede acceder a los usuarios por numero de campo o por nombre de campo
+		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
+		//crea una nueva conexi—n con una bbdd (mysql)
 		$this->db = NewADOConnection($this->db_type);
+		//le dice que no salgan los errores de conexi—n de la ddbb por pantalla
 		$this->db->debug=false;
-		$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->ddbb_prefix.$this->db_name);
+		//realiza una conexi—n permanente con la bbdd
+		$this->db->PConnect($this->db_ip,$this->db_user,$this->db_passwd,$this->ddbb_prefix.$this->db_name);
+		//mete la consulta
 		$this->sql="SELECT * FROM ".$this->table_name;
+		//la ejecuta y guarda los resultados
 		$this->result = $this->db->Execute($this->sql);
-		if ($this->result === false) die("failed");  
-		while (!$this->result->EOF) {
-		   for ($i=0, $max=$this->result->FieldCount(); $i < $max; $i++)
-				  print $this->result->fields[$i].' ';
-		   $this->result->MoveNext();
-		   print "<br>";
-		} 
+		//si falla 
+		if ($this->result === false){
+			$error=1;
+			return 0;
+		}  
+		return list_users();	 
 		
 	}
 	
 	function list_users (){
+		//se puede acceder a los usuarios por numero de campo o por nombre de campo
+		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
+		//crea una nueva conexi—n con una bbdd (mysql)
+		$this->db = NewADOConnection($this->db_type);
+		//le dice que no salgan los errores de conexi—n de la ddbb por pantalla
+		$this->db->debug=false;
+		//realiza una conexi—n permanente con la bbdd
+		$this->db->PConnect($this->db_ip,$this->db_user,$this->db_passwd,$this->ddbb_prefix.$this->db_name);
+		//mete la consulta
+		$this->sql="SELECT * FROM ".$this->table_name;
+		//la ejecuta y guarda los resultados
+		$this->result = $this->db->Execute($this->sql);
+		//si falla 
+		if ($this->result === false){
+			$error=1;
+			return 0;
+		}  
+		
+		$this->num=0;
+		while (!$this->result->EOF) {
+			//cogemos los datos del usuario
+			$this->users_list[$this->num][$field_id_user]=$this->result->fields[$field_id_user];
+			$this->users_list[$this->num][$field_login]=$this->result->fields[$field_login];
+			$this->users_list[$this->num][$field_passwd]=$this->result->fields[$field_passwd];
+			$this->users_list[$this->num][$field_name]=$this->result->fields[$field_name];
+			$this->users_list[$this->num][$field_last_name]=$this->result->fields[$field_last_name];
+			$this->users_list[$this->num][$field_last_name2]=$this->result->fields[$field_last_name2];
+			$this->users_list[$this->num][$field_full_name]=$this->result->fields[$field_full_name];
+			//nos movemos hasta el siguiente registro de resultado de la consulta
+			$this->result->MoveNext();
+			$num++;
+		}
+		return $num;
 	
 	}
 	
