@@ -37,7 +37,7 @@ class modules{
   	var $modules_list;
   	var $num;
   	var $fields_list;
-  	var $error;
+	var $error;
 	var $public_modules;
 	var $method;
 	var $module_meth;
@@ -181,7 +181,7 @@ class modules{
 		$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
 		//mete la consulta
 		$uno = 1;
-		$this->sql="SELECT `name`, `id_module`, `name_web` FROM `modules` WHERE `public` =".$uno;
+		$this->sql="SELECT * FROM `modules` WHERE `public` =".$uno;
 		//la ejecuta y guarda los resultados
 		$this->result = $this->db->Execute($this->sql);
 		//si falla 
@@ -194,9 +194,14 @@ class modules{
 		$this->num = 0;
 		while (!$this->result->EOF)
 		{
-			$this->public_modules[$this->num][0]=$this->result->fields['name'];
-			$this->public_modules[$this->num][1]=$this->result->fields['id_module'];
-			$this->public_modules[$this->num][2]=$this->result->fields['name_web'];
+			$this->public_modules[$this->num][$this->ddbb_id_module]=$this->result->fields[$this->ddbb_id_module];
+			$this->public_modules[$this->num][$this->ddbb_name_web]=$this->result->fields[$this->ddbb_name_web];
+			$this->public_modules[$this->num][$this->ddbb_name]=$this->result->fields[$this->ddbb_name];
+			$this->public_modules[$this->num][$this->ddbb_path]=$this->result->fields[$this->ddbb_path];
+			$this->public_modules[$this->num][$this->ddbb_active]=$this->result->fields[$this->ddbb_active];
+			$this->public_modules[$this->num][$this->ddbb_public]=$this->result->fields[$this->ddbb_public];
+			$this->public_modules[$this->num][$this->ddbb_parent]=$this->result->fields[$this->ddbb_parent];
+			$this->public_modules[$this->num][$this->ddbb_order]=$this->result->fields[$this->ddbb_order];
 			
 			//nos movemos hasta el siguiente registro de resultado de la consulta
 			$this->result->MoveNext();
