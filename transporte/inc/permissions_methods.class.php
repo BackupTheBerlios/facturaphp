@@ -31,6 +31,7 @@ class permissions_methods{
 	//constructor
 	function permissions_methods()
 	{
+		$this->inicializar_base_datos();
 		return $this;
 	}
 	
@@ -73,7 +74,7 @@ class permissions_methods{
 	
 	function validate_per_user_method ($id_user, $method)
 	{	
-				
+			
 		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
 		//crea una nueva conexi—n con una bbdd (mysql)
 		$this->db = NewADOConnection($this->db_type);
@@ -134,9 +135,8 @@ class permissions_methods{
 	function validate_per_method($id_user, $id_method)
 	{
 		//print "USUARIO -> ".$id_user.".....";
-	
-		$this->inicializar_base_datos();
-	
+		//$this->inicializar_base_datos();
+		
 		$users_list = new users();
 	
 		//Se toma la lista de grupos a los que pertenece el usuario
@@ -184,11 +184,11 @@ class permissions_methods{
 			}			
 		}
 	}
+	
 	function validate_per_method_without_groups($id_user, $id_method)
 	{
 		//print "USUARIO -> ".$id_user.".....";
-	
-		$this->inicializar_base_datos();
+		//$this->inicializar_base_datos();
 	
 		$users_list = new users();
 			

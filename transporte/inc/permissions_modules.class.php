@@ -87,6 +87,7 @@ class permissions_modules{
 
 	function validate_per_user_module ($id_user, $module)
 	{	
+
 		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
 		//crea una nueva conexi—n con una bbdd (mysql)
 		$this->db = NewADOConnection($this->db_type);
@@ -113,10 +114,11 @@ class permissions_modules{
 		
 	}
 	
-	function validate_per ($user, $module/*, $id_method*/)
+	function validate_per ($user, $module, $method_name)
 	{
+
 		$this->inicializar_base_datos();
-		//print "Pasados usuario: ".$user.", modulo: ".$module.", metodo: ".$id_method;
+		//print "Pasados usuario: ".$user.", modulo: ".$module.", metodo: ".$method_name;
 		
 		//se puede acceder a los usuarios por numero de campo o por nombre de campo
 		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
@@ -154,90 +156,129 @@ class permissions_modules{
 		} 
 		
 		$id_module=$this->result->fields['id_module'];
-		
 	
-		$per = 0;
-		
-		//Se comprueba si el usuario tiene permisos en el módulo
-		$per = $this->validate_per_user_module($id_user, $this->id_module);
-	
+		//Si el metodo no es una cadena vacía se busca su id
+		if($method_name != "")
+		{
 
-		
-		if($per == 1)//Si ya hay permiso no hace falta seguir
-		{
-			return $per;
-		}
-		else //Se comprueba que alguno de los grupos al que pertenece tenga permiso
-		{	
-			$users = new users();
-	
-			//Se toma la lista de grupos a los que pertenece el usuario
-			$num_groups = $users->get_groups($id_user); 
-		
-			$num = 0;
-			
-			while(($per == 0) && ($num < $num_groups))
-			{
-
-				$per = $this->validate_per_group_module ($users->groups_list[$num]['id_group'], $id_module);
-				//Terminamos el bucle
-				$num++;
-			}
-			
-		}
-		return $per;
-		
-		/*
-		//mete la consulta
-		$this->sql='SELECT `per`FROM `per_user_modules` WHERE `id_module`='.$id_module.' AND `id_user`='.$id_user;
-		//la ejecuta y guarda los resultados
-		$this->result = $this->db->Execute($this->sql);
-		if ($this->result === false)
-		{
-			$this->error=1;
-			$this->db->close();
-			
-			return false;
-		}  
-		
-		//Si ya se tiene permiso no hace falta seguir
-		if($this->result->fields['per'] == 1)
-			return $this->result->fields['per'];
-		
-		//Sino se prueba con los grupos a los que se pertenece
-		$this->sql='SELECT `per`FROM `per_groups_modules` WHERE `id_module`='.$id_module.' AND `id_user`='.$id_user;
-		//la ejecuta y guarda los resultados
-		$this->result = $this->db->Execute($this->sql);
-		if ($this->result === false)
-		{
-			$this->error=1;
-			$this->db->close();
-			
-			return false;
-		} 
-		return $this->result->fields['per'];
-		
-		
-		if ($this->result->fields['per'] == 1)
-		{
-			$this->sql='SELECT `per`FROM `per_user_methods` WHERE `id_method`='.$id_method.' AND `id_user`='.$id_user;
-			//la ejecuta y guarda los resultados
+			$this->sql='SELECT `id_method` FROM `methods` WHERE `name`='."\"".$method_name."\"".' AND `id_module`= '.$id_module;
 			$this->result = $this->db->Execute($this->sql);
+		
 			if ($this->result === false)
 			{
 				$this->error=1;
 				$this->db->close();
 
 				return false;
-			}  
+			} 
+		
+			$id_method=$this->result->fields['id_method'];
 
-			$this->db->close();
-			return $this->result->fields['per'];
 		}
-			$this->db->close();
-			return false;
 	
-		*/	
+		$users = new users();
+	
+		//Se toma la lista de grupos a los que pertenece el usuario
+		$num_groups = $users->get_groups($id_user); 
+		
+		
+		//Se comprueba si el usuario tiene permisos en el módulo
+		$per = $this->validate_per_user_module($id_user, $id_module);
+
+
+		
+		if($per == true)//Si ya hay permiso no hace falta seguir
+		{
+			//Se busca si también tiene permisos en el metodo indicado
+			if($method_name == "")//Si no se pasó ningún metodo se devuelve el permiso en el modulo
+			{
+				//print "Usuario con permisos de usuario y no se ha indicado metodo";
+				return 1;
+			}
+			//Si hay metodo se busca el permiso del usuario en él
+			$method = new permissions_methods();
+			$per = $method->validate_per_user_method($id_user, $id_method);
+			
+			if($per == true)
+			{
+				//print "Usuario con permisos de usuario y permiso en metodo por usuario";
+				return 1;
+			}
+			
+			//Se comprueba si en sus grupos tiene permiso
+			$num = 0;
+			
+			while(($per == false) && ($num < $num_groups))
+			{
+				$per = $method->validate_per_group_method ($users->groups_list[$num]['id_group'], $id_method);
+				if($per == true)
+				{
+					//print "Usuario con permisos de usuario y en metodo de grupo";
+					return 1;
+				}
+				
+				$num++;
+			}
+			//print "Usuario con permisos de usuario y NO permiso en metodo";
+			return 0;
+		}
+		else //Se comprueba que alguno de los grupos al que pertenece tenga permiso
+		{	
+			
+			$num = 0;
+			
+			while(($per == false) && ($num < $num_groups))
+			{
+
+				$per = $this->validate_per_group_module ($users->groups_list[$num]['id_group'], $id_module);
+				if($per == true)
+				{
+				
+					//return 1;
+					//Se busca si también tiene permisos en el metodo indicado
+					if($method_name == "")//Si no se pasó ningún metodo se devuelve el permiso en el modulo
+					{
+						//print "Usuario con permisos de grupo y no se ha indicado metodo";
+						return 1;
+					}
+					//Si hay metodo se busca el permiso del usuario en él
+					$method = new permissions_methods();
+					$per = $method->validate_per_user_method($id_user, $id_method);
+					
+					if($per == true)
+					{
+						//print "Usuario con permisos de grupo y permiso en metodo";
+						return 1;
+					}
+					
+					//Se comprueba si en sus grupos tiene permiso
+					$num = 0;
+					
+					while(($per == false) && ($num < $num_groups))
+					{
+		
+						$per = $method->validate_per_group_method ($users->groups_list[$num]['id_group'], $id_method);
+						if($per == true)
+						{
+							//print "Usuario con permisos de grupo y en metodo de grupo";
+							return 1;
+						}
+						
+						$num++;
+					}
+					
+					//print "Usuario con permisos de grupo y NO permiso en metodo";
+					return 0;
+				}
+			
+				$num++;
+			}
+			
+		}
+		//print "NO hay permisos";
+		return 0;
+		
+		
 	}
 
 

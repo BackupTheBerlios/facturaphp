@@ -73,11 +73,14 @@ if(!isset($_SESSION['user'])){
 
 
 //identifica el usuario el modulo y la operaci—n
-if(isset($_GET['module'])){
+if(isset($_GET['module']))
+{
 	$module=$_GET['module'];
 	$_SESSION['module']=$module;
-	switch ($module){
-		case ('users'): {
+	switch ($module)
+	{
+		case ('users'): 
+		{
 			$object= new users;
 		}
 	
@@ -86,22 +89,98 @@ if(isset($_GET['module'])){
 
 //coge el listado de modulos disponibles para el usuario
 $module= new modules();
-if(isset($_SESSION['user'])){
-$modules_list=$module->get_list_modules_user($_SESSION['user']);
-}else{
+if(isset($_SESSION['user']))
+{
+	$modules_list=$module->get_list_modules_user($_SESSION['user']);
+}
+else
+{
 	$modules_list=$module->get_list_public_modules();
 
 }
+
 $tpl->assign('modules_list',$modules_list);
+
 //coge las operaciones de ese modulo disponibles
-if(isset($_GET['module'])||isset($_SESSION['module'])){
-	if(isset($_GET['module'])){
+if(isset($_GET['module'])||isset($_SESSION['module']))
+{
+	if(isset($_GET['module']))
+	{
 		$module_name=$_GET['module'];
-	}else{
+	}
+	else
+	{
 		$module_name=$_SESSION['module'];
 	}
 	$operations_list=$module->get_module_operations_list($module_name);
 }
+
+
+//Se comprueba que el usuario tenga permisos sobre el módulo que aparece en la barra de direccion
+/*
+//2 opciones:
+//- El usuario no está logeado pero el módulo es público, en cuyo caso no habría problema
+//- El usuario está logeado pero intenta entrar en un móudlo donde no tiene permisos
+if(!isset($_SESSION['user']) && isset($_GET['module']))
+{
+	//Se comprueba si el modulo es público, sino es así se indica el error
+	if($module->is_public_module($_GET['module']) == 0)
+		$module_name = 'error';	
+}
+
+//Se comprueba que el usuario tenga permisos sobre el módulo que aparece en la barra de direccion
+if(isset($_SESSION['user']) && isset($_GET['module']))
+{
+	//Se comprueba si el modulo es público si es así se deja no hay problema, pero sino se tendrá que saber si tiene o no acceso a él
+	if($module->is_public_module($_GET['module']) == 0)
+	{
+		$permiso = new permissions_modules();
+		if($permiso->validate_per($_SESSION['user'], $_GET['module']) == 0)
+		{
+			$module_name = 'error';	
+		}
+	}
+}
+*/
+
+//2 opciones:
+//- El usuario no está logeado pero el módulo es público, en cuyo caso no habría problema
+//- El usuario está logeado pero intenta entrar en un móudlo donde no tiene permisos
+if(!isset($_SESSION['user']) && isset($_GET['module']))
+{
+	//Se comprueba si el modulo es público, sino es así se indica el error
+	if($module->is_public_module($_GET['module']) == 0)
+	{
+		$module_name = 'error';
+	}	
+}
+
+//Se comprueba que el usuario tenga permisos sobre el módulo que aparece en la barra de direccion
+if(isset($_SESSION['user']) && isset($_GET['module']))
+{
+	//Se comprueba si el modulo es público si es así se deja no hay problema, pero sino se tendrá que saber si tiene o no acceso a él
+	if($module->is_public_module($_GET['module']) == 0)
+	{
+		$permiso = new permissions_modules();
+		
+		//Se prepara para poder investigar los permisos en el modulo
+		if (!isset($_GET['method']))
+		{
+			$method=null;
+		}
+		else
+		{
+			$method=$_GET['method'];
+		}
+		
+		if($permiso->validate_per($_SESSION['user'], $_GET['module'], $method) == 0)
+		{
+			$module_name = 'error';	
+		}
+	}
+}
+
+
 
 //inicializar el objeto que corresponda
 //en el caso de queno haya modulo definido se deja la plantilla por defecto
@@ -117,8 +196,10 @@ $tpl->assign('num_users',$num);
 $session= new sessions();
 $num_sessions=$session->num();
 $tpl->assign('num_sessions',$num_sessions);
+
 //calcula la barra de navegaci—n y titulo de la pagina
-if ($objeto===null){
+if ($objeto===null)
+{
 	$nav_bar='Gesti&oacute;n';
 	$title='Gesti&oacute;n';
 	$plantilla='wellcome.tpl';
@@ -126,14 +207,15 @@ if ($objeto===null){
 }
 else
 {
-	
 	//calcula la plantilla a presentar
-	if (!isset($_GET['method'])){
-			$method=null;
-		}
-	else{
-			$method=$_GET['method'];
-		}
+	/*if (!isset($_GET['method']))
+	{
+		$method=null;
+	}
+	else
+	{
+		$method=$_GET['method'];
+	}*/
 		
 	//VER COMO CONSEGUIR EL NOMBRE DE LA EMPRESA CON LA QUE SE ESTA TRABAJANDO
 	$corp="";
