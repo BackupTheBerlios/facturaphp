@@ -68,7 +68,9 @@ if(!isset($_SESSION['user'])){
 //coge las operaciones de ese modulo diaponibles
 //coge las sesiones abiertas y los usuarios registrados
 //calcula la barra de navegaci—n y titulo de la pagina
+//calcula la plantilla a presentar
 
+//pasa las variables de la presentaci—n a la plantilla dependiente del objeto
 
 
 

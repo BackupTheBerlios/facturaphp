@@ -127,6 +127,8 @@ class users{
 	
 	function get_add_form(){
 	
+		
+	
 	}
 	
 	function print_add_form(){
@@ -149,6 +151,40 @@ class users{
 	
 	}
 	
+	function read($id){
+	
+		//se puede acceder a los usuarios por numero de campo o por nombre de campo
+		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
+		//crea una nueva conexi—n con una bbdd (mysql)
+		$this->db = NewADOConnection($this->db_type);
+		//le dice que no salgan los errores de conexi—n de la ddbb por pantalla
+		$this->db->debug=false;
+		//realiza una conexi—n permanente con la bbdd
+		$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
+		//mete la consulta
+		$this->sql="SELECT * FROM ".$this->table_prefix.$this->table_name." WHERE ".$this->ddbb_id_user."= \"".$id."\"";
+		//la ejecuta y guarda los resultados
+		$this->result = $this->db->Execute($this->sql);
+		//si falla 
+		if ($this->result === false){
+			$error=1;
+			return 0;
+			$this->db->close();
+		}else{
+			$this->id_user=$id;
+			$this->login=$this->result->fields[$this->ddbb_login];
+			$this->passwd=$this->result->fields[$this->ddbb_passwd];
+			$this->name=$this->result->fields[$this->ddbb_name];
+			$this->last_name=$this->result->fields[$this->ddbb_last_name];
+			$this->last_name2=$this->result->fields[$this->ddbb_last_name2];
+			$this->full_name=$this->result->fields[$this->ddbb_full_name];
+			$this->db->close();
+			return 1;
+		}
+		
+	
+	}
+	
 	function add(){
 	
 		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
@@ -159,7 +195,7 @@ class users{
 		//realiza una conexi—n permanente con la bbdd
 		$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
 		//mete la consulta para coger los campos de la bbdd
-		$this->sql="SELECT * FROM ".$this->table_prefix.$this->table_name. "WHERE ".$ddbb_id_login."=-1" ;
+		$this->sql="SELECT * FROM ".$this->table_prefix.$this->table_name. " WHERE ".$this->ddbb_id_user." = -1" ;
 		//la ejecuta y guarda los resultados
 		$this->result = $this->db->Execute($this->sql);
 		//si falla 
@@ -177,13 +213,15 @@ class users{
 		$record[$this->ddbb_last_name2]=$this->last_name2;
 		$record[$this->ddbb_full_name]=$this->full_name;
 		//calculamos la sql de inserci—n respecto a los atributos
-		$this->sql = $conn->GetInsertSQL($this->result, $record);
+		$this->sql = $this->db->GetInsertSQL($this->result, $record);
+		//print($this->sql);
 		//insertamos el registro
 		$this->db->Execute($this->sql);
 		//si se ha insertado una fila
-		if($this->db->Affected_Rows()==1){
+		if($this->db->Insert_ID()>=0){
 			//capturammos el id de la linea insertada
 			$this->id_user=$this->db->Insert_ID();
+			//print("<pre>::".$this->id_user."::</pre>");
 			//devolvemos el id de la tabla ya que todo ha ido bien
 			$this->db->close();
 			return $this->id_user;
@@ -195,7 +233,7 @@ class users{
 		}			
 	}
 	
-	function remove(){
+	function remove($id){
 	
 		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
 		//crea una nueva conexi—n con una bbdd (mysql)
@@ -206,11 +244,11 @@ class users{
 		$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
 		//mete la consulta para coger los campos de la bbdd
 		//calcula la consulta de borrado.
-		$this->sql="SELECT * FROM ".$this->table_prefix.$this->table_name. "WHERE ".$ddbb_id_login."=-1" ;
+		$this->sql="DELETE FROM ".$this->table_prefix.$this->table_name. " WHERE ".$this->ddbb_id_user." = ".$id." LIMIT 1";
 		//la ejecuta y guarda los resultados
 		$this->result = $this->db->Execute($this->sql);
 		//si falla 
-		if ($this->db->Affected_Rows == 0){
+		if ($this->db->Affected_Rows() == 0){
 			$this->error=1;
 			$this->db->close();
 			return 0;
@@ -234,7 +272,7 @@ class users{
 		//realiza una conexi—n permanente con la bbdd
 		$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
 		//mete la consulta para coger los campos de la bbdd
-		$this->sql="SELECT * FROM ".$this->table_prefix.$this->table_name. "WHERE ".$ddbb_id_login."=-1" ;
+		$this->sql="SELECT * FROM ".$this->table_prefix.$this->table_name. " WHERE ".$this->ddbb_id_user." = \"".$this->id_user."\"" ;
 		//la ejecuta y guarda los resultados
 		$this->result = $this->db->Execute($this->sql);
 		//si falla 
@@ -253,7 +291,7 @@ class users{
 		$record[$this->ddbb_last_name2]=$this->last_name2;
 		$record[$this->ddbb_full_name]=$this->full_name;
 		//calculamos la sql de inserci—n respecto a los atributos
-		$this->sql = $conn->GetUpdateSQL($this->result, $record);
+		$this->sql = $this->db->GetUpdateSQL($this->result, $record);
 		//insertamos el registro
 		$this->db->Execute($this->sql);
 		//si se ha insertado una fila

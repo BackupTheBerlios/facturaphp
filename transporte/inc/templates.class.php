@@ -17,5 +17,6 @@ class template extends Smarty{
 
 		
 	}
+	
 }
 ?>

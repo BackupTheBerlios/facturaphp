@@ -12,7 +12,7 @@
 	  			</tr>
 	  			<tr>
 	  				<td width="30px" class=""></td>
-	  				<td class="textoMenu"><i>Texto introductorio de la noticia n¼1...</i><br> [ <a href="#">Ver m&aacute;s...</a> ]</td>
+	  				<td class="textoMenu"><i>Texto introductorio de la noticia nº1...</i><br> [ <a href="#">Ver m&aacute;s...</a> ]</td>
 
 	  			</tr>
 	  			<tr>
@@ -21,7 +21,7 @@
 	  			</tr>
 	  			<tr>
 	  				<td width="30px" class=""></td>
-	  				<td class="textoMenu"><i>Texto introductorio de la noticia n¼2...</i><br> [ <a href="#">Ver m&aacute;s...</a> ]</td>
+	  				<td class="textoMenu"><i>Texto introductorio de la noticia nº2...</i><br> [ <a href="#">Ver m&aacute;s...</a> ]</td>
 
 	  			</tr>
 	  			<tr>
@@ -30,7 +30,7 @@
 	  			</tr>
 	  			<tr>
 	  				<td width="30px" class=""></td>
-	  				<td class="textoMenu"><i>Texto introductorio de la noticia n¼3...</i><br> [ <a href="#">Ver m&aacute;s...</a> ]</td>
+	  				<td class="textoMenu"><i>Texto introductorio de la noticia nº3...</i><br> [ <a href="#">Ver m&aacute;s...</a> ]</td>
 
 	  			</tr>
 	  			<tr>
