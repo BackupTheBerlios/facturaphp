@@ -18,7 +18,7 @@
 			  </table>
 			  <table width="100%">
 			  <tr><td class="message" align="center">{$message}</td></tr>
-			  <tr><td valign="top"><form method="post" action="index.php?module=users&method=view">
+			  <tr><td valign="top"><form method="post" action="index.php?module=emps&method=view">
 			  	<table width="250px" align="center">
 				 <tr>
 					  <td colspan="2" class="cabeceraCampoFormulario">Criterios de b&uacute;squeda:</td>
@@ -58,7 +58,7 @@
 						
 					</div>	
 					 <script>	
-					  	document.getElementById("divMostrar").innerHTML = users_1;
+					  	document.getElementById("divMostrar").innerHTML = emps_1;
 					  </script>
 				  
 			  </td></tr></table>
