@@ -8,5 +8,5 @@
 		<br>
 		<center><input type="submit" name="submit" value=" Enviar "></center>
  </form>
-	<p>&nbsp;El registro en este servicio es completamente gratu&iacute;to. Si desea registrarse pulse con el rat&oacute; en este <a onMouseOver="enlaceEntra(this);" onMouseOut="enlaceSale(this);" style="color: #106010; font-size:11px; text-decoration: none; margin: 2px;" link href="index.php?actor=usuarios&accion=registro">enlace</a></p>
+	<p>&nbsp;<span style="font-size:15px;font-weight: bold;">E</span>l registro en este servicio es completamente gratu&iacute;to. Si desea registrarse pulse con el rat&oacute; en este <a onMouseOver="enlaceEntra(this);" onMouseOut="enlaceSale(this);" style="color: #106010; font-size:11px; text-decoration: none; margin: 2px;" link href="index.php?actor=usuarios&accion=registro">enlace</a></p>
 </div>

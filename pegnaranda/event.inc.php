@@ -154,4 +154,7 @@
 					}
 			return $event;
 			}
+			
+	/* lo q falta es insertar las instrucciones para q se inserten los eventos
+	*/
 ?>

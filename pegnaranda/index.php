@@ -284,6 +284,16 @@
 							break;
 						}
 				break;
+			case 'estadisticas':
+				switch($accion)
+					{
+						case "listar":
+							$param["ruta"]="$actor/listar";
+							render($param);
+							die();
+							break;						
+						}
+				break;
 			case 'documentos':
 				switch($accion)
 					{
@@ -500,7 +510,8 @@
 							die();
 							break;
 						}
-				break;
+				break;		
+				
 			}
 	
 ?>

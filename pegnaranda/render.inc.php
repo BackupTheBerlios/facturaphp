@@ -42,6 +42,10 @@
 									require_once("backup.inc.php");
 									$contenido=render_backup($accion,$sujeto,$param);
 									break;
+				case 'estadisticas':
+									require_once("estadisticas/estadisticas.inc.php");
+									$contenido=render_estadistica($accion,$sujeto,$param);
+									break;
 				default:
 									require_once("static/static.inc.php");
 									$contenido=render_static("mostrar","inicio",$param);
