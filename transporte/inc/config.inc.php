@@ -33,7 +33,7 @@
 	$INSTALL_DIR="D:\\Archivos de programa\\EasyPHP1-7\\www\\transporte\\";*/
 	//**************************************************************
 	//Configuración De Dani (Linux)
-	
+	/*
 	$DDBB_NAME="transporte";
 	$DDBB_USER="root";
 	$DDBB_PASS="";
@@ -41,8 +41,21 @@
 	$TABLE_PREFIX="";
 	$DDBB_TYPE="mysql";
 	$DDBB_PORT="3306";
+	$INSTALL_DIR="/var/www/transporte/";*/
+	//**************************************************************
+	//Configuración De Rocío (Linux)
+	
+	$DDBB_NAME="transporte";
+	$DDBB_USER="root";
+	$DDBB_PASS="sta3war2";
+	$IP_DDBB="localhost";
+	$TABLE_PREFIX="";
+	$DDBB_TYPE="mysql";
+	$DDBB_PORT="3306";
 	$INSTALL_DIR="/var/www/transporte/";
 	
+	
+	// *************************************************
 	// *************************************************
 	//Configuracion de David
 /*

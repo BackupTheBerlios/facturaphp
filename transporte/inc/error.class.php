@@ -17,7 +17,7 @@ class error{
 	function calculate_tpl($method, $tpl)
 	{
 
-		$tpl->assign('plantilla','users_'.$method.'.tpl');					
+		$tpl->assign('plantilla','error.tpl');					
 		
 		return $tpl;
 	}
