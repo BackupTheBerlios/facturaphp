@@ -15,6 +15,7 @@ class permissions_modules{
 	var $methods;	//Lista de metodos del modulo en cuestión
 	var $id_module;   //Id del modulo
 	var $module_name; //Nombre del modulo
+	var $web_name;
 	var $per;
 	//var $list_methods; No hace falta porque la lista de metodos por módulo la encontraremos con el numero de metodos listando los nombres que aparecen en cada campo de per_module_methods
 	
@@ -112,12 +113,10 @@ class permissions_modules{
 		
 	}
 	
-	function validate_per ($id_user, $module, $id_method)
+	function validate_per ($user, $module/*, $id_method*/)
 	{
-		$method = 1;
-		$id_user = 1;
-		$module = "usuarios";
-		//print "Pasados usuario: ".$id_user.", modulo: ".$module.", metodo: ".$id_method;
+		$this->inicializar_base_datos();
+		//print "Pasados usuario: ".$user.", modulo: ".$module.", metodo: ".$id_method;
 		
 		//se puede acceder a los usuarios por numero de campo o por nombre de campo
 		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
@@ -127,6 +126,21 @@ class permissions_modules{
 		$this->db->debug=false;
 		//realiza una conexi—n permanente con la bbdd
 		$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
+
+		$this->sql='SELECT `id_user` FROM `users` WHERE `login`='."\"".$user."\"";
+
+		$this->result = $this->db->Execute($this->sql);
+		
+		if ($this->result === false)
+		{
+			$this->error=1;
+			$this->db->close();
+
+			return false;
+		} 	
+	
+		$id_user=$this->result->fields['id_user'];
+
 		
 		$this->sql='SELECT `id_module` FROM `modules` WHERE `name`='."\"".$module."\"";
 		$this->result = $this->db->Execute($this->sql);
@@ -141,6 +155,39 @@ class permissions_modules{
 		
 		$id_module=$this->result->fields['id_module'];
 		
+	
+		$per = 0;
+		
+		//Se comprueba si el usuario tiene permisos en el módulo
+		$per = $this->validate_per_user_module($id_user, $this->id_module);
+	
+
+		
+		if($per == 1)//Si ya hay permiso no hace falta seguir
+		{
+			return $per;
+		}
+		else //Se comprueba que alguno de los grupos al que pertenece tenga permiso
+		{	
+			$users = new users();
+	
+			//Se toma la lista de grupos a los que pertenece el usuario
+			$num_groups = $users->get_groups($id_user); 
+		
+			$num = 0;
+			
+			while(($per == 0) && ($num < $num_groups))
+			{
+
+				$per = $this->validate_per_group_module ($users->groups_list[$num]['id_group'], $id_module);
+				//Terminamos el bucle
+				$num++;
+			}
+			
+		}
+		return $per;
+		
+		/*
 		//mete la consulta
 		$this->sql='SELECT `per`FROM `per_user_modules` WHERE `id_module`='.$id_module.' AND `id_user`='.$id_user;
 		//la ejecuta y guarda los resultados
@@ -152,6 +199,23 @@ class permissions_modules{
 			
 			return false;
 		}  
+		
+		//Si ya se tiene permiso no hace falta seguir
+		if($this->result->fields['per'] == 1)
+			return $this->result->fields['per'];
+		
+		//Sino se prueba con los grupos a los que se pertenece
+		$this->sql='SELECT `per`FROM `per_groups_modules` WHERE `id_module`='.$id_module.' AND `id_user`='.$id_user;
+		//la ejecuta y guarda los resultados
+		$this->result = $this->db->Execute($this->sql);
+		if ($this->result === false)
+		{
+			$this->error=1;
+			$this->db->close();
+			
+			return false;
+		} 
+		return $this->result->fields['per'];
 		
 		
 		if ($this->result->fields['per'] == 1)
@@ -173,6 +237,7 @@ class permissions_modules{
 			$this->db->close();
 			return false;
 	
+		*/	
 	}
 
 
@@ -236,7 +301,7 @@ class permissions_modules{
 			$this->per_methods[$metodo_num] = new permissions_methods();
 			$this->per_methods[$metodo_num]->id_method = $modules->module_methods[$metodo_num]['id_method'];
 			$this->per_methods[$metodo_num]->method_name = $modules->module_methods[$metodo_num]['name'];				
-			$this->per_methods[$metodo_num]->method_name_web = $modules->module_methods[$metodo_num]['name_web'];
+			$this->per_methods[$metodo_num]->name_web = $modules->module_methods[$metodo_num]['name_web'];
 			if($per == true)
 			{	
 				$this->per_methods[$metodo_num]->validate_per_method($id_user, $this->per_methods[$metodo_num]->id_method);
