@@ -4,6 +4,7 @@
 //Usuarios
 require_once('inc/includes.php');
 echo '<h2 align="center">Bater&iacute;a de pruebas</h2>';
+echo '<h3 align="center">M&oacute;dulo de <U>USUARIOS</U></H3>';
 //echo "<p>antes de objeto</p>";
 echo "<h3>Usuarios</h3>";
 $object=new users();
@@ -636,7 +637,7 @@ $sesiones= new sessions();
 //a–adimos sus variables
 $sesiones->id_session_php='adadfadfadfadfadf';
 $sesiones->id_user=2;
-$sessiones->up='2004-12-12';
+$sesiones->up='2004-12-12';
 $sesiones->down='2004-12-12';
 $salida=$sesiones->add();
 echo "<table><tr><td>A&ntilde;adiendo una sesion</td><td>";
@@ -834,4 +835,214 @@ echo "<font color='green'>Modificado</font>";
 	echo "<p align='right'><font color='red'>No Modificado</font></p>";
 }
 echo "</td></tr></table>";
+
+//*************************************************************************
+//MODULO DE EMPRESA
+//*************************************************************************
+echo '<h3 align="center">M&oacute;dulo de <U>EMPRESA</U></H3>';
+//*************************************************************************
+//empleados por categoria 
+echo "<br><h3>Relaci&oacute;n empleados por categoria</h3>";
+$empleado_categoria= new rel_emps_cats();
+//echo "<p>despues de objeto</p>";
+//a–adimos sus variables
+$empleado_categoria->id_emp=2;
+$empleado_categoria->id_cat_emp=2;
+$salida=$empleado_categoria->add();
+echo "<table><tr><td>A&ntilde;adiendo una relaci&oacute;n empleado por categoria</td><td>";
+if($salida>0){
+
+echo "<font color='green'>A&ntilde;adida</font>";
+}else {
+
+	echo "<p align='right'><font color='red'>No A&ntilde;adida</font></p>";
+}
+echo "</td></tr></table>";
+
+$salida=$empleado_categoria->remove($empleado_categoria->id_rel_emp_cat);
+echo "<table><tr><td>Borrando la relaci&oacute;n empleado por categoria recien creada</td><td>";
+if($salida>0){
+
+echo "<font color='green'>Borrada</font>";
+}else {
+
+	echo "<p align='right'><font color='red'>No Borrada</font></p>";
+}
+echo "</td></tr></table>";
+
+$salida=$empleado_categoria->read(1);
+echo "<table><tr><td>Comprobando una relaci&oacute;n empleado por categoria existente</td><td>";
+if($salida>0 && $empleado_categoria->id_emp==1){
+
+echo "<font color='green'>Existe</font>";
+}else {
+
+	echo "<p align='right'><font color='red'>No Existe</font></p>";
+}
+echo "</td></tr></table>";
+
+$empleado_categoria->id_emp=27;
+$salida=$empleado_categoria->modify();
+
+echo "<table><tr><td>Modificando una relaci&oacute;n empleado por categoria existente</td><td>";
+if($salida>0){
+
+echo "<font color='green'>Modificada</font>";
+}else {
+
+	echo "<p align='right'><font color='red'>No Modificada</font></p>";
+}
+echo "</td></tr></table>";
+
+$empleado_categoria->id_emp=1;
+$salida=$empleado_categoria->modify();
+
+echo "<table><tr><td>Volviendo a Modificar una relaci&oacute;n empleado por categoria existente</td><td>";
+if($salida>0){
+
+echo "<font color='green'>Modificada</font>";
+}else {
+
+	echo "<p align='right'><font color='red'>No Modificada</font></p>";
+}
+echo "</td></tr></table>";
+
+//********************************************************************************************
+//empleados por categoria 
+echo "<br><h3>Relaci&oacute;n categoria de empleados</h3>";
+$categoria_empleado= new cat_emps();
+//echo "<p>despues de objeto</p>";
+//a–adimos sus variables
+$categoria_empleado->name=2;
+$categoria_empleado->descrip=2;
+$salida=$categoria_empleado->add();
+echo "<table><tr><td>A&ntilde;adiendo una relaci&oacute;n categoria de empleado</td><td>";
+if($salida>0){
+
+echo "<font color='green'>A&ntilde;adida</font>";
+}else {
+
+	echo "<p align='right'><font color='red'>No A&ntilde;adida</font></p>";
+}
+echo "</td></tr></table>";
+
+$salida=$categoria_empleado->remove($categoria_empleado->id_cat_emp);
+echo "<table><tr><td>Borrando la relaci&oacute;n categoria de empleado recien creada</td><td>";
+if($salida>0){
+
+echo "<font color='green'>Borrada</font>";
+}else {
+
+	echo "<p align='right'><font color='red'>No Borrada</font></p>";
+}
+echo "</td></tr></table>";
+
+$salida=$categoria_empleado->read(1);
+echo "<table><tr><td>Comprobando una relaci&oacute;n categoria de empleado existente</td><td>";
+if($salida>0 && $categoria_empleado->name=='Gestor'){
+
+echo "<font color='green'>Existe</font>";
+}else {
+
+	echo "<p align='right'><font color='red'>No Existe</font></p>";
+}
+echo "</td></tr></table>";
+
+$categoria_empleado->name='Camionero';
+$salida=$categoria_empleado->modify();
+
+echo "<table><tr><td>Modificando una relaci&oacute;n categoria de empleado existente</td><td>";
+if($salida>0){
+
+echo "<font color='green'>Modificada</font>";
+}else {
+
+	echo "<p align='right'><font color='red'>No Modificada</font></p>";
+}
+echo "</td></tr></table>";
+
+$categoria_empleado->name='Gestor';
+$salida=$categoria_empleado->modify();
+
+echo "<table><tr><td>Volviendo a Modificar una relaci&oacute;n categoria de empleado existente</td><td>";
+if($salida>0){
+
+echo "<font color='green'>Modificada</font>";
+}else {
+
+	echo "<p align='right'><font color='red'>No Modificada</font></p>";
+}
+echo "</td></tr></table>";
+
+//*****************************************************************************
+//vacaciones
+//echo "<p>antes de objeto</p>";
+echo "<br><h3>Vacaciones</h3>";
+$vacaciones= new holydays();
+//echo "<p>despues de objeto</p>";
+//a–adimos sus variables
+$vacaciones->id_emp=2;
+$vacaciones->ill=2;
+$vacaciones->gone='2004-12-12';
+$vacaciones->come='2004-12-12';
+$vacaciones->descrip='ad ad adpfi adfadp a sdp';
+$salida=$vacaciones->add();
+echo "<table><tr><td>A&ntilde;adiendo unas vacaciones</td><td>";
+if($salida>0){
+
+echo "<font color='green'>A&ntilde;adidas</font>";
+}else {
+
+	echo "<p align='right'><font color='red'>No A&ntilde;adidas</font></p>";
+}
+echo "</td></tr></table>";
+
+$salida=$vacaciones->remove($vacaciones->id_holy);
+echo "<table><tr><td>Borrando las vacacioens recien creadas</td><td>";
+if($salida>0){
+
+echo "<font color='green'>Borradas</font>";
+}else {
+
+	echo "<p align='right'><font color='red'>No Borradas</font></p>";
+}
+echo "</td></tr></table>";
+
+$salida=$vacaciones->read(1);
+echo "<table><tr><td>Comprobando unas vacaciones existentes</td><td>";
+if($salida>0 && $vacaciones->id_emp==1){
+
+echo "<font color='green'>Existen</font>";
+}else {
+
+	echo "<p align='right'><font color='red'>No Existen</font></p>";
+}
+echo "</td></tr></table>";
+
+$vacaciones->id_emp=27;
+$salida=$vacaciones->modify();
+
+echo "<table><tr><td>Modificando unas vacaciones existentes</td><td>";
+if($salida>0){
+
+echo "<font color='green'>Modificadas</font>";
+}else {
+
+	echo "<p align='right'><font color='red'>No Modificadas</font></p>";
+}
+echo "</td></tr></table>";
+
+$vacaciones->id_emp=1;
+$salida=$vacaciones->modify();
+
+echo "<table><tr><td>Volviendo a Modificar unas vacaciones existentes</td><td>";
+if($salida>0){
+
+echo "<font color='green'>Modificadas</font>";
+}else {
+
+	echo "<p align='right'><font color='red'>No Modificadas</font></p>";
+}
+echo "</td></tr></table>";
+
 ?>
