@@ -159,6 +159,7 @@ $tpl->assign('objeto',$obje);
 
 //********************************************** Vista
 //$tpl=$obje->view(1,$tpl);
+
 // ****************************** fin Vista*/
 
 $tpl->display($index_template);

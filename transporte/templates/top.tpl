@@ -9,7 +9,7 @@
 			<table width="100%">
 				<tr>
 					<td height="100px"><img src="pics/logo.gif"></td>
-	  				<td align="right" valign="middle"><img src="pics/dragdrop.gif"></td>
+	  				<td align="right" valign="middle"><img src="pics/DragDrop.gif"></td>
 				</tr>
 				<tr class="barraNavegacion">
 					<td colspan="2" >{$nav_bar}</td>
