@@ -94,7 +94,7 @@ class menu{
 			$cadena=$cadena.'<img src="pics/separador.gif">&nbsp;';
 			$cadena=$cadena.'<b>'.$array_mod['name_web'].'</b>';
 		}
-		else
+		else if($array_mod['parent'] != -2)
 		{
 			$cadena=$cadena.'<img src="pics/separador.gif">&nbsp;<a href="'.$array_mod['path'].'" class="enlaceMenu">';
 			//Insertamos el nombre

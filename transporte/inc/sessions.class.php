@@ -3,6 +3,7 @@
 //enlaza con la bbdd 
 global $ADODB_DIR, $INSTALL_DIR;
 require_once ($INSTALL_DIR.'inc/config.inc.php');
+require_once ($INSTALL_DIR.'inc/table.class.php');
 require_once ($ADODB_DIR."adodb.inc.php");
 class sessions{
 //internal vars
@@ -54,8 +55,8 @@ class sessions{
 		$this->fields_list->add($this->ddbb_id_session, $this->id_session, 'int', 11,0);
 		$this->fields_list->add($this->ddbb_id_session_php, $this->id_session_php, 'int', 11,0);
 		$this->fields_list->add($this->ddbb_id_user, $this->id_user, 'int', 11,0);
-		$this->fields_list->add($this->ddbb_up, $this->up, 'date',11,0);
-		$this->fields_list->add($this->ddbb_down, $this->down, 'date',11,0);
+		$this->fields_list->add($this->ddbb_up, $this->up, 'datetime',11,0);
+		$this->fields_list->add($this->ddbb_down, $this->down, 'datetime',11,0);
 		//print_r($this);
 		//se puede acceder a las sesiones por numero de campo o por nombre de campo
 		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
@@ -252,7 +253,7 @@ class sessions{
 	}
 	
 	function modify(){
-	
+
 		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
 		//crea una nueva conexi—n con una bbdd (mysql)
 		$this->db = NewADOConnection($this->db_type);
@@ -261,7 +262,7 @@ class sessions{
 		//realiza una conexi—n permanente con la bbdd
 		$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
 		//mete la consulta para coger los campos de la bbdd
-		$this->sql="SELECT * FROM ".$this->table_prefix.$this->table_name. " WHERE ".$this->ddbb_id_session." = \"".$this->id_session."\"" ;
+		$this->sql="SELECT * FROM ".$this->table_prefix.$this->table_name. " WHERE ".$this->ddbb_id_session." = \"".$_SESSION['ident_sesion']."\"" ;
 		//la ejecuta y guarda los resultados
 		$this->result = $this->db->Execute($this->sql);
 		//si falla 
@@ -272,7 +273,7 @@ class sessions{
 		}
 		//rellenamos el array con los datos de los atributos de la clase
 		$record = array();
-		$record[$this->ddbb_id_session]=$this->id_session;
+		$record[$this->ddbb_id_session]=$_SESSION['ident_sesion'];
 		$record[$this->ddbb_id_session_php]=$this->id_session_php;
 		$record[$this->ddbb_id_user]=$this->id_user;				
 		$record[$this->ddbb_up]=$this->up;
@@ -312,10 +313,25 @@ class sessions{
 		return 0;
 	}
 	
-	function register(){
+	function register()
+	{
+		$this->id_session_php = session_id();
+		$user = new users();
+		$id_user = $user->get_id($_SESSION['user']);
+		$this->id_user = $id_user;
+		$this->up = gmdate("Y-m-d H:i:s");	
 	
-		
+		return $this->add();
+	}
 	
+	function unregister()
+	{
+		if(isset($_SESSION['ident_sesion']) && $_SESSION['ident_sesion'] > 0)
+		{
+			$this->down = gmdate("Y-m-d H:i:s");
+			$this->modify();
+			
+		}
 	}
 }
 ?>

@@ -34,13 +34,14 @@ if(!isset($_SESSION['user']))
 	//comprobamos si estan mandando el formulario
 	$post_user= new users(); 
 	if(isset($_POST['passwd'])&& isset($_POST['user'])&&$post_user->validate_user($_POST['user'],$_POST['passwd'])==1)
-	{
-		//Se busca registro de la sesión (ya se conoce al usuario)
-		$session=new sessions();
-		$session->register();
-		
+	{	
 		//registra la variable de sesion user con el nombre de usuario
 		$_SESSION['user']=$_POST['user'];
+		
+		//Se busca registro de la sesión (ya se conoce al usuario)
+		$session=new sessions();
+		$_SESSION['ident_sesion'] = $session->register();
+
 		
 		//Comprueba si es admin o super
 		$user = new users();
@@ -73,9 +74,9 @@ if(!isset($_SESSION['user']))
        	{
            // Gives the user 30 seconds to type the password.
            // Should be enough :-)
-           setcookie(session_name(), 1,time()+30);
+           setcookie(session_name(), 1,time()+60);
        	}
-		
+
 		//Se busca registro de la sesión (ya se conoce al usuario) y se introduce al usuario
 		
 		//como el usuario esta validado asigna su nombre a la plantilla
@@ -112,10 +113,13 @@ else
 	//usuario registrado en la sesion
 	if(isset($_POST['submit'])&& $_POST['submit']=='Desconectar')
 	{
+		$session=new sessions();
+		$session->unregister();
 		unset($_COOKIE[session_name()]);
 		session_unset();
 		session_destroy();
 		session_start();
+		
 		$tpl->assign('user_name','');
 		$tpl->assign('corp_id',0);
 		$tpl->assign('error',0);
