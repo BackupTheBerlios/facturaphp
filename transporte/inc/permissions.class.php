@@ -99,13 +99,13 @@ class permissions{
 	
 	}
 	
-	function get_permissions_modify_delete()
+	function get_permissions_modify_delete($module)
 	{
 		if(!$_SESSION['super'] && !$_SESSION['admin'])
 		{
 			$user= new users(); 
 			$id_user = $user->get_id($_SESSION['user']);
-			$user->validate_per_user_module($id_user, 'users');
+			$user->validate_per_user_module($id_user, $module);
 			
 			$k=0;
 			for($i=0; $i<$user->permission->num_methods;$i++)
