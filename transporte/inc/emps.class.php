@@ -197,7 +197,6 @@ class emps{
 		//realiza una conexi—n permanente con la bbdd
 		$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
 		//mete la consulta
-		//$this->sql="SELECT 'id_user' FROM ".$this->table_prefix.$this->table_name." WHERE ".$this->ddbb_name."=".$name_user;
 		$this->sql="SELECT `id_corp` FROM `emps` WHERE `id_user` =".$id_user;
 		//la ejecuta y guarda los resultados
 		$this->result = $this->db->Execute($this->sql);
@@ -266,7 +265,7 @@ class emps{
 	
 	}
 	
-	/*function read($id){
+	function read($id){
 	
 		//se puede acceder a los usuarios por numero de campo o por nombre de campo
 		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
@@ -277,36 +276,43 @@ class emps{
 		//realiza una conexi—n permanente con la bbdd
 		$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
 		//mete la consulta
-		$this->sql="SELECT * FROM ".$this->table_prefix.$this->table_name." WHERE ".$this->ddbb_id_user."= \"".$id."\"";
+		$this->sql="SELECT * FROM `emps` WHERE ".$this->ddbb_id_emp."= \"".$id."\"";
 		//la ejecuta y guarda los resultados
 		$this->result = $this->db->Execute($this->sql);
 		//si falla 
-		if ($this->result === false){
+		if ($this->result === false)
+		{
 			$error=1;
 			return 0;
 			$this->db->close();
-		}else{
-			$this->id_user=$id;
-			$this->login=$this->result->fields[$this->ddbb_login];
-			$this->passwd=$this->result->fields[$this->ddbb_passwd];
-			$this->name=$this->result->fields[$this->ddbb_name];
-			$this->last_name=$this->result->fields[$this->ddbb_last_name];
-			$this->last_name2=$this->result->fields[$this->ddbb_last_name2];
-			$this->full_name=$this->result->fields[$this->ddbb_full_name];
-			$this->internal=$this->result->fields[$this->ddbb_internal];
-			$this->active=$this->result->fields[$this->ddbb_active];
+		}
+		else
+		{
+			$this->id_emp = $id;
+			$this->id_corp = $this->result->fields[$this->ddbb_id_corp];
+			$this->id_user = $this->result->fields[$this->ddbb_id_user];
+			$this->name = $this->result->fields[$this->ddbb_name];
+			$this->last_name = $this->result->fields[$this->ddbb_last_name];
+			$this->last_name2 = $this->result->fields[$this->ddbb_last_name2];
+			$this->birthday = $this->result->fields[$this->ddbb_birthday];
+			$this->phone = $this->result->fields[$this->ddbb_phone];
+			$this->mobile_phone = $this->result->fields[$this->ddbb_mobile_phone];
+			$this->fax = $this->result->fields[$this->ddbb_fax];
+			$this->mail = $this->result->fields[$this->ddbb_mail];
+			$this->address = $this->result->fields[$this->ddbb_address];
+			$this->city = $this->result->fields[$this->ddbb_city];
+			$this->state = $this->result->fields[$this->ddbb_state];
+			$this->postal_code = $this->result->fields[$this->ddbb_postal_code];
+			$this->country = $this->result->fields[$this->ddbb_country];
+			
 			$this->db->close();
-			
-			
-			//Una vez sabído el identificador de usuario, se puede pedir que realice su lista de permisos
-			$this->validate_per_user($this->id_user);
-			
+				
 			return 1;
 		}
 		
 	
 	}
-	
+	/*
 	function add($tpl){
 		//Miramos a ver si esta definida el "submit_add" y si no lo esta, pasamos directamente a mostrar la plantilla
 		if (!isset($_POST['submit_add'])){
@@ -476,44 +482,8 @@ class emps{
 	
 	}
 	  
-	function validate_user($user, $passwd){
-		if($user=='') return 0;
-		//se puede acceder a los usuarios por numero de campo o por nombre de campo
-		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
-		//crea una nueva conexi—n con una bbdd (mysql)
-		$this->db = NewADOConnection($this->db_type);
-		//le dice que no salgan los errores de conexi—n de la ddbb por pantalla
-		$this->db->debug=false;
-		//realiza una conexi—n permanente con la bbdd
-		$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
-		//mete la consulta
-		$this->sql="SELECT * FROM ".$this->table_prefix.$this->table_name." WHERE ".$this->ddbb_login."=\"".$user."\"";
-		//printf($this->sql);
-		//la ejecuta y guarda los resultados
-		$this->result = $this->db->Execute($this->sql);
-		//si falla
-		//print_r($this->result); 
-		if ($this->result === false){
-			//printf('no existe usuario o contrase–a');
-			$error=1;
-			$this->db->close();
-			return 0;
-		}else{  
-		//la contrase–a es correcta
-			if($passwd==$this->result->fields[$this->ddbb_passwd]&&$user==$this->result->fields[$this->ddbb_login]){
-			//printf('existe usuario o contrase–a');
-			$this->db->close();
-			return 1;
-			}
-		}
-		$this->db->close();
-		return 0;
-		
-		
-	
-	}*/
-	
-	//function view ($id,$tpl){
+	*/
+	function view ($id,$tpl){
 	/*
 		Cosas que faltan por hacer:
 			De forma general, mirar los permisos del usuario que vaya a acceder aqui, para saber si tiene permisos de borrar editar ver etc...
@@ -521,10 +491,11 @@ class emps{
 			Order By (y mantener la búsqueda en el caso de que hubiera hecha una y averiguar la "pestaña" a la que hace referencia)
 			Busquedas
 	*/
-	/*		$cadena='';			
-			// Leemos el usuario y se lo pasamos a la plantilla
+			$cadena='';			
+			// Leemos el empleado y se lo pasamos a la plantilla
 			$this->read($id);
 			$tpl->assign('objeto',$this);
+		/*	
 			//listado de modulos
 			$tabla_modulos = new table(false);
 
@@ -560,7 +531,7 @@ class emps{
 				}
 			}
 			
-				
+			*/	
 			
 			//****			
 			$tpl->assign('variables',$variables);
@@ -568,7 +539,7 @@ class emps{
 			//									
 			return $tpl;
 				
-	}*/
+	}
 	
 	function listar($tpl){
 		$this->get_list_emps();
