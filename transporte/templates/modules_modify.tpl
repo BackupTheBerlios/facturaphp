@@ -19,15 +19,15 @@
 				  </tr>		
 				  <tr>
 						<td width="125px" align="right" class="CampoFormulario">Nombre Web:</td>
-						<td> <input type="text" id="{$objeto->ddbb_name_web}" name="{$objeto->ddbb_name_web}" class="textoMenu" value="{$objeto->name_web}"></td>
+						<td> <input type="text" id="{$objeto->ddbb_name_web}" name="{$objeto->ddbb_name_web}" class="textoMenu" value="{$objeto->name_web}"><font class="error">{$error_name_web}</font></td>
 					</tr>				  			
 				  <tr>
 						<td width="125px" align="right" class="CampoFormulario">Nombre:</td>
-						<td> <input type="text" id="{$objeto->ddbb_name}" name="{$objeto->ddbb_name}" class="textoMenu" value="{$objeto->name}"></td>
+						<td> <input type="text" id="{$objeto->ddbb_name}" name="{$objeto->ddbb_name}" class="textoMenu" value="{$objeto->name}"><font class="error">{$error_name}</font></td>
 					</tr>
 				  <tr>
 						<td width="125px" align="right" class="CampoFormulario">Ruta:</td>
-						<td> <input type="text" id="{$objeto->ddbb_path}" name="{$objeto->ddbb_path}" class="textoMenu" value="{$objeto->path}"></td>
+						<td> <input type="text" id="{$objeto->ddbb_path}" name="{$objeto->ddbb_path}" class="textoMenu" value="{$objeto->path}"><font class="error">{$error_path}</font></td>
 					</tr>
 				 <tr>
 						<td width="125px" align="right" class="CampoFormulario">Activo:</td>
@@ -67,6 +67,7 @@
 					  <td colspan="6">&nbsp;</td>
 				  </tr>
 				  <tr class="multilinea1">
+				  
 						<td align="center" class="multilinea1"><input type="checkbox" name="list" value="Listar" {if $module_methods.list.name == "list"}checked{/if}>Listar</td>
 						<td align="center" class="multilinea1"><input type="checkbox" name="select" value="Seleccionar" {if $module_methods.select.name == "select"}checked{/if}>Seleccionar</td>
 						<td align="center" class="multilinea1"><input type="checkbox" name="view" value="Ver" {if $module_methods.view.name == "view"}checked{/if}>Ver</td>

@@ -65,7 +65,7 @@
 					  <td colspan="6">&nbsp;</td>
 				  </tr>
 				  <tr class="multilinea1">
-												<td align="center" class="multilinea1"><input type="checkbox" name="list" value="Listar" {if $module_methods.list.name == "list"}checked{/if}>Listar</td>
+						<td align="center" class="multilinea1"><input type="checkbox" name="list" value="Listar" {if $module_methods.list.name == "list"}checked{/if}>Listar</td>
 						<td align="center" class="multilinea1"><input type="checkbox" name="select" value="Seleccionar" {if $module_methods.select.name == "select"}checked{/if}>Seleccionar</td>
 						<td align="center" class="multilinea1"><input type="checkbox" name="view" value="Ver" {if $module_methods.view.name == "view"}checked{/if}>Ver</td>
 						<td align="center" class="multilinea1"><input type="checkbox" name="add" value="A&ntilde;adir" {if $module_methods.add.name == "add"}checked{/if}>A&ntilde;adir</td>						

@@ -40,7 +40,7 @@
 					</tr>
 					  <tr>
 						<td width="125" align="right" class="CampoFormulario">Descripcion:</td>
-						<td rowspan="2" ><textarea name="{$objeto->ddbb_descrip}" class="textoMenu" id="{$objeto->ddbb_descrip}">value="{$objeto->descrip}"</textarea><font class="error">{$error_descrip}</font> </td>
+						<td rowspan="2" ><textarea name="{$objeto->ddbb_descrip}" class="textoMenu" id="{$objeto->ddbb_descrip}">{$objeto->descrip}</textarea><font class="error">{$error_descrip}</font> </td>
 					</tr>
 		</table>
 		</td>

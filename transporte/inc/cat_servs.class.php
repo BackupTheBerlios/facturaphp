@@ -58,7 +58,7 @@ class cat_servs{
 		************************/
 		$this->fields_list= new fields();
 		$this->fields_list->add($this->ddbb_id_cat_serv, $this->id_cat_serv, 'int', 11,0);
-		$this->fields_list->add($this->ddbb_name, $this->name, 'varchar', 50,0);
+		$this->fields_list->add($this->ddbb_name, $this->name, 'varchar', 50,0,1);
 		$this->fields_list->add($this->ddbb_id_parent_cat, $this->id_parent_cat, 'int', 11,0);
 		$this->fields_list->add($this->ddbb_path_photo, $this->path_photo, 'varchar', 255,0);
 		$this->fields_list->add($this->ddbb_descrip, $this->descrip, 'text', 255,0);

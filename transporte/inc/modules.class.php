@@ -492,14 +492,21 @@ class modules{
 						
 			//Validacion
 			//$return=validate_fields();
-			
 			//En caso de que la validacion haya sido fallida se muestra la plantilla
-			//con los campos erroneos marcados con un *
-			$return=true; //Para pruebas dejar esta linea sin comentar
 			
+			$this->id_module=0;
+			$this->fields_list->modify_value($this->ddbb_id_module,$this->id_module);
+			$this->fields_list->modify_value($this->ddbb_parent,$this->parent);
+			$this->fields_list->modify_value($this->ddbb_name,$this->name);
+			$this->fields_list->modify_value($this->ddbb_name_web,$this->name_web);
+			$this->fields_list->modify_value($this->ddbb_publico,$this->publico);
+			$this->fields_list->modify_value($this->ddbb_path,$this->path);
+			$this->fields_list->modify_value($this->ddbb_active,$this->active);
+			//validamos
+			$return=$this->fields_list->validate();	
 			if (!$return){
 				//Mostrar plantilla con datos erroneos
-				
+				return -1;
 			}
 			else{
 				//Si todo es correcto si meten los datos
@@ -556,31 +563,59 @@ class modules{
 		$this->method=$method;
 				switch($method){
 						case 'add':									
-									if ($this->add() !=0){
-										$this->method="list";
+								
+									$return=$this->add();
+									switch ($return){										
+										case 0: //por defecto	
+												$tpl->assign("padres",$this->modules_list);											
+												break;
+										case -1: //Errores al intentar añadir datos
+												for ($i=0;$i<count($this->fields_list->array_error);$i+=2){
+													$tpl->assign("error_".$this->fields_list->array_error[$i],$this->fields_list->array_error[$i+1]);
+												}			
+												print_r($this->module_meth);
+												$tpl->assign("module_methods",$this->module_meth);
+												$tpl->assign("padres",$this->modules_list);									
+												break;
+										default: //Si se ha añadido
+												$this->method="list";
 										$tpl=$this->listar($tpl);										
 										$tpl->assign("message","&nbsp;<br>M&oacute;dulo a&ntilde;adido correctamente<br>&nbsp;");
+												break;
 									}
-									$tpl->assign("padres",$this->modules_list);
+									
 									$tpl->assign("objeto",$this);
 									break;
 									
 						case 'list':
 									$tpl=$this->listar($tpl);
 									break;
-						case 'modify':
+						case 'modify':									
 									$this->read($_GET['id']);
-						
-									
-									if ($this->modify() !=0){
-										$this->method="list";
-										$tpl=$this->listar($tpl);										
-										$tpl->assign("message","&nbsp;<br>M&oacute;dulo modificado correctamente<br>&nbsp;");
+									$return=$this->modify();
+									switch ($return){										
+										case 0: //por defecto
+												$tpl->assign("objeto",$this);
+												$tpl->assign("module_methods",$this->module_methods);
+												//$tpl->assign("tabla_checkbox",$this->table_categories(false));
+												break;
+										case -1: //Errores al intentar añadir datos
+												for ($i=0;$i<count($this->fields_list->array_error);$i+=2){
+													$tpl->assign("error_".$this->fields_list->array_error[$i],$this->fields_list->array_error[$i+1]);
+												}
+												$tpl->assign("objeto",$this);
+												$tpl->assign("module_methods",$this->module_methods);
+												//$tpl->assign("tabla_checkbox",$this->table_categories(false));
+												break;
+										default: //Si se ha añadido
+												$this->method="list";
+												$tpl=$this->listar($tpl);										
+												$tpl->assign("message","&nbsp;<br>M&oacute;dulo modificado correctamente<br>&nbsp;");
+												break;
 									}
 									$tpl->assign("objeto",$this);
-									$tpl->assign("module_methods",$this->module_methods);
-									$tpl->assign("padres",$this->modules_list);
 									break;
+									
 						case 'delete':
 									$this->read($_GET['id']);
 									if ($this->remove($_GET['id'])==0){
@@ -659,14 +694,20 @@ class modules{
 			
 			//Validacion
 			//$return=validate_fields();
-			
-			//En caso de que la validacion haya sido fallida se muestra la plantilla
-			//con los campos erroneos marcados con un *
-			$return=true; //Para pruebas dejar esta linea sin comentar
+
+			$this->fields_list->modify_value($this->ddbb_id_module,$this->id_module);
+			$this->fields_list->modify_value($this->ddbb_parent,$this->parent);
+			$this->fields_list->modify_value($this->ddbb_name,$this->name);
+			$this->fields_list->modify_value($this->ddbb_name_web,$this->name_web);
+			$this->fields_list->modify_value($this->ddbb_publico,$this->publico);
+			$this->fields_list->modify_value($this->ddbb_path,$this->path);
+			$this->fields_list->modify_value($this->ddbb_active,$this->active);
+			//validamos
+			$return=$this->fields_list->validate();	
 			
 			if (!$return){
 				//Mostrar plantilla con datos erroneos
-				
+				return -1;
 			}
 			else{
 		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
@@ -970,36 +1011,27 @@ class modules{
 		function get_fields_from_post(){
 		
 		//Cogemos los campos principales
-		$this->name=$_POST[$this->ddbb_name];
-		$this->name_web=$_POST[$this->ddbb_name_web];
-		$this->path=$_POST[$this->ddbb_path];
+		$this->name=htmlentities($_POST[$this->ddbb_name]);
+		$this->name_web=htmlentities($_POST[$this->ddbb_name_web]);
+		$this->path=htmlentities($_POST[$this->ddbb_path]);
 		$this->active=$_POST[$this->ddbb_active];
-		$this->publico=$_POST[$this->ddbb_public];	
-	
+		$this->publico=$_POST[$this->ddbb_public];		
 		$this->parent=$_POST[$this->ddbb_parent];
 		
-		//Colocar de manera provisional hasta que se haga la validacion de fields
-		//************Bloque
-		if ($this->name==""){
-			$this->name=" ";
-		}
-		if ($this->name_web==""){
-			$this->name_web=" ";
-		}
-		if ($this->path==""){
-			$this->path=" ";
-		}
-		//************Fin Bloque
+		
 		
 		//Cogemos los modulos.
 		$i=0;
-		$this->module_methods="";
+		$this->module_methods=array();
+		$this->module_meth=array();
 		$meth=array("list","select","view","add","modify","delete");
 		for($j=0;$j<count($meth);$j++)
 		{	//echo "<script>alert('".$_POST[$meth[$j]]."')</script>";
 			if ($_POST[$meth[$j]]!=""){
 				$this->module_methods[$i]["name"]=$meth[$j];
 				$this->module_methods[$i]["name_web"]=$_POST[$meth[$j]];
+				$this->module_meth[$meth[$j]]["name"]=$meth[$j];
+				$this->module_meth[$meth[$j]]["name_web"]=$_POST[$meth[$j]];
 				$i++;
 			}
 		}		
