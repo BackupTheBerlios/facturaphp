@@ -28,13 +28,13 @@
 								 <td>
 								 	<table align="center"><tr>
 								{section name="indice" loop=$acciones}
-				
+
 				<td>
 				{if $acciones[indice]== 'modify'}
 				<a href="index.php?module=cat_emps&method={$acciones[indice]}&id={$objeto->id_cat_emp}">
 				<img src="pics/btn{$acciones[indice]}.gif" border="0"></a></td>
 				{else}
-				<td><a href="index.php?module=users&method={$acciones[indice]}&id={$objeto->id_cat_emp}">
+				<td><a href="index.php?module=cat_emps&method={$acciones[indice]}&id={$objeto->id_cat_emp}">
 				<img src="pics/btn{$acciones[indice]}.gif" border="0" ></a></td>
 				{/if}
 				

@@ -729,6 +729,7 @@ class modules{
 			//Se comprueba si hay permiso para borrar o modificar
 			$permisos_mod_del = new permissions();
 			$permisos_mod_del->get_permissions_modify_delete($_SESSION['user'], 'modules');
+
 			$tpl->assign('acciones',$permisos_mod_del->per_mod_del);
 
 			$tpl->assign('variables',$variables);

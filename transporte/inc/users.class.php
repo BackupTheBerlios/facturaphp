@@ -866,7 +866,7 @@ class users{
 					if($per->permissions_module[$i] == 'delete')
 						$per_delete = array('delete');
 								
-					$cadena=$cadena.$tabla_grupos->make_tables('group_users',$this->groups_list,array('Nombre de grupo',75),array('id_group','name_web'),10,$per_delete,$per->add);
+					$cadena=$cadena.$tabla_grupos->make_tables('group_users',$this->groups_list,array('Nombre de grupo',75),array('id_group','name_web'),10,/*$per_delete*/array(),/*$per->add*/false);
 					$variables_grupos=$tabla_grupos->nombres_variables;
 				}
 			}
