@@ -71,6 +71,8 @@ class upload_file{
     $this->cls_file_rename_to = $file_rename_to;
 	if($this->cls_file_rename_to != 0)
 	$this->cls_rename_file = 1;
+	if(isset($_POST['submit_modify']))
+	$this->cls_file_exists = 1;
 	return $this;
   }
 
@@ -143,11 +145,23 @@ class upload_file{
    ** @returns string
   **/
   function move(){
+	 
+	  $extension = strrchr( $this->cls_filename, "." );
     
+   $file =  $this->cls_file_rename_to .strtoupper($extension);
+	
+	
+	 if( $this->cls_file_exists == 1 ){ 
+      $ret = $this->checkFileExists($this->cls_upload_dir . $file);
+      if( $ret != 1 ){
+        return $this->resultUpload( $ret );    
+      }
+    }
+	
+     // if flag to check if the file exists is set to 1
     if( move_uploaded_file( $this->cls_tmp_filename, $this->cls_upload_dir . $this->cls_filename ) == false ){
       return "MOVE_UPLOADED_FILE_FAILURE";
     } else {
-		
       return 1;
     }
 
@@ -159,10 +173,14 @@ class upload_file{
    ** destination folder.
    ** @returns string
   **/
-  function checkFileExists(){
-    
-    if( file_exists( $this->cls_upload_dir . $this->cls_filename ) ){
-      return "FILE_EXISTS_FAILURE";
+  function checkFileExists($dir){  
+    if( file_exists( $dir ) ){
+     // return "FILE_EXISTS_FAILURE";
+     //Se borra el fichero
+     if(unlink($dir)==true)
+		return 1;
+	 else
+		return "FILE_EXISTS_FAILURE";	
     } else {
       return 1;
     }
@@ -192,10 +210,10 @@ class upload_file{
     // Remove the extension and put it back on the new file name
 		
     $extension = strrchr( $this->cls_filename, "." );
-    $this->cls_file_rename_to .= $extension;
-    
-    if( !rename( $this->cls_upload_dir . $this->cls_filename, $this->cls_upload_dir . $this->cls_file_rename_to )){
-      return "RENAME_FAILURE";
+    $this->cls_file_rename_to .=  strtoupper($extension);
+	
+   if( !rename( $this->cls_upload_dir . $this->cls_filename, $this->cls_upload_dir . $this->cls_file_rename_to )){
+		return "RENAME_FAILURE";
     } else {
 		$_SESSION['ruta_photo'] = 'images/vehicles/'.$this->cls_file_rename_to;
       return 1;
@@ -232,17 +250,8 @@ class upload_file{
       return $this->resultUpload( $ret );    
     }
  */   
-    // if flag to check if the file exists is set to 1
- /*   
-    if( $this->cls_file_exists == 1 ){
-      
-      $ret = $this->checkFileExists();
-      if( $ret != 1 ){
-		  print "Checkfile";
-        return $this->resultUpload( $ret );    
-      }
-    }
-*/
+   
+
     // if we are here, we are ready to move the file to destination
 
     $ret = $this->move();

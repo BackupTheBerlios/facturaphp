@@ -121,11 +121,8 @@ if((isset($_GET['module']))&& (isset($_GET['method']))&&($_GET['module']=='vehic
 //Si se modifica la foto de un coche
 if((isset($_GET['module']))&& (isset($_GET['method']))&&($_GET['module']=='vehicles')&&($_GET['method']=='modify'))
 {
-print "Se cambia la foto";
-print "Fichero :".$_FILES['path_photo']['name'];
  $file = new upload_file( $_FILES['path_photo']['name'], $_FILES['path_photo']['tmp_name'], $_FILES['path_photo']['size'], $_GET['id']);
  $result = $file->upload( "images/vehicles/" );
- print $result;
 }
 
 

@@ -1,6 +1,6 @@
 <td valign="top">
 {include file=checkbox.tpl}
-<form method="post" action="index.php?module=vehicles&method=modify&id={$objeto->id_vehicle}" name="multipart/form-data">
+<form method="post" action="index.php?module=vehicles&method=modify&id={$objeto->id_vehicle}" name="form_central" enctype="multipart/form-data">
 	  	<table align="center" width="100%">
 		<tr>
 		<td valign="top">
@@ -33,7 +33,7 @@
 				  <tr>
 						<td width="125px" align="right" class="CampoFormulario">Fotograf&iacute;a:</td>
 						<td><a href="index.php?module=vehicles&method=show&id={$objeto->id_vehicle}"><img src="{$objeto->path_photo}" width="80" height="80"></a></td>
-						<td> <input type="file" id="{$objeto->ddbb_path_photo}" name="{$objeto->ddbb_path_photo}" value="{$objeto->path_photo}"></td>
+						<td><input type="file" name="{$objeto->ddbb_path_photo}"></input></td>	
 				  </tr>
 				  <tr>
 					  <td colspan="2" class="cabeceraCampoFormulario">Categor&iacute;as a las que pertenece: </td>
