@@ -307,6 +307,7 @@ class emps{
 		$holyday->id_emp=$id;
 		$holyday->ill=2;
 		$holyday->come=$this->come;
+		$holyday->emps_modify = true;
 		return $holyday->add();
 	}
 	
@@ -390,15 +391,20 @@ class emps{
 				//calculamos la sql de insercin respecto a los atributos
 				$this->sql = $this->db->GetUpdateSQL($this->result, $record);
 				//insertamos el registro
-			
+				
 				$this->db->Execute($this->sql);
 				//si se ha insertado una fila
+				$Affected_Rows=$this->db->Affected_Rows();
+				/*Al hacer la modificacion de categorias y vacaciones antes del siguiente "if"
+				 se debe de guardar en una variable el contenido de las filas afectadas y hacer
+				 la condicion del if con esa variable ya que al hacer las modificaciones ese valor varía.
+				*/
 				
 				$return_category=$this->modify_category($this->id_emp);
 				$return_holyday=$this->modify_holyday($this->id_emp);
-				
 			
-				if(($this->db->Affected_Rows()==1)||($user_changed!=0)||($this->sql=="")||($return_category!=0)||($return_holyday!=0)){
+			
+				if(($Affected_Rows==1)||($user_changed!=0)||($this->sql=="")||($return_category!=0)||($return_holyday!=0)){
 					//capturammos el id de la linea insertada
 					$this->db->close();
 					//devolvemos el id de la tabla ya que todo ha ido bien
@@ -426,6 +432,11 @@ class emps{
 	
 	function modify_holyday($id){
 		$holyday=new holydays();
+		$return=$holyday->get_come($id);
+		
+		if ($return==0){
+			return $this->add_holyday($id);
+		}
 		$holyday->read($_POST["id_holy"]);
 		$holyday->id_emp=$id;
 		$holyday->ill=2;
@@ -929,7 +940,13 @@ class emps{
 				$tpl->assign("user_emp",$usuario->login);
 			}
 			
-			//	
+			if ($this->birthday!="0000-00-00"){
+				list($anno,$mes,$dia)=sscanf($this->birthday,"%d-%d-%d");
+				$tpl->assign("cumplecambiado","$dia-$mes-$anno");
+			}
+			else{
+				$tpl->assign("cumplecambiado","00-00-0000");
+			}	
 			
 			//Se comprueba si hay permiso para borrar o modificar
 			$permisos_mod_del = new permissions();
@@ -1011,7 +1028,7 @@ class emps{
 			}
 			else
 			{
-				$cadena=$cadena.$tabla_grupos->make_tables('holydays',$mensaje,array('ACCION NO PERMITIDA',50),array('id_mensaje','mes'),10,null,false);
+				$cadena=$cadena.$tabla_vacaciones->make_tables('holydays',$mensaje,array('ACCION NO PERMITIDA',50),array('id_mensaje','mes'),10,null,false);
 				$variables_vacaciones=$tabla_vacaciones->nombres_variables;
 			}
 			
@@ -1125,14 +1142,22 @@ class emps{
 								$tpl->assign("message","&nbsp;<br>Empleado modificado correctamente<br>&nbsp;");
 							}
 							$vacaciones=new holydays();
-							$vacaciones->get_come($this->id_emp);
-							if ($vacaciones->come!="0000-00-00"){
-								list($anno,$mes,$dia)=sscanf($vacaciones->come,"%d-%d-%d");
-								$tpl->assign("holycambiado","$dia-$mes-$anno");
-							}
-							else{
+							$return=$vacaciones->get_come($this->id_emp);
+							if ($return==0){
+								$vacaciones->come="0000-00-00";
 								$tpl->assign("holycambiado","00-00-0000");
 							}
+							else{
+								if ($vacaciones->come!="0000-00-00"){
+									list($anno,$mes,$dia)=sscanf($vacaciones->come,"%d-%d-%d");
+									$tpl->assign("holycambiado","$dia-$mes-$anno");
+								}
+								else{
+									$tpl->assign("holycambiado","00-00-0000");
+								}
+								
+							}
+							
 							if ($this->birthday!="0000-00-00"){
 								list($anno,$mes,$dia)=sscanf($this->birthday,"%d-%d-%d");
 								$tpl->assign("cumplecambiado","$dia-$mes-$anno");

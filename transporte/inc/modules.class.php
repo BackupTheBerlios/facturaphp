@@ -428,7 +428,7 @@ class modules{
 										$tpl->assign("message",$this->empleados);
 									}
 									else{
-										$this->users_list="";
+										$this->modules_list="";
 										$this->method="list";
 										$tpl=$this->listar($tpl);
 										$tpl->assign("message","&nbsp;<br>M&oacute;dulo borrado correctamente<br>&nbsp;");

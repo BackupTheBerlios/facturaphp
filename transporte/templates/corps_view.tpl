@@ -74,7 +74,7 @@
 				
 				<td>
 				{if $acciones[indice]== 'modify'}
-				<a href="index.php?module=cat_emps&method={$acciones[indice]}&id={$objeto->id_corp}">
+				<a href="index.php?module=corps&method={$acciones[indice]}&id={$objeto->id_corp}">
 				<img src="pics/btn{$acciones[indice]}.gif" border="0"></a></td>
 				{else}
 				<td><a href="index.php?module=corps&method={$acciones[indice]}&id={$objeto->id_corp}">
