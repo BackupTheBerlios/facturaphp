@@ -404,7 +404,6 @@ class groups{
 			}			
 
 			//$tpl->assign('usuarios',$this->per_module_methods);
-			echo "hola";
 			return 0;
 		}
 		else{
