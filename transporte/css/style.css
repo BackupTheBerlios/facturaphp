@@ -117,7 +117,7 @@ a.enlaceMenu:visited{
 	background-color: #EEEEEE;
 }
 
-td.cabeceraCampoFormulario{ 	
+.cabeceraCampoFormulario{ 	
 	font-weight:bold;
 	color:#000000;
 	font-family:Verdana, Arial, Helvetica, sans-serif;
@@ -158,3 +158,16 @@ tr.multiLinea2 {
 	text-align:left;	
 }
 
+.datosVista{
+	font-family:Verdana, Arial, Helvetica, sans-serif;
+	font-size: 10px;
+
+}
+
+.camposVistas {
+	background-color:#9ECC99;
+	font-family: verdana;
+	font-size: 10px;
+	text-align:left;
+	font-weight:bold;
+}
