@@ -237,8 +237,6 @@ class fields{
 							$anno=substr($date,0,4);
 							$mes=substr($date,5,2);
 							$dia=substr($date,8,2);
-							//list($anno,$mes,$dia)=sscanf($date,"%s-%s-%s");
-							echo "es: $dia-$mes-$anno";
 							return "$dia-$mes-$anno";
 						}
 						else{

@@ -428,14 +428,14 @@ class holydays{
 									$tpl=$this->listar($tpl);
 									break;
 						case 'modify':
-									$this->read($_SESSION['id_emp']);
+									
 									$empleado=new emps();									
 									
-									$empleado->read($this->id_emp);
+									$empleado->read($_SESSION['id_emp']);
 									
 									$tpl->assign("empleado",$empleado);
 									
-									
+									$this->read($_GET['id']);
 									$return=$this->modify();
 									switch ($return){										
 										case 0: //por defecto												
