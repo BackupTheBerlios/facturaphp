@@ -65,7 +65,10 @@ function initialize_object($module)
 					break;		
 		case 'laborers':
 					$objeto=new laborers();
-					break;	
+					break;
+		case 'vendors':
+					$objeto=new vendors();
+					break;		
 		default:		
 					if(!isset($_SESSION['user']))
 					{
