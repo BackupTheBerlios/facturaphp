@@ -15,7 +15,7 @@ class drivers{
 	var $name;
 	var $last_name;
 	var $last_name2;
-	var $alias;
+	var $num_vehicles;
 //BBDD name vars
 	var $db_name;
 	var $db_ip;
@@ -33,7 +33,6 @@ class drivers{
 	var $ddbb_name = 'name';
 	var $ddbb_last_name = 'last_name';
 	var $ddbb_last_name2 = 'last_name2';
-	var $ddbb_alias = 'alias';
 //Consultas a la BBDD
 	var $db;
 	var $result; 
@@ -98,11 +97,76 @@ class drivers{
 		
 		/*******************************/
 		
-		return $this->get_list_drivers(1);	 
+		return $this->get_list_drivers();	 
 		
 	}
 	
-	function get_list_drivers ($id_vehicle)
+	function get_list_drivers ()
+	{
+		
+		//Buscar los empleados de la empresa en la que se está y coincidencia en id con los id de emps en drivers
+		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
+		//crea una nueva conexin con una bbdd (mysql)
+		$this->db = NewADOConnection($this->db_type);
+		//le dice que no salgan los errores de conexin de la ddbb por pantalla
+		$this->db->debug=false;
+		//realiza una conexin permanente con la bbdd
+		$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
+		//mete la consulta
+		$this->sql="SELECT drivers.* FROM emps, drivers WHERE emps.id_corp =".$_SESSION['ident_corp']." AND emps.id_emp=drivers.id_emp";
+
+		//la ejecuta y guarda los resultados
+		$this->result = $this->db->Execute($this->sql);
+		//si falla 
+		if ($this->result === false){
+			$this->error=1;
+			$this->db->close();
+
+			return 0;
+		}  
+		
+		$num_emps=0;
+		$this->num = 0;
+		while (!$this->result->EOF) 
+		{
+			//Si hay más de un id_driver asociado a un empleado de la empresa evitamos que salga más de una vez, 
+			//para ello por cada emp nuevo se incrementa en uno su contador
+			$temp[$num_emps][$this->ddbb_id_driver]=$this->result->fields[$this->ddbb_id_driver];
+			$temp[$num_emps][$this->ddbb_id_emp]=$this->result->fields[$this->ddbb_id_emp];
+			$temp[$num_emps][$this->ddbb_id_vehicle]=$this->result->fields[$this->ddbb_id_vehicle];
+			$temp[$num_emps][$this->ddbb_id_date]=$this->result->fields[$this->ddbb_id_date];
+
+			$drivers[$temp[$num_emps][$this->ddbb_id_emp]]['cont']++;
+
+			
+			if(($drivers[$temp[$num_emps][$this->ddbb_id_emp]]['cont'] == 1))
+			{
+				//Si aparece y cont es 1 entonces es la primera vez que aparece
+				//cogemos los datos del conductor (directamente de la BBDD)
+				$this->drivers_list[$this->num][$this->ddbb_id_driver]=$temp[$num_emps][$this->ddbb_id_driver];
+				$this->drivers_list[$this->num][$this->ddbb_id_emp]=$temp[$num_emps][$this->ddbb_id_emp];
+				$this->drivers_list[$this->num][$this->ddbb_id_vehicle]=$temp[$num_emps][$this->ddbb_id_vehicle];
+				$this->drivers_list[$this->num][$this->ddbb_id_date]=$temp[$num_emps][$this->ddbb_id_date];
+			
+				//Tratamos los datos para poder presentarselos al usuario
+				$this->preparar_datos($this->drivers_list[$this->num][$this->ddbb_id_emp], $this->drivers_list[$this->num][$this->ddbb_id_vehicle]);
+	
+				$this->num++;
+				
+			}
+
+			//nos movemos hasta el siguiente registro de resultado de la consulta
+			$this->result->MoveNext();
+			$num_emps++;
+			
+		}	
+		
+		$this->db->close();
+		return $this->num;
+	
+	}
+	
+	function get_list_drivers_vehicle ($id_vehicle)
 	{
 		//se puede acceder a los usuarios por numero de campo o por nombre de campo
 		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
@@ -144,7 +208,7 @@ class drivers{
 	
 	}
 	
-	function preparar_datos($id_emp, $id_vehicle)
+	function preparar_datos($id_emp)
 	{
 		$empleado = new emps();
 		$empleado->read($id_emp);
@@ -156,10 +220,20 @@ class drivers{
 		$this->last_name = $empleado->last_name;
 		$this->last_name2 = $empleado->last_name2;
 		
+		
+	}
+	
+	function get_list_vehicles($id_driver)
+	{
+		//Buscar todos los id_drivers asociados al empleado
+		
+		//Por cada uno buscar el alias y demás datos (enlazar con vehículos)
 		$vehiculo = new vehicles();
 		$vehiculo->read($id_vehicle);
-		$this->drivers_list[$this->num][$this->ddbb_alias] = $vehiculo->alias;
-		$this->alias = $vehiculo->alias;
+		//Añadir vehículo al listado
+		/*$this->drivers_list[$this->num][$this->ddbb_alias] = $vehiculo->alias;
+		$this->alias = $vehiculo->alias;*/
+		return $this->num_vehicles;
 	}
 	/*
 	function add(){
@@ -710,13 +784,6 @@ class drivers{
 			$permisos_mod_del = new permissions();
 			$permisos_mod_del->get_permissions_modify_delete('drivers');
 			$tpl->assign('acciones',$permisos_mod_del->per_mod_del);
-					
-			$mensaje = null;
-			$mensaje[0]['id_mensaje'] = 1;
-			$mensaje[0]['mes'] = "Sentimos informarle de que no tiene permiso para acceder a esta información";
-			
-			$tpl->assign('variables',$variables);
-			$tpl->assign('cadena',$cadena);
 						
 			return $tpl;
 				
@@ -724,7 +791,7 @@ class drivers{
 
 	function listar($tpl)
 	{
-		$num = $this->get_list_drivers(1);
+		$num = $this->get_list_drivers();
 	
 		$tabla_listado = new table(true);
 		$per = new permissions();
@@ -791,8 +858,16 @@ class drivers{
 							$tpl=$this->view($_GET['id'],$tpl);
 							break;
 				default:
-							$this->method='list';
-							$tpl=$this->listar($tpl);
+							if($_SESSION['ident_corp'] !=0)
+							{
+								$this->method='list';
+								$tpl=$this->listar($tpl);
+							}
+							else
+							{
+								$tpl->assign('plantilla','error_corp.tpl');	
+								return $tpl;
+							}	
 							break;
 			}
 		$tpl->assign('plantilla','drivers_'.$this->method.'.tpl');					

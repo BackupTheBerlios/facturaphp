@@ -14,8 +14,7 @@ session_start();
 require_once('inc/config.inc.php');
 global $INSTALL_DIR;
 require_once('inc/index.inc.php');
-
-
+require_once($INSTALL_DIR.'inc/photos.php');
 require_once($INSTALL_DIR.'inc/includes.php');
 //inicializamos algunas variables
 $title="::Gesti&oacute;n::";
@@ -208,45 +207,6 @@ if(isset($_SESSION['user']) && isset($_GET['module']))
 
 
 /******************************** Operaciones con modulos ***********************************************************************************/
-//Si se va a añadir un coche, entonces se toma el nombre del archivo que se le pasó y se copia al directorio images/vehicles con el 
-//identificador del coche como nombre
-//Los directorios images y vehicles deben tener permiso de escritura para los demás, ya que para poder copiar un archivo debe ser propietario de 
-//la aplicación root, y quien los va a manejar será el grupo www-data
-if((isset($_GET['module']))&& (isset($_GET['method']))&&($_GET['module']=='vehicles')&&($_GET['method']=='add'))
-{
-   $_SESSION['ruta_photo'] = "";
-   $_SESSION['nombre_photo'] = $_FILES['path_photo']['name'];
-   $_SESSION['ruta_temporal'] =  $_FILES['path_photo']['tmp_name'];
-   $_SESSION['tamanno_photo'] = $_FILES['path_photo']['size'];
- }
- 
-
-//Si se modifica la foto de un coche
-if((isset($_GET['module']))&& (isset($_GET['method']))&&($_GET['module']=='vehicles')&&($_GET['method']=='modify'))
-{
- $_SESSION['ruta_photo'] = "";
- $_SESSION['nombre_photo'] = $_FILES['path_photo']['name'];
- $_SESSION['ruta_temporal'] =  $_FILES['path_photo']['tmp_name'];
- $_SESSION['tamanno_photo'] = $_FILES['path_photo']['size'];
-}
-
-//Si se añade la foto de una categoria de producto
-if((isset($_GET['module']))&& (isset($_GET['method']))&&($_GET['module']=='cat_prods ')&&($_GET['method']=='add'))
-{
-   $_SESSION['ruta_photo'] = "";
-   $_SESSION['nombre_photo'] = $_FILES['path_photo']['name'];
-   $_SESSION['ruta_temporal'] =  $_FILES['path_photo']['tmp_name'];
-   $_SESSION['tamanno_photo'] = $_FILES['path_photo']['size'];
-}
-
-//Si se modifica la foto de una categoria de producto
-if((isset($_GET['module']))&& (isset($_GET['method']))&&($_GET['module']=='cat_prods ')&&($_GET['method']=='modify'))
-{
-   $_SESSION['ruta_photo'] = "";
-   $_SESSION['nombre_photo'] = $_FILES['path_photo']['name'];
-   $_SESSION['ruta_temporal'] =  $_FILES['path_photo']['tmp_name'];
-   $_SESSION['tamanno_photo'] = $_FILES['path_photo']['size'];
-}
 
 //Se comprueba si se pasa de nuevo a elegir empresa
 if(isset($_GET['module'])&& (!isset($_GET['method']))&&($_GET['module']=='user_corps'))
