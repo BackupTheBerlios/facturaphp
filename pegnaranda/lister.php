@@ -86,9 +86,7 @@ class Lister
 					//generan los dropdowns
 		function Lister($idname,$sql,$rows,$ColsToShow,$keycol,$options,$stylesheet='datagrid-a.css')
 			{
-				if ((trim($sql)=="")||(trim($rows)=="")||
-					(trim($ColsToShow)=="")||(trim($keycol)=="")||(trim($options)=="")
-					||(trim($idname)==""))
+				if ((trim($sql)=="")||(trim($rows)=="")||(trim($ColsToShow)=="")||(trim($keycol)=="")||(trim($options)=="")||(trim($idname)==""))
 					{
 						print_r("Fatal Error: Void Parms");
 						die();
