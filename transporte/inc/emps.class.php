@@ -121,7 +121,7 @@ class emps{
 		
 		/*******************************/
 		
-		return $this->get_list_emps($session_corp);	 
+		return $this->get_list_emps($_SESSION['ident_corp']);	 
 		
 	}
 	
@@ -543,7 +543,7 @@ class emps{
 	
 	function listar($tpl)
 	{
-		$this->get_list_emps($session_corp);
+		$this->get_list_emps($_SESSION['ident_corp']);
 
 		$tabla_listado = new table(true);
 		$cadena=''.$tabla_listado->make_tables('emps',$this->emps_list,array('Nombre',20,'Primer Apellido',20,'Segundo Apellido',20),array($this->ddbb_id_emp, $this->ddbb_name,$this->ddbb_last_name,$this->ddbb_last_name2),10,array('view','modify','delete'),true);
