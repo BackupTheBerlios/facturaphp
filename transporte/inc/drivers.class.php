@@ -28,6 +28,7 @@ class drivers{
 	var $ddbb_id_emp = 'id_emp';
 	var $ddbb_id_vehicle = 'id_vehicle';
 	var $ddbb_alias = 'alias';
+	var $ddbb_path_photo = 'path_photo';
 	var $ddbb_date = 'date';
 //Información necesaria sobre empleado conductor y vehículo conducido
 	var $ddbb_name = 'name';
@@ -55,8 +56,7 @@ class drivers{
 	var $obj_emp;
 	var $come;
 	var $method;
-	var $table_names_modify=array();
-	var $table_names_delete=array();
+	
   	//constructor
 	function drivers(){
 		//coge las variables globales del fichero config.inc.php
@@ -131,6 +131,8 @@ class drivers{
 		
 		$num_emps=0;
 		$this->num = 0;
+		$temp = null;
+		$this->drivers_list = null;
 		while (!$this->result->EOF) 
 		{
 			//Si hay más de un id_driver asociado a un empleado de la empresa evitamos que salga más de una vez, 
@@ -296,7 +298,7 @@ class drivers{
 
 			return 0;
 		}  
-		
+		$this->vehicles_list = null;
 		$this->num_vehicles=0;
 		while (!$this->result->EOF) {
 			//cogemos los datos del conductor (directamente de la BBDD)
@@ -310,6 +312,7 @@ class drivers{
 			$vehiculo->read($this->vehicles_list[$this->num_vehicles][$this->ddbb_id_vehicle]);
 			//Añadir vehículo al listado		
 			$this->vehicles_list[$this->num_vehicles][$this->ddbb_alias]=$vehiculo->alias;
+			$this->vehicles_list[$this->num_vehicles][$this->ddbb_path_photo]=$vehiculo->path_photo;
 
 			//Se cambia el formato de la fecha
 			if ($this->vehicles_list[$this->num_vehicles][$this->ddbb_date]!="0000-00-00")
@@ -472,7 +475,6 @@ class drivers{
 					//devolvemos 0 ya que no se ha insertado el registro
 					$this->error=-1;
 					$this->db->close();
-					print "SALE";
 					return 0;
 				}
 			}
@@ -508,7 +510,7 @@ class drivers{
 				$this->db->close();
 				return 0;
 			}else{
-				$this->make_remove($id);
+
 				$this->error=0;
 				$this->db->close();
 				return 1;
@@ -516,199 +518,7 @@ class drivers{
 			}
 		}
 	}
-	
-	function make_remove($id){
-		//modificamos todos aquellos registros en los que hay un id_user;
-		for ($i=0;$i<count($this->table_names_modify);$i++){
-			$this->modify_all_id_driver($id,$this->table_names_modify[$i]);
-		}
-		//borramos todos aquellos registros en los que hay un id_user;		
-		for ($i=0;$i<count($this->table_names_delete);$i++){
-			$this->delete_all_id_driver($id,$this->table_names_delete[$i]);
-		}
-	}
-	
-	function modify_all_id_driver($id,$table){
-			$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
-			//crea una nueva conexión con una bbdd (mysql)
-			$this->db = NewADOConnection($this->db_type);
-			//le dice que no salgan los errores de conexión de la ddbb por pantalla
-			$this->db->debug=false;
-			//realiza una conexión permanente con la bbdd
-			$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
-			//mete la consulta para coger los campos de la bbdd
-			//calcula la consulta de borrado.
-			$this->sql="UPDATE ".$table. " SET id_emp = 0 WHERE id_driver = ".$id;
-			//la ejecuta y guarda los resultados
-			$this->result = $this->db->Execute($this->sql);
-			//si falla 
-			if ($this->db->Affected_Rows() == 0){
-				$this->error=1;
-				$this->db->close();
-				return 0;
-			}else{
-			
-				$this->error=0;
-				$this->db->close();
-				return 1;
-				
-			}
-	}
-	
-	function delete_all_id_driver($id,$table){
-		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
-			//crea una nueva conexión con una bbdd (mysql)
-			$this->db = NewADOConnection($this->db_type);
-			//le dice que no salgan los errores de conexión de la ddbb por pantalla
-			$this->db->debug=false;
-			//realiza una conexión permanente con la bbdd
-			$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
-			//mete la consulta para coger los campos de la bbdd
-			//calcula la consulta de borrado.
 
-			$this->sql="DELETE FROM ".$table. " WHERE id_driver = ".$id;
-			//la ejecuta y guarda los resultados
-			$this->result = $this->db->Execute($this->sql);
-			//si falla 
-			if ($this->db->Affected_Rows() == 0){
-				$this->error=1;
-				$this->db->close();
-				return 0;
-			}else{
-			
-				$this->error=0;
-				$this->db->close();
-				return 1;
-				
-			}
-	}
-	/*
-	function belong_corp($id_corp){
-				//se puede acceder a los usuarios por numero de campo o por nombre de campo
-		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
-		//crea una nueva conexin con una bbdd (mysql)
-		$this->db = NewADOConnection($this->db_type);
-		//le dice que no salgan los errores de conexin de la ddbb por pantalla
-		$this->db->debug=false;
-		//realiza una conexin permanente con la bbdd
-		$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
-		//mete la consulta
-		$this->sql='SELECT * FROM `emps` WHERE `id_corp` = \''.$id_corp.'\'';
-		//la ejecuta y guarda los resultados
-		$this->result = $this->db->Execute($this->sql);
-		if ($this->result === false){
-			$this->error=1;
-			$this->db->close();
-			
-			return 0;
-		}  
-		
-		$this->num=0;
-
-
-		while (!$this->result->EOF) {
-			//cogemos los datos del usuario
-			
-			$this->emps_corp_list[$this->num]['id_emp']=$this->result->fields['id_emp'];
-			$this->emps_corp_list[$this->num]['name']=$this->result->fields['name'];
-			$this->emps_corp_list[$this->num]['last_name']=$this->result->fields['last_name'];
-			$this->emps_corp_list[$this->num]['last_name2']=$this->result->fields['last_name2'];
-			//nos movemos hasta el siguiente registro de resultado de la consulta
-			$this->result->MoveNext();
-			$this->num++;
-		}
-		$this->db->close();
-		return $this->emps_corp_list;
-		
-	}*/
-	
-	function get_user_corps($id_user)
-	{
-	
-		//Se pasa como parámetro el login del usuario que se conectó a la sesión, esto se hace desde index.php
-		
-
-		//coge las variables globales del fichero config.inc.php
-		global $DDBB_TYPE, $DDBB_NAME, $IP_DDBB, $DDBB_USER, $DDBB_PASS, $DDBB_PORT, $TABLE_PREFIX;
-		$this->db_type=$DDBB_TYPE;
-		$this->db_name=$DDBB_NAME;
-		$this->db_ip=$IP_DDBB;
-		$this->db_user=$DDBB_USER;
-		$this->db_passwd=$DDBB_PASS;
-		$this->db_port=$DDBB_PORT;
-		$this->table_prefix=$TABLE_PREFIX;
-		//A partir de este id, se busca dentro de emps todos los empleados que contenga el id_user y sus correspondientes id_corp
-		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
-		//crea una nueva conexin con una bbdd (mysql)
-		$this->db = NewADOConnection($this->db_type);
-		//le dice que no salgan los errores de conexin de la ddbb por pantalla
-		$this->db->debug=false;
-		//realiza una conexin permanente con la bbdd
-		$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
-		//mete la consulta
-		$this->sql="SELECT `id_corp` FROM `emps` WHERE `id_user` =".$id_user;
-		//la ejecuta y guarda los resultados
-		$this->result = $this->db->Execute($this->sql);
-		//si falla 
-		if ($this->result === false){
-			$this->error=1;
-			$this->db->close();
-
-			return 0;
-		}  
-		//$this->corps_list[0][$this->ddbb_id_user] = $id_user;
-		
-		//Con el id_corp se podrá obtener el nombre de cada empresa en la trabaja id_user
-		$this->num_corps=0;
-		$i = 0;
-		while (!$this->result->EOF) 
-		{
-			$id_corp = $this->result->fields['id_corp'];
-
-			$this->sql="SELECT `name` FROM `corps` WHERE `id_corp` =".$id_corp;
-			//la ejecuta y guarda los resultados
-			$this->result1 = $this->db->Execute($this->sql);
-			//si falla 
-			if ($this->result1 === false)
-			{
-				$this->error=1;
-				$this->db->close();
-	
-				return 0;
-			}  
-/*		
-			//Si hay más de un empleado con mismo login en la empresa evitamos que salga más de una vez, 
-			//para ello por cada empresa nueva se incrementa en uno su contador
-			$temp[$this->num_corps][$this->ddbb_id_corp] = $id_corp;
-			$temp[$this->num_corps]['name'] = $this->result1->fields['name'];
-		
-			$empresas[$id_corp]['cont']++;
-
-			
-			if(($empresas[$id_corp]['cont'] == 1))
-			{
-				//Si aparece y cont es 1 entonces es la primera vez que aparece
-				$this->corps_list[$i][$this->ddbb_id_corp] = $temp[$this->num_corps][$this->ddbb_id_corp];
-				$this->corps_list[$i]['name'] = $temp[$this->num_corps]['name'];
-				$i++;
-				
-			}
-*/
-				
-			$this->corps_list[$this->num_corps][$this->ddbb_id_corp] = $id_corp;
-			$this->corps_list[$this->num_corps]['name'] = $this->result1->fields['name'];
-
-			//nos movemos hasta el siguiente registro de resultado de la consulta
-			$this->result->MoveNext();
-			$this->num_corps++;
-		}
-	
-		$this->db->close();
-		//$this->num_corps = $i;
-		
-		return $this->num_corps;
-	}
-	
 	function get_add_form(){
 	
 		
@@ -763,7 +573,7 @@ class drivers{
 			$this->id_vehicle = $this->result->fields[$this->ddbb_id_vehicle];
 			$this->date = $this->result->fields[$this->ddbb_date];
 			//Prepara datos
-			$this->preparar_datos($this->id_emp, $this->id_vehicle);
+			$this->preparar_datos($this->id_emp);
 			
 			$this->db->close();
 				
@@ -827,7 +637,7 @@ class drivers{
 			}
 			else
 			{	
-				$cadena=''.$tabla_listado->make_tables('drivers',$this->vehicles_list,array('Identificador del conductor',20,'Alias del vehículo',20,'Fecha de asignacion',20),array($this->ddbb_id_driver, $this->ddbb_id_driver, $this->ddbb_alias, 'fecha_cambiada'),10,$permisos,$per->add);
+				$cadena=''.$tabla_listado->make_tables('drivers',$this->vehicles_list,array('Identificador del conductor',20,'Foto del vehículo', 20, 'Alias del vehículo',20,'Fecha de asignacion',20),array($this->ddbb_id_driver, $this->ddbb_id_driver, $this->ddbb_path_photo, $this->ddbb_alias, 'fecha_cambiada'),10,$permisos,$per->add);
 				$variables=$tabla_listado->nombres_variables;	
 			}				
 			$tpl->assign('variables',$variables);
@@ -836,14 +646,21 @@ class drivers{
 			return $tpl;
 				
 	}
-
+	
 	function listar($tpl)
 	{
 		$num = $this->get_list_drivers();
 	
 		$tabla_listado = new table(true);
 		$per = new permissions();
-		$per->get_permissions_list('drivers');
+		$num = $per->get_permissions_list('drivers');
+		
+		$per_vi_del = null;
+		for($i=0; $i<$num;$i++)
+			if($per->permissions_module[$i] == 'view')
+				$per_vi_del = array($per->permissions_module[$i]);
+			
+		
 		if ($num==0)
 		{
 			$cadena=''.$cadena.$tabla_listado->tabla_vacia('drivers', $per->add);
@@ -851,7 +668,7 @@ class drivers{
 		}
 		else
 		{	
-			$cadena=''.$tabla_listado->make_tables('drivers',$this->drivers_list,array('Nombre',20,'Primer Apellido',20,'Segundo Apellido',20),array($this->ddbb_id_driver, $this->ddbb_name, $this->ddbb_last_name, $this->ddbb_last_name2),10,$per->permissions_module,$per->add);
+			$cadena=''.$tabla_listado->make_tables('drivers',$this->drivers_list,array('Nombre',20,'Primer Apellido',20,'Segundo Apellido',20),array($this->ddbb_id_driver, $this->ddbb_name, $this->ddbb_last_name, $this->ddbb_last_name2),10,$per_vi_del,$per->add);
 			$variables=$tabla_listado->nombres_variables;	
 		}				
 		$tpl->assign('variables',$variables);
@@ -881,13 +698,21 @@ class drivers{
 				case 'modify':
 							$this->read($_GET['id']);
 							if ($this->modify() !=0){
-								$this->drivers_list = "";
 								$this->method="list";
 								$tpl=$this->listar($tpl);										
 								$tpl->assign("message","&nbsp;<br>Conductor modificado correctamente<br>&nbsp;");
 							}
-							list($anno,$mes,$dia)=sscanf($this->date,"%d-%d-%d");
-							$this->fecha_cambiada="$dia-$mes-$anno";
+						
+							//Se cambia el formato de la fecha
+							if ($this->date!="0000-00-00")
+							{
+								list($anno,$mes,$dia)=sscanf($this->date,"%d-%d-%d");
+								$this->fecha_cambiada="$dia-$mes-$anno";
+							}
+							else
+							{
+								$this->fecha_cambiada="00-00-0000";
+							}	
 							$tpl->assign("objeto",$this);									
 							$tpl->assign("empleados",$this->emps_trans);
 							$tpl->assign("vehiculos", $this->vehicles_corp->vehicles_list);
@@ -898,7 +723,7 @@ class drivers{
 								$tpl->assign("message",$this->conductores);
 							}
 							else{
-								$this->drivers_list="";
+								
 								$this->method="list";
 								$tpl=$this->listar($tpl);
 								$tpl->assign("message","&nbsp;<br>Conductor borrado correctamente<br>&nbsp;");
@@ -928,8 +753,6 @@ class drivers{
 	
 	function get_fields_from_post()
 	{		
-		
-		
 		//Cogemos la fecha de asignación
 		$this->date=$_POST["date"];
 		//Si el usuario ya estaba creado, se lo asignamos		

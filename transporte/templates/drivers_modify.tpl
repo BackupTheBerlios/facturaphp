@@ -28,7 +28,7 @@
 						<td><select name="empleados">
 						<input type="hidden" name="{$empleado->ddbb_id_emp}" id="{$empleado->ddbb_id_emp}" value="{$empleado->id_emp}"}
 						{section name="indice" loop=$empleados}
-						  <option value="{$empleados[indice].id_emp}"{if $empleado->id_emp == $empleados[indice].id_emp} selected{/if}>{$empleados[indice].nombre_completo}</option>						 
+						  <option value="{$empleados[indice].id_emp}"{if $objeto->id_emp == $empleados[indice].id_emp} selected{/if}>{$empleados[indice].nombre_completo}</option>						 
 						  {/section}
 						</select></td>
 					</tr>
@@ -53,7 +53,7 @@
 						<td><select name="vehiculos">
 						<input type="hidden" name="{$vehiculo->ddbb_id_vehicle}" id="{$vehiculo->ddbb_id_vehicle}" value="{$vehiculo->id_vehicle}"}
 						{section name="indice" loop=$vehiculos}
-						  <option value="{$vehiculos[indice].id_vehicle}"{if $vehiculo->id_vehicle == $vehiculos[indice].id_vehicle} selected{/if}>{$vehiculos[indice].alias}</option>						 
+						  <option value="{$vehiculos[indice].id_vehicle}"{if $objeto->id_vehicle == $vehiculos[indice].id_vehicle} selected{/if}>{$vehiculos[indice].alias}</option>						 
 						  {/section}
 						</select></td>
 					</tr>
@@ -62,7 +62,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td align="center" colspan="2"><br><br><input type="submit" name="submit_add" value="Modificar" class="botones">
+			<td align="center" colspan="2"><br><br><input type="submit" name="submit_modify" value="Modificar" class="botones">
 			<input type="reset" Value="Borrar Datos" class="botones">
 			</td>
 		</tr>
