@@ -77,7 +77,7 @@
 			list($conn)=Getdb();
 			$table=GetTable('eventos');
 			$columns=GetCols('eventos');
-			$sql="SELECT * FROM $table WHERE $columns[suceso] like '$cmd[$accion]@%' ORDER BY $columns[eid] desc Limit $total";
+			$sql="SELECT * FROM $table WHERE $columns[suceso] like '$cmd[$accion]@%' ORDER BY $columns[eid] desc";// Limit $total";
 			$rs=$conn->Execute($sql);
 			$data=$rs->GetRows();
 			return $data;
@@ -108,13 +108,12 @@
 								{
 									if (!isset($param[$par]))
 										{
-											echo "error<br>";
 											$implod=false;
 											break;
 											}
 									else
 										{ //Asi garantizamos el orden de los parametros
-											echo $param[$par];
+											
 											$parm[$par]=base64_encode($par."#".$param[$par]);} 
 									}
 							if ($implod)

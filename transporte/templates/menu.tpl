@@ -12,6 +12,18 @@
 			<tr class="textoMenu">
 			  <td width="10px">&nbsp;</td>
 			  <td>
+			  	- <a href="index.php?module=users" class="enlaceMenu">Usuarios</a><br>
+			  </td>
+			</tr>
+			<tr class="textoMenu">
+			  <td width="10px">&nbsp;</td>
+			  <td>
+			  	- <a href="index.php?module=corpss" class="enlaceMenu">Empresas</a><br>
+			  </td>
+			</tr>
+			<tr class="textoMenu">
+			  <td width="10px">&nbsp;</td>
+			  <td>
 			  	- <a href="#" class="enlaceMenu">Noticias</a><br>
 			  </td>
 			</tr>
@@ -20,13 +32,7 @@
 			  <td>
 			  	- <a href="#" class="enlaceMenu">Contacto</a><br>
 			  </td>
-			</tr>
-			<tr class="textoMenu">
-			  <td width="10px">&nbsp;</td>
-			  <td>
-			  	- <a href="index.php?module=users" class="enlaceMenu">Usuarios</a><br>
-			  </td>
-			</tr>
+			</tr>		
 			<tr class="textoMenu">
 			  <td width="10px">&nbsp;</td>
 			  <td>

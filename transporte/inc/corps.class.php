@@ -1,11 +1,12 @@
 <?php
-//clase que da soporte a los usuarios del programa
+//clase que da soporte a las empresas del programa
 //enlaza con la bbdd 
 global $ADODB_DIR, $INSTALL_DIR;
 require_once ($INSTALL_DIR.'inc/config.inc.php');
+require_once ($INSTALL_DIR.'table.class.php');
 require_once ($ADODB_DIR."adodb.inc.php");
 
-class log_methods{
+class corps{
 //internal vars
 	var $id_corp;
 	var $name;
@@ -33,7 +34,7 @@ class log_methods{
 	var $db_port;
 	var $db_type;
 	var $table_prefix;
-	var $table_name='log_methods';
+	var $table_name='corps';
 	var $ddbb_id_corp='id_corp';
   	var $ddbb_name='name';
   	var $ddbb_full_name='full_name';
@@ -55,12 +56,12 @@ class log_methods{
 	var $db;
 	var $result;  	
 //variables complementarias	
-  	var $log_methods_list;
+  	var $corps_list;
   	var $num;
   	var $fields_list;
   	var $error;
   	//constructor
-	function log_methods(){
+	function corps(){
 		//coge las variables globales del fichero config.inc.php
 		global $DDBB_TYPE, $DDBB_NAME, $IP_DDBB, $DDBB_USER, $DDBB_PASS, $DDBB_PORT, $TABLE_PREFIX;
 		$this->db_type=$DDBB_TYPE;
@@ -113,11 +114,11 @@ class log_methods{
 		}  
 		$this->db->close();
 		
-		return $this->get_list_log_methods();	 
+		return $this->get_list_corps();	 
 		
 	}
 	
-	function get_list_log_methods (){
+	function get_list_corps (){
 		//se puede acceder a los usuarios por numero de campo o por nombre de campo
 		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
 		//crea una nueva conexi—n con una bbdd (mysql)
@@ -141,23 +142,23 @@ class log_methods{
 		$this->num=0;
 		while (!$this->result->EOF) {
 			//cogemos los datos del usuario
-			$this->log_methods_list[$this->num][$this->ddbb_id_corp]=$this->result->fields[$this->ddbb_id_corp];
-			$this->log_methods_list[$this->num][$this->ddbb_name]=$this->result->fields[$this->ddbb_name];
-			$this->log_methods_list[$this->num][$this->ddbb_full_name]=$this->result->fields[$this->ddbb_full_name];
-			$this->log_methods_list[$this->num][$this->ddbb_address]=$this->result->fields[$this->ddbb_address];
-			$this->log_methods_list[$this->num][$this->ddbb_cif_nif]=$this->result->fields[$this->ddbb_cif_nif];
-			$this->log_methods_list[$this->num][$this->ddbb_fiscal_address]=$this->result->fields[$this->ddbb_fiscal_address];
-			$this->log_methods_list[$this->num][$this->ddbb_postal_address]=$this->result->fields[$this->ddbb_postal_address];
-			$this->log_methods_list[$this->num][$this->ddbb_url]=$this->result->fields[$this->ddbb_url];
-			$this->log_methods_list[$this->num][$this->ddbb_mail]=$this->result->fields[$this->ddbb_mail];
-			$this->log_methods_list[$this->num][$this->ddbb_city]=$this->result->fields[$this->ddbb_city];
-			$this->log_methods_list[$this->num][$this->ddbb_state]=$this->result->fields[$this->ddbb_state];
-			$this->log_methods_list[$this->num][$this->ddbb_postal_code]=$this->result->fields[$this->ddbb_postal_code];
-			$this->log_methods_list[$this->num][$this->ddbb_country]=$this->result->fields[$this->ddbb_country];
-			$this->log_methods_list[$this->num][$this->ddbb_phone]=$this->result->fields[$this->ddbb_phone];
-			$this->log_methods_list[$this->num][$this->ddbb_mobile_phone]=$this->result->fields[$this->ddbb_mobile_phone];
-			$this->log_methods_list[$this->num][$this->ddbb_fax]=$this->result->fields[$this->ddbb_fax];
-			$this->log_methods_list[$this->num][$this->ddbb_notes]=$this->result->fields[$this->ddbb_notes];
+			$this->corps_list[$this->num][$this->ddbb_id_corp]=$this->result->fields[$this->ddbb_id_corp];
+			$this->corps_list[$this->num][$this->ddbb_name]=$this->result->fields[$this->ddbb_name];
+			$this->corps_list[$this->num][$this->ddbb_full_name]=$this->result->fields[$this->ddbb_full_name];
+			$this->corps_list[$this->num][$this->ddbb_address]=$this->result->fields[$this->ddbb_address];
+			$this->corps_list[$this->num][$this->ddbb_cif_nif]=$this->result->fields[$this->ddbb_cif_nif];
+			$this->corps_list[$this->num][$this->ddbb_fiscal_address]=$this->result->fields[$this->ddbb_fiscal_address];
+			$this->corps_list[$this->num][$this->ddbb_postal_address]=$this->result->fields[$this->ddbb_postal_address];
+			$this->corps_list[$this->num][$this->ddbb_url]=$this->result->fields[$this->ddbb_url];
+			$this->corps_list[$this->num][$this->ddbb_mail]=$this->result->fields[$this->ddbb_mail];
+			$this->corps_list[$this->num][$this->ddbb_city]=$this->result->fields[$this->ddbb_city];
+			$this->corps_list[$this->num][$this->ddbb_state]=$this->result->fields[$this->ddbb_state];
+			$this->corps_list[$this->num][$this->ddbb_postal_code]=$this->result->fields[$this->ddbb_postal_code];
+			$this->corps_list[$this->num][$this->ddbb_country]=$this->result->fields[$this->ddbb_country];
+			$this->corps_list[$this->num][$this->ddbb_phone]=$this->result->fields[$this->ddbb_phone];
+			$this->corps_list[$this->num][$this->ddbb_mobile_phone]=$this->result->fields[$this->ddbb_mobile_phone];
+			$this->corps_list[$this->num][$this->ddbb_fax]=$this->result->fields[$this->ddbb_fax];
+			$this->corps_list[$this->num][$this->ddbb_notes]=$this->result->fields[$this->ddbb_notes];
 			//nos movemos hasta el siguiente registro de resultado de la consulta
 			$this->result->MoveNext();
 			$this->num++;

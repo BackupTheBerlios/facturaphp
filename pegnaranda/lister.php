@@ -237,6 +237,32 @@ class Lister
 				return $out->fetch("lister_tbl.tpl");
 				}
 
+		function renderEvento()
+			{
+				$salida=$this->renderFirstRow();
+				$rs=$db->SelectLimit($finalsql,$this->rows,$this->start);
+
+				if (!($rs===false))
+					{
+						while ($arr = $rs->FetchRow())
+							{
+								$salida=$salida.$this->renderRow($arr);}
+						$salida=$salida.$this->renderPagerRow();
+						$salida=$salida.$this->renderGeneralActions();
+						}
+				else
+					{
+						return null;}
+				//$salida=$salida.renderPagerRow();
+				//$salida=$salida.renderLastRow();
+				$out=SmartyInit();
+				$out->assign('rows',$salida);
+				$out->assign('style',$this->StyleSheet);
+				$out->assign('idname',$this->idname);
+				$out->assign('rows',$salida);
+				return $out->fetch("lister_tbl.tpl");
+				}
+				
 		function SetSort($label,$sentido)
 			{
 				foreach($this->ColsToShow as $col)

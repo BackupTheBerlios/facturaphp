@@ -7,4 +7,7 @@
 <br>
 <center>Listado de los 25 documentos más visitados</center>
 {$listadoDocu}
+<br>
+<center>Listado de los ultimos Eventos</center>
+{$listadoEventos}
 </div>

@@ -625,7 +625,8 @@ require_once ("event.inc.php");
 	function cbautorizacionUsrEditar ($key,$valor)
 		{
 			return array("etiqueta"=>"Editar","url"=>"index.php?actor=autorizaciones&accion=editar&id=$key");};
-	function eventoAutorizacion ($param,$acicon)
+
+				function eventoAutorizacion ($param,$acicon)
 		{
 			$msg=eventToMsg($accion,$param);
 			addLogEntry($msg);

@@ -53,7 +53,7 @@
                               </tr>
                             </table>
 							<br>
-							<p align="center" class="cabeceraCampoFormulario">Listados de por m&oacute;dulos y grupos</p>
+							<p align="center" class="cabeceraCampoFormulario">Listados de por permisos m&oacute;dulos y grupos</p>
 							<br>
 					<a name="listado">
 					  <table align="center" width="400" cellspacing="0" cellpadding="0">
