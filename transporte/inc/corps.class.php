@@ -281,8 +281,32 @@ class corps{
 									$tpl=$this->listar($tpl);
 									break;
 						case 'modify':
+									$this->read($_GET['id']);
+									if ($this->modify() !=0){
+										$this->method="list";
+										$tpl=$this->listar($tpl);										
+										$tpl->assign("message","&nbsp;<br>Empresa modificada correctamente<br>&nbsp;");
+									}
+									$tpl->assign("objeto",$this);
 									break;
 						case 'delete':
+									if ($_GET['id']==$_SESSION['ident_corp']){
+										$this->emps_list="";
+										$this->method="list";
+										$tpl=$this->listar($tpl);
+										$tpl->assign("message","&nbsp;<br>No se puede borrar la empresa por ser la empresa en uso. Desl&oacute;gese de esta empresa para poder borrarla.<br>&nbsp;");
+										$tpl->assign("objeto",$this);
+										break;
+									}
+									$this->read($_GET['id']);
+									if ($this->remove($_GET['id'])!=0){				
+										$this->corps_list="";
+										$this->method="list";
+										$tpl=$this->listar($tpl);
+										$tpl->assign("message","&nbsp;<br>Empresa borrada correctamente<br>&nbsp;");
+									}
+									$tpl->assign("objeto",$this);
+							
 									break;
 						case 'view':		
 									if($_SESSION['super'] || $_SESSION['admin'])
@@ -416,7 +440,12 @@ class corps{
 	}	
 	
 	function remove($id){
-	
+	if (!isset($_POST["submit_delete"])){
+				
+									
+				return 0;
+			}
+			else{
 		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
 		//crea una nueva conexi—n con una bbdd (mysql)
 		$this->db = NewADOConnection($this->db_type);
@@ -428,6 +457,7 @@ class corps{
 		//calcula la consulta de borrado.
 		$this->sql="DELETE FROM ".$this->table_prefix.$this->table_name. " WHERE ".$this->ddbb_id_corp." = ".$id." LIMIT 1";
 		//la ejecuta y guarda los resultados
+		
 		$this->result = $this->db->Execute($this->sql);
 		//si falla 
 		if ($this->db->Affected_Rows() == 0){
@@ -435,18 +465,54 @@ class corps{
 			$this->db->close();
 			return 0;
 		}else{
-		
+			$this->make_remove($id);
 			$this->error=0;
 			$this->db->close();
 			return 1;
 			
 		}
+			}
+	}
+	
+	function make_remove($id){
 		
+		//Borramos los empleados. Esto se irá haciendo con todos los módulos directamente
+		//relacionados con la empresa que se este borrando.
+		$empleados=new emps();
+		$listado=$empleados->belong_corp($id);
+		
+		
+		for ($i=0;$i<count($listado);$i++){
+			
+			$empleados->remove($listado[$i]["id_emp"]);
+		}
+		//Fin Borrado empleados	
 	}
 	
 	function modify()
 	{
-	
+		if (!isset($_POST['submit_modify'])){
+			//Mostrar plantilla vacía		
+			
+			return 0;
+		}
+		else{
+			//Introducir los datos de post.
+			$this->get_fields_from_post();
+			//$this->insert_post();
+			
+			//Validacion
+			//$return=validate_fields();
+			
+			//En caso de que la validacion haya sido fallida se muestra la plantilla
+			//con los campos erroneos marcados con un *
+			$return=true; //Para pruebas dejar esta linea sin comentar
+			
+			if (!$return){
+				//Mostrar plantilla con datos erroneos
+				
+			}
+			else{
 		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
 		//crea una nueva conexi—n con una bbdd (mysql)
 		$this->db = NewADOConnection($this->db_type);
@@ -499,7 +565,7 @@ class corps{
 			$this->db->close();
 			return 0;
 		}
-	
+			}}
 	}
 	
 	function view ($id,$tpl)

@@ -31,11 +31,11 @@
 				
 				<td>
 				{if $acciones[indice]== 'modify'}
-				<a href="index.php?module=groups&method={$acciones[indice]}&id={$objeto->id_cat_emp}">
+				<a href="index.php?module=cat_emps&method={$acciones[indice]}&id={$objeto->id_cat_emp}">
 				<img src="pics/btn{$acciones[indice]}.gif" border="0"></a></td>
 				{else}
 				<td><a href="index.php?module=users&method={$acciones[indice]}&id={$objeto->id_cat_emp}">
-				<img src="pics/btn{$acciones[indice]}.gif" border="0" onClick="confirm('¿Desea borrar este registro?\nSi pulsa Sí se borrarán tambien los registros relacionados con este cliente (p.ej: datos de usuario)')"></a></td>
+				<img src="pics/btn{$acciones[indice]}.gif" border="0" ></a></td>
 				{/if}
 				
 				{/section}

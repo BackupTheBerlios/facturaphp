@@ -10,7 +10,7 @@
 						  Borrar Empresa </td>
 				</tr>
 	</table>
-			  <form method="post" action="index.php?module=corps&method=delete&id={$objeto->id_emp}">			  
+			  <form method="post" action="index.php?module=corps&method=delete&id={$objeto->id_corp}">			  
 			  
 			  <br>
 			  <p>Se va a proceder al borrado de la empresa: {$objeto->name}|{$objeto->full_name}</p>

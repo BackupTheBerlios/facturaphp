@@ -88,7 +88,7 @@
 
 		<tr>
 			<td align="center"><br><br>
-			<input type="submit" name="submit_add" id =" name="submit_modify" "value="Modificar" class="botones">			
+			<input type="submit" name="submit_modify" id ="" "value="Modificar" class="botones">			
 			<input type="reset" Value="Limpiar Datos" class="botones">
 			</td>
 		</tr>

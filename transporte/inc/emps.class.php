@@ -62,6 +62,7 @@ class emps{
 	var $corps_list;
 	var $num_corps;
 	var $emps_users_list;
+	var $emps_corp_list;
 	var $method;
 	var $obj_user;
 	var $cat_emps;
@@ -70,7 +71,7 @@ class emps{
 	var $method;
 	var $table_names_modify=array();
 	var $table_names_delete=array("holydays","rel_emps_cats",);
-	
+	var $holydays_list;
   	//constructor
 	function emps(){
 		//coge las variables globales del fichero config.inc.php
@@ -304,6 +305,7 @@ class emps{
 	function add_holyday($id){
 		$holyday=new holydays();
 		$holyday->id_emp=$id;
+		$holyday->ill=2;
 		$holyday->come=$this->come;
 		return $holyday->add();
 	}
@@ -424,6 +426,7 @@ class emps{
 		$holyday=new holydays();
 		$holyday->read($_POST["id_holy"]);
 		$holyday->id_emp=$id;
+		$holyday->ill=2;
 		$holyday->come=$this->come;
 		return $holyday->modify();
 	}
@@ -530,6 +533,45 @@ class emps{
 				return 1;
 				
 			}
+	}
+	
+	function belong_corp($id_corp){
+				//se puede acceder a los usuarios por numero de campo o por nombre de campo
+		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
+		//crea una nueva conexin con una bbdd (mysql)
+		$this->db = NewADOConnection($this->db_type);
+		//le dice que no salgan los errores de conexin de la ddbb por pantalla
+		$this->db->debug=false;
+		//realiza una conexin permanente con la bbdd
+		$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
+		//mete la consulta
+		$this->sql='SELECT * FROM `emps` WHERE `id_corp` = \''.$id_corp.'\'';
+		//la ejecuta y guarda los resultados
+		$this->result = $this->db->Execute($this->sql);
+		if ($this->result === false){
+			$this->error=1;
+			$this->db->close();
+			
+			return 0;
+		}  
+		
+		$this->num=0;
+
+
+		while (!$this->result->EOF) {
+			//cogemos los datos del usuario
+			
+			$this->emps_corp_list[$this->num]['id_emp']=$this->result->fields['id_emp'];
+			$this->emps_corp_list[$this->num]['name']=$this->result->fields['name'];
+			$this->emps_corp_list[$this->num]['last_name']=$this->result->fields['last_name'];
+			$this->emps_corp_list[$this->num]['last_name2']=$this->result->fields['last_name2'];
+			//nos movemos hasta el siguiente registro de resultado de la consulta
+			$this->result->MoveNext();
+			$this->num++;
+		}
+		$this->db->close();
+		return $this->emps_corp_list;
+		
 	}
 	
 	function get_user_corps($id_user)
@@ -863,9 +905,134 @@ class emps{
 			$permisos_mod_del->get_permissions_modify_delete();
 			
 			$tpl->assign('acciones',$permisos_mod_del->per_mod_del);
+				
+			
+			if(!$_SESSION['super'] || !$_SESSION['admin'])
+			{	
+				
+				$holydays = false;
+			
+				$i=0;
+				while($i!=$this->num_modules)
+				{
+			
+					if(($this->per_modules[$i]->per == 1)&&($this->per_modules[$i]->module_name=='holydays'))
+					{
+					//Se comprueba si se tiene permiso para ver
+						$j=0;
+						while(($j<$this->per_modules[$i]->num_methods))
+						{
+							if(($this->per_modules[$i]->per_methods[$j]->per == 1)&&($this->per_modules[$i]->per_methods[$j]->method_name == 'view'))
+							{
+								$holydays = true;
+							}
+							$j++;
+						}
+					}
 					
+					
+					$i++;
+					
+				}
+
+			}
+			else
+			{
+				$holydays = true;
+			}
+			
+		
+			$mensaje = null;
+			$mensaje[0]['id_mensaje'] = 1;
+			$mensaje[0]['mes'] = "Sentimos informarle de que no tiene permiso para acceder a esta información";
+			
+			$cadena="";
+			$tabla_vacaciones = new table(false);
+			if($holydays)
+			{
+				
+				//listado de grupos
+				if ($this->get_holydays($this->id_emp)==0)
+				{
+					$cadena=$cadena.$tabla_vacaciones->tabla_vacia('holydays',false);
+					$variables_vacaciones=$tabla_vacaciones->nombres_variables;
+				}
+				else
+				{		
+					$per = new permissions();
+					$num = $per->get_permissions_list('holydays');
+					
+					$permisos = $per->permissions_module;
+
+								
+					$cadena=$cadena.$tabla_vacaciones->make_tables('holydays',$this->holydays_list,array('Fecha de baja',25,'Fecha de alta',25,'Motivo',25),array('id_holyday','gone','come','ill'),10,$per->permissions_module,$per->add);
+					$variables_vacaciones=$tabla_vacaciones->nombres_variables;
+				}
+			}
+			else
+			{
+				$cadena=$cadena.$tabla_grupos->make_tables('holydays',$mensaje,array('ACCION NO PERMITIDA',50),array('id_mensaje','mes'),10,null,false);
+				$variables_vacaciones=$tabla_vacaciones->nombres_variables;
+			}
+			
+			$i=0;
+			while($i<(count($variables_grupos)+count($variables_modulos))){
+				for($j=0;$j<count($variables_vacaciones);$j++){
+					$variables[$i]=$variables_vacaciones[$j];
+					$i++;
+				}
+			}
+			
+			
+			$tpl->assign('variables',$variables);
+			$tpl->assign('cadena',$cadena);
+				
 			return $tpl;
 				
+	}
+	
+	function get_holydays($id){
+		//se puede acceder a los usuarios por numero de campo o por nombre de campo
+		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
+		//crea una nueva conexin con una bbdd (mysql)
+		$this->db = NewADOConnection($this->db_type);
+		//le dice que no salgan los errores de conexin de la ddbb por pantalla
+		$this->db->debug=false;
+		//realiza una conexin permanente con la bbdd
+		$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
+		//mete la consulta
+		$this->sql='SELECT * FROM `holydays` WHERE `id_emp` = \''.$id.'\'';
+		//la ejecuta y guarda los resultados
+		$this->result = $this->db->Execute($this->sql);
+		if ($this->result === false){
+			$this->error=1;
+			$this->db->close();
+			return 0;
+		}  
+		
+		$this->num=0;
+		while (!$this->result->EOF) {
+			//cogemos los datos del usuario
+			$this->holydays_list[$this->num]['id_holyday']=$this->result->fields['id_holyday'];
+			$this->holydays_list[$this->num]['gone']=$this->result->fields['gone'];
+			$this->holydays_list[$this->num]['come']=$this->result->fields['come'];
+			switch($this->result->fields['ill']){
+				case 0: $this->holydays_list[$this->num]['ill']="Enfermedad";
+						break;
+				case 1: $this->holydays_list[$this->num]['ill']="Vacaciones";
+						break;
+						
+				case 2: $this->holydays_list[$this->num]['ill']="Otros";
+						break;
+				default: $this->holydays_list[$this->num]['ill']="Otros";
+					break;
+			}
+			//nos movemos hasta el siguiente registro de resultado de la consulta
+			$this->result->MoveNext();
+			$this->num++;
+		}
+		$this->db->close();
+		return $this->num;
 	}
 	
 	function listar($tpl)

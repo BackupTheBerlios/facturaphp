@@ -411,6 +411,8 @@ class modules{
 									break;
 						case 'modify':
 									$this->read($_GET['id']);
+						
+									
 									if ($this->modify() !=0){
 										$this->method="list";
 										$tpl=$this->listar($tpl);										
@@ -539,8 +541,10 @@ class modules{
 		//insertamos el registro
 		$this->db->Execute($this->sql);
 		//si se ha insertado una fila
+		
 		if(($this->db->Affected_Rows()==1)||($this->sql=="")){
 			$this->modify_methods();
+
 			//capturammos el id de la linea insertada
 			$this->db->close();
 			//devolvemos el id de la tabla ya que todo ha ido bien
@@ -862,7 +866,7 @@ class modules{
 		$this->add_methods($this->id_module);
 		$this->module_methods="";
 		
-		$this->get_methods($this->id_module);		
+	//	$this->get_methods($this->id_module);		
 		//Leer los metodos desde bbdd
 		$this->get_methods($this->id_module);	
 		//Leer los metodos que hay en el formulario
@@ -879,25 +883,25 @@ class modules{
 		}	
 
 		//Los que haya en la bbdd y no haya en los nuevos, seran los borrados
-		for ($i=0;count($this->module_methods);$i++){
+		for ($i=0;$i<count($this->module_methods);$i++){
 			$result=false;
-			for ($j=0;count($formulario);$j++){
-				if($formulario[$j]["name"]==$this->module_methods[$i]["name"]){
+			for ($j=0;$j<count($formulario);$j++){
+				if($formulario[$j]["name"]==$this->module_meth[$i]["name"]){
 					$result=true;
 					break;
 				}
 			}
 			if(!$result){
-				$borrados[$i]["id_method"]=$this->module_methods[$i]["id_method"];
+				$borrados[$i]["id_method"]=$this->module_meth[$i]["id_method"];
 			}
 		}		
 		
 		//Los que haya en los nuevos y no en la bbdd seran los añadidos.
 		$nuevos="";
-		for ($i=0;count($formulario);$i++){
+		for ($i=0;$i<count($formulario);$i++){
 			$result=false;
-			for ($j=0;count($this->module_methods);$j++){
-				if($formulario[$i]["name"]==$this->module_methods[$j]["name"]){
+			for ($j=0;$j<count($this->module_methods);$j++){
+				if($formulario[$i]["name"]==$this->module_meth[$j]["name"]){
 					$result=true;
 					break;
 				}
@@ -972,7 +976,7 @@ class modules{
 		$this->module_methods="";
 		while (!$this->result->EOF) {
 			//cogemos los datos del usuario
-//			echo "hola";
+//			
 			$this->module_methods[$this->result->fields['name']]['id_method']=$this->result->fields['id_method'];
 			$this->module_methods[$this->result->fields['name']]['name']=$this->result->fields['name'];
 			$this->module_methods[$this->result->fields['name']]['name_web']=$this->result->fields['name_web'];

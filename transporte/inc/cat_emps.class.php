@@ -411,6 +411,7 @@ class cat_emps{
 									$tpl->assign("objeto",$this);
 									break;
 						case 'delete':
+									
 									$this->read($_GET['id']);
 									if ($this->remove($_GET['id'])==0){
 										$tpl->assign("message",$this->empleados);

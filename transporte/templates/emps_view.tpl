@@ -15,7 +15,7 @@
 				<br>
 				<TABLE width="95%" align="center">
 					<tr class="cabeceraMultiLinea">
-						<td width="50%" height="23" nowrap>Identificador de Usuario: {$objeto->id_user}
+						<td width="50%" height="23" nowrap>Identificador de Usuario: {$objeto->id_emp}
 						</td>
 						<td nowrap width="50%">&nbsp;</td>
 					</tr>
@@ -45,11 +45,11 @@
 				
 				<td>
 				{if $acciones[indice]== 'modify'}
-				<a href="index.php?module=groups&method={$acciones[indice]}&id={$objeto->id_emp}">
+				<a href="index.php?module=emps&method={$acciones[indice]}&id={$objeto->id_emp}">
 				<img src="pics/btn{$acciones[indice]}.gif" border="0"></a></td>
 				{else}
-				<td><a href="index.php?module=users&method={$acciones[indice]}&id={$objeto->id_emp}">
-				<img src="pics/btn{$acciones[indice]}.gif" border="0" onClick="confirm('¿Desea borrar este registro?\nSi pulsa Sí se borrarán tambien los registros relacionados con este cliente (p.ej: datos de usuario)')"></a></td>
+				<td><a href="index.php?module=emps&method={$acciones[indice]}&id={$objeto->id_emp}">
+				<img src="pics/btn{$acciones[indice]}.gif" border="0" ></a></td>
 				{/if}
 				
 				{/section}
@@ -58,8 +58,15 @@
 								<td></td>
                               </tr>
                             </table>
-							
-					  
+							<br>
+							<p align="center" class="cabeceraCampoFormulario">Listados Altas-Bajas</p>
+							<br>
+					   <div name="divMostrar" id="divMostrar" >
+						
+					</div>					
+					 <script>	
+					  	document.getElementById("divMostrar").innerHTML = holydays_1;
+					  </script>
   					  </td>
 						
 					</tr>
