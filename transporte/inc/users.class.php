@@ -549,18 +549,20 @@ class users{
 			}
 			else{	
 				//Se prepara el array de permisos
+				$k=0;
 				for($i = 0;$i<$this->num_modules;$i++)
 				{
-					if($this->per_modules[$i]->per == 1)
+					if(($this->per_modules[$i]->per == 1)&&($this->per_modules[$i]->module_name != 'error'))
 					{
-						$permissions[$i]['id_module']=$this->per_modules[$i]->id_module;
-						$permissions[$i]['name']=$this->per_modules[$i]->web_name;
-						$permissions[$i]['methods'] = "";
+						$permissions[$k]['id_module']=$this->per_modules[$i]->id_module;
+						$permissions[$k]['name']=$this->per_modules[$i]->web_name;
+						$permissions[$k]['methods'] = "";
 						for($j=0;$j<$this->per_modules[$i]->num_methods;$j++)
 							if($this->per_modules[$i]->per_methods[$j]->per ==1)
 							{
-								$permissions[$i]['methods'] = $permissions[$i]['methods'].' '.$this->per_modules[$i]->per_methods[$j]->method_name_web;
+								$permissions[$k]['methods'] = $permissions[$k]['methods'].' '.$this->per_modules[$i]->per_methods[$j]->method_name_web;
 							}
+							$k++;
 					}
 				}
 				
@@ -574,12 +576,21 @@ class users{
 			//listado de permisos por modulos
 			$tabla_grupos = new table(false);
 			//listado de grupos
-			if ($this->get_groups($id)==0){
+			if ($this->get_groups($id)==0)
+			{
 				$cadena=$cadena.$tabla_grupos->tabla_vacia('group_users');
 				$variables_grupos=$tabla_grupos->nombres_variables;
 			}
-			else{					
-				$cadena=$cadena.$tabla_grupos->make_tables('group_users',$this->groups_list,array('Nombre de grupo',75),array('id_group','name_web'),10,array('delete'),true);
+			else{		
+				$per = new permissions();
+				$num = $per->get_permissions_list('users');
+				
+				$per_delete = null;
+				for($i=0; $i<$num;$i++)
+				if($per->permissions_module[$i] == 'delete')
+					$per_delete = array('delete');
+							
+				$cadena=$cadena.$tabla_grupos->make_tables('group_users',$this->groups_list,array('Nombre de grupo',75),array('id_group','name_web'),10,$per_delete,$per->add);
 				$variables_grupos=$tabla_grupos->nombres_variables;
 			}
 			$i=0;
