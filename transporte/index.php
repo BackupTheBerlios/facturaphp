@@ -115,33 +115,14 @@ if(isset($_GET['module'])||isset($_SESSION['module']))
 	$operations_list=$module->get_module_operations_list($module_name);
 }
 
-
-//Se comprueba que el usuario tenga permisos sobre el módulo que aparece en la barra de direccion
-/*
-//2 opciones:
-//- El usuario no está logeado pero el módulo es público, en cuyo caso no habría problema
-//- El usuario está logeado pero intenta entrar en un móudlo donde no tiene permisos
-if(!isset($_SESSION['user']) && isset($_GET['module']))
+//Se indica si se trabaja con una empresa, con cuál se está trabajando
+if((isset($_SESSION['user'])) && ((isset($_GET['module'])) && (isset($_GET['method']))))
 {
-	//Se comprueba si el modulo es público, sino es así se indica el error
-	if($module->is_public_module($_GET['module']) == 0)
-		$module_name = 'error';	
+	if(($_GET['module'] == 'user_corps') && ($_GET['method'] == 'select'))
+		$_SESSION['corp'] = $_GET['id'];
 }
 
-//Se comprueba que el usuario tenga permisos sobre el módulo que aparece en la barra de direccion
-if(isset($_SESSION['user']) && isset($_GET['module']))
-{
-	//Se comprueba si el modulo es público si es así se deja no hay problema, pero sino se tendrá que saber si tiene o no acceso a él
-	if($module->is_public_module($_GET['module']) == 0)
-	{
-		$permiso = new permissions_modules();
-		if($permiso->validate_per($_SESSION['user'], $_GET['module']) == 0)
-		{
-			$module_name = 'error';	
-		}
-	}
-}
-*/
+
 
 //2 opciones:
 //- El usuario no está logeado pero el módulo es público, en cuyo caso no habría problema
@@ -183,8 +164,8 @@ if(isset($_SESSION['user']) && isset($_GET['module']))
 
 
 //inicializar el objeto que corresponda
-//en el caso de queno haya modulo definido se deja la plantilla por defecto
-//en el caso de que no se haya pasado metodo se prenta el listado con la
+//en el caso de que no haya modulo definido se deja la plantilla por defecto
+//en el caso de que no se haya pasado metodo se presenta el listado con la
 //busqueda del modulo
 $objeto= initialize_object($module_name);
 
@@ -206,19 +187,18 @@ if ($objeto===null)
 	$tpl->assign('plantilla',$plantilla);
 }
 else
-{
-	//calcula la plantilla a presentar
-	/*if (!isset($_GET['method']))
-	{
-		$method=null;
-	}
+{	
+	//Se obtiene el nombre de la empresa en la que se está trabajando
+	if(!isset($_SESSION['corp']))
+		$corp = "";
 	else
 	{
-		$method=$_GET['method'];
-	}*/
+		$my_corp = new corps();
+		$my_corp->read($_SESSION['corp']);
+		$corp = $my_corp->name;
+	}	
+
 		
-	//VER COMO CONSEGUIR EL NOMBRE DE LA EMPRESA CON LA QUE SE ESTA TRABAJANDO
-	$corp="";
 	///*************************************
 	
 	//En este orden

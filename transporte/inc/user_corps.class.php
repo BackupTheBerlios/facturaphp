@@ -43,9 +43,8 @@ var $num_corps;
 		switch($method)
 		{
 				case 'select':	
-								//Asignar corp
 								
-								$tpl->assign('plantilla','resuival.tpl');	
+								$tpl->assign('plantilla','corps_view.tpl');	
 								break;
 				default:
 								$method='list';
@@ -71,7 +70,7 @@ var $num_corps;
 		$this->num_corps = $emp->get_user_corps($id_user);
 
 		$tabla_listado = new table(true);
-		$cadena=''.$tabla_listado->make_tables('user_corps',$emp->corps_list,array('Nombre',50),array('id_user','name'),10,array('select'),false);
+		$cadena=''.$tabla_listado->make_tables('user_corps',$emp->corps_list,array('Nombre',50),array('id_corp','name'),10,array('select'),false);
 		$variables=$tabla_listado->nombres_variables;		
 		$tpl->assign('variables',$variables);
 		$tpl->assign('cadena',$cadena);		
