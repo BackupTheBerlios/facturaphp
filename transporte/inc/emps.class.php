@@ -179,7 +179,7 @@ class emps{
 	
 	}
 	
-		function add(){
+	function add(){
 		if(!isset($_POST['add_adduser'])){
 			$this->obj_user=new users();
 			$this->obj_user->add();
@@ -542,7 +542,7 @@ class emps{
 		//realiza una conexi—n permanente con la bbdd
 		$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
 		//mete la consulta para coger los campos de la bbdd
-		$this->sql="SELECT * FROM ".$this->table_prefix.$this->table_name. " WHERE ".$this->ddbb_id_user." = \"".$this->id_user."\"" ;
+		$this->sql="SELECT * FROM ".$this->table_prefix.$this->table_name. " WHERE ".$this->ddbb_id_emp." = \"".$this->id_emp."\"" ;
 		//la ejecuta y guarda los resultados
 		$this->result = $this->db->Execute($this->sql);
 		//si falla 
@@ -582,52 +582,23 @@ class emps{
 	
 	}
 	  
-	*/
+*/	
 
-	function view ($id,$tpl)
-	{
-	
-	/*	Cosas que faltan por hacer:
+	function view ($id,$tpl){
+	/*
+		Cosas que faltan por hacer:
 			De forma general, mirar los permisos del usuario que vaya a acceder aqui, para saber si tiene permisos de borrar editar ver etc...
 			Averiguar como pasar el numero de registros, si va a ser a grupos a grupos, si va a ser a modulos, a modulos
 			Order By (y mantener la búsqueda en el caso de que hubiera hecha una y averiguar la "pestaña" a la que hace referencia)
 			Busquedas
 	*/
-	/*
 			$cadena='';			
-			// Leemos el usuario y se lo pasamos a la plantilla
+			// Leemos el empleado y se lo pasamos a la plantilla
 			$this->read($id);
 			$tpl->assign('objeto',$this);
-			//listado de modulos
-			$tabla_empleados = new table(false);
-
-			if ($this->get_list_emps($id)==0)
-			{
-				$cadena=$cadena.$tabla_empleados->tabla_vacia('emps');
-				$variables_empleados=$tabla_empleados->nombres_variables;
-			}
-			else
-			{					
-				$cadena=$cadena.$tabla_empleados->make_tables('user_corps',$this->emps_list,array('Nombre de empleado',75),array('id_emp','name'),10,array('select'),true);
-				$variables_empleados=$tabla_empleados->nombres_variables;
-			}
-			$i=0;
-			while($i< count($variables_empleados))
-			{
-				for($j=0;$j< count($variables_empleados);$j++)
-				{
-					$variables[$i]=$variables_empleados[$j];
-					$i++;
-				}
-				
-			}
 			
-			//****			
-			$tpl->assign('variables',$variables);
-			$tpl->assign('cadena',$cadena);
-			//	
-			
-			*/		
+			//			
+			return $tpl;
 				
 	}
 	
@@ -635,11 +606,23 @@ class emps{
 	{
 		$this->get_list_emps($_SESSION['ident_corp']);
 		
-		$per = new permissions();
-		$per->get_permissions_list('emps');
+		if($_SESSION['user']='admin')
+		{
+			$acciones = array('view', 'modify', 'delete');
+			$add = true;
+
+		}
+		else
+		{
+			$per = new permissions();
+			$per->get_permissions_list('emps');
+			
+			$acciones = $per->permissions_module;
+			$add = $per->add;
+		}
 
 		$tabla_listado = new table(true);
-		$cadena=''.$tabla_listado->make_tables('emps',$this->emps_list,array('Nombre',20,'Primer Apellido',20,'Segundo Apellido',20),array($this->ddbb_id_emp, $this->ddbb_name,$this->ddbb_last_name,$this->ddbb_last_name2),10,$per->permissions_module,$per->add);
+		$cadena=''.$tabla_listado->make_tables('emps',$this->emps_list,array('Nombre',20,'Primer Apellido',20,'Segundo Apellido',20),array($this->ddbb_id_emp, $this->ddbb_name,$this->ddbb_last_name,$this->ddbb_last_name2),10,$acciones,$add);
 		$variables=$tabla_listado->nombres_variables;		
 		$tpl->assign('variables',$variables);
 		$tpl->assign('cadena',$cadena);		
@@ -647,57 +630,58 @@ class emps{
 	}
 	
 	
-	function calculate_tpl($method, $tpl){
+	function calculate_tpl($method, $tpl)
+	{
 		$this->method=$method;
-				switch($method){
-						case 'add':									
-									if ($this->add() !=0){
-										$this->method="list";
-										$tpl=$this->listar($tpl);										
-										$tpl->assign("message","&nbsp;<br>Empleado a&ntilde;adido correctamente<br>&nbsp;");
-									}
-									$tpl->assign("objeto",$this);									
-									$tpl->assign("usuarios",$this->obj_user);
-									$tpl->assign("modulos",$this->obj_user->checkbox);
-									$tpl->assign("grupos",$this->obj_user->checkbox_groups);
-									break;
-									
-						case 'list':
-									$tpl=$this->listar($tpl);
-									break;
-						case 'modify':
-									$this->read($_GET['id']);
-									if ($this->modify() !=0){
-										$this->method="list";
-										$tpl=$this->listar($tpl);										
-										$tpl->assign("message","&nbsp;<br>Empleado modificado correctamente<br>&nbsp;");
-									}
-									$tpl->assign("objeto",$this);
-									$tpl->assign("modulos",$this->checkbox);
-									$tpl->assign("grupos",$this->checkbox_groups);
-									break;
-						case 'delete':
-									$this->read($_GET['id']);
-									if ($this->remove($_GET['id'])==0){
-										$tpl->assign("message",$this->empleados);
-									}
-									else{
-										$this->emps_list="";
-										$method="list";
-										$tpl=$this->listar($tpl);
-										$tpl->assign("message","&nbsp;<br>Empleado borrado correctamente<br>&nbsp;");
-									}
-									$tpl->assign("objeto",$this);
-									break;
-						case 'view':									
-									$tpl=$this->view($_GET['id'],$tpl);
-									break;
-						default:
-									$this->method='list';
-									$tpl=$this->listar($tpl);
-									break;
-					}
-				$tpl->assign('plantilla','emps_'.$this->method.'.tpl');					
+		switch($method){
+				case 'add':									
+							if ($this->add() !=0){
+								$this->method="list";
+								$tpl=$this->listar($tpl);										
+								$tpl->assign("message","&nbsp;<br>Empleado a&ntilde;adido correctamente<br>&nbsp;");
+							}
+							$tpl->assign("objeto",$this);									
+							$tpl->assign("usuarios",$this->obj_user);
+							$tpl->assign("modulos",$this->obj_user->checkbox);
+							$tpl->assign("grupos",$this->obj_user->checkbox_groups);
+							break;
+							
+				case 'list':
+							$tpl=$this->listar($tpl);
+							break;
+				case 'modify':
+							$this->read($_GET['id']);
+							if ($this->modify() !=0){
+								$this->method="list";
+								$tpl=$this->listar($tpl);										
+								$tpl->assign("message","&nbsp;<br>Empleado modificado correctamente<br>&nbsp;");
+							}
+							$tpl->assign("objeto",$this);
+							$tpl->assign("modulos",$this->checkbox);
+							$tpl->assign("grupos",$this->checkbox_groups);
+							break;
+				case 'delete':
+							$this->read($_GET['id']);
+							if ($this->remove($_GET['id'])==0){
+								$tpl->assign("message",$this->empleados);
+							}
+							else{
+								$this->emps_list="";
+								$method="list";
+								$tpl=$this->listar($tpl);
+								$tpl->assign("message","&nbsp;<br>Empleado borrado correctamente<br>&nbsp;");
+							}
+							$tpl->assign("objeto",$this);
+							break;
+				case 'view':									
+							$tpl=$this->view($_GET['id'],$tpl);
+							break;
+				default:
+							$this->method='list';
+							$tpl=$this->listar($tpl);
+							break;
+			}
+		$tpl->assign('plantilla','emps_'.$this->method.'.tpl');					
 		
 		return $tpl;
 	}

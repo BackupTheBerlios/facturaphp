@@ -12,6 +12,7 @@ class modules{
 	var $path;
 	var $active;
 	var $theme;
+	var $publico;
 //BBDD name vars
 	var $db_name;
 	var $db_ip;
@@ -27,6 +28,7 @@ class modules{
   	var $ddbb_path='path';
   	var $ddbb_active='active';
 	var $ddbb_public='public';
+	var $ddbb_parent = 'parent';
 	var $db;
 	var $result;  	
 //variables complementarias	
@@ -59,7 +61,9 @@ class modules{
 		$this->fields_list->add($this->ddbb_name_web, $this->name_web, 'varchar', 50,0);
 		$this->fields_list->add($this->ddbb_name, $this->name, 'varchar', 50,0);
 		$this->fields_list->add($this->ddbb_path, $this->path, 'varchar', 255,0);
-		$this->fields_list->add($this->ddbb_active, $this->active, 'tinyint', 3,0);		
+		$this->fields_list->add($this->ddbb_active, $this->active, 'tinyint', 3,0);	
+		$this->fields_list->add($this->ddbb_public, $this->publico, 'tinyint', 3,0);
+		$this->fields_list->add($this->ddbb_parent, $this->parent, 'tinyint', 3,0);	
 		//print_r($this);
 		//se puede acceder a los usuarios por numero de campo o por nombre de campo
 		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
@@ -114,6 +118,7 @@ class modules{
 			$this->modules_list[$this->num][$this->ddbb_path]=$this->result->fields[$this->ddbb_path];
 			$this->modules_list[$this->num][$this->ddbb_active]=$this->result->fields[$this->ddbb_active];
 			$this->modules_list[$this->num][$this->ddbb_public]=$this->result->fields[$this->ddbb_public];
+			$this->modules_list[$this->num][$this->ddbb_parent]=$this->result->fields[$this->ddbb_parent];
 			//nos movemos hasta el siguiente registro de resultado de la consulta
 			$this->result->MoveNext();
 			$this->num++;

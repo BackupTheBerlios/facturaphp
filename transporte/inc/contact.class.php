@@ -9,7 +9,7 @@ class contact{
 
 
   	//constructor
-	function contac()
+	function contact()
 	{
 	}
 	

@@ -605,11 +605,22 @@ class users{
 		$this->get_list_users();
 		$tabla_listado = new table(true);
 		
-		$per = new permissions();
-		$per->get_permissions_list('users');
+		if($_SESSION['user']='admin')
+			{
+				$acciones = array('view', 'modify', 'delete');
+				$add = true;
+			}
+			else
+			{
+				$per = new permissions();
+				$per->get_permissions_list('users');
+				
+				$acciones = $per->permissions_module;
+				$add = $per->add;
+			}
 	
 		
-		$cadena=''.$tabla_listado->make_tables('users',$this->users_list,array('Login',20,'Nombre',20,'Primer Apellido',20,'Segundo Apellido',20),array($this->ddbb_id_user,$this->ddbb_login,$this->ddbb_name,$this->ddbb_last_name,$this->ddbb_last_name2),10,$per->permissions_module,$per->add);
+		$cadena=''.$tabla_listado->make_tables('users',$this->users_list,array('Login',20,'Nombre',20,'Primer Apellido',20,'Segundo Apellido',20),array($this->ddbb_id_user,$this->ddbb_login,$this->ddbb_name,$this->ddbb_last_name,$this->ddbb_last_name2),10,$acciones,$add);
 		$variables=$tabla_listado->nombres_variables;		
 		$tpl->assign('variables',$variables);
 		$tpl->assign('cadena',$cadena);		
@@ -826,6 +837,7 @@ class users{
 			$this->per_modules[$modulo_num]->module_name = $this->modules->modules_list[$modulo_num]['name'];
 			$this->per_modules[$modulo_num]->web_name = $this->modules->modules_list[$modulo_num]['name_web'];
 			$this->per_modules[$modulo_num]->publico = $this->modules->modules_list[$modulo_num]['public'];
+			$this->per_modules[$modulo_num]->parent = $this->modules->modules_list[$modulo_num]['parent'];
 			$this->per_modules[$modulo_num]->validate_per_module($id_user);
 		
 		}

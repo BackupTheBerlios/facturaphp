@@ -247,10 +247,21 @@ class corps{
 			$variables_modulos=$tabla_listado->nombres_variables;
 		}
 		else{
-			$per = new permissions();
-			$per->get_permissions_list('corps');
+			if($_SESSION['user']='admin')
+			{
+				$acciones = array('view', 'modify', 'delete');
+				$add = true;
+			}
+			else
+			{
+				$per = new permissions();
+				$per->get_permissions_list('corps');
+				
+				$acciones = $per->permissions_module;
+				$add = $per->add;
+			}
 		
-			$cadena=''.$tabla_listado->make_tables('corps',$this->corps_list,array('Nombre',20,'Nombre completo',20,'CIF|NIF',20,'Telefono',20),array($this->ddbb_id_corp,$this->ddbb_name,$this->ddbb_full_name,$this->ddbb_cif_nif,$this->ddbb_phone),20,$per->permissions_module,$per->add);
+			$cadena=''.$tabla_listado->make_tables('corps',$this->corps_list,array('Nombre',20,'Nombre completo',20,'CIF|NIF',20,'Telefono',20),array($this->ddbb_id_corp,$this->ddbb_name,$this->ddbb_full_name,$this->ddbb_cif_nif,$this->ddbb_phone),20,$acciones,$add);
 			$variables=$tabla_listado->nombres_variables;		
 		}		
 		$tpl->assign('variables',$variables);
@@ -453,21 +464,44 @@ class corps{
 			$this->read($id);
 			$tpl->assign('objeto',$this);
 			
-			/*
-			//listado de modulos
-			$tabla_modulos = new table(false);
+			
+			//listado de empleados
+			$tabla_empleados = new table(false);
+			
+			$empleados = new emps();
 
-			if ($this->get_modules($id)==0){
+			if ($empleados->get_list_emps($_SESSION['ident_corp'])==0)
+			{
 
-				$cadena=$cadena.$tabla_modulos->tabla_vacia('modules');
-				$variables_modulos=$tabla_modulos->nombres_variables;
+				$cadena=$cadena.$tabla_empleados->tabla_vacia('emps');
+				$variables_empleados=$tabla_empleados->nombres_variables;
+			}
+			else
+			{	
+				if($_SESSION['user']='admin')
+				{
+					$acciones = array('view', 'modify', 'delete');
+					$add = true;
+				}
+				else
+				{
+					$per = new permissions();
+					$per->get_permissions_list('emps');
+					
+					$acciones = $per->permissions_module;
+					$add = $per->add;
+				}
+							
+				$cadena=''.$tabla_empleados->make_tables('emps',$empleados->emps_list,array('Nombre',20,'Primer Apellido',20,'Segundo Apellido',20),array('id_emp', 'name','last_name','last_name2'),10,$acciones,$add);
+		
+				$variables_empleados=$tabla_empleados->nombres_variables;
 			}
 			
 			
 			
 			//$tpl->assign('list_modules', $this->list_modules_availables($id))
 			//listado de permisos por modulos
-			$tabla_grupos = new table(false);
+			/*$tabla_grupos = new table(false);
 			//listado de grupos
 			if ($this->get_groups($id)==0){
 				$cadena=$cadena.$tabla_grupos->tabla_vacia('group_users');
@@ -476,22 +510,23 @@ class corps{
 			else{					
 				$cadena=$cadena.$tabla_grupos->make_tables('group_users',$this->groups_list,array('Nombre de grupo',75),array('id_group','name_web'),10,array('delete'),true);
 				$variables_grupos=$tabla_grupos->nombres_variables;
-			}
+			}*/
 			$i=0;
-			while($i<(count($variables_grupos)+count($variables_modulos))){
-				for($j=0;$j<count($variables_grupos);$j++){
-					$variables[$i]=$variables_grupos[$j];
+			while($i<(count($variables_empleados)/*+count($variables_modulos)*/)){
+				for($j=0;$j<count($variables_empleados);$j++)
+				{
+					$variables[$i]=$variables_empleados[$j];
 					$i++;
 				}
-				for($k=0;$k<count($variables_modulos);$k++){
+				/*for($k=0;$k<count($variables_modulos);$k++){
 					$variables[$i]=$variables_modulos[$k];
 					$i++;
-				}
+				}*/
 			}
 			
 			$tpl->assign('variables',$variables);
 			$tpl->assign('cadena',$cadena);
-			*/
+			
 			//			
 			return $tpl;
 				

@@ -505,11 +505,22 @@ class groups{
 	function listar($tpl){
 		$this->get_list_groups();
 		
-		$per = new permissions();
-		$per->get_permissions_list('groups');
+		if($_SESSION['user']='admin')
+		{
+			$acciones = array('view', 'modify', 'delete');
+			$add = true;
+		}
+		else
+		{
+			$per = new permissions();
+			$per->get_permissions_list('groups');
+			
+			$acciones = $per->permissions_module;
+			$add = $per->add;
+		}
 		
 		$tabla_listado = new table(true);
-		$cadena=''.$tabla_listado->make_tables('groups',$this->groups_list,array('Nombre',40,'Nombre Web',40),array($this->ddbb_id_group,$this->ddbb_name,$this->ddbb_name_web),10,$per->permissions_module,$per->add);
+		$cadena=''.$tabla_listado->make_tables('groups',$this->groups_list,array('Nombre',40,'Nombre Web',40),array($this->ddbb_id_group,$this->ddbb_name,$this->ddbb_name_web),10,$acciones,$add);
 		$variables=$tabla_listado->nombres_variables;		
 		$tpl->assign('variables',$variables);
 		$tpl->assign('cadena',$cadena);		

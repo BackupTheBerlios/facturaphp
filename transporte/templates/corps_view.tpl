@@ -121,14 +121,12 @@
 					  	<td align="center" colspan="4"><img src="pics/barra.gif" height="15"></td>
 				</tr>
 					  </table>
-
-					
-					 
+					  	 
 					  <div name="divMostrar" id="divMostrar" >
 						
 					</div>					
 					 <script>	
-					  	document.getElementById("divMostrar").innerHTML = contactos;
+					  	document.getElementById("divMostrar").innerHTML = emps_1;
 					  </script>
 					  <br>
 					  <table align="center" width="400" cellpadding="0" cellspacing="0">
