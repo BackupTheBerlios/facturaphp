@@ -13,7 +13,7 @@
 	define('USER','root');
 	define('PASS','sta3war2');
 	define('BD_NAME','facturaphp');
-	define('IP_MYSQL','db.berlios.de');
+	define('IP_MYSQL','127.0.0.1');
 	define('BD_PREFIX','');
 	define('BBDD_TYPE','mysql');
 	
