@@ -126,11 +126,11 @@ function vwVarFromInput()
     foreach (func_get_args() as $var)
 		{
         	// Get var
-        	global $$var;
+        	global $var;
         	if (empty($var))
 				{
             		return;}
-        	$ourvar = $$var;
+        	$ourvar = $var;
         	if (!isset($ourvar))
 				{
             	array_push($resarray, NULL);

@@ -16,18 +16,18 @@
 	 ** The following are the smarty configuration variables **
 	 **********************************************************/
 
-	$base_dir="C:\\Archivos de programa\\EasyPHP1-7\\www\\pegnaranda"; //Directorio base del proyecto
-	$template_dir="$base_dir\\templates\\";
-	$compile_dir="$base_dir\\templates_c\\";
-	$config_dir="$base_dir\\smarty\\configs\\";
-	$plugins_dir="$base_dir\\smarty/plugins\\";
-	$smarty_dir="$base_dir\\smarty\\";
+	$base_dir="/var/www/pegnaranda"; //Directorio base del proyecto
+	$template_dir="$base_dir/templates/";
+	$compile_dir="$base_dir/templates_c/";
+	$config_dir="$base_dir/smarty/configs/";
+	$plugins_dir="$base_dir/smarty/plugins/";
+	$smarty_dir="$base_dir/smarty/";
 
 	/**********************************************************
 	 ** The following are the resource paths                 **
 	 **********************************************************/
 
-	 $rsc_dir="C:\\Archivos de programa\\EasyPHP1-7\\www\\pegnaranda\\"; // fuera del path de apache, pero con derechos de lectura/escritura
-	 $prev_dir=$base_dir."\\previos\\"; // vistas previas.... solo imagenes y pdf
+	 $rsc_dir="/var/www/pegnaranda/"; // fuera del path de apache, pero con derechos de lectura/escritura
+	 $prev_dir=$base_dir."/previos/"; // vistas previas.... solo imagenes y pdf
 
 ?>

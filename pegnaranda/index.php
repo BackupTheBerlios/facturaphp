@@ -8,7 +8,7 @@
 	require_once("render.inc.php");
 	Init();
 	limpiar();
-
+	
 	$uid=vwSessionGetVar("uid"); // Obtenemos el uid del usuario
  	if (is_null($uid)) //Si es nulo, lo pasamos por usuario anonimo
 		{
@@ -26,7 +26,7 @@
 			}
 
 	if (!isset($actor)|| (isset($actor)&& $actor=="")) // Si no se especifica actor alguno, se va a la pantalla de inicio
-		{
+		{			
 			$actor="static";
 			$accion="mostrar";
 			$sujeto="inicio";
@@ -34,7 +34,7 @@
 
 	switch ($actor)
 		{
-			case "static":
+			case "static":				
 				if (trim($accion)=="mostrar")
 					{
 						switch ($sujeto)
@@ -55,7 +55,7 @@
 					{
 						$param['ruta']="error";
 						$param['mensaje']="Accion no soportada";
-						}
+						}					
 				render($param);
 				die();
 				break;
@@ -502,5 +502,5 @@
 						}
 				break;
 			}
-
+	
 ?>
