@@ -134,7 +134,7 @@ var clock_set = 0;
  */
 function openCalendar(params, form, field, type) {
     window.open("inc/calendar.php?" + params, "calendar", "width=400,height=200,status=yes");
-    dateField = eval("document." + form + "." + field);
+    dateField = eval("document." + form + "." + field);	
     dateType = type;
 }
 
@@ -247,7 +247,8 @@ function initCalendar() {
     str = ""
 
     //heading table
-    str += '<table class="calendar"><tr><th width="50%">';
+	//str += '<table class="calendar2"><tr><th width="100%">&nbsp;</th></tr></table>';
+    str += '<table class="calendar2"><tr><th width="50%">';
     str += '<a href="#" onclick="month--; initCalendar();">&laquo;</a> ';
     str += month_names[month];
     str += ' <a href="#" onclick="month++; initCalendar();">&raquo;</a>';
@@ -299,6 +300,7 @@ function initCalendar() {
     }
 
     str += "</tr></table>";
+	str += '<table class="calendar2"><tr><th width="100%">&nbsp;</th></tr></table>';
 
     cnt.innerHTML = str;
 

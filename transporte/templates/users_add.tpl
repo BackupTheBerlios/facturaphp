@@ -98,7 +98,7 @@
 			</table>
 		</td>
 		</tr>	
-				</table>
+		</table>
 		</td>
 		</tr>	
 		
@@ -163,6 +163,6 @@
 			<input type="reset" Value="Limpiar Datos" class="botones">
 			</td>
 		</tr>
-	  	</table> 
+	  	</table>
 	</form>
 </td>

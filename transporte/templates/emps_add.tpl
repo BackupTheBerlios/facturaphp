@@ -1,4 +1,4 @@
-<td valign="top"><form>
+<td valign="top"><form method="post" action="index.php?module=emps&method=add" name="form_central">
 <script src="inc/tbl_change.js" type="text/javascript" language="javascript"></script>
 	 <table align="center" width="100%">
 	<tr>
@@ -14,6 +14,7 @@
 			  </table>
 						<br>
 	<table align="center" width="90%"><tr><td width ="40%"valign="top">
+		<tr><td>
 		<input type="hidden" name="id_emps">
 		<input type="hidden" name="id_corp">
 		<input type="hidden" name="id_user">
@@ -37,11 +38,11 @@
 				  </tr>
 				  <tr>
 						<td width="125" class="CampoFormulario" nowrap>Fecha de nacimiento:</td>
-						<td > <!--<input type="text" id="last_name" name="birthday" class="textoMenu">-->						
-				 <input class="textoMenu" type="text" name="fields[multi_edit][0][up]" value="0000-00-00" size="20" maxlength="99" class="textfield" onchange="return unNullify('up', '0')" id="birthday"/>
+						<td > <!--<input type="text" id="birthday"  name="fields[multi_edit][0][up]" class="textoMenu">-->						
+				 <input class="textoMenu" type="text" name="birthday" value="0000-00-00" size="15" maxlength="99" class="textfield" onchange="return unNullify('up', '0')" id="birthday"/>
                                     <script type="text/javascript">
                     <!--
-                    document.write('<a title="Calendario" href="javascript:openCalendar(\'lang=es-utf-8&amp;server=1\', \'insertForm\', \'birthday\', \'date\')"><img class="calendar" src="pics/calendar.png" alt="Calendario"/></a>');
+                    document.write('<a title="Calendario" href="javascript:openCalendar(\'lang=es-utf-8&amp;server=1\', \'form_central\', \'birthday\', \'date\')"><img class="calendar" valign="center" src="pics/calendar.png" alt="Calendario"/></a>');
                     //-->
                     </script>
 		    
@@ -68,7 +69,13 @@
 						<td width="125" class="CampoFormulario">Pa&iacute;s:</td>
 						<td > <input type="text" id="last_name" name="country" class="textoMenu"></td>
 				 </tr>
-				  <tr>
+				 
+				</table>
+			
+			</td>
+			<td width ="60%"valign="top">
+			<table width="250px" align="center">
+			 <tr>
 						<td width="125" class="CampoFormulario">Tel&eacute;fono:</td>
 						<td > <input type="text" id="last_name" name="phone" class="textoMenu"></td>
 				 </tr>
@@ -92,38 +99,43 @@
 						  <option>Nuevo...</option>
 						</select></td>
 				 </tr>
-				</table>
+			</table>
 			
 			</td>
-			<td width="60%" valign="top"><table width="250px" align="center">
-
-					<table width="250px" align="center">
+</tr>	
+		<tr>
+		<td colspan="2">
+		
+		
+		
+		
+		<table width="250px" align="center">
 
 					<tr>
 					  <td colspan="2" class="cabeceraCampoFormulario">Datos de Login:</td>
 				  </tr>
 					<tr>
 						<td width="125px" align="right" class="CampoFormulario" nowrap>Login:</td>
-						<td > <input type="text" id="{$usuarios->ddbb_login}" name="{$usuarios->ddbb_login}" class="textoMenu"></td>
+						<td > <input type="text" id="{$objeto->ddbb_login}" name="{$objeto->ddbb_login}" class="textoMenu"></td>
 					</tr>
 					<tr>
 						<td width="125px" class="CampoFormulario">Password:</td>
-						<td > <input type="password" id="{$usuarios->ddbb_passwd}" name="{$usuarios->ddbb_passwd}" class="textoMenu"></td>
+						<td > <input type="password" id="{$objeto->ddbb_passwd}" name="{$objeto->ddbb_passwd}" class="textoMenu"></td>
 				  </tr>
 				  <tr>
 					  <td colspan="2" class="cabeceraCampoFormulario">Datos del Usuario:</td>
 				  </tr>
 				  <tr>
 						<td width="125px" align="right" class="CampoFormulario">Nombre:</td>
-						<td> <input type="text" id="{$usuarios->ddbb_name}" name="{$usuarios->ddbb_name}" class="textoMenu"></td>
+						<td> <input type="text" id="{$objeto->ddbb_name}" name="{$objeto->ddbb_name}" class="textoMenu"></td>
 					</tr>
 					<tr>
 						<td width="125px" class="CampoFormulario" >Primer Apellido:</td>
-						<td > <input type="text" id="{$usuarios->ddbb_last_name}" name="{$usuarios->ddbb_last_name}" class="textoMenu"></td>
+						<td > <input type="text" id="{$objeto->ddbb_last_name}" name="{$objeto->ddbb_last_name}" class="textoMenu"></td>
 				  </tr>
 				  <tr>
 						<td width="125px" class="CampoFormulario">Segundo Apellido:</td>
-						<td > <input type="text" id="{$usuarios->ddbb_last_name2}" name="{$usuarios->ddbb_last_name2}" class="textoMenu"></td>
+						<td > <input type="text" id="{$objeto->ddbb_last_name2}" name="{$objeto->ddbb_last_name2}" class="textoMenu"></td>
 				  </tr>
 				   <tr>
 					  <td colspan="2" class="cabeceraCampoFormulario">Permisos: </td>
@@ -136,116 +148,121 @@
 				  </tr>
 
 				 <tr>
-				<td valign="top" colspan="2">
-				<br>
-				<table width="100%" align="center" border="0">
-				 <tr>
-						  <td colspan="2" class="cabeceraCampoFormulario">Grupos: </td>
-				</tr>
-				<tr class="cabeceraMultiLinea">
-					<td width="100%" colspan="2">Grupos</td>				
-				</tr>
-				
-				{php}
-					$linea = 0;
-				{/php}
-				{section name="indice" loop=$grupos}
-					{php}
-					if ($linea==0){
-						$clase="multiLinea1";
-						$linea=1;
-					}				
-					else{
-						$clase="multiLinea2";	
-						$linea=0;
-					}				
-					print('<tr class="'.$clase.'">');
-					{/php}
-					<td>
-					<input type="checkbox" value="1" name="grupo_{$grupos[indice]->id_group}" {if $grupos[indice]->belong==true}checked{/if}>{$grupos[indice]->name_web}
-					{php}$this->_sections['indice']['index']+=1;
-						$this->_sections['indice']['iteration']+=1;{/php}
-					
-					</td>
-					{if !$smarty.section.indice.last}
-					<td>
-					<input type="checkbox" value="1" name="grupo_{$grupos[indice]->id_group}" {if $grupos[indice]->belong==true}checked{/if}>{$grupos[indice]->name_web}
-					</td>
-					{else}
-					<td>
-					&nbsp;
-					</td>
-					{/if}
-					</tr>
-				{/section}
-				<tr class="cabeceraMultilinea"><td colspan="2">&nbsp</td></tr>
-				</table>
-			</td>
-				</tr>	
-					</table>
-			</td>
-			</tr>	
-			
-			<tr>
-	
-				<td valign="top">
-				<br>
-				<br>    
-				
-				<table width="90%" align="center" border="0">
-				 <tr>
-						  <td colspan="2" class="cabeceraCampoFormulario">Permisos por modulos-metodos: </td>
-				</tr>
-				<tr class="cabeceraMultiLinea">
-					<td width="30%">Nombre de Modulo</td>
-					<td Colspan="4" width="70%">Metodos</td>
-				</tr>
-				
-				{php}
-					$linea = 0;
-				{/php}
-				{section name="indice" loop=$modulos->per_modules}
-					{php}
-					if ($linea==0){
-						$clase="multiLinea1";
-						$linea=1;
-					}				
-					else{
-						$clase="multiLinea2";	
-						$linea=0;
-					}				
-					print('<tr class="'.$clase.'">');
-				{/php}
-	
-					{if $modulos->per_modules[indice]->per==1}
-						<td nowrap><input type="checkbox" name="modulo_{$modulos->per_modules[indice]->id_module}" value="1" onClick="selectRow()" checked> {$modulos->per_modules[indice]->module_name}</td> 
-					{else}
-						<td nowrap><input type="checkbox" name="modulo_{$modulos->per_modules[indice]->id_module}" value="1" onClick="selectRow()"> {$modulos->per_modules[indice]->module_name}</td> 				
-					{/if}
-					<td nowrap>						
-						<table width="100%"><tr class="{php}print($clase);{/php}">				
-						 {section name="j" loop=$modulos->per_modules[indice]->per_methods}
-							{if $modulos->per_modules[indice]->per_methods[j]->per==1}
-								<td width="20%"><input type="checkbox" name="modulo_{$modulos->per_modules[indice]->id_module}_metodo_{$modulos->per_modules[indice]->per_methods[j]->id_method}" value="1" checked>{$modulos->per_modules[indice]->per_methods[j]->method_name_web}</td>
-							{else}
-								<td width="20%"><input type="checkbox" name="modulo_{$modulos->per_modules[indice]->id_module}_metodo_{$modulos->per_modules[indice]->per_methods[j]->id_method}" value="1">{$modulos->per_modules[indice]->per_methods[j]->method_name_web}</td>
-							{/if}
-						{/section}   
-						</tr></table>
-					</td>				
-					</tr>				
-				{/section}
-				<tr  class="cabeceraMultiLinea"><td colspan="2">&nbsp;</td></tr>
-				</table>												
-			</td>
+		<td valign="top" colspan="2">
+			<br>
+			<table width="100%" align="center" border="0">
+			 <tr>
+					  <td colspan="2" class="cabeceraCampoFormulario">Grupos: </td>
 			</tr>
+			<tr class="cabeceraMultiLinea">
+				<td width="100%" colspan="2">Grupos</td>				
+			</tr>
+			
+			{php}
+				$linea = 0;
+			{/php}
+			{section name="indice" loop=$grupos}
+				{php}
+				if ($linea==0){
+					$clase="multiLinea1";
+					$linea=1;
+				}				
+				else{
+					$clase="multiLinea2";	
+					$linea=0;
+				}				
+				print('<tr class="'.$clase.'">');
+				{/php}
+				<td>
+				<input type="checkbox" value="1" name="grupo_{$grupos[indice]->id_group}" {if $grupos[indice]->belong==true}checked{/if}>{$grupos[indice]->name_web}
+				{php}$this->_sections['indice']['index']+=1;
+					$this->_sections['indice']['iteration']+=1;{/php}
+				
+				</td>
+				{if !$smarty.section.indice.last}
+				<td>
+				<input type="checkbox" value="1" name="grupo_{$grupos[indice]->id_group}" {if $grupos[indice]->belong==true}checked{/if}>{$grupos[indice]->name_web}
+				</td>
+				{else}
+				<td>
+				&nbsp;
+				</td>
+				{/if}
+				</tr>
+			{/section}
+			<tr class="cabeceraMultilinea"><td colspan="2">&nbsp</td></tr>
 			</table>
 		</td>
-		</tr>				
+		</tr>	
+		</table>
+			<br>
+			<br>    
+			
+			<table width="90%" align="center" border="0">
+			 <tr>
+					  <td colspan="2" class="cabeceraCampoFormulario">Permisos por modulos-metodos: </td>
+			</tr>
+			<tr class="cabeceraMultiLinea">
+				<td width="30%">Nombre de Modulo</td>
+				<td Colspan="4" width="70%">Metodos</td>
+			</tr>
+			
+			{php}
+				$linea = 0;
+			{/php}
+			{section name="indice" loop=$modulos->per_modules}
+				{php}
+				if ($linea==0){
+					$clase="multiLinea1";
+					$linea=1;
+				}				
+				else{
+					$clase="multiLinea2";	
+					$linea=0;
+				}				
+				print('<tr class="'.$clase.'">');
+				{/php}
+
+				{if $modulos->per_modules[indice]->per==1}
+					<td nowrap><input type="checkbox" name="modulo_{$modulos->per_modules[indice]->id_module}" value="1" onClick="selectRow()" checked> {$modulos->per_modules[indice]->module_name}</td> 
+				{else}
+					<td nowrap><input type="checkbox" name="modulo_{$modulos->per_modules[indice]->id_module}" value="1" onClick="selectRow()"> {$modulos->per_modules[indice]->module_name}</td> 				
+				{/if}
+				<td nowrap>						
+					<table width="100%"><tr class="{php}print($clase);{/php}">				
+					 {section name="j" loop=$modulos->per_modules[indice]->per_methods}
+						{if $modulos->per_modules[indice]->per_methods[j]->per==1}
+							<td width="20%"><input type="checkbox" name="modulo_{$modulos->per_modules[indice]->id_module}_metodo_{$modulos->per_modules[indice]->per_methods[j]->id_method}" value="1" checked>{$modulos->per_modules[indice]->per_methods[j]->method_name_web}</td>
+						{else}
+							<td width="20%"><input type="checkbox" name="modulo_{$modulos->per_modules[indice]->id_module}_metodo_{$modulos->per_modules[indice]->per_methods[j]->id_method}" value="1">{$modulos->per_modules[indice]->per_methods[j]->method_name_web}</td>
+						{/if}
+					{/section}   
+					</tr></table>
+				</td>				
+				</tr>				
+			{/section}
+			<tr  class="cabeceraMultiLinea"><td colspan="2">&nbsp;</td></tr>
+			</table>
+		
+		</td>
+		</tr>	
+		
+		
+
+		
+		
+
+
+
+
+
+
+		</td>
+		</tr>
 		<tr>
-			<td align="center"><br><br><input type="submit" name="enviar" value="A&ntilde;adir/Modificar" class="botones">
+			<td align="center" colspan="2"><br><br><input type="submit" name="enviar" value="A&ntilde;adir/Modificar" class="botones">
 			<input type="reset" Value="Borrar Datos" class="botones">
 			</td>
 		</tr>
-	  	</table> 
+	  	</table> </td></tr></table>
 		</form></td>
