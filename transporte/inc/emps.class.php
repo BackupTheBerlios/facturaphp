@@ -968,7 +968,7 @@ class emps{
 				case 'list':
 							$tpl=$this->listar($tpl);
 							break;
-				case 'modify':print "MODIFY ";
+				case 'modify':
 							$this->read($_GET['id']);
 							if ($this->modify() !=0){
 								$this->method="list";

@@ -963,7 +963,7 @@ class users{
 	function calculate_tpl($method, $tpl){
 		$this->method=$method;
 				switch($method){
-						case 'add':	print " ADD";								
+						case 'add':									
 									if ($this->add() !=0){
 										$this->method="list";
 										$tpl=$this->listar($tpl);										
