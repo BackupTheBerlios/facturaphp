@@ -54,7 +54,7 @@
 					while($i!=$user->num_modules)
 					{
 				
-						if(($user->per_modules[$i]->per == 1)&&($user->per_modules[$i]->publico==0)&&($user->per_modules[$i]->module_name!='error'))
+						if(($user->per_modules[$i]->per == 1)&&($user->per_modules[$i]->publico==0)&&($user->per_modules[$i]->module_name!='error')&&($user->per_modules[$i]->module_name!='holydays'))
 						{
 						{/php}
 					
@@ -84,7 +84,7 @@
 					while($i!=$modules->num)
 					{
 				
-						if(($modules->modules_list[$i]['name'] != "error")&&($modules->modules_list[$i]['public']==0))
+						if(($modules->modules_list[$i]['name'] != "error")&&($modules->modules_list[$i]['name'] != "holydays")&&($modules->modules_list[$i]['public']==0))
 						{
 						{/php}
 					

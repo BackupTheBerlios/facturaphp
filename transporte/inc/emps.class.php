@@ -356,7 +356,7 @@ class emps{
 				//realiza una conexin permanente con la bbdd
 				$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
 				//mete la consulta para coger los campos de la bbdd
-				$this->sql="SELECT * FROM ".$this->table_prefix.$this->table_name. " WHERE ".$this->ddbb_id_user." = \"".$this->id_user."\"" ;
+				$this->sql="SELECT * FROM ".$this->table_prefix.$this->table_name. " WHERE ".$this->ddbb_id_emp." = \"".$this->id_emp."\"" ;
 				//la ejecuta y guarda los resultados
 				$this->result = $this->db->Execute($this->sql);
 				//si falla 
@@ -367,6 +367,7 @@ class emps{
 				}
 				//rellenamos el array con los datos de los atributos de la clase
 				$record = array();
+				$record[$this->ddbb_id_emp]=$this->id_emp;
 				$record[$this->ddbb_name]=$this->name;
 				$record[$this->ddbb_last_name]=$this->last_name;
 				$record[$this->ddbb_last_name2]=$this->last_name2;
@@ -388,14 +389,15 @@ class emps{
 				$record[$this->ddbb_id_user]=$this->id_user;	
 				//calculamos la sql de insercin respecto a los atributos
 				$this->sql = $this->db->GetUpdateSQL($this->result, $record);
-				//insertamos el registro				
+				//insertamos el registro
+			
 				$this->db->Execute($this->sql);
 				//si se ha insertado una fila
 				
 				$return_category=$this->modify_category($this->id_emp);
 				$return_holyday=$this->modify_holyday($this->id_emp);
 				
-				
+			
 				if(($this->db->Affected_Rows()==1)||($user_changed!=0)||($this->sql=="")||($return_category!=0)||($return_holyday!=0)){
 					//capturammos el id de la linea insertada
 					$this->db->close();
@@ -917,6 +919,15 @@ class emps{
 			// Leemos el empleado y se lo pasamos a la plantilla
 			$this->read($id);
 			$tpl->assign('objeto',$this);
+
+			if(($this->id_user==0)||($this->id_user=='')){
+				$tpl->assign("user_emp","Sin Usuario");
+			}
+			else{
+				$usuario = new users();
+				$usuario->read($this->id_user);
+				$tpl->assign("user_emp",$usuario->login);
+			}
 			
 			//	
 			
@@ -975,18 +986,26 @@ class emps{
 				//listado de holydays
 				if ($this->get_holydays($this->id_emp)==0)
 				{
-					$cadena=$cadena.$tabla_vacaciones->tabla_vacia('holydays',false);
+									$per = new permissions();
+					$num = $per->get_permissions_list('holydays');
+					$cadena=$cadena.$tabla_vacaciones->tabla_vacia('holydays',$per->add);
 					$variables_vacaciones=$tabla_vacaciones->nombres_variables;
 				}
 				else
 				{
-					$per = new permissions();
+				$per = new permissions();
 					$num = $per->get_permissions_list('holydays');
 					
-					$permisos = $per->permissions_module;
-
+					$permisos  ;	
+					$j=0;
+					for ($i=0;$i<count($per->permissions_module);$i++){
+						if(($per->permissions_module[$i]=="modify")||($per->permissions_module[$i]=="delete")){
+							$permisos[$j]=$per->permissions_module[$i];
+							$j++;
+						} 
+					}
 								
-					$cadena=$cadena.$tabla_vacaciones->make_tables('holydays',$this->holydays_list,array('Fecha de baja',25,'Fecha de alta',25,'Motivo',25),array('id_holy','gone','come','ill'),10,$per->permissions_module,$per->add);
+					$cadena=$cadena.$tabla_vacaciones->make_tables('holydays',$this->holydays_list,array('Fecha de baja',25,'Fecha de alta',25,'Motivo',25),array('id_holy','gone','come','ill'),10,$permisos,$per->add);
 					$variables_vacaciones=$tabla_vacaciones->nombres_variables;
 				}
 			}

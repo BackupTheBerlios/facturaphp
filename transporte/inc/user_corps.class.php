@@ -43,13 +43,14 @@ var $emp;
 								$this->emp = new emps();
 								$num_corps = $this->emp->get_user_corps($id_user);
 								$tpl=$this->listar($tpl);
-	
-							/*	if($_SESSION['super'] || $_SESSION['admin'])
+	//Empieza comentado
+								if($_SESSION['super'] || $_SESSION['admin'])
 								{
 									$tpl->assign('plantilla','user_corps_'.$method.'.tpl');	
 								}
 								else
-								{*/
+								{
+								//Fin comentado
 									if($num_corps == 1)
 									{
 										$_SESSION['ident_corp'] = $this->emp->corps_list[0]['id_corp'];
@@ -60,7 +61,9 @@ var $emp;
 									}
 									else
 										$tpl->assign('plantilla','user_corps_'.$method.'.tpl');	
-							//	}
+							//Empieza comentado			
+								}
+								//Fin cometnado
 								break;
 		}
 			
@@ -72,7 +75,8 @@ var $emp;
 	function listar($tpl)
 	{
 		$tabla_listado = new table(true);
-	/*	if($_SESSION['super'] || $_SESSION['admin'])
+		//Empieza comentado
+		if($_SESSION['super'] || $_SESSION['admin'])
 		{
 			$my_corp = new corps();
 			$cadena=''.$tabla_listado->make_tables('user_corps',$my_corp->corps_list,array('Nombre',50),array('id_corp','name'),10,array('select'),false);
@@ -81,7 +85,9 @@ var $emp;
 			$tpl->assign('cadena',$cadena);		
 			return $tpl;
 			
-		}*/
+		}
+		
+		//Fin comentado
 		$cadena=''.$tabla_listado->make_tables('user_corps',$this->emp->corps_list,array('Nombre',50),array('id_corp','name'),10,array('select'),false);
 		$variables=$tabla_listado->nombres_variables;		
 		$tpl->assign('variables',$variables);

@@ -62,7 +62,7 @@
 						while($i!=$modules->num)
 						{
 					
-							if(($modules->modules_list[$i]['public']==0)&&($modules->modules_list[$i]['name'] != "error")&&($modules->modules_list[$i]['name'] != "emps"))
+							if(($modules->modules_list[$i]['public']==0)&&($modules->modules_list[$i]['name'] != "error")&&($modules->modules_list[$i]['name'] != "holydays")&&($modules->modules_list[$i]['name'] != "emps"))
 							{
 							{/php}
 						

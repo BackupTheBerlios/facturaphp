@@ -21,14 +21,7 @@
 					</tr>
 					<tr>
 						<td colspan="2">
-							<table width="90%" align="center">
-                              <tr height="15px">
-                                <td width="25%"  nowrap class="camposVistas">Login:</td>
-                                <td nowrap width="25%" class="datosVista">{$objeto->login}</td>
-								<td height="21" nowrap class="camposVistas">Contrase&ntilde;a:</td>
-                                <td nowrap class="datosVista"> {$objeto->passwd}</td>
-                                
-                              </tr>
+							<table width="90%" align="center">                             
                               
                               <tr height="15px">
                                 <td width="25%" nowrap class="camposVistas">Nombre:</td>
@@ -37,9 +30,41 @@
                                  <td width="25%" class="datosVista">{$objeto->last_name}</td>
                                 
                               </tr>
-                              <tr height="15px">                               
+                              <tr height="15px">
                                <td height="21" nowrap class="camposVistas">Segundo Apellido: </td>
                                 <td nowrap class="datosVista">{$objeto->last_name2}</td>
+								 <td width="25%"  nowrap class="camposVistas">Direcci&oacute;n: </td>
+                                 <td width="25%" class="datosVista">{$objeto->address}</td>
+                                
+                              </tr>
+                              <tr height="15px">
+                               <td height="21" nowrap class="camposVistas">Ciudad: </td>
+                                <td nowrap class="datosVista">{$objeto->city}</td>
+								 <td width="25%"  nowrap class="camposVistas">Provincia: </td>
+                                 <td width="25%" class="datosVista">{$objeto->state}</td>
+                                
+                              </tr>
+                              <tr height="15px">
+                               <td height="21" nowrap class="camposVistas">Pa&iacute;s: </td>
+                                <td nowrap class="datosVista">{$objeto->country}</td>
+								 <td width="25%"  nowrap class="camposVistas">C&oacute;digo Postal: </td>
+                                 <td width="25%" class="datosVista">{$objeto->postal_code}</td>                                
+                              </tr>
+                              <tr height="15px">
+                               <td height="21" nowrap class="camposVistas">Tel&eacute;fono: </td>
+                                <td nowrap class="datosVista">{$objeto->phone}</td>
+								 <td width="25%"  nowrap class="camposVistas">Tel&eacute;fono M&oacute;vil: </td>
+                                 <td width="25%" class="datosVista">{$objeto->mobile_phone}</td>                                
+                              </tr>
+                              <tr height="15px">
+                               <td height="21" nowrap class="camposVistas">Fecha nacimiento: </td>
+                                <td nowrap class="datosVista">{$objeto->birthday}</td>
+								 <td width="25%"  nowrap class="camposVistas">E-mail: </td>
+                                 <td width="25%" class="datosVista">{$objeto->mail}</td>                                
+                              </tr>
+                              <tr height="15px">                               
+                               <td height="21" nowrap class="camposVistas">Usuario: </td>
+                                <td nowrap class="datosVista">{$user_emp}</td>
 								<td><table align="center"><tr>
 				{section name="indice" loop=$acciones}
 				

@@ -256,7 +256,12 @@ class holydays{
 	}
 	
 	function remove($id){
-	
+	if (!isset($_POST["submit_delete"])){
+				
+									
+				return 0;
+			}
+			else{
 		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
 		//crea una nueva conexi—n con una bbdd (mysql)
 		$this->db = NewADOConnection($this->db_type);
@@ -281,7 +286,7 @@ class holydays{
 			return 1;
 			
 		}
-		
+			}
 	}
 	
 	function modify(){
@@ -417,14 +422,14 @@ class holydays{
 									break;
 						case 'delete':
 									$this->read($_GET['id']);
-									if ($this->remove($_GET['id'])==0){
-										$tpl->assign("message",$this->empleados);
-									}
-									else{
-										$this->users_list="";
-										$this->method="list";
-										$tpl=$this->listar($tpl);
-										$tpl->assign("message","&nbsp;<br>Usuario borrado correctamente<br>&nbsp;");
+									if ($this->remove($_GET['id'])!=0){
+										$this->method="emps_view";																				
+										$tpl->assign("message","&nbsp;<br>Baja/Alta borrada correctamente<br>&nbsp;");			
+										$empleado=new emps();
+										$tpl=$empleado->view($this->id_emp,$tpl);		
+																	
+										$tpl->assign("plantilla","emps_view.tpl");
+										return $tpl;
 									}
 									$tpl->assign("objeto",$this);
 									break;
@@ -454,7 +459,8 @@ class holydays{
 			$corp='<a href="index.php?module=user_corps&method=select&id='.$_SESSION['ident_corp'].'">'.$corp.' ::';
 		}
 		$empleado=new emps();
-		$empleado->read($_GET["id_emp"]);
+		if ($empleado->read($_GET["id_emp"])==0)
+			$empleado->read($this->id_emp);
 		$nav_bar = '<a>Zona privada</a> :: '.$corp.' <a href="index.php?module=emps">Empleados</a> :: <a href="index.php?module=emps&method=view&id='.$empleado->id_emp.'">Ver Empleados</a>';
 		$nav_bar=$nav_bar.$this->localice($method);
 		return $nav_bar;

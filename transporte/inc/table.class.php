@@ -229,7 +229,7 @@
 			$cadena='<script>'."\n\r";
 			$cadena=$cadena.$var_js.'_1="<table align=\\"center\\">';
 			if ($add){
-				$cadena=$cadena.'<tr align=\\"center\\"><td><a href=\\"index.php?module='.$var_js.'&method=add\\"><img border=\\"0\\"src=\\"pics/btnnew.gif\\"></a></td></tr>';
+				$cadena=$cadena.'<tr align=\\"center\\"><td><a href=\\"index.php?module='.$var_js.'&method=add'.$this->parameter_add.'\\"><img border=\\"0\\"src=\\"pics/btnnew.gif\\"></a></td></tr>';
 			}
 			$cadena=$cadena.'<tr align=\\"center\\"><td><h3>No hay registros</h3></td></tr></table>";';
 			$cadena=$cadena."\n\r".'</script>';
