@@ -40,8 +40,11 @@ class drivers{
 	var $sql;
 		
 //variables complementarias	
+	var $emps_trans;
   	var $drivers_list;
 	var $vehicles_list;
+	var $vehicles_corp;
+	var $fecha_cambiada;
   	var $num;
   	var $fields_list;
   	var $error;
@@ -97,7 +100,7 @@ class drivers{
 		$this->db->close();
 		
 		/*******************************/
-		
+	
 		return $this->get_list_drivers();	 
 		
 	}
@@ -139,28 +142,31 @@ class drivers{
 
 			$drivers[$temp[$num_emps][$this->ddbb_id_emp]]['cont']++;
 
-			
-			if(($drivers[$temp[$num_emps][$this->ddbb_id_emp]]['cont'] == 1))
+		
+			//nos movemos hasta el siguiente registro de resultado de la consulta
+			$this->result->MoveNext();
+			$num_emps++;		
+		}	//while
+		
+		for($i=0; $i<=$num_emps;$i++)
+		{
+			if(($drivers[$temp[$i][$this->ddbb_id_emp]]['cont'] == 1))
 			{
 				//Si aparece y cont es 1 entonces es la primera vez que aparece
 				//cogemos los datos del conductor (directamente de la BBDD)
-				$this->drivers_list[$this->num][$this->ddbb_id_driver]=$temp[$num_emps][$this->ddbb_id_driver];
-				$this->drivers_list[$this->num][$this->ddbb_id_emp]=$temp[$num_emps][$this->ddbb_id_emp];
-				$this->drivers_list[$this->num][$this->ddbb_id_vehicle]=$temp[$num_emps][$this->ddbb_id_vehicle];
-				$this->drivers_list[$this->num][$this->ddbb_id_date]=$temp[$num_emps][$this->ddbb_id_date];
+				$this->drivers_list[$this->num][$this->ddbb_id_driver]=$temp[$i][$this->ddbb_id_driver];
+				$this->drivers_list[$this->num][$this->ddbb_id_emp]=$temp[$i][$this->ddbb_id_emp];
+				$this->drivers_list[$this->num][$this->ddbb_id_vehicle]=$temp[$i][$this->ddbb_id_vehicle];
+				$this->drivers_list[$this->num][$this->ddbb_id_date]=$temp[$i][$this->ddbb_id_date];
 			
 				//Tratamos los datos para poder presentarselos al usuario
 				$this->preparar_datos($this->drivers_list[$this->num][$this->ddbb_id_emp], $this->drivers_list[$this->num][$this->ddbb_id_vehicle]);
 	
 				$this->num++;
-				
 			}
-
-			//nos movemos hasta el siguiente registro de resultado de la consulta
-			$this->result->MoveNext();
-			$num_emps++;
-			
-		}	
+			else
+				$drivers[$temp[$i][$this->ddbb_id_emp]]['cont'] --;
+		}
 		
 		$this->db->close();
 		return $this->num;
@@ -225,6 +231,48 @@ class drivers{
 		
 	}
 	
+	function get_list_emps_trans()
+	{
+		//Buscar todos los empleados con categoría transportista
+
+		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
+		//crea una nueva conexin con una bbdd (mysql)
+		$this->db = NewADOConnection($this->db_type);
+		//le dice que no salgan los errores de conexin de la ddbb por pantalla
+		$this->db->debug=false;
+		//realiza una conexin permanente con la bbdd
+		$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
+		$categoria = "Transportista";
+		//mete la consulta
+		$this->sql='SELECT emps.id_emp, emps.name, emps.last_name, emps.last_name2 FROM emps, rel_emps_cats, cat_emps WHERE emps.id_emp = rel_emps_cats.id_emp AND rel_emps_cats.id_cat_emp = cat_emps.id_cat_emp AND emps.id_corp = '.$_SESSION['ident_corp'].' AND cat_emps.name ='."\"".$categoria."\"";
+
+		//la ejecuta y guarda los resultados
+		$this->result = $this->db->Execute($this->sql);
+		//si falla 
+		if ($this->result === false){
+			$this->error=1;
+			$this->db->close();
+
+			return 0;
+		}  
+		
+		$this->num=0;
+		while (!$this->result->EOF) {
+			//cogemos los datos del conductor (directamente de la BBDD)
+			$this->emps_trans[$this->num][$this->ddbb_id_emp]=$this->result->fields[$this->ddbb_id_emp];
+			$this->emps_trans[$this->num][$this->ddbb_name]=$this->result->fields[$this->ddbb_name];
+			$this->emps_trans[$this->num][$this->ddbb_last_name]=$this->result->fields[$this->ddbb_last_name];
+			$this->emps_trans[$this->num][$this->ddbb_last_name2]=$this->result->fields[$this->ddbb_last_name2];
+			$this->emps_trans[$this->num]['nombre_completo'] = $this->emps_trans[$this->num][$this->ddbb_name]." ".$this->emps_trans[$this->num][$this->ddbb_last_name]." ".$this->emps_trans[$this->num][$this->ddbb_last_name2];
+		
+			//nos movemos hasta el siguiente registro de resultado de la consulta
+			$this->result->MoveNext();
+			$this->num++;
+		}
+		$this->db->close();
+		return $this->num;
+	}
+	
 	function get_list_vehicles($id_emp)
 	{
 		//Buscar todos los id_drivers asociados al empleado
@@ -280,19 +328,15 @@ class drivers{
 		$this->db->close();
 		return $this->num_vehicles;
 	}
-	/*
+	
 	function add(){
-		if((!isset($_POST['existUser']))||($_POST['existUser']=="new")){
-			$this->obj_user=new users();
-			$this->obj_user->is_emps=true;
-			$this->obj_user->add();
-		}
+		
 		//Miramos a ver si esta definida el "submit_add" y si no lo esta, pasamos directamente a mostrar la plantilla
 		if (!isset($_POST['submit_add'])){
 			//Mostrar plantilla vacía	
-			//pasarle a la plantilla los modulos y grupos con sus respectivos checkbox a checked false
-			//Modulos
-			$this->cat_emps=new cat_emps();
+			//Buscar los empleados de la empresa en cuestión, que tengan categoría de conductores (transportistas)
+			$this->get_list_emps_trans();
+			$this->vehicles_corp = new vehicles();
 			return 0;
 		}
 		//en el caso de que SI este definido submit_add
@@ -323,7 +367,7 @@ class drivers{
 				//realiza una conexin permanente con la bbdd
 				$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
 				//mete la consulta para coger los campos de la bbdd
-				$this->sql="SELECT * FROM ".$this->table_prefix.$this->table_name. " WHERE ".$this->ddbb_id_user." = -1" ;
+				$this->sql="SELECT * FROM ".$this->table_prefix.$this->table_name. " WHERE ".$this->ddbb_id_driver." = -1" ;
 				//la ejecuta y guarda los resultados
 				$this->result = $this->db->Execute($this->sql);
 				//si falla 
@@ -334,27 +378,10 @@ class drivers{
 				}
 				//rellenamos el array con los datos de los atributos de la clase
 				$record = array();
-				$record[$this->ddbb_name]=$this->name;
-				$record[$this->ddbb_last_name]=$this->last_name;
-				$record[$this->ddbb_last_name2]=$this->last_name2;
-				$record[$this->ddbb_birthday]=$this->birthday;
-				$record[$this->ddbb_address]=$this->address;
-				$record[$this->ddbb_id_corp]=$this->id_corp;
-				$record[$this->ddbb_city]=$this->city;
-				$record[$this->ddbb_state]=$this->state;
-				$record[$this->ddbb_country]=$this->country;
-				$record[$this->ddbb_postal_code]=$this->postal_code;
-				$record[$this->ddbb_phone]=$this->phone;
-				$record[$this->ddbb_mobile_phone]=$this->mobile_phone;
-				$record[$this->ddbb_fax]=$this->fax;
-				$record[$this->ddbb_mail]=$this->mail;				
-				
-				//Insertamus el usuario.
-				if ($_POST["user"]=="new"){
-					$this->id_user=$this->obj_user->id_user;
-				}	
-				$record[$this->ddbb_id_user]=$this->id_user;		
-				
+				$record[$this->ddbb_id_emp]=$this->id_emp;
+				$record[$this->ddbb_id_vehicle]=$this->id_vehicle;
+				$record[$this->ddbb_date]=$this->date;
+					
 				//calculamos la sql de insercin respecto a los atributos
 				$this->sql = $this->db->GetInsertSQL($this->result, $record);
 				//print($this->sql);
@@ -362,56 +389,30 @@ class drivers{
 				$this->db->Execute($this->sql);
 				//si se ha insertado una fila
 				if($this->db->Insert_ID()>=0){
-					//Cogemos el id del empleado insertado.
-					
-					$this->id_emp=$this->db->Insert_ID();
-					
-					//capturammos el id de la linea insertada
-					//Introducimos categorias;
-					$this->add_category($this->id_emp);
-					//Introducimos fecha de alta.
-					$this->add_holyday($this->id_emp);
-
-					
-					//print("<pre>::".$this->id_user."::</pre>");
+					//Cogemos el id del conductor insertado.					
+					$this->id_driver=$this->db->Insert_ID();
+				
 					//devolvemos el id de la tabla ya que todo ha ido bien
 					$this->db->close();
-					return $this->id_user;
+					return $this->id_driver;
 				}else {
 					
 					//devolvemos 0 ya que no se ha insertado el registro
 					$this->error=-1;
 					$this->db->close();
 					return 0;
-				}			
-				
-				
-				
+				}						
 			}
 		}
 	}
 	
-	
-	
-	function modify(){
-		$user_changed=0;
-		if((!isset($_POST['existUser']))||($_POST['existUser']=="new")||($_POST['existUser']=="modify")){
-			
-				if(($_POST['existUser']=="new")||($this->id_user==0)||($this->id_user=="")){
-					$this->obj_user=new users();
-					$this->obj_user->is_emps=true;
-					$user_changed=$this->obj_user->add();
-					}
-				if(($_POST['existUser']=="modify")||($this->id_user!=0)){
-					$this->obj_user=new users();
-					$this->obj_user->is_emps=true;
-					$this->obj_user->read($this->id_user);
-					$user_changed=$this->obj_user->modify();
-					}
-		}
+	function modify(){	
 		if (!isset($_POST['submit_modify'])){
 			
-			$this->cat_emps=new cat_emps();
+			//Mostrar plantilla vacía	
+			//Buscar los empleados de la empresa en cuestión, que tengan categoría de conductores (transportistas)
+			$this->get_list_emps_trans();
+			$this->vehicles_corp = new vehicles();
 			return 0;
 		}
 		else{
@@ -439,7 +440,7 @@ class drivers{
 				//realiza una conexin permanente con la bbdd
 				$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
 				//mete la consulta para coger los campos de la bbdd
-				$this->sql="SELECT * FROM ".$this->table_prefix.$this->table_name. " WHERE ".$this->ddbb_id_emp." = \"".$this->id_emp."\"" ;
+				$this->sql="SELECT * FROM ".$this->table_prefix.$this->table_name. " WHERE ".$this->ddbb_id_driver." = \"".$this->id_driver."\"" ;
 				//la ejecuta y guarda los resultados
 				$this->result = $this->db->Execute($this->sql);
 				//si falla 
@@ -451,25 +452,9 @@ class drivers{
 				//rellenamos el array con los datos de los atributos de la clase
 				$record = array();
 				$record[$this->ddbb_id_emp]=$this->id_emp;
-				$record[$this->ddbb_name]=$this->name;
-				$record[$this->ddbb_last_name]=$this->last_name;
-				$record[$this->ddbb_last_name2]=$this->last_name2;
-				$record[$this->ddbb_birthday]=$this->birthday;
-				$record[$this->ddbb_address]=$this->address;
-				$record[$this->ddbb_id_corp]=$this->id_corp;
-				$record[$this->ddbb_city]=$this->city;
-				$record[$this->ddbb_state]=$this->state;
-				$record[$this->ddbb_country]=$this->country;
-				$record[$this->ddbb_postal_code]=$this->postal_code;
-				$record[$this->ddbb_phone]=$this->phone;
-				$record[$this->ddbb_mobile_phone]=$this->mobile_phone;
-				$record[$this->ddbb_fax]=$this->fax;
-				$record[$this->ddbb_mail]=$this->mail;		
+				$record[$this->ddbb_id_vehicle]=$this->id_vehicle;
+				$record[$this->ddbb_date]=$this->date;
 
-				if ($_POST["user"]=="new"){
-					$this->id_user=$this->obj_user->id_user;
-				}	
-				$record[$this->ddbb_id_user]=$this->id_user;	
 				//calculamos la sql de insercin respecto a los atributos
 				$this->sql = $this->db->GetUpdateSQL($this->result, $record);
 				//insertamos el registro
@@ -477,31 +462,23 @@ class drivers{
 				$this->db->Execute($this->sql);
 				//si se ha insertado una fila
 				$Affected_Rows=$this->db->Affected_Rows();
-		*/
-				/*Al hacer la modificacion de categorias y vacaciones antes del siguiente "if"
-				 se debe de guardar en una variable el contenido de las filas afectadas y hacer
-				 la condicion del if con esa variable ya que al hacer las modificaciones ese valor varía.
-				*/
-		/*		
-				$return_category=$this->modify_category($this->id_emp);
-				$return_holyday=$this->modify_holyday($this->id_emp);
-			
-			
-				if(($Affected_Rows==1)||($user_changed!=0)||($this->sql=="")||($return_category!=0)||($return_holyday!=0)){
+					
+				if(($Affected_Rows==1)||($this->sql=="")){
 					//capturammos el id de la linea insertada
 					$this->db->close();
 					//devolvemos el id de la tabla ya que todo ha ido bien
-					return $this->id_emp;
+					return $this->id_driver;
 				}else {
 					//devolvemos 0 ya que no se ha insertado el registro
 					$this->error=-1;
 					$this->db->close();
+					print "SALE";
 					return 0;
 				}
 			}
 		}	
 	}
-	*/
+	
 	function remove($id){
 			if (!isset($_POST["submit_delete"])){
 				
@@ -818,38 +795,39 @@ class drivers{
 			
 			
 			
-			//Se comprueba si hay permiso para borrar o modificar
-			$permisos_mod_del = new permissions();
+			//Como puede que un mismo empleado tenga a su cargo más de un vehículo, no se podrá optar por este camino a borrar o modificar
+			/*$permisos_mod_del = new permissions();
 			$permisos_mod_del->get_permissions_modify_delete('drivers');
-			$tpl->assign('acciones',$permisos_mod_del->per_mod_del);
+			$tpl->assign('acciones',$permisos_mod_del->per_mod_del);*/
+			
+			//Para borrar o modificar se debe acceder mediante la tabla
 			
 			//Se prepara la lista de vehiculos
 			$tabla_listado = new table(true);
 			$per = new permissions();
-			$per->get_permissions_list('vehicles');
+			$per->get_permissions_list('drivers');
 	
-		/*		
-			//Toda persona con permso podrá modificar los datos del vehículo, por precaución para borrar solo se podrá hacer desde vehicles 
-			//para no borrar conductores de los que no se tenga conocimiento
+				
+			//Toda persona con permso podrá modificar o borrar los datos del conductor, podrá hacerlo
 			$j=0;
 			for ($i=0;$i<count($per->permissions_module);$i++)
 			{
-				if(($per->permissions_module[$i]=="modify")||($per->permissions_module[$i]=="view"))
+				if(($per->permissions_module[$i]=="modify")||($per->permissions_module[$i]=="delete"))
 				{
 					$permisos[$j]=$per->permissions_module[$i];
 					$j++;
 				} 
 			}
 
-		*/
+		
 			if ($this->num_vehicles==0)
 			{
-				$cadena=''.$cadena.$tabla_listado->tabla_vacia('vehicles', $per->add);
+				$cadena=''.$cadena.$tabla_listado->tabla_vacia('drivers', $per->add);
 				$variables=$tabla_listado->nombres_variables;
 			}
 			else
 			{	
-				$cadena=''.$tabla_listado->make_tables('vehicles',$this->vehicles_list,array('Identificador del conductor',20,'Alias del vehículo',20,'Fecha de asignacion',20),array($this->ddbb_id_vehicle, $this->ddbb_id_driver, $this->ddbb_alias, 'fecha_cambiada'),10,$per->permissions_module,$per->add);
+				$cadena=''.$tabla_listado->make_tables('drivers',$this->vehicles_list,array('Identificador del conductor',20,'Alias del vehículo',20,'Fecha de asignacion',20),array($this->ddbb_id_driver, $this->ddbb_id_driver, $this->ddbb_alias, 'fecha_cambiada'),10,$permisos,$per->add);
 				$variables=$tabla_listado->nombres_variables;	
 			}				
 			$tpl->assign('variables',$variables);
@@ -893,8 +871,8 @@ class drivers{
 								$tpl->assign("message","&nbsp;<br>Conductor a&ntilde;adido correctamente<br>&nbsp;");
 							}					
 							$tpl->assign("objeto",$this);									
-							$tpl->assign("empleados",$this->obj_emp);
-							$tpl->assign("listado_empleados",$this->obj_emp->emps_list);
+							$tpl->assign("empleados",$this->emps_trans);
+							$tpl->assign("vehiculos", $this->vehicles_corp->vehicles_list);
 							break;
 							
 				case 'list':
@@ -903,13 +881,16 @@ class drivers{
 				case 'modify':
 							$this->read($_GET['id']);
 							if ($this->modify() !=0){
+								$this->drivers_list = "";
 								$this->method="list";
 								$tpl=$this->listar($tpl);										
 								$tpl->assign("message","&nbsp;<br>Conductor modificado correctamente<br>&nbsp;");
 							}
+							list($anno,$mes,$dia)=sscanf($this->date,"%d-%d-%d");
+							$this->fecha_cambiada="$dia-$mes-$anno";
 							$tpl->assign("objeto",$this);									
-							$tpl->assign("empleados",$this->obj_user);
-							$tpl->assign("listado_empleados",$this->obj_emp->emps_list);
+							$tpl->assign("empleados",$this->emps_trans);
+							$tpl->assign("vehiculos", $this->vehicles_corp->vehicles_list);
 							break;
 				case 'delete':
 							$this->read($_GET['id']);
@@ -917,7 +898,7 @@ class drivers{
 								$tpl->assign("message",$this->conductores);
 							}
 							else{
-								$this->emps_list="";
+								$this->drivers_list="";
 								$this->method="list";
 								$tpl=$this->listar($tpl);
 								$tpl->assign("message","&nbsp;<br>Conductor borrado correctamente<br>&nbsp;");
@@ -947,35 +928,14 @@ class drivers{
 	
 	function get_fields_from_post()
 	{		
-		//Se necesita calcular id del vehículo a través de su matrícula, alias no porque puede haber 2 con el mísmo
-		//id tampoco se puede poner directamente porque no lo conoce
-		/*
-		$this->name=$_POST[$this->ddbb_name];
-		$this->last_name=$_POST[$this->ddbb_last_name];
-		$this->last_name2=$_POST[$this->ddbb_last_name2];
-		$this->birthday=$_POST[$this->ddbb_birthday];
-		$this->address=$_POST[$this->ddbb_address];
-		$this->id_corp=$_SESSION['ident_corp'];
-		$this->city=$_POST[$this->ddbb_city];
-		$this->state=$_POST[$this->ddbb_state];
-		$this->country=$_POST[$this->ddbb_country];
-		$this->postal_code=$_POST[$this->ddbb_postal_code];
-		$this->phone=$_POST[$this->ddbb_phone];
-		$this->mobile_phone=$_POST[$this->ddbb_mobile_phone];
-		$this->fax=$_POST[$this->ddbb_fax];
-		$this->mail=$_POST[$this->ddbb_mail];
-		*/
 		
-		//Cogemos la fecha de alta
-		$this->come=$_POST["come"];
 		
+		//Cogemos la fecha de asignación
+		$this->date=$_POST["date"];
 		//Si el usuario ya estaba creado, se lo asignamos		
-		if ($_POST["emp"]=="exist"){
-			$this->id_user=$_POST["existEmp"];
-		}		
-		
-		//Cogemos la categoria
-		$this->category=$_POST["category"];
+		$this->id_emp=$_POST["empleados"];					
+		//Cogemos el vehículo
+		$this->id_vehicle=$_POST["vehiculos"];
 	}
 
 	function bar($method,$corp){	

@@ -63,6 +63,7 @@ class emps{
 	var $num_corps;
 	var $emps_users_list;
 	var $emps_corp_list;
+	var $method;
 	var $obj_user;
 	var $cat_emps;
 	var $come;
@@ -279,7 +280,7 @@ class emps{
 					//print("<pre>::".$this->id_user."::</pre>");
 					//devolvemos el id de la tabla ya que todo ha ido bien
 					$this->db->close();
-					return $this->id_user;
+					return $this->id_emp;
 				}else {
 					
 					//devolvemos 0 ya que no se ha insertado el registro
@@ -1197,16 +1198,8 @@ class emps{
 							$tpl=$this->view($_GET['id'],$tpl);
 							break;
 				default:
-							if($_SESSION['ident_corp'] != 0)
-							{
-								$this->method='list';
-								$tpl=$this->listar($tpl);
-							}
-							else
-							{
-								$tpl->assign('plantilla','error_corp.tpl');	
-								return $tpl;
-							}			
+							$this->method='list';
+							$tpl=$this->listar($tpl);
 							break;
 			}
 		$tpl->assign('plantilla','emps_'.$this->method.'.tpl');					
