@@ -63,7 +63,8 @@ class emps{
 	var $corps_list;
 	var $num_corps;
 	var $emps_users_list;
-
+	var $method;
+	var $obj_user;
 	
   	//constructor
 	function emps(){
@@ -177,6 +178,100 @@ class emps{
 		return $this->num;
 	
 	}
+	
+		function add(){
+		if(!isset($_POST['add_adduser'])){
+			$this->obj_user=new users();
+			$this->obj_user->add();
+		}
+		//Miramos a ver si esta definida el "submit_add" y si no lo esta, pasamos directamente a mostrar la plantilla
+		if (!isset($_POST['submit_add'])){
+			//Mostrar plantilla vacía	
+			//pasarle a la plantilla los modulos y grupos con sus respectivos checkbox a checked false
+			//Modulos
+
+			return 0;
+		}
+		//en el caso de que SI este definido submit_add
+		else{
+						
+			//Introducir los datos de post.
+			$this->get_fields_from_post();	
+						
+			//Validacion
+			//$return=validate_fields();
+			
+			//En caso de que la validacion haya sido fallida se muestra la plantilla
+			//con los campos erroneos marcados con un *
+			$return=true; //Para pruebas dejar esta linea sin comentar
+			
+			if (!$return){
+				//Mostrar plantilla con datos erroneos
+				
+			}
+			else{
+				//Si todo es correcto si meten los datos
+				
+				$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
+				//crea una nueva conexin con una bbdd (mysql)
+				$this->db = NewADOConnection($this->db_type);
+				//le dice que no salgan los errores de conexin de la ddbb por pantalla
+				$this->db->debug=false;
+				//realiza una conexin permanente con la bbdd
+				$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
+				//mete la consulta para coger los campos de la bbdd
+				$this->sql="SELECT * FROM ".$this->table_prefix.$this->table_name. " WHERE ".$this->ddbb_id_user." = -1" ;
+				//la ejecuta y guarda los resultados
+				$this->result = $this->db->Execute($this->sql);
+				//si falla 
+				if ($this->result === false){
+					$this->error=1;
+					$this->db->close();
+					return 0;
+				}
+				//rellenamos el array con los datos de los atributos de la clase
+				$record = array();
+				$record[$this->ddbb_login] = $this->login;
+				$record[$this->ddbb_passwd]=$this->passwd;
+				$record[$this->ddbb_name]=$this->name;
+				$record[$this->ddbb_last_name]=$this->last_name;
+				$record[$this->ddbb_last_name2]=$this->last_name2;
+				$record[$this->ddbb_full_name]=$this->full_name;
+				$record[$this->ddbb_internal]=$this->internal;
+				$record[$this->ddbb_active]=$this->active;
+				//calculamos la sql de insercin respecto a los atributos
+				$this->sql = $this->db->GetInsertSQL($this->result, $record);
+				//print($this->sql);
+				//insertamos el registro
+				$this->db->Execute($this->sql);
+				//si se ha insertado una fila
+				if($this->db->Insert_ID()>=0){
+					//SE INSERTAN LOS PERMISOS.
+					//Insertamos los permisos por modulo					
+					//Insertamos los grupos
+					//$this->insert_per_groups();
+					//capturammos el id de la linea insertada
+					$this->id_user=$this->db->Insert_ID();
+					$this->add_group_users();
+					$this->add_per_modules_methods();
+					//print("<pre>::".$this->id_user."::</pre>");
+					//devolvemos el id de la tabla ya que todo ha ido bien
+					$this->db->close();
+					return $this->id_user;
+				}else {
+					
+					//devolvemos 0 ya que no se ha insertado el registro
+					$this->error=-1;
+					$this->db->close();
+					return 0;
+				}			
+				
+				
+				
+			}
+		}
+	}
+	
 	
 	function get_user_corps($id_user)
 	{
@@ -554,38 +649,58 @@ class emps{
 	}
 	
 	
-	function calculate_tpl($method, $tpl)
-	{
-		//vemos si el usuario tiene el permiso para hacer la accion requerida
-		$result=true;
-	//	$result=validate_per($method,$_SESSION['user'],$module);
-		if ($result)
-		{
-			switch($method){
-					case 'add':
-								$tpl=$this->add($tpl);
-								break;
-					case 'list':
-								$tpl=$this->listar($tpl);
-								break;
-					case 'modify':
-								break;
-					case 'delete':
-								break;
-					case 'view':									
-								$tpl=$this->view($_GET['id'],$tpl);
-								break;
-					default:
-								$method='list';
-								$tpl=$this->listar($tpl);
-								break;
-				}
-			$tpl->assign('plantilla','emps_'.$method.'.tpl');					
-		}
-		else
-		{
-			$tpl->assign('plantilla', 'default.tpl');					
-		}
+	function calculate_tpl($method, $tpl){
+		$this->method=$method;
+				switch($method){
+						case 'add':									
+									if ($this->add() !=0){
+										$this->method="list";
+										$tpl=$this->listar($tpl);										
+										$tpl->assign("message","&nbsp;<br>Usuario a&ntilde;adido correctamente<br>&nbsp;");
+									}
+									$tpl->assign("objeto",$this);									
+									$tpl->assign("usuarios",$this->obj_user);
+									$tpl->assign("modulos",$this->obj_user->checkbox);
+									$tpl->assign("grupos",$this->obj_user->checkbox_groups);
+									break;
+									
+						case 'list':
+									$tpl=$this->listar($tpl);
+									break;
+						case 'modify':
+									$this->read($_GET['id']);
+									if ($this->modify() !=0){
+										$this->method="list";
+										$tpl=$this->listar($tpl);										
+										$tpl->assign("message","&nbsp;<br>Usuario modificado correctamente<br>&nbsp;");
+									}
+									$tpl->assign("objeto",$this);
+									$tpl->assign("modulos",$this->checkbox);
+									$tpl->assign("grupos",$this->checkbox_groups);
+									break;
+						case 'delete':
+									$this->read($_GET['id']);
+									if ($this->remove($_GET['id'])==0){
+										$tpl->assign("message",$this->empleados);
+									}
+									else{
+										$this->emps_list="";
+										$method="list";
+										$tpl=$this->listar($tpl);
+										$tpl->assign("message","&nbsp;<br>Usuario borrado correctamente<br>&nbsp;");
+									}
+									$tpl->assign("objeto",$this);
+									break;
+						case 'view':									
+									$tpl=$this->view($_GET['id'],$tpl);
+									break;
+						default:
+									$this->method='list';
+									$tpl=$this->listar($tpl);
+									break;
+					}
+				$tpl->assign('plantilla','emps_'.$this->method.'.tpl');					
+		
 		return $tpl;
 	}
 	

@@ -133,7 +133,7 @@ var clock_set = 0;
  * @param   string      edit type - date/timestamp
  */
 function openCalendar(params, form, field, type) {
-    window.open("./calendar.php?" + params, "calendar", "width=400,height=200,status=yes");
+    window.open("inc/calendar.php?" + params, "calendar", "width=400,height=200,status=yes");
     dateField = eval("document." + form + "." + field);
     dateType = type;
 }
