@@ -2,7 +2,7 @@
 //clase que da soporte a los grupos del programa
 //enlaza con la bbdd 
 require_once ('config.inc.php');
-//require_once ("/Users/david/Sites/transporte/inc/adodb/adodb.inc.php");
+require_once ("/Users/david/Sites/transporte/inc/adodb/adodb.inc.php");
 class group_users{
 //internal vars
 	var $id_group_user; 

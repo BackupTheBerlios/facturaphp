@@ -1,4 +1,6 @@
 <?php
+global $INSTALL_DIR, $SMARTY_DIR;
+require_once($SMARTY_DIR.'Smarty.class.php');
 class fields{
 	var $list;
 	var $num;
@@ -6,6 +8,12 @@ class fields{
 		
 		$this->num=0;
 		
+	}
+	
+	function get_ddbb_fields(){
+	
+		
+	
 	}
 	
 	function add($name, $value, $type, $size, $valid){
@@ -23,6 +31,12 @@ class fields{
 	function free(){
 	
 		
+	}
+	
+	function validate($fields_form){
+	
+		
+	
 	}
 }
 ?>
