@@ -13,6 +13,8 @@ class cat_servs{
 	var	$id_parent_cat;
 	var $path_photo;
 	var $theme;
+	var $search;
+	var $search_query;
 
 //BBDD name vars
 	var $db_name;
@@ -28,6 +30,7 @@ class cat_servs{
 	var	$ddbb_id_parent_cat='id_parent_cat';
 	var $ddbb_path_photo='path_photo';
 	var $ddbb_descrip='descrip';
+	var $ddbb_search='search';
 	var $db;
 	var $result;  	
 //variables complementarias	
@@ -62,31 +65,24 @@ class cat_servs{
 		$this->fields_list->add($this->ddbb_id_parent_cat, $this->id_parent_cat, 'int', 11,0);
 		$this->fields_list->add($this->ddbb_path_photo, $this->path_photo, 'varchar', 255,0);
 		$this->fields_list->add($this->ddbb_descrip, $this->descrip, 'text', 255,0);
-		//print_r($this);
-		//se puede acceder a los grupos por numero de campo o por nombre de campo
-	/*	$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
-		//crea una nueva conexin con una bbdd (mysql)
-		$this->db = NewADOConnection($this->db_type);
-		//le dice que no salgan los errores de conexin de la ddbb por pantalla
-		$this->db->debug=false;
-		//realiza una conexin permanente con la bbdd
-		$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
-		//mete la consulta
-		$this->sql="SELECT * FROM ".$this->table_prefix.$this->table_name;
-		//la ejecuta y guarda los resultados
-		$this->result = $this->db->Execute($this->sql);
-		//si falla 
-		if ($this->result === false){
-			$error=1;
-			return 0;
-		}  
-		$this->db->close();*/
-		return $this/*->get_list_cat_servs()*/;	 
+		
+		$this->search[0]= 'name';
+		
+		return $this;	 
 		
 	}
 	
 	function get_list_cat_servs (){
-		//se puede acceder a los grupos_usuarios por numero de campo o por nombre de campo
+		if (isset($_POST['submit_cat_servs_search']))
+		{
+			//Obtener datos del formulario de búsqueda
+			$this->get_fields_from_search_post();
+						
+			//Crear query
+			$my_search = new search();
+			$query = $my_search->get_query($this->search_query, FALSE, $this->search, $this->fields_list);
+		}	
+		//Buscar los empleados de la empresa en la que se está y coincidencia en id con los id de emps en drivers
 		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
 		//crea una nueva conexin con una bbdd (mysql)
 		$this->db = NewADOConnection($this->db_type);
@@ -95,7 +91,11 @@ class cat_servs{
 		//realiza una conexin permanente con la bbdd
 		$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
 		//mete la consulta
-		$this->sql="SELECT * FROM ".$this->table_prefix.$this->table_name;
+		if($query != "")
+			$this->sql="SELECT * FROM ".$this->table_prefix.$this->table_name." WHERE ".$query;
+		else
+			$this->sql="SELECT * FROM ".$this->table_prefix.$this->table_name;
+			
 		//la ejecuta y guarda los resultados
 		$this->result = $this->db->Execute($this->sql);
 		//si falla 
@@ -121,6 +121,12 @@ class cat_servs{
 		$this->db->close();
 		return $this->num;
 	
+	}
+	
+	function get_fields_from_search_post(){
+		//Cogemos los campos principales de búsqueda
+		$this->search_query=$_POST[$this->ddbb_search];
+		return 0;
 	}
 	
 	function get_add_form(){
@@ -651,6 +657,7 @@ class cat_servs{
 									
 						case 'list':
 									$tpl=$this->listar($tpl);
+									$tpl->assign("objeto",$this);
 									break;
 						case 'modify':
 									$this->read($_GET['id']);
@@ -697,6 +704,7 @@ class cat_servs{
 						default:
 									$this->method='list';
 									$tpl=$this->listar($tpl);
+									$tpl->assign("objeto",$this);
 									break;
 					}
 

@@ -17,6 +17,9 @@ class products{
 	var $pvp_tax;
 	var $minimun_stock;
 	var $descrip;
+	var $search;
+	var $search_query;
+
 	
 //BBDD name vars
 	var $db_name;
@@ -37,6 +40,7 @@ class products{
 	var $ddbb_pvp_tax='pvp_tax';
 	var $ddbb_minimun_stock='minimun_stock';
 	var $ddbb_descrip='descrip';
+	var $ddbb_search='search';
 	var $db;
 	var $result;  
 	var $sql;
@@ -82,32 +86,26 @@ class products{
 		$this->fields_list->add($this->ddbb_path_photo, $this->path_photo, 'varchar', 255,0);
 		$this->fields_list->add($this->ddbb_minimun_stock, $this->minimun_stock, 'double', 11,0,1);
 		$this->fields_list->add($this->ddbb_descrip, $this->descrip, 'text', 255,0);
-		//print_r($this);
-		//se puede acceder a los grupos por numero de campo o por nombre de campo
-/*		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
-		//crea una nueva conexin con una bbdd (mysql)
-		$this->db = NewADOConnection($this->db_type);
-		//le dice que no salgan los errores de conexin de la ddbb por pantalla
-		$this->db->debug=false;
-		//realiza una conexin permanente con la bbdd
-		$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
-		//mete la consulta
-		$this->sql="SELECT * FROM ".$this->table_prefix.$this->table_name;
-		//la ejecuta y guarda los resultados
-		$this->result = $this->db->Execute($this->sql);
-		//si falla 
-		if ($this->result === false){
-			$error=1;
-			return 0;
-		}  
-		$this->db->close();
-*/		
-		return $this/*->get_list_products()*/;	 
+
+		$this->search[0]= 'name';
+		$this->search[1]= 'name_web';
+		
+		
+		return $this;	 
 		
 	}
 	
-	function get_list_products (){
-		//se puede acceder a los grupos_usuarios por numero de campo o por nombre de campo
+	function get_list_products ($id_corp){
+		if (isset($_POST['submit_products_search']))
+		{
+			//Obtener datos del formulario de búsqueda
+			$this->get_fields_from_search_post();
+						
+			//Crear query
+			$my_search = new search();
+			$query = $my_search->get_query($this->search_query, FALSE, $this->search, $this->fields_list);
+		}	
+		//Buscar los empleados de la empresa en la que se está y coincidencia en id con los id de emps en drivers
 		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
 		//crea una nueva conexin con una bbdd (mysql)
 		$this->db = NewADOConnection($this->db_type);
@@ -116,7 +114,10 @@ class products{
 		//realiza una conexin permanente con la bbdd
 		$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
 		//mete la consulta
-		$this->sql="SELECT * FROM ".$this->table_prefix.$this->table_name;
+		if($query != "")
+			$this->sql="SELECT * FROM ".$this->table_prefix.$this->table_name." WHERE (".$query.") AND `id_corp` = ".$id_corp;
+		else
+			$this->sql="SELECT * FROM ".$this->table_prefix.$this->table_name." WHERE `id_corp` = ".$id_corp;
 		//la ejecuta y guarda los resultados
 		$this->result = $this->db->Execute($this->sql);
 		//si falla 
@@ -149,8 +150,14 @@ class products{
 	
 	}
 	
+	function get_fields_from_search_post(){
+		//Cogemos los campos principales de búsqueda
+		$this->search_query=$_POST[$this->ddbb_search];
+		return 0;
+	}
+	
 	function listar($tpl){
-		$num = $this->get_list_products();
+		$num = $this->get_list_products($_SESSION['ident_corp']);
 		$tabla_listado = new table(true);
 		$per = new permissions();
 		$per->get_permissions_list('products');
@@ -747,18 +754,9 @@ class products{
 									break;
 						case 'list':
 									$tpl=$this->listar($tpl);
-									break;
-						case 'modify':/*
-									$this->read($_GET['id']);
-									if ($this->modify() !=0){
-										$this->method="list";
-										$tpl=$this->listar($tpl);
-										$tpl->assign("message","&nbsp;<br>Producto modificado correctamente<br>&nbsp;");
-									}
-									$tpl->assign("tabla_checkbox",$this->table_categories(false));
 									$tpl->assign("objeto",$this);
-									break;*/
-									
+									break;
+						case 'modify':
 									$this->read($_GET['id']);
 									$return=$this->modify();
 									switch ($return){										
@@ -802,6 +800,7 @@ class products{
 									{
 										$this->method='list';
 										$tpl=$this->listar($tpl);
+										$tpl->assign("objeto",$this);
 									}
 									else
 									{

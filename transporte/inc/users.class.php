@@ -109,28 +109,7 @@ class users{
 		$this->search[2]= 'last_name';
 		$this->search[3]= 'last_name2';
 		
-
-		//print_r($this);
-		//se puede acceder a los usuarios por numero de campo o por nombre de campo
-	/*	$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
-		//crea una nueva conexi—n con una bbdd (mysql)
-		$this->db = NewADOConnection($this->db_type);
-		//le dice que no salgan los errores de conexi—n de la ddbb por pantalla
-		$this->db->debug=false;
-		//realiza una conexi—n permanente con la bbdd
-		$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
-		//mete la consulta
-		$this->sql="SELECT * FROM ".$this->table_prefix.$this->table_name;
-		//la ejecuta y guarda los resultados
-		$this->result = $this->db->Execute($this->sql);
-		//si falla 
-		if ($this->result === false){
-			$error=1;
-			return 0;
-		}  
-		$this->db->close();*/
-		
-		return $this/*->get_list_users()*/;	 
+		return $this;	 
 		
 	}
 	
@@ -140,107 +119,35 @@ class users{
 		{
 			//Obtener datos del formulario de búsqueda
 			$this->get_fields_from_search_post();
-			//Generar consulta
-			/*
-			if($this->search_query[0]=='\\')
-			{*/
-				/************PRUEBAS**********************************/
-			//	print "Cadena ****".$this->search_query."**** ";
-			//	print "numero de caracteres ".strlen($this->search_query);
-			/*	for($i=0;$i<=strlen($this->search_query);$i++)
-				print $this->search_query[$i];
-			*/	
-				
-				/***********************************************/
-				
-			/*	
-				
-				switch($this->search_query[1])
-				{
-					case '"': 	$empiece = "comilla_doble";
-								//Guardar consulta para no modificar la variable 
-								//que se mande denuevo al formulario
-								$query =  $this->search_query;
-								
-								//Se va creando la nueva query que se mandará mas tarde 
-								//al formulario (se busca la siquiente ocurrencia de comillas)
-								$query = substr ($this->search_query, 2);
-								$cadena = substr ($this->search_query, 2, stripos($query, '"'));
-								
-								//Preparar la cadena para volver a mostrarla sin caracteres de PHP
-								$this->search_query = stripslashes($cadena);
-								
-								print "DOBLE";
-								break;
-					case '\'':	$empiece = "comilla_simple";
-								//Guardar consulta para no modificar la variable 
-								//que se mande denuevo al formulario
-								$query =  $this->search_query;
-								
-								//Se va creando la nueva query que se mandará mas tarde 
-								//al formulario (se busca la siquiente ocurrencia de comillas)
-								$query = substr ($this->search_query, 2);
-								$cadena = substr ($this->search_query, 2, stripos($query, '\''));
-								
-								//Preparar la cadena para volver a mostrarla sin caracteres de PHP
-								$this->search_query = stripslashes($cadena);
-													
-								print "SIMPLE";
-								break;
-					default: break;
-				}
-			}*/
-			
+						
 			//Crear query
 			$my_search = new search();
 			$query = $my_search->get_query($this->search_query, FALSE, $this->search, $this->fields_list);
-				
-			//se puede acceder a los usuarios por numero de campo o por nombre de campo
-			$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
-			//crea una nueva conexi—n con una bbdd (mysql)
-			$this->db = NewADOConnection($this->db_type);
-			//le dice que no salgan los errores de conexi—n de la ddbb por pantalla
-			$this->db->debug=false;
-			//realiza una conexi—n permanente con la bbdd
-			$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
-			//mete la consulta
+		}	
+		//Buscar los empleados de la empresa en la que se está y coincidencia en id con los id de emps en drivers
+		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
+		//crea una nueva conexin con una bbdd (mysql)
+		$this->db = NewADOConnection($this->db_type);
+		//le dice que no salgan los errores de conexin de la ddbb por pantalla
+		$this->db->debug=false;
+		//realiza una conexin permanente con la bbdd
+		$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
+		//mete la consulta
+		if($query != "")
 			$this->sql="SELECT * FROM ".$this->table_prefix.$this->table_name." WHERE ".$query;
-	
-			//la ejecuta y guarda los resultados
-			$this->result = $this->db->Execute($this->sql);
-			//si falla 
-			if ($this->result === false)
-			{
-				$this->error=1;
-				$this->db->close();
-
-				return 0;
-			}  
-		}
-		//en el caso de que SI este definido submit_add
 		else
-		{
-			//se puede acceder a los usuarios por numero de campo o por nombre de campo
-			$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
-			//crea una nueva conexi—n con una bbdd (mysql)
-			$this->db = NewADOConnection($this->db_type);
-			//le dice que no salgan los errores de conexi—n de la ddbb por pantalla
-			$this->db->debug=false;
-			//realiza una conexi—n permanente con la bbdd
-			$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
-			//mete la consulta
 			$this->sql="SELECT * FROM ".$this->table_prefix.$this->table_name;
-			//la ejecuta y guarda los resultados
-			$this->result = $this->db->Execute($this->sql);
-			//si falla 
-			if ($this->result === false)
-			{
-				$this->error=1;
-				$this->db->close();
+					//la ejecuta y guarda los resultados
+		$this->result = $this->db->Execute($this->sql);
+		//si falla 
+		if ($this->result === false)
+		{
+			$this->error=1;
+			$this->db->close();
 
-				return 0;
-			}  
-		}
+			return 0;
+		}  
+		
 		//cogemos los datos del usuario
 		if(!$_SESSION['super'] && !$_SESSION['admin'])
 		{
@@ -328,7 +235,6 @@ class users{
 	function get_fields_from_search_post(){
 		//Cogemos los campos principales de búsqueda
 		$this->search_query=$_POST[$this->ddbb_search];
-		print "BUSQUEDA ".$this->search_query;
 		return 0;
 	}
 	

@@ -151,164 +151,63 @@ class emps{
 		{
 			//Obtener datos del formulario de búsqueda
 			$this->get_fields_from_search_post();
-			//Generar consulta
-			/*
-			if($this->search_query[0]=='\\')
-			{*/
-				/************PRUEBAS**********************************/
-			//	print "Cadena ****".$this->search_query."**** ";
-			//	print "numero de caracteres ".strlen($this->search_query);
-			/*	for($i=0;$i<=strlen($this->search_query);$i++)
-				print $this->search_query[$i];
-			*/	
-				
-				/***********************************************/
-				
-			/*	
-				
-				switch($this->search_query[1])
-				{
-					case '"': 	$empiece = "comilla_doble";
-								//Guardar consulta para no modificar la variable 
-								//que se mande denuevo al formulario
-								$query =  $this->search_query;
-								
-								//Se va creando la nueva query que se mandará mas tarde 
-								//al formulario (se busca la siquiente ocurrencia de comillas)
-								$query = substr ($this->search_query, 2);
-								$cadena = substr ($this->search_query, 2, stripos($query, '"'));
-								
-								//Preparar la cadena para volver a mostrarla sin caracteres de PHP
-								$this->search_query = stripslashes($cadena);
-								
-								print "DOBLE";
-								break;
-					case '\'':	$empiece = "comilla_simple";
-								//Guardar consulta para no modificar la variable 
-								//que se mande denuevo al formulario
-								$query =  $this->search_query;
-								
-								//Se va creando la nueva query que se mandará mas tarde 
-								//al formulario (se busca la siquiente ocurrencia de comillas)
-								$query = substr ($this->search_query, 2);
-								$cadena = substr ($this->search_query, 2, stripos($query, '\''));
-								
-								//Preparar la cadena para volver a mostrarla sin caracteres de PHP
-								$this->search_query = stripslashes($cadena);
-													
-								print "SIMPLE";
-								break;
-					default: break;
-				}
-			}*/
-			
+						
 			//Crear query
 			$my_search = new search();
 			$query = $my_search->get_query($this->search_query, FALSE, $this->search, $this->fields_list);
-				
-			//se puede acceder a los usuarios por numero de campo o por nombre de campo
-			$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
-			//crea una nueva conexi—n con una bbdd (mysql)
-			$this->db = NewADOConnection($this->db_type);
-			//le dice que no salgan los errores de conexi—n de la ddbb por pantalla
-			$this->db->debug=false;
-			//realiza una conexi—n permanente con la bbdd
-			$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
-			//mete la consulta
-			$this->sql="SELECT * FROM ".$this->table_prefix.$this->table_name." WHERE ".$query;
-			//la ejecuta y guarda los resultados
-			$this->result = $this->db->Execute($this->sql);
-			//si falla 
-			if ($this->result === false)
-			{
-				$this->error=1;
-				$this->db->close();
-
-				return 0;
-			}  
-		
-			$this->num=0;
-			while (!$this->result->EOF)
-			{
-				//cogemos los datos del usuario
-				$this->emps_list[$this->num][$this->ddbb_id_emp]=$this->result->fields[$this->ddbb_id_emp];
-				$this->emps_list[$this->num][$this->ddbb_id_corp]=$this->result->fields[$this->ddbb_id_corp];
-				$this->emps_list[$this->num][$this->ddbb_id_user]=$this->result->fields[$this->ddbb_id_user];
-				$this->emps_list[$this->num][$this->ddbb_name]=$this->result->fields[$this->ddbb_name];
-				$this->emps_list[$this->num][$this->ddbb_last_name]=$this->result->fields[$this->ddbb_last_name];
-				$this->emps_list[$this->num][$this->ddbb_last_name2]=$this->result->fields[$this->ddbb_last_name2];
-				$this->emps_list[$this->num][$this->ddbb_birthday]=$this->result->fields[$this->ddbb_birthday];
-				$this->emps_list[$this->num][$this->ddbb_license]=$this->result->fields[$this->ddbb_license];
-				$this->emps_list[$this->num][$this->ddbb_phone]=$this->result->fields[$this->ddbb_phone];
-				$this->emps_list[$this->num][$this->ddbb_mobile_phone]=$this->result->fields[$this->ddbb_mobile_phone];
-				$this->emps_list[$this->num][$this->ddbb_fax]=$this->result->fields[$this->ddbb_fax];
-				$this->emps_list[$this->num][$this->ddbb_mail]=$this->result->fields[$this->ddbb_mail];
-				$this->emps_list[$this->num][$this->ddbb_address]=$this->result->fields[$this->ddbb_address];
-				$this->emps_list[$this->num][$this->ddbb_city]=$this->result->fields[$this->ddbb_city];
-				$this->emps_list[$this->num][$this->ddbb_state]=$this->result->fields[$this->ddbb_state];
-				$this->emps_list[$this->num][$this->ddbb_postal_code]=$this->result->fields[$this->ddbb_postal_code];
-				$this->emps_list[$this->num][$this->ddbb_country]=$this->result->fields[$this->ddbb_country];
-	
-				//nos movemos hasta el siguiente registro de resultado de la consulta
-				$this->result->MoveNext();
-				$this->num++;
-			}
-		}
-		//en el caso de que SI este definido submit_add
+		}	
+		//Buscar los empleados de la empresa en la que se está y coincidencia en id con los id de emps en drivers
+		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
+		//crea una nueva conexin con una bbdd (mysql)
+		$this->db = NewADOConnection($this->db_type);
+		//le dice que no salgan los errores de conexin de la ddbb por pantalla
+		$this->db->debug=false;
+		//realiza una conexin permanente con la bbdd
+		$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
+		//mete la consulta
+		if($query != "")
+			$this->sql="SELECT * FROM ".$this->table_prefix.$this->table_name." WHERE (".$query.") AND id_corp = ".$id_corp;
 		else
-		{
-
-			//se puede acceder a los usuarios por numero de campo o por nombre de campo
-			$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
-			//crea una nueva conexi—n con una bbdd (mysql)
-			$this->db = NewADOConnection($this->db_type);
-			//le dice que no salgan los errores de conexi—n de la ddbb por pantalla
-			$this->db->debug=false;
-			//realiza una conexi—n permanente con la bbdd
-			$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
-			//mete la consulta
 			$this->sql="SELECT * FROM ".$this->table_prefix.$this->table_name." WHERE id_corp = ".$id_corp;
-	
-			//la ejecuta y guarda los resultados
-			$this->result = $this->db->Execute($this->sql);
-			//si falla 
-			if ($this->result === false){
-				$this->error=1;
-				$this->db->close();
-	
-				return 0;
-			}  
 			
-			$this->num=0;
-			while (!$this->result->EOF) {
-				//cogemos los datos del empleado
-				$this->emps_list[$this->num][$this->ddbb_id_emp]=$this->result->fields[$this->ddbb_id_emp];
-				$this->emps_list[$this->num][$this->ddbb_id_corp]=$this->result->fields[$this->ddbb_id_corp];
-				$this->emps_list[$this->num][$this->ddbb_id_user]=$this->result->fields[$this->ddbb_id_user];
-				$this->emps_list[$this->num][$this->ddbb_name]=$this->result->fields[$this->ddbb_name];
-				$this->emps_list[$this->num][$this->ddbb_last_name]=$this->result->fields[$this->ddbb_last_name];
-				$this->emps_list[$this->num][$this->ddbb_last_name2]=$this->result->fields[$this->ddbb_last_name2];
-				$this->emps_list[$this->num][$this->ddbb_birthday]=$this->result->fields[$this->ddbb_birthday];
-				$this->emps_list[$this->num][$this->ddbb_license]=$this->result->fields[$this->ddbb_license];
-				$this->emps_list[$this->num][$this->ddbb_phone]=$this->result->fields[$this->ddbb_phone];
-				$this->emps_list[$this->num][$this->ddbb_mobile_phone]=$this->result->fields[$this->ddbb_mobile_phone];
-				$this->emps_list[$this->num][$this->ddbb_fax]=$this->result->fields[$this->ddbb_fax];
-				$this->emps_list[$this->num][$this->ddbb_mail]=$this->result->fields[$this->ddbb_mail];
-				$this->emps_list[$this->num][$this->ddbb_address]=$this->result->fields[$this->ddbb_address];
-				$this->emps_list[$this->num][$this->ddbb_city]=$this->result->fields[$this->ddbb_city];
-				$this->emps_list[$this->num][$this->ddbb_state]=$this->result->fields[$this->ddbb_state];
-				$this->emps_list[$this->num][$this->ddbb_postal_code]=$this->result->fields[$this->ddbb_postal_code];
-				$this->emps_list[$this->num][$this->ddbb_country]=$this->result->fields[$this->ddbb_country];
-	
-				//nos movemos hasta el siguiente registro de resultado de la consulta
-				$this->result->MoveNext();
-				$this->num++;
-			}
-		}
-		$this->db->close();
-		return $this->num;
+		//la ejecuta y guarda los resultados
+		$this->result = $this->db->Execute($this->sql);
+		//si falla 
+		if ($this->result === false){
+			$this->error=1;
+			$this->db->close();
+
+			return 0;
+		}  
 		
+		$this->num=0;
+		while (!$this->result->EOF) {
+			//cogemos los datos del empleado
+			$this->emps_list[$this->num][$this->ddbb_id_emp]=$this->result->fields[$this->ddbb_id_emp];
+			$this->emps_list[$this->num][$this->ddbb_id_corp]=$this->result->fields[$this->ddbb_id_corp];
+			$this->emps_list[$this->num][$this->ddbb_id_user]=$this->result->fields[$this->ddbb_id_user];
+			$this->emps_list[$this->num][$this->ddbb_name]=$this->result->fields[$this->ddbb_name];
+			$this->emps_list[$this->num][$this->ddbb_last_name]=$this->result->fields[$this->ddbb_last_name];
+			$this->emps_list[$this->num][$this->ddbb_last_name2]=$this->result->fields[$this->ddbb_last_name2];
+			$this->emps_list[$this->num][$this->ddbb_birthday]=$this->result->fields[$this->ddbb_birthday];
+			$this->emps_list[$this->num][$this->ddbb_license]=$this->result->fields[$this->ddbb_license];
+			$this->emps_list[$this->num][$this->ddbb_phone]=$this->result->fields[$this->ddbb_phone];
+			$this->emps_list[$this->num][$this->ddbb_mobile_phone]=$this->result->fields[$this->ddbb_mobile_phone];
+			$this->emps_list[$this->num][$this->ddbb_fax]=$this->result->fields[$this->ddbb_fax];
+			$this->emps_list[$this->num][$this->ddbb_mail]=$this->result->fields[$this->ddbb_mail];
+			$this->emps_list[$this->num][$this->ddbb_address]=$this->result->fields[$this->ddbb_address];
+			$this->emps_list[$this->num][$this->ddbb_city]=$this->result->fields[$this->ddbb_city];
+			$this->emps_list[$this->num][$this->ddbb_state]=$this->result->fields[$this->ddbb_state];
+			$this->emps_list[$this->num][$this->ddbb_postal_code]=$this->result->fields[$this->ddbb_postal_code];
+			$this->emps_list[$this->num][$this->ddbb_country]=$this->result->fields[$this->ddbb_country];
+
+			//nos movemos hasta el siguiente registro de resultado de la consulta
+			$this->result->MoveNext();
+			$this->num++;
+		}
 	
+		$this->db->close();
+		return $this->num;	
 	}
 	
 	function get_fields_from_search_post(){
