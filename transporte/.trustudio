@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<project id="org.trustudio.php.core.project">
-    <data>
-        <item id="org.trustudio.oss.pathentry">
-            <cpathentry
-                id="org.trustudio.php.launching.PHP_RUNTIME_CONTAINER" kind="con"/>
-        </item>
-    </data>
-</project>
