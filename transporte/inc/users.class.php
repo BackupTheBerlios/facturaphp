@@ -663,7 +663,7 @@ class users{
 									}
 									else{
 										$this->users_list="";
-										$method="list";
+										$this->method="list";
 										$tpl=$this->listar($tpl);
 										$tpl->assign("message","&nbsp;<br>Usuario borrado correctamente<br>&nbsp;");
 									}

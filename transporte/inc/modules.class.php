@@ -38,6 +38,7 @@ class modules{
   	var $error;
 	var $module_methods;
 	var $public_modules;
+	var $method;
 	
   	//constructor
 	function modules(){
@@ -335,6 +336,60 @@ class modules{
 		}			
 	}
 	
+	function calculate_tpl($method, $tpl){
+		$this->method=$method;
+				switch($method){
+						case 'add':									
+									if ($this->add() !=0){
+										$this->method="list";
+										$tpl=$this->listar($tpl);										
+										$tpl->assign("message","&nbsp;<br>Usuario a&ntilde;adido correctamente<br>&nbsp;");
+									}
+									$tpl->assign("objeto",$this);
+									$tpl->assign("modulos",$this->checkbox);
+									$tpl->assign("grupos",$this->checkbox_groups);
+									break;
+									
+						case 'list':
+									$tpl=$this->listar($tpl);
+									break;
+						case 'modify':
+									$this->read($_GET['id']);
+									if ($this->modify() !=0){
+										$this->method="list";
+										$tpl=$this->listar($tpl);										
+										$tpl->assign("message","&nbsp;<br>Usuario modificado correctamente<br>&nbsp;");
+									}
+									$tpl->assign("objeto",$this);
+									$tpl->assign("modulos",$this->checkbox);
+									$tpl->assign("grupos",$this->checkbox_groups);
+									break;
+						case 'delete':
+									$this->read($_GET['id']);
+									if ($this->remove($_GET['id'])==0){
+										$tpl->assign("message",$this->empleados);
+									}
+									else{
+										$this->users_list="";
+										$this->method="list";
+										$tpl=$this->listar($tpl);
+										$tpl->assign("message","&nbsp;<br>Usuario borrado correctamente<br>&nbsp;");
+									}
+									$tpl->assign("objeto",$this);
+									break;
+						case 'view':									
+									$tpl=$this->view($_GET['id'],$tpl);
+									break;
+						default:
+									$this->method='list';
+									$tpl=$this->listar($tpl);
+									break;
+					}
+				$tpl->assign('plantilla','modules_'.$this->method.'.tpl');					
+		
+		return $tpl;
+	}
+	
 	function remove($id){
 	
 		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
@@ -409,6 +464,81 @@ class modules{
 
 	
 	}
+	
+	function bar($method,$corp){
+		if ($method!=$this->method){
+			$method = $this->method;
+		}		
+	if ($corp != ""){
+			$corp='<a href="index.php?module=user_corps&method=select&id='.$_SESSION['ident_corp'].'">'.$corp.' ::';
+		}
+		$nav_bar = '<a>Zona privada</a> :: '.$corp.' <a href="index.php?module=modules">M&oacute;dulos</a>';
+		$nav_bar=$nav_bar.$this->localice($method);
+		return $nav_bar;
+	}	
+
+	function title($method,$corp){
+		if ($method!=$this->method){
+			$method = $this->method;
+		}
+		if ($corp != ""){
+			$corp=$corp." ::";
+		}
+		$title = "Zona Privada :: $corp M&oacute;dulos";
+		$title=$title.$this->localice($method);		
+		return $title;
+	}		
+	
+	function localice($method){	
+		switch($method){
+						case 'add':
+									$localice=" :: A&ntilde;adir M&oacute;dulos";
+									break;
+						case 'list':
+									$localice=" :: Buscar M&oacute;dulos";
+									break;
+						case 'modify':
+									$localice=" :: Modificar M&oacute;dulos";
+									break;
+						case 'delete':
+									$localice=" :: Borrar M&oacute;dulos";
+									break;
+						case 'view':
+									$localice=" :: Ver M&oacute;dulo";									
+									break;
+						default:
+									$localice=" :: Buscar M&oacute;dulos";
+									break;
+		}
+		return $localice;
+	}
+	
+	function listar($tpl){
+		$this->get_list_modules();
+		$tabla_listado = new table(true);
+		
+		if($_SESSION['user']=='admin')
+			{
+				$acciones = array('view', 'modify', 'delete');
+				$add = true;
+			}
+			else
+			{
+				$per = new permissions();
+				$per->get_permissions_list('modules');
+				
+				$acciones = $per->permissions_module;
+				$add = $per->add;
+			}
+	
+		
+		$cadena=''.$tabla_listado->make_tables('modules',$this->modules_list,array('Nombre Web',40,'Nombre',20,'Ruta',20),array($this->ddbb_id_module,$this->ddbb_name_web,$this->ddbb_name,$this->ddbb_path),10,$acciones,$add);
+		$variables=$tabla_listado->nombres_variables;		
+		$tpl->assign('variables',$variables);
+		$tpl->assign('cadena',$cadena);		
+		return $tpl;
+	}
+	
 	  function get_list_modules_user($user){
 	
 		return 0;
