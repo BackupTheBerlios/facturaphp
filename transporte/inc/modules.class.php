@@ -13,6 +13,7 @@ class modules{
 	var $active;
 	var $theme;
 	var $publico;
+	var $parent;
 //BBDD name vars
 	var $db_name;
 	var $db_ip;
@@ -257,6 +258,31 @@ class modules{
 	
 	function validate_modify_form(){
 	
+	}
+	
+	function get_id($name)
+	{
+		//se puede acceder a los usuarios por numero de campo o por nombre de campo
+		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
+		//crea una nueva conexin con una bbdd (mysql)
+		$this->db = NewADOConnection($this->db_type);
+		//le dice que no salgan los errores de conexin de la ddbb por pantalla
+		$this->db->debug=false;
+		//realiza una conexin permanente con la bbdd
+		$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
+		//mete la consulta
+		$this->sql="SELECT `id_module` FROM `modules` WHERE `name` = \"".$name."\"";
+		//la ejecuta y guarda los resultados
+		$this->result = $this->db->Execute($this->sql);
+		//si falla 
+		if ($this->result === false){
+			$this->error=1;
+			$this->db->close();
+
+			return 0;
+		}  
+		
+		return $this->result->fields['id_module'];
 	}
 	
 	function read($id){
