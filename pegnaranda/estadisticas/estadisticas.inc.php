@@ -170,7 +170,7 @@ require_once("event.inc.php");
 		return $miArray;
 	}
 	function eventos($accion){
-		$miArray=lastNEntriesAction('registro',25);
+		$miArray=lastNEntriesAction($accion,25);
 		$Rows=devuelveRows($miArray);
 		$col_id = 'did';
 		switch ($accion){
@@ -268,7 +268,6 @@ require_once("event.inc.php");
 		}
 
 		$opciones=array();
-
 		$acciones=array();
 		$evento=new Lister("admEventos",$Rows, 25,$Cols,$col_id,$opciones,"dg-admeventos.css");
 		$evento->table="";

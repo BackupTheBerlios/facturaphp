@@ -252,18 +252,19 @@ require_once ("event.inc.php");
 							}
 					$aux=$rs->GetRows();
 					foreach($aux as $value)
-						{
+						{							
 							$obj->drops['Secciones'][]=fromdbtocms($value,'secciones');}
 					}
-
-			foreach($obj->drops['Secciones'] as $value)
-				{
-					if ($value['sid']==$valor)
-						{
-							return $value['nombre'];}
-					}
-			return "N/D";
+			if (isset($obj->drops['Secciones'])){
+				foreach($obj->drops['Secciones'] as $value)
+					{							
+						if ($value['sid']==$valor)
+							{
+								return $value['nombre'];}
+						}
 			}
+			return "N/D";
+		}
 
 	function cbDocumentoEdit ($key,$valor)
 		{

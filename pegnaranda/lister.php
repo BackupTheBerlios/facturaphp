@@ -258,16 +258,16 @@ class Lister
 						return null;}*/
 				//OJO AQUI $THIS->SQL SE REFIERE A LAS ROWS PASADAS POR LA FUNCION DE EVENT.INC.PHP
 				//lastNEntriesAction
-				if (count($this->sql)!=0){
+				if (count($this->sql)>0){
 					foreach ($this->sql as $arr){
-						$salida=$salida.$this->renderRow2($arr);
+							$salida=$salida.$this->renderRow2($arr);
 						}
-						$salida=$salida.$this->renderPagerRow();
+						$salida=$salida.$this->renderPagerRow2();
 						$salida=$salida.$this->renderGeneralActions();
 				}else{	
-
 						return null;
 				}
+
 				//$salida=$salida.renderPagerRow();
 				//$salida=$salida.renderLastRow();
 				$out=SmartyInit();
@@ -394,6 +394,57 @@ class Lister
 						$this->total=$rs->PO_RecordCount($this->table,$this->where);}
 				else
 					{
+
+						return null;}
+
+				$perpage=$this->rows;
+				if ($perpage>=$this->total)
+					{
+						$PageArray[]=array('Page'=>1,'start'=>0,'Selected'=>1);}
+				else
+					{
+						if ($start<=0)
+							{
+								$start=1;}
+						$TotalPaginas=1+floor($this->total/$perpage);
+						$PaginaActual=1+floor($this->start/$perpage);
+						$PageArray=array();
+						for($paginas=1;$paginas<$TotalPaginas+1;$paginas++)
+							{
+								$PageArray[]=array('Page'=>$paginas,
+								'start'=>($paginas>1)?(($paginas-1)*$perpage):0,
+								'Selected'=>($paginas==$PaginaActual)?1:0);
+								}
+						}
+				$row->assign('Paginas',$PageArray);
+				$row->assign('baseurl',$CurrentUrl);
+				$row->assign('Cols',$this->cols);
+				$Pager=$row->fetch("lister_pager.tpl");
+				return $Pager;
+				}
+function renderPagerRow2()
+			{
+				$row=SmartyInit();
+				$row->assign('titles',$this->ColsToShow);
+				$row->assign('ordenado',$this->orden);
+				$CurrentUrl=CurrentUrl();
+				if (!(strpos($CurrentUrl,"start=")===false))
+					{
+						$CurrentUrl=substr($CurrentUrl,0,strpos($CurrentUrl,"start=")-1);}
+
+				if (strpos($CurrentUrl,"?")===false)
+					{
+						$CurrentUrl.="?";}
+				else
+					{
+						if (strpos($CurrentUrl,"&",strlen($CurrentUrl)-1)===false)
+							{
+								$CurrentUrl.="&";}
+						}
+				if	(isset($this->sql)&& count($this->sql)>=0){
+						$this->total=count($this->sql);}
+				else
+					{							
 						return null;}
 
 				$perpage=$this->rows;
