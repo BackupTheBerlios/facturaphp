@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 -- 
 -- Servidor: localhost
--- Tiempo de generación: 11-11-2004 a las 13:14:43
+-- Tiempo de generación: 11-11-2004 a las 13:50:48
 -- Versión del servidor: 4.0.20
 -- Versión de PHP: 4.3.8-5
 -- 
@@ -377,7 +377,7 @@ CREATE TABLE IF NOT EXISTS `per_user_methods` (
   `id_method` int(11) unsigned NOT NULL default '0',
   `per` tinyint(3) unsigned NOT NULL default '0',
   PRIMARY KEY  (`id_per_user_method`)
-) TYPE=MyISAM AUTO_INCREMENT=50 ;
+) TYPE=MyISAM AUTO_INCREMENT=54 ;
 
 -- 
 -- Volcar la base de datos para la tabla `per_user_methods`
@@ -390,6 +390,10 @@ INSERT INTO `per_user_methods` VALUES (46, 1, 18, 1);
 INSERT INTO `per_user_methods` VALUES (47, 1, 5, 1);
 INSERT INTO `per_user_methods` VALUES (48, 1, 19, 1);
 INSERT INTO `per_user_methods` VALUES (49, 1, 20, 1);
+INSERT INTO `per_user_methods` VALUES (50, 1, 2, 1);
+INSERT INTO `per_user_methods` VALUES (51, 1, 3, 1);
+INSERT INTO `per_user_methods` VALUES (52, 1, 4, 1);
+INSERT INTO `per_user_methods` VALUES (53, 1, 5, 1);
 
 -- --------------------------------------------------------
 
