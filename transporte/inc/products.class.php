@@ -81,7 +81,7 @@ class products{
 		$this->fields_list->add($this->ddbb_minimun_stock, $this->minimun_stock, 'double', 11,0,1);
 		//print_r($this);
 		//se puede acceder a los grupos por numero de campo o por nombre de campo
-		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
+/*		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
 		//crea una nueva conexin con una bbdd (mysql)
 		$this->db = NewADOConnection($this->db_type);
 		//le dice que no salgan los errores de conexin de la ddbb por pantalla
@@ -98,8 +98,8 @@ class products{
 			return 0;
 		}  
 		$this->db->close();
-		
-		return $this->get_list_products();	 
+*/		
+		return $this/*->get_list_products()*/;	 
 		
 	}
 	

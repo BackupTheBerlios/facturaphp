@@ -98,7 +98,7 @@ class corps{
 		$this->fields_list->add($this->ddbb_notes, $this->notes, 'varchar', 255,0);						
 		//print_r($this);
 		//se puede acceder a los usuarios por numero de campo o por nombre de campo
-		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
+/*		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
 		//crea una nueva conexi—n con una bbdd (mysql)
 		$this->db = NewADOConnection($this->db_type);
 		//le dice que no salgan los errores de conexi—n de la ddbb por pantalla
@@ -115,8 +115,8 @@ class corps{
 			return 0;
 		}  
 		$this->db->close();
-		
-		return $this->get_list_corps();	 
+	*/	
+		return $this/*->get_list_corps()*/;	 
 		
 	}
 	

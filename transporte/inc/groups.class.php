@@ -68,7 +68,7 @@ class groups{
 		$this->fields_list->add($this->ddbb_descrip, $this->descrip, 'text', 255,0);		
 		//print_r($this);
 		//se puede acceder a los grupos por numero de campo o por nombre de campo
-		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
+/*		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
 		//crea una nueva conexi—n con una bbdd (mysql)
 		$this->db = NewADOConnection($this->db_type);
 		//le dice que no salgan los errores de conexi—n de la ddbb por pantalla
@@ -85,8 +85,8 @@ class groups{
 			return 0;
 		}  
 		$this->db->close();
-		
-		return $this->get_list_groups();	 
+	*/	
+		return $this/*->get_list_groups()*/;	 
 		
 	}
 	
@@ -282,7 +282,8 @@ class groups{
 			
 			$this->checkbox=new permissions_modules;
 			$modules=new modules();
-			for($i=0;$i<$modules->num;$i++){
+			$num_modules = $modules->get_list_modules();
+			for($i=0;$i<$num_modules;$i++){
 				$this->checkbox->per_modules[$i]=new permissions_modules;
 				$this->checkbox->per_modules[$i]->id_module=$modules->modules_list[$i]['id_module'];
 				$this->checkbox->per_modules[$i]->module_name=$modules->modules_list[$i]['name_web'];
@@ -395,8 +396,11 @@ class groups{
 			//Mostrar plantilla vacía	
 			//pasarle a la plantilla los modulos y grupos con sus respectivos checkbox a checked false
 			$this->checkbox=new permissions_modules;
+			
 			$modules=new modules();
-			for($i=0;$i<$modules->num;$i++){
+			$num_modules = $modules->get_list_modules();
+			
+			for($i=0;$i<$num_modules;$i++){
 				$this->checkbox->per_modules[$i]=new permissions_modules;
 				$this->checkbox->per_modules[$i]->id_module=$modules->modules_list[$i]['id_module'];
 				$this->checkbox->per_modules[$i]->module_name=$modules->modules_list[$i]['name_web'];
@@ -478,14 +482,15 @@ class groups{
 			Order By (y mantener la búsqueda en el caso de que hubiera hecha una y averiguar la "pestaña" a la que hace referencia)
 			Busquedas
 	*/
+
 			$cadena='';			
 			// Leemos el usuario y se lo pasamos a la plantilla
 			$this->read($id);
 			$tpl->assign('objeto',$this);
-				
+			
 			$user = new users();
 			$user->validate_per_user($_SESSION['user']);
-			
+	
 			if(!$_SESSION['super'] || !$_SESSION['admin'])
 			{	
 				$modules = false;
@@ -581,7 +586,7 @@ class groups{
 			
 			$tpl->assign('variables',$variables);
 			$tpl->assign('cadena',$cadena);
-					
+			
 			return $tpl;
 				
 	}
@@ -740,7 +745,8 @@ class groups{
 		
 		$this->checkbox=new permissions_modules();
 		$modules=new modules();
-			for($i=0;$i<$modules->num;$i++){
+		$num_modules = $modules->get_list_modules();
+			for($i=0;$i<$num_modules;$i++){
 				$this->checkbox->per_modules[$i]=new permissions_modules;				
 				$this->checkbox->per_modules[$i]->id_module=$modules->modules_list[$i]['id_module'];
 				$this->checkbox->per_modules[$i]->module_name=$modules->modules_list[$i]['name_web'];

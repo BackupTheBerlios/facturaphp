@@ -61,7 +61,7 @@ class sessions{
 		$this->fields_list->add($this->ddbb_down, $this->down, 'datetime',11,0);
 		//print_r($this);
 		//se puede acceder a las sesiones por numero de campo o por nombre de campo
-		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
+/*		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
 		//crea una nueva conexi—n con una bbdd (mysql)
 		$this->db = NewADOConnection($this->db_type);
 		//le dice que no salgan los errores de conexi—n de la ddbb por pantalla
@@ -78,7 +78,7 @@ class sessions{
 			return 0;
 		}  
 		$this->db->close();
-		
+*/		
 		return $this;	 
 		
 	}
@@ -521,7 +521,6 @@ class sessions{
 	{
 		$this->id_session_php = session_id();
 		$user = new users();
-		print "identificador ".$_SESSION['ident_user'];
 		$id_user = $_SESSION['ident_user'];
 		$this->id_user = $id_user;
 		$this->up = gmdate("Y-m-d H:i:s");	
@@ -552,7 +551,7 @@ class sessions{
 										
 									}
 									else{
-										$this->cat_vehicles_list = "";
+										
 										$this->method="list";
 										$tpl=$this->listar($tpl);
 										$tpl->assign("message","&nbsp;<br>Sesi&oacute;n borrada correctamente<br>&nbsp;");

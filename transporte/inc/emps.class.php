@@ -107,7 +107,7 @@ class emps{
 		$this->fields_list->add($this->ddbb_country, $this->country, 'varchar', 50,0 );
 		//print_r($this);
 		//se puede acceder a los usuarios por numero de campo o por nombre de campo
-		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
+/*		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
 		//crea una nueva conexi—n con una bbdd (mysql)
 		$this->db = NewADOConnection($this->db_type);
 		//le dice que no salgan los errores de conexi—n de la ddbb por pantalla
@@ -124,10 +124,10 @@ class emps{
 			return 0;
 		}  
 		$this->db->close();
-		
+*/		
 		/*******************************/
 		
-		return $this->get_list_emps($_SESSION['ident_corp']);	 
+		return $this/*->get_list_emps($_SESSION['ident_corp'])*/;	 
 		
 	}
 	
@@ -322,7 +322,7 @@ class emps{
 				if(($_POST['existUser']=="modify")||($this->id_user!=0)){
 					$this->obj_user=new users();
 					$this->obj_user->is_emps=true;
-					$this->obj_user->read($this->id_user);
+					$this->obj_user->read_fields($this->id_user);
 					$user_changed=$this->obj_user->modify();
 					}
 		}
@@ -745,177 +745,6 @@ class emps{
 		
 	
 	}
-	/*
-	function add($tpl){
-		//Miramos a ver si esta definida el "submit_add" y si no lo esta, pasamos directamente a mostrar la plantilla
-		if (!isset($_POST['submit_add'])){
-			//Mostrar plantilla vacía	
-			//pasarle a la plantilla los modulos y grupos con sus respectivos checkbox a checked false
-			
-			
-			
-			//$tpl->assign('usuarios',$this->per_module_methods);
-			
-			return $tpl;
-		}
-		//en el caso de que SI este definido submit_add
-		else{
-						
-			//Introducir los datos de post.
-			$this->get_elements_from_post();
-			//$this->insert_post();
-			
-			//Validacion
-			//$return=validate_fields();
-			
-			//Een caso de que la validacion haya sido fallida se muestra la plantilla
-			//con los campos erroneos marcados con un *
-			return $tpl;
-			$return=true; //Para pruebas dejar esta linea sin comentar
-			
-			if (!$return){
-				//Mostrar plantilla con datos erroneos
-				
-			}
-			else{
-				//Si todo es correcto si meten los datos
-				
-				$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
-				//crea una nueva conexi—n con una bbdd (mysql)
-				$this->db = NewADOConnection($this->db_type);
-				//le dice que no salgan los errores de conexi—n de la ddbb por pantalla
-				$this->db->debug=false;
-				//realiza una conexi—n permanente con la bbdd
-				$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
-				//mete la consulta para coger los campos de la bbdd
-				$this->sql="SELECT * FROM ".$this->table_prefix.$this->table_name. " WHERE ".$this->ddbb_id_user." = -1" ;
-				//la ejecuta y guarda los resultados
-				$this->result = $this->db->Execute($this->sql);
-				//si falla 
-				if ($this->result === false){
-					$this->error=1;
-					$this->db->close();
-					return 0;
-				}
-				//rellenamos el array con los datos de los atributos de la clase
-				$record = array();
-				$record[$this->ddbb_login] = $this->login;
-				$record[$this->ddbb_passwd]=$this->passwd;
-				$record[$this->ddbb_name]=$this->name;
-				$record[$this->ddbb_last_name]=$this->last_name;
-				$record[$this->ddbb_last_name2]=$this->last_name2;
-				$record[$this->ddbb_full_name]=$this->full_name;
-				$record[$this->ddbb_internal]=$this->internal;
-				$record[$this->ddbb_active]=$this->active;
-				//calculamos la sql de inserci—n respecto a los atributos
-				$this->sql = $this->db->GetInsertSQL($this->result, $record);
-				//print($this->sql);
-				//insertamos el registro
-				$this->db->Execute($this->sql);
-				//si se ha insertado una fila
-				if($this->db->Insert_ID()>=0){
-					//SE INSERTAN LOS PERMISOS.
-
-					//capturammos el id de la linea insertada
-					$this->id_user=$this->db->Insert_ID();
-					//print("<pre>::".$this->id_user."::</pre>");
-					//devolvemos el id de la tabla ya que todo ha ido bien
-					$this->db->close();
-					return $this->id_user;
-				}else {
-					
-					//devolvemos 0 ya que no se ha insertado el registro
-					$this->error=-1;
-					$this->db->close();
-					return 0;
-				}			
-				
-				
-				
-			}
-		}
-	}
-	
-	function remove($id){
-	
-		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
-		//crea una nueva conexi—n con una bbdd (mysql)
-		$this->db = NewADOConnection($this->db_type);
-		//le dice que no salgan los errores de conexi—n de la ddbb por pantalla
-		$this->db->debug=false;
-		//realiza una conexi—n permanente con la bbdd
-		$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
-		//mete la consulta para coger los campos de la bbdd
-		//calcula la consulta de borrado.
-		$this->sql="DELETE FROM ".$this->table_prefix.$this->table_name. " WHERE ".$this->ddbb_id_user." = ".$id." LIMIT 1";
-		//la ejecuta y guarda los resultados
-		$this->result = $this->db->Execute($this->sql);
-		//si falla 
-		if ($this->db->Affected_Rows() == 0){
-			$this->error=1;
-			$this->db->close();
-			return 0;
-		}else{
-		
-			$this->error=0;
-			$this->db->close();
-			return 1;
-			
-		}
-		
-	}
-	
-	function modify(){
-	
-		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
-		//crea una nueva conexi—n con una bbdd (mysql)
-		$this->db = NewADOConnection($this->db_type);
-		//le dice que no salgan los errores de conexi—n de la ddbb por pantalla
-		$this->db->debug=false;
-		//realiza una conexi—n permanente con la bbdd
-		$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
-		//mete la consulta para coger los campos de la bbdd
-		$this->sql="SELECT * FROM ".$this->table_prefix.$this->table_name. " WHERE ".$this->ddbb_id_emp." = \"".$this->id_emp."\"" ;
-		//la ejecuta y guarda los resultados
-		$this->result = $this->db->Execute($this->sql);
-		//si falla 
-		if ($this->result === false){
-			$this->error=1;
-			$this->db->close();
-			return 0;
-		}
-		//rellenamos el array con los datos de los atributos de la clase
-		$record = array();
-		$record[$this->ddbb_id_user]=$this->id_user;
-		$record[$this->ddbb_login] = $this->login;
-		$record[$this->ddbb_passwd]=$this->passwd;
-		$record[$this->ddbb_name]=$this->name;
-		$record[$this->ddbb_last_name]=$this->last_name;
-		$record[$this->ddbb_last_name2]=$this->last_name2;
-		$record[$this->ddbb_full_name]=$this->full_name;
-		$record[$this->ddbb_internal]=$this->internal;
-		$record[$this->ddbb_active]=$this->active;
-		//calculamos la sql de inserci—n respecto a los atributos
-		$this->sql = $this->db->GetUpdateSQL($this->result, $record);
-		//insertamos el registro
-		$this->db->Execute($this->sql);
-		//si se ha insertado una fila
-		if($this->db->Affected_Rows()==1){
-			//capturammos el id de la linea insertada
-			$this->db->close();
-			//devolvemos el id de la tabla ya que todo ha ido bien
-			return $this->id_user;
-		}else {
-			//devolvemos 0 ya que no se ha insertado el registro
-			$this->error=-1;
-			$this->db->close();
-			return 0;
-		}
-
-	
-	}
-	  
-*/	
 
 	function view ($id,$tpl){
 	/*
@@ -935,7 +764,7 @@ class emps{
 			}
 			else{
 				$usuario = new users();
-				$usuario->read($this->id_user);
+				$usuario->read_fields($this->id_user);
 				$tpl->assign("user_emp",$usuario->login);
 			}
 			
@@ -1139,7 +968,7 @@ class emps{
 				case 'list':
 							$tpl=$this->listar($tpl);
 							break;
-				case 'modify':
+				case 'modify':print "MODIFY ";
 							$this->read($_GET['id']);
 							if ($this->modify() !=0){
 								$this->method="list";
@@ -1193,7 +1022,7 @@ class emps{
 							}
 							$tpl->assign("objeto",$this);
 							break;
-				case 'view':									
+				case 'view':							
 							$tpl=$this->view($_GET['id'],$tpl);
 							break;
 				default:

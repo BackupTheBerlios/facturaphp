@@ -62,7 +62,7 @@ class vehicles{
 		$this->fields_list->add($this->ddbb_number_plate, $this->number_plate, 'varchar', 10,0);
 		$this->fields_list->add($this->ddbb_alias, $this->alias, 'varchar', 255,0);
 		$this->fields_list->add($this->ddbb_path_photo, $this->path_photo, 'varchar', 255,0);
-		
+	/*	
 		//se puede acceder a los vehiculos por numero de campo o por nombre de campo
 		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
 		//crea una nueva conexi—n con una bbdd (mysql)
@@ -81,8 +81,8 @@ class vehicles{
 			return 0;
 		}  
 		$this->db->close();
-		
-		return $this->get_list_vehicles($_SESSION['ident_corp']);	 
+	*/	
+		return $this/*->get_list_vehicles($_SESSION['ident_corp'])*/;	 
 		
 	}
 	

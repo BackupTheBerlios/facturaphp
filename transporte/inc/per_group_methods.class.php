@@ -54,7 +54,7 @@ class per_group_methods{
 		$this->fields_list->add($this->ddbb_id_method, $this->id_method, 'int', 11,0);
 		$this->fields_list->add($this->ddbb_per, $this->per, 'tinyint', 3,0);		
 		//print_r($this);
-		//se puede acceder a los usuarios por numero de campo o por nombre de campo
+/*		//se puede acceder a los usuarios por numero de campo o por nombre de campo
 		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
 		//crea una nueva conexi—n con una bbdd (mysql)
 		$this->db = NewADOConnection($this->db_type);
@@ -72,8 +72,8 @@ class per_group_methods{
 			return 0;
 		}  
 		$this->db->close();
-		
-		return $this->get_list_per_group_methods();	 
+*/		
+		return $this/*->get_list_per_group_methods()*/;	 
 		
 	}
 	

@@ -98,7 +98,7 @@ class users{
 		$this->fields_list->add($this->ddbb_active, $this->active, 'tinyint', 3,0 );
 		//print_r($this);
 		//se puede acceder a los usuarios por numero de campo o por nombre de campo
-		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
+	/*	$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
 		//crea una nueva conexi—n con una bbdd (mysql)
 		$this->db = NewADOConnection($this->db_type);
 		//le dice que no salgan los errores de conexi—n de la ddbb por pantalla
@@ -114,7 +114,7 @@ class users{
 			$error=1;
 			return 0;
 		}  
-		$this->db->close();
+		$this->db->close();*/
 		
 		return $this/*->get_list_users()*/;	 
 		
@@ -367,9 +367,9 @@ class users{
 			//Modulos
 			$this->checkbox=new permissions_modules;
 			$modules=new modules();
-			
+			$num_modules = $modules->get_list_modules();
 			$k=0;
-			for($i=0;$i<$modules->num;$i++)
+			for($i=0;$i<$num_modules;$i++)
 			{
 				if($_SESSION['super'])
 				{
@@ -424,6 +424,7 @@ class users{
 			
 		
 			$groups=new groups();
+			$groups->get_list_groups();
 			$this->get_groups($this->id_user);
 			$k=0;
 			for($i=0;$i<$groups->num;$i++)
@@ -439,7 +440,7 @@ class users{
 				}
 				else
 				{
-					if(($groups->groups_list[$i][$groups->ddbb_name] != 'superadmin')&&($groups->groups_list[$i][$groups->ddbb_name] != 'admin'))
+					if(($groups->groups_list[$i][$groups->ddbb_name] != 'superadmin')||((!$_SESSION['admin']) && $groups->groups_list[$i][$groups->ddbb_name] != 'admin'))
 					{
 						$this->checkbox_groups[$k]= new groups();
 						$this->checkbox_groups[$k]->read($groups->groups_list[$i][$groups->ddbb_id_group]);				
@@ -578,9 +579,9 @@ class users{
 			//pasarle a la plantilla los modulos y grupos con sus respectivos checkbox a checked false
 			$this->checkbox=new permissions_modules();
 			$modules=new modules();
-			
-			$k=0;
-			for($i=0;$i<$modules->num;$i++)
+			$num_modules = $modules->get_list_modules();
+			$k=0;print "//////////////MODULOS  ".$num_modules. "//////";
+			for($i=0;$i<$num_modules;$i++)
 			{
 				if($_SESSION['super'])
 				{
@@ -633,6 +634,7 @@ class users{
 			}
 			
 			$groups=new groups();
+			$groups->get_list_groups();
 			$this->get_groups($this->id_user);
 			$k=0;
 			for($i=0;$i<$groups->num;$i++)
@@ -961,7 +963,7 @@ class users{
 	function calculate_tpl($method, $tpl){
 		$this->method=$method;
 				switch($method){
-						case 'add':									
+						case 'add':	print " ADD";								
 									if ($this->add() !=0){
 										$this->method="list";
 										$tpl=$this->listar($tpl);										
@@ -975,8 +977,8 @@ class users{
 						case 'list':
 									$tpl=$this->listar($tpl);
 									break;
-						case 'modify':
-									$this->read($_GET['id']);
+						case 'modify':print "ENTRA READ ";
+									$this->read($_GET['id']);print "ENTRA EN MODIFY";
 									if ($this->modify() !=0){
 										$this->method="list";
 										$tpl=$this->listar($tpl);										
@@ -1048,7 +1050,9 @@ class users{
 	
 	function get_groups_from_post(){		
 		$groups=new groups();
-			for($i=0;$i<$groups->num;$i++){
+		$groups->get_list_groups();
+		$num_groups = $group_users->get_list_group_users();
+			for($i=0;$i<$num_groups;$i++){
 				$this->checkbox_groups[$i]= new groups();
 				$this->checkbox_groups[$i]->read($groups->groups_list[$i][$groups->ddbb_id_group]);
 				
@@ -1065,7 +1069,8 @@ class users{
 		
 		$this->checkbox=new permissions_modules();
 		$modules=new modules();
-			for($i=0;$i<$modules->num;$i++){
+		$num_modules = $modules->get_list_modules();
+			for($i=0;$i<$num_modules;$i++){
 				$this->checkbox->per_modules[$i]=new permissions_modules;				
 				$this->checkbox->per_modules[$i]->id_module=$modules->modules_list[$i]['id_module'];
 				$this->checkbox->per_modules[$i]->module_name=$modules->modules_list[$i]['name_web'];
@@ -1158,10 +1163,8 @@ class users{
 	//
 	function validate_per_user($id_user)
 	{			
-		$this->modules = new modules();
-	
+		$this->modules = new modules();	
 		$this->num_modules = $this->modules->get_list_modules();
-
 		for ($modulo_num = 0; $modulo_num < $this->num_modules; $modulo_num++) 
 		{
 			//Como se tiene el numero de modulos entonces se puede ver nombre e identificador en $this->modules->modules_list
@@ -1173,9 +1176,10 @@ class users{
 			$this->per_modules[$modulo_num]->publico = $this->modules->modules_list[$modulo_num]['public'];
 			$this->per_modules[$modulo_num]->parent = $this->modules->modules_list[$modulo_num]['parent'];
 			$this->per_modules[$modulo_num]->active = $this->modules->modules_list[$modulo_num]['active'];
+print "ANTES DE VALIDATE PER MODULE ";
 			$this->per_modules[$modulo_num]->validate_per_module($id_user);
 		
-		}
+		}print "TERMINA ";
 	}
 	
 	function validate_per_user_module($id_user, $module)
@@ -1223,9 +1227,10 @@ class users{
 	
 	
 	function add_group_users(){
-		$groups=new groups();
+		//$groups=new groups();
 		$group_users= new group_users();
-		for($i=0;$i<$groups->num;$i++){
+		$num_groups = $group_users->get_list_group_users();
+		for($i=0;$i<$num_groups;$i++){
 		
 			if($this->checkbox_groups[$i]->belong==1){
 				$group_users->id_group=$this->checkbox_groups[$i]->id_group;
@@ -1237,11 +1242,10 @@ class users{
 	}
 	
 	function modify_group_users(){
-		$groups=new groups();
+		//$groups=new groups();
 		$group_users=new group_users();
-
-		for($i=0;$i<$groups->num;$i++){
-
+		$num_groups = $group_users->get_list_group_users();
+		for($i=0;$i<$num_groups;$i++){
 
 			if($this->checkbox_groups[$i]->belong==0){
 				//$result es el id del group_users de la tabla que se ve a continuacion.
@@ -1372,21 +1376,21 @@ class users{
 	function view_emps($id){
 		
 			$emp = new emps();				
-				$result=$emp->verify_emps($id);
-				$this->empleados="";
-				if ($result!=0){
-					$this->empleados="<p>Atención este usuario tiene asignados los siguientes empleados:";
-					$this->empleados.="<br><br>";
-					for($i=0;$i<$result;$i++){
-						$this->empleados.="&nbsp;&nbsp;&nbsp;";
-						$this->empleados.=$emp->emps_users_list[$i]["name"]."&nbsp;";
-						$this->empleados.=$emp->emps_users_list[$i]["last_name"]."&nbsp;";
-						$this->empleados.=$emp->emps_users_list[$i]["last_name2"]."<br>";
-					}
-					$this->empleados.="<br>";
-					$this->empleados.="Si borra este usuario, se borrar&aacute; la relaci&oacute;n con estos empleados";
-					$this->empleados.="</p>";
-				}			
+			$result=$emp->verify_emps($id);
+			$this->empleados="";
+			if ($result!=0){
+				$this->empleados="<p>Atención este usuario tiene asignados los siguientes empleados:";
+				$this->empleados.="<br><br>";
+				for($i=0;$i<$result;$i++){
+					$this->empleados.="&nbsp;&nbsp;&nbsp;";
+					$this->empleados.=$emp->emps_users_list[$i]["name"]."&nbsp;";
+					$this->empleados.=$emp->emps_users_list[$i]["last_name"]."&nbsp;";
+					$this->empleados.=$emp->emps_users_list[$i]["last_name2"]."<br>";
+				}
+				$this->empleados.="<br>";
+				$this->empleados.="Si borra este usuario, se borrar&aacute; la relaci&oacute;n con estos empleados";
+				$this->empleados.="</p>";
+			}			
 	}
 	
 	function make_remove($id){

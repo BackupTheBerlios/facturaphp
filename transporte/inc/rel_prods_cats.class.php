@@ -53,7 +53,7 @@ class rel_prods_cats{
 		$this->fields_list->add($this->ddbb_id_cat_prod, $this->id_cat_prod, 'int', 11,0);
 		//print_r($this);
 		//se puede acceder a los grupos por numero de campo o por nombre de campo
-		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
+/*		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
 		//crea una nueva conexin con una bbdd (mysql)
 		$this->db = NewADOConnection($this->db_type);
 		//le dice que no salgan los errores de conexin de la ddbb por pantalla
@@ -70,8 +70,8 @@ class rel_prods_cats{
 			return 0;
 		}  
 		$this->db->close();
-		
-		return $this->get_list_rel_prods_cats();	 
+*/		
+		return $this/*->get_list_rel_prods_cats()*/;	 
 		
 	}
 	

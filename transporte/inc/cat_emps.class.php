@@ -58,7 +58,7 @@ class cat_emps{
 		$this->fields_list->add($this->ddbb_descrip, $this->descrip, 'int', 11,0);
 		//print_r($this);
 		//se puede acceder a los grupos por numero de campo o por nombre de campo
-		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
+	/*	$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
 		//crea una nueva conexi—n con una bbdd (mysql)
 		$this->db = NewADOConnection($this->db_type);
 		//le dice que no salgan los errores de conexi—n de la ddbb por pantalla
@@ -74,7 +74,7 @@ class cat_emps{
 			$error=1;
 			return 0;
 		}  
-		$this->db->close();
+		$this->db->close();*/
 		
 		return $this->get_list_cat_emps();	 
 		
@@ -516,7 +516,8 @@ class cat_emps{
 	
 	function view_emps($id){
 		
-			$emp = new rel_emps_cats();				
+			$emp = new rel_emps_cats();
+			$emp->get_list_rel_emps_cats();				
 				$result=$emp->verify_emps($id);
 				$this->empleados="";
 				if ($result!=0){

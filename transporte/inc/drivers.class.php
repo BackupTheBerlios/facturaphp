@@ -81,7 +81,7 @@ class drivers{
 		$this->fields_list->add($this->ddbb_date, $this->date, 'date', 20,0);
 	
 		//se puede acceder a los usuarios por numero de campo o por nombre de campo
-		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
+	/*	$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
 		//crea una nueva conexin con una bbdd (mysql)
 		$this->db = NewADOConnection($this->db_type);
 		//le dice que no salgan los errores de conexin de la ddbb por pantalla
@@ -98,10 +98,10 @@ class drivers{
 			return 0;
 		}  
 		$this->db->close();
-		
+*/		
 		/*******************************/
 	
-		return $this->get_list_drivers();	 
+		return $this/*->get_list_drivers()*/;	 
 		
 	}
 	
@@ -248,6 +248,7 @@ class drivers{
 	{
 		$empleado = new emps();
 		$empleado->read($id_emp);
+
 		$this->drivers_list[$this->num][$this->ddbb_name] = $empleado->name;
 		$this->drivers_list[$this->num][$this->ddbb_last_name] = $empleado->last_name;
 		$this->drivers_list[$this->num][$this->ddbb_last_name2] = $empleado->last_name2;
@@ -367,6 +368,7 @@ class drivers{
 			//Buscar los empleados de la empresa en cuestión, que tengan categoría de conductores (transportistas)
 			$this->get_list_emps_trans();
 			$this->vehicles_corp = new vehicles();
+			$this->vehicles_corp->get_list_vehicles($_SESSION['ident_corp']);
 			return 0;
 		}
 		//en el caso de que SI este definido submit_add
@@ -443,6 +445,7 @@ class drivers{
 			//Buscar los empleados de la empresa en cuestión, que tengan categoría de conductores (transportistas)
 			$this->get_list_emps_trans();
 			$this->vehicles_corp = new vehicles();
+			$this->vehicles_corp->get_list_vehicles($_SESSION['ident_corp']);
 			return 0;
 		}
 		else{
@@ -677,7 +680,6 @@ class drivers{
 	function listar($tpl)
 	{
 		$num = $this->get_list_drivers();
-	
 		$tabla_listado = new table(true);
 		$per = new permissions();
 		$num_per = $per->get_permissions_list('drivers');

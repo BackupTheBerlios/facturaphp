@@ -62,7 +62,7 @@ class holydays{
 		$this->fields_list->add($this->ddbb_descrip, $this->descrip, 'text', 255,0);				
 		//print_r($this);
 		//se puede acceder a los usuarios por numero de campo o por nombre de campo
-		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
+	/*	$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
 		//crea una nueva conexi—n con una bbdd (mysql)
 		$this->db = NewADOConnection($this->db_type);
 		//le dice que no salgan los errores de conexi—n de la ddbb por pantalla
@@ -79,8 +79,8 @@ class holydays{
 			return 0;
 		}  
 		$this->db->close();
-		
-		return $this->get_list_holydays();	 
+	*/	
+		return $this/*->get_list_holydays()*/;	 
 		
 	}
 	
@@ -376,9 +376,7 @@ class holydays{
 		$this->method=$method;
 				switch($method){
 						case 'add':					
-									$empleado=new emps();
-									
-									
+									$empleado=new emps();									
 									$empleado->read($_GET["id_emp"]);
 									
 									$tpl->assign("empleado",$empleado);
@@ -419,8 +417,7 @@ class holydays{
 									break;
 						case 'modify':
 									$this->read($_GET['id']);
-									$empleado=new emps();									
-									
+									$empleado=new emps();																		
 									$empleado->read($this->id_emp);
 									
 									$tpl->assign("empleado",$empleado);

@@ -302,7 +302,7 @@ class permissions_modules{
 		$per = false;
 		$this->per = 0;
 		$num = 0;
-	
+
 		
 		//Se comprueba si el usuario tiene permisos en el módulo
 		$result = $this->validate_per_user_module($id_user, $this->id_module);
@@ -329,7 +329,6 @@ class permissions_modules{
 		}
 		
 		$modules = new modules();
-	
 		$this->num_methods = $modules->get_list_module_methods($this->id_module);
 
 		for ($metodo_num = 0; $metodo_num < $this->num_methods; $metodo_num++) 
@@ -343,7 +342,7 @@ class permissions_modules{
 			$this->per_methods[$metodo_num]->method_name_web = $modules->module_methods[$metodo_num]['name_web'];
 			if($per == true)
 			{
-				$this->per_methods[$metodo_num]->validate_per_method($id_user, $this->per_methods[$metodo_num]->id_method);
+				$this->per_methods[$metodo_num]->validate_per_method($id_user, $this->per_methods[$metodo_num]->id_method, $user->groups_list);
 			}
 			else
 			{
@@ -427,8 +426,7 @@ class permissions_modules{
 		}
 	
 		
-		$modules = new modules();
-	
+		$modules = new modules();	
 		$this->num_methods = $modules->get_list_module_methods($this->id_module);
 
 

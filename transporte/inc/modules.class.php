@@ -71,7 +71,7 @@ class modules{
 		$this->fields_list->add($this->ddbb_order, $this->order, 'int', 11,0);	
 		//print_r($this);
 		//se puede acceder a los usuarios por numero de campo o por nombre de campo
-		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
+	/*	$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
 		//crea una nueva conexi—n con una bbdd (mysql)
 		$this->db = NewADOConnection($this->db_type);
 		//le dice que no salgan los errores de conexi—n de la ddbb por pantalla
@@ -87,9 +87,9 @@ class modules{
 			$error=1;
 			return 0;
 		}  
-		$this->db->close();
+		$this->db->close();*/
 		
-		return $this->get_list_modules();	 
+		return $this/*->get_list_modules()*/;	 
 		
 	}
 	
@@ -156,7 +156,7 @@ class modules{
 		else//usuario normal
 		{
 			$user= new users(); 
-			$id_user = $user->get_id($_SESSION['user']);
+			$id_user =$_SESSION['ident_user'];
 			$user->validate_per_user($id_user);
 			$i=0;
 			$j=0;

@@ -67,7 +67,7 @@ class log_sessions{
 		$this->fields_list->add($this->ddbb_country, $this->country, 'varchar', 20,0);
 		//print_r($this);
 		//se puede acceder a las sesiones por numero de campo o por nombre de campo
-		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
+	/*	$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
 		//crea una nueva conexi—n con una bbdd (mysql)
 		$this->db = NewADOConnection($this->db_type);
 		//le dice que no salgan los errores de conexi—n de la ddbb por pantalla
@@ -84,8 +84,8 @@ class log_sessions{
 			return 0;
 		}  
 		$this->db->close();
-		
-		return $this->get_list_log_sessions();	 
+	*/	
+		return $this/*->get_list_log_sessions()*/;	 
 		
 	}
 	

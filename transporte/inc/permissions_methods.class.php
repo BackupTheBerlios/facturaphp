@@ -132,16 +132,16 @@ class permissions_methods{
 	}
 	
 	
-	function validate_per_method($id_user, $id_method)
+	function validate_per_method($id_user, $id_method, $groups_list)
 	{
 		//print "USUARIO -> ".$id_user.".....";
 		//$this->inicializar_base_datos();
 		
-		$users_list = new users();
+		//$users_list = new users();
 	
 		//Se toma la lista de grupos a los que pertenece el usuario
-		$num_groups = $users_list->get_groups($id_user); 
-		
+	//	$num_groups = $users_list->get_groups($id_user); 
+
 		$num = 0;		
 		$per = false;
 	

@@ -60,7 +60,7 @@ class log_methods{
 		$this->fields_list->add($this->ddbb_sql_sentence, $this->sql_sentence, 'varchar', 100,0);		
 		$this->fields_list->add($this->ddbb_afected, $this->afected, 'tinyint', 3,0);				
 		//print_r($this);
-		//se puede acceder a los usuarios por numero de campo o por nombre de campo
+/*		//se puede acceder a los usuarios por numero de campo o por nombre de campo
 		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
 		//crea una nueva conexi—n con una bbdd (mysql)
 		$this->db = NewADOConnection($this->db_type);
@@ -78,8 +78,8 @@ class log_methods{
 			return 0;
 		}  
 		$this->db->close();
-		
-		return $this->get_list_log_methods();	 
+*/		
+		return $this/*->get_list_log_methods()*/;	 
 		
 	}
 	

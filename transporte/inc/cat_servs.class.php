@@ -64,7 +64,7 @@ class cat_servs{
 		$this->fields_list->add($this->ddbb_descrip, $this->descrip, 'int', 11,0);
 		//print_r($this);
 		//se puede acceder a los grupos por numero de campo o por nombre de campo
-		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
+	/*	$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
 		//crea una nueva conexin con una bbdd (mysql)
 		$this->db = NewADOConnection($this->db_type);
 		//le dice que no salgan los errores de conexin de la ddbb por pantalla
@@ -80,8 +80,8 @@ class cat_servs{
 			$error=1;
 			return 0;
 		}  
-		$this->db->close();
-		return $this->get_list_cat_servs();	 
+		$this->db->close();*/
+		return $this/*->get_list_cat_servs()*/;	 
 		
 	}
 	
@@ -448,7 +448,8 @@ class cat_servs{
 	
 	function view_servs($id){
 		
-			$service = new services();				
+			$service = new services();	
+				
 				$result=$service->verify_services($id);
 				$this->servicios="";
 				if ($result!=0){
@@ -654,7 +655,8 @@ class cat_servs{
 		
 	function view_emps($id){
 		
-			$emp = new rel_emps_cats();				
+			$emp = new rel_emps_cats();
+			$emp->get_list_rel_emps_cats();				
 				$result=$emp->verify_emps($id);
 				$this->empleados="";
 				if ($result!=0){

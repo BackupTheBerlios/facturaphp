@@ -45,8 +45,8 @@
 class upload_file{    
 
   var $cls_upload_dir = "";         // Directory to upload to.
-	var $cls_filename = "";           // Name of the upload file.
-	var $cls_tmp_filename = "";       // TMP file Name (tmp name by php).
+  var $cls_filename = "";           // Name of the upload file.
+  var $cls_tmp_filename = "";       // TMP file Name (tmp name by php).
   var $cls_max_filesize = 33554432; // Max file size.
   var $cls_filesize ="";            // Actual file size.
   var $cls_arr_ext_accepted = array(

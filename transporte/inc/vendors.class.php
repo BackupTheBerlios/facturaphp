@@ -101,7 +101,7 @@ class vendors{
 		$this->fields_list->add($this->ddbb_notes, $this->notes, 'varchar', 255,0);						
 		//print_r($this);
 		//se puede acceder a los usuarios por numero de campo o por nombre de campo
-		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
+/*		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
 		//crea una nueva conexin con una bbdd (mysql)
 		$this->db = NewADOConnection($this->db_type);
 		//le dice que no salgan los errores de conexin de la ddbb por pantalla
@@ -118,8 +118,8 @@ class vendors{
 			return 0;
 		}  
 		$this->db->close();
-		
-		return $this->get_list_vendors($_SESSION['ident_corp']);	 
+*/		
+		return $this/*->get_list_vendors($_SESSION['ident_corp'])*/;	 
 		
 	}
 	
@@ -476,22 +476,7 @@ class vendors{
 		}
 			}
 	}
-/*	
-	function make_remove($id){
-		
-		//Borramos los empleados. Esto se irá haciendo con todos los módulos directamente
-		//relacionados con la empresa que se este borrando.
-		$empleados=new emps();
-		$listado=$empleados->belong_corp($id);
-		
-		
-		for ($i=0;$i<count($listado);$i++){
-			
-			$empleados->remove($listado[$i]["id_emp"]);
-		}
-		//Fin Borrado empleados	
-	}
-	*/
+
 	function modify()
 	{
 		if (!isset($_POST['submit_modify'])){

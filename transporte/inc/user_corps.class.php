@@ -79,6 +79,7 @@ var $emp;
 		if($_SESSION['super'] || $_SESSION['admin'])
 		{
 			$my_corp = new corps();
+			$my_corp->get_list_corps();
 			$cadena=''.$tabla_listado->make_tables('user_corps',$my_corp->corps_list,array('Nombre',50),array('id_corp','name'),10,array('select'),false);
 			$variables=$tabla_listado->nombres_variables;		
 			$tpl->assign('variables',$variables);

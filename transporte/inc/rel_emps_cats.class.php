@@ -53,7 +53,7 @@ class rel_emps_cats{
 		$this->fields_list->add($this->ddbb_id_cat_emp, $this->id_cat_emp, 'int', 11,0);
 		//print_r($this);
 		//se puede acceder a los grupos por numero de campo o por nombre de campo
-		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
+/*		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
 		//crea una nueva conexi—n con una bbdd (mysql)
 		$this->db = NewADOConnection($this->db_type);
 		//le dice que no salgan los errores de conexi—n de la ddbb por pantalla
@@ -70,8 +70,8 @@ class rel_emps_cats{
 			return 0;
 		}  
 		$this->db->close();
-		
-		return $this->get_list_rel_emps_cats();	 
+*/		
+		return $this/*->get_list_rel_emps_cats()*/;	 
 		
 	}
 	

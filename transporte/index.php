@@ -24,7 +24,7 @@ $nav_bar="::Gesti&oacute;n::";
 //inicializa una plantilla
 $tpl= new template;
 
-
+print " CALCULADA LA TEMPLATE ";
 
 /******************************************* Identificación de usuario ***************************************************/
 
@@ -50,8 +50,7 @@ if(!isset($_SESSION['user']))
 
 		
 		//Comprueba si es admin o super
-		$id_user = $post_user->get_id($_SESSION['user']);
-		$num_groups = $post_user->get_groups($id_user);
+		$num_groups = $post_user->get_groups($_SESSION['ident_user']);
 		$_SESSION['super'] = false;
 		$_SESSION['admin'] = false;
 		
