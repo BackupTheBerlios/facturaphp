@@ -1,31 +1,58 @@
+-- phpMyAdmin SQL Dump
+-- version 2.6.0-pl3
+-- http://www.phpmyadmin.net
+-- 
+-- Servidor: localhost
+-- Tiempo de generaciÃ³n: 18-03-2005 a las 19:07:29
+-- VersiÃ³n del servidor: 4.1.7
+-- VersiÃ³n de PHP: 5.0.2
+-- 
+-- Base de datos: `transporte`
+-- 
 
-DROP TABLE IF EXISTS `cat_emps`;
-CREATE TABLE IF NOT EXISTS `cat_emps` (
+-- --------------------------------------------------------
+
+-- 
+-- Estructura de tabla para la tabla `cat_emps`
+-- 
+
+CREATE TABLE `cat_emps` (
   `id_cat_emp` int(11) NOT NULL auto_increment,
-  `name` varchar(20) NOT NULL default '',
+  `name` varchar(50) NOT NULL default '',
   `descrip` text NOT NULL,
   PRIMARY KEY  (`id_cat_emp`)
-) TYPE=MyISAM AUTO_INCREMENT=8 ;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=9 ;
 
+-- 
+-- Volcar la base de datos para la tabla `cat_emps`
+-- 
 
 INSERT INTO `cat_emps` VALUES (1, 'Gestor', 'Gestor de empleados');
 INSERT INTO `cat_emps` VALUES (2, 'Director jefe', 'Director Jefe en funciones');
-INSERT INTO `cat_emps` VALUES (3, 'Transportista', 'Persona que conduce los vehículos de la empresa');
+INSERT INTO `cat_emps` VALUES (3, 'Transportista', 'Persona que conduce los veh?culos de la empresa');
 INSERT INTO `cat_emps` VALUES (4, 'Limpiador', 'Personal de limpieza');
 INSERT INTO `cat_emps` VALUES (5, 'Contable', 'Contable de la empresa');
-INSERT INTO `cat_emps` VALUES (7, 'Peón de carga', 'Persona encargada de la carga y descarga de vehículos de la empresa');
+INSERT INTO `cat_emps` VALUES (7, 'Pe&oacute;n de carga', 'Persona encargada de la carga y descarga de veh?culos de la empresa');
+INSERT INTO `cat_emps` VALUES (8, 'fasaaaa', '');
 
+-- --------------------------------------------------------
 
-DROP TABLE IF EXISTS `cat_prods`;
-CREATE TABLE IF NOT EXISTS `cat_prods` (
+-- 
+-- Estructura de tabla para la tabla `cat_prods`
+-- 
+
+CREATE TABLE `cat_prods` (
   `id_cat_prod` int(11) NOT NULL auto_increment,
   `name` varchar(50) NOT NULL default '',
   `descrip` varchar(255) NOT NULL default '',
   `id_parent_cat` int(11) NOT NULL default '0',
   `path_photo` varchar(255) NOT NULL default '',
   PRIMARY KEY  (`id_cat_prod`)
-) TYPE=MyISAM AUTO_INCREMENT=34 ;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=36 ;
 
+-- 
+-- Volcar la base de datos para la tabla `cat_prods`
+-- 
 
 INSERT INTO `cat_prods` VALUES (24, 'categoriafdsfdg', 'afdafafdfff', 0, 'images/cat_prods/24.JPG');
 INSERT INTO `cat_prods` VALUES (25, 'asdfadfadf', 'fojdoijffiojfiojfiojfioj', 24, 'images/cat_prods/25.GIF');
@@ -38,22 +65,56 @@ INSERT INTO `cat_prods` VALUES (31, 'categoria hija nueva', 'afdadfadf', 30, 'im
 INSERT INTO `cat_prods` VALUES (32, 'categoria padre 4', 'adfadfadf', 0, 'images/cat_prods/32.GIF');
 INSERT INTO `cat_prods` VALUES (33, 'categoria hija 4', 'adfadfaf', 32, '');
 
+-- --------------------------------------------------------
 
-DROP TABLE IF EXISTS `cat_vehicles`;
-CREATE TABLE IF NOT EXISTS `cat_vehicles` (
+-- 
+-- Estructura de tabla para la tabla `cat_servs`
+-- 
+
+CREATE TABLE `cat_servs` (
+  `id_cat_serv` int(11) NOT NULL auto_increment,
+  `name` varchar(50) NOT NULL default '',
+  `descrip` varchar(255) NOT NULL default '',
+  `id_parent_cat` int(11) NOT NULL default '0',
+  `path_photo` varchar(255) NOT NULL default '',
+  PRIMARY KEY  (`id_cat_serv`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
+
+-- 
+-- Volcar la base de datos para la tabla `cat_servs`
+-- 
+
+INSERT INTO `cat_servs` VALUES (3, 'Categor&iacute;a', '', 0, 'pics/no-image.gif');
+INSERT INTO `cat_servs` VALUES (2, 'adfasdfadfa', 'fdsadfsaf', 0, 'images/cat_servs/2.PNG');
+
+-- --------------------------------------------------------
+
+-- 
+-- Estructura de tabla para la tabla `cat_vehicles`
+-- 
+
+CREATE TABLE `cat_vehicles` (
   `id_cat_vehicle` int(11) unsigned NOT NULL auto_increment,
   `name` varchar(50) NOT NULL default '',
   `name_web` varchar(50) NOT NULL default '',
   `descrip` text NOT NULL,
   PRIMARY KEY  (`id_cat_vehicle`)
-) TYPE=MyISAM AUTO_INCREMENT=11 ;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=11 ;
 
-INSERT INTO `cat_vehicles` VALUES (1, 'mi vehículo', 'mi vehículo', ' sólo mío quién lo toque se las verá con la poli');
+-- 
+-- Volcar la base de datos para la tabla `cat_vehicles`
+-- 
+
+INSERT INTO `cat_vehicles` VALUES (1, 'mi veh?culo', 'mi veh?culo', ' s?lo m?o qui?n lo toque se las ver? con la poli');
 INSERT INTO `cat_vehicles` VALUES (10, 'Otra', 'ota', 'sdfafafasdf');
 
+-- --------------------------------------------------------
 
-DROP TABLE IF EXISTS `corps`;
-CREATE TABLE IF NOT EXISTS `corps` (
+-- 
+-- Estructura de tabla para la tabla `corps`
+-- 
+
+CREATE TABLE `corps` (
   `id_corp` int(11) NOT NULL auto_increment,
   `name` varchar(20) NOT NULL default '',
   `full_name` varchar(50) NOT NULL default '',
@@ -72,33 +133,48 @@ CREATE TABLE IF NOT EXISTS `corps` (
   `mobile_phone` varchar(15) NOT NULL default '',
   `notes` text NOT NULL,
   PRIMARY KEY  (`id_corp`)
-) TYPE=MyISAM AUTO_INCREMENT=4 ;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
 
+-- 
+-- Volcar la base de datos para la tabla `corps`
+-- 
 
-INSERT INTO `corps` VALUES (1, 'Resuival', 'Resuival', '76915846-L', 'Avd Portugal', 'Avd Portugal', 'Avd Portugal', 'www.resuival.es', 'elena@resuival.es', 'Salamanca', 'Salamanca', '37009', 'España', '923487512', '923487512', '659326789', 'Empresa de limpieza y transporte');
-INSERT INTO `corps` VALUES (2, 'Copiar-pegar', 'Copiar-Pegar Salamanca', '70952648', 'Alfonso IX', 'Alfonso IX', 'Alfonso IX', 'www.copiar-pegar.com', 'david@copiar-pegar.com', 'Salamanca', 'CyL', '37008', 'España', '923180512', '923180512', '656661478', 'Empresa de desarrollo basado en el software libre. Impulsadora de conocimientos mediante la enseñanza.');
+INSERT INTO `corps` VALUES (1, 'Resuival', 'Resuival', '76915846-L', 'Avd Portugal', 'Avd Portugal', 'Avd Portugal', 'www.resuival.es', 'elena@resuival.es', 'Salamanca', 'Salamanca', '37009', 'Espa&ntilde;a', '923487512', '923487512', '659326789', 'Empresa de limpieza y transporte');
+INSERT INTO `corps` VALUES (2, 'Copiar-pegar', 'Copiar-Pegar Salamanca', '70952648', 'Alfonso IX', 'Alfonso IX', 'Alfonso IX', 'www.copiar-pegar.com', 'david@copiar-pegar.com', 'Salamanca', 'CyL', '37008', 'Espa?a', '923180512', '923180512', '656661478', 'Empresa de desarrollo basado en el software libre. Impulsadora de conocimientos mediante la ense?anza.');
 INSERT INTO `corps` VALUES (3, 'Drag and Drop', 'Drag and Drop Salamanca', '', '', '', '', '', '', '', '', '', '', '', '', '', '');
 
+-- --------------------------------------------------------
 
-DROP TABLE IF EXISTS `drivers`;
-CREATE TABLE IF NOT EXISTS `drivers` (
+-- 
+-- Estructura de tabla para la tabla `drivers`
+-- 
+
+CREATE TABLE `drivers` (
   `id_driver` int(11) unsigned NOT NULL auto_increment,
   `id_emp` int(11) unsigned NOT NULL default '0',
   `id_vehicle` int(11) unsigned NOT NULL default '0',
   `date` date NOT NULL default '0000-00-00',
   PRIMARY KEY  (`id_driver`)
-) TYPE=MyISAM AUTO_INCREMENT=13 ;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=13 ;
 
-INSERT INTO `drivers` VALUES (1, 1, 206, '2005-12-30');
-INSERT INTO `drivers` VALUES (2, 1, 208, '0000-00-00');
-INSERT INTO `drivers` VALUES (12, 1, 206, '2005-02-02');
-INSERT INTO `drivers` VALUES (8, 2, 206, '0000-00-00');
-INSERT INTO `drivers` VALUES (5, 2, 206, '2005-01-31');
-INSERT INTO `drivers` VALUES (7, 1, 206, '2005-02-28');
+-- 
+-- Volcar la base de datos para la tabla `drivers`
+-- 
 
+INSERT INTO `drivers` VALUES (1, 1, 206, 0x323030352d31322d3330);
+INSERT INTO `drivers` VALUES (2, 1, 208, 0x303030302d30302d3030);
+INSERT INTO `drivers` VALUES (12, 1, 206, 0x323030352d30322d3032);
+INSERT INTO `drivers` VALUES (8, 2, 206, 0x303030302d30302d3030);
+INSERT INTO `drivers` VALUES (5, 2, 206, 0x323030352d30312d3331);
+INSERT INTO `drivers` VALUES (7, 1, 206, 0x323030352d30322d3238);
 
-DROP TABLE IF EXISTS `emps`;
-CREATE TABLE IF NOT EXISTS `emps` (
+-- --------------------------------------------------------
+
+-- 
+-- Estructura de tabla para la tabla `emps`
+-- 
+
+CREATE TABLE `emps` (
   `id_emp` int(11) NOT NULL auto_increment,
   `id_corp` int(11) NOT NULL default '0',
   `id_user` int(11) NOT NULL default '0',
@@ -117,59 +193,77 @@ CREATE TABLE IF NOT EXISTS `emps` (
   `country` varchar(50) NOT NULL default '',
   PRIMARY KEY  (`id_emp`),
   KEY `id_corp` (`id_corp`,`id_user`)
-) TYPE=MyISAM AUTO_INCREMENT=11 ;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=11 ;
 
+-- 
+-- Volcar la base de datos para la tabla `emps`
+-- 
 
-INSERT INTO `emps` VALUES (1, 1, 3, 'Elena', 'Resuival', 'Resuival', '0000-00-00', '923564871', '665123489', '923564871', 'elena@hotmail.com', 'Calle ancha 63', 'Salamanca', 'Salamanca', '37006', 'España');
-INSERT INTO `emps` VALUES (2, 1, 1, 'David', 'Vaquero', 'Santiago', '2004-10-25', '923247845', '646754340', '923247845', 'david@copiar-pegar.com', 'Músico Antonio José', 'Salamanca', 'Salamanca', '37004', 'España');
-INSERT INTO `emps` VALUES (3, 2, 1, 'David', 'Vaquero', 'Santiago', '2004-10-25', '923247845', '646754340', '923247845', 'david@copiar-pegar.com', 'Músico Antonio José', 'Salamanca', 'Salamanca', '37004', 'España');
-INSERT INTO `emps` VALUES (4, 2, 2, 'Daniel', 'González', 'Zaballos', '0000-00-00', '923654875', '646754340', '923654875', 'daniel@copiar-pegar.com', 'Calle larga 26', 'Doñinos', 'Salamanca', '37009', 'España');
-INSERT INTO `emps` VALUES (5, 2, 4, 'Rocío', 'Gutiérrez', 'González', '0000-00-00', '923268475', '665053440', '', 'rocio_gg15@hotmail.com', 'Camino de Miranda 38', 'Salamanca', 'CyL', '37008', 'España');
-INSERT INTO `emps` VALUES (10, 1, 5, 'Prueba', 'pru', 'pru', '0000-00-00', '', '', '', '', '', '', '', '', '');
+INSERT INTO `emps` VALUES (1, 1, 3, 'Elena', 'Resuival', 'Resuival', 0x303030302d30302d3030, '923564871', '665123489', '923564871', 'elena@hotmail.com', 'Calle ancha 63', 'Salamanca', 'Salamanca', '37006', 'Espa?a');
+INSERT INTO `emps` VALUES (2, 1, 1, 'David', 'Vaquero', 'Santiago', 0x323030342d31302d3235, '923247845', '646754340', '923247845', 'david@copiar-pegar.com', 'M?sico Antonio Jos', 'Salamanca', 'Salamanca', '37004', 'Espa?a');
+INSERT INTO `emps` VALUES (3, 2, 1, 'David', 'Vaquero', 'Santiago', 0x323030342d31302d3235, '923247845', '646754340', '923247845', 'david@copiar-pegar.com', 'M?sico Antonio Jos', 'Salamanca', 'Salamanca', '37004', 'Espa?a');
+INSERT INTO `emps` VALUES (4, 2, 2, 'Daniel', 'Gonz?lez', 'Zaballos', 0x303030302d30302d3030, '923654875', '646754340', '923654875', 'daniel@copiar-pegar.com', 'Calle larga 26', 'Do?inos', 'Salamanca', '37009', 'Espa?a');
+INSERT INTO `emps` VALUES (5, 2, 4, 'Roc', 'Guti?rrez', 'Gonz?lez', 0x303030302d30302d3030, '923268475', '665053440', '', 'rocio_gg15@hotmail.com', 'Camino de Miranda 38', 'Salamanca', 'CyL', '37008', 'Espa?a');
+INSERT INTO `emps` VALUES (10, 1, 5, 'Prueba', 'pru', 'pru', 0x303030302d30302d3030, '', '', '', '', '', '', '', '', '');
 
+-- --------------------------------------------------------
 
+-- 
+-- Estructura de tabla para la tabla `group_users`
+-- 
 
-DROP TABLE IF EXISTS `group_users`;
-CREATE TABLE IF NOT EXISTS `group_users` (
+CREATE TABLE `group_users` (
   `id_group_user` int(11) unsigned NOT NULL auto_increment,
   `id_group` int(11) unsigned NOT NULL default '0',
   `id_user` int(11) unsigned NOT NULL default '0',
   `up` date NOT NULL default '0000-00-00',
   PRIMARY KEY  (`id_group_user`)
-) TYPE=MyISAM AUTO_INCREMENT=60 ;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=60 ;
 
+-- 
+-- Volcar la base de datos para la tabla `group_users`
+-- 
 
-INSERT INTO `group_users` VALUES (1, 1, 1, '2004-12-12');
-INSERT INTO `group_users` VALUES (45, 2, 1, '0000-00-00');
-INSERT INTO `group_users` VALUES (46, 3, 1, '0000-00-00');
-INSERT INTO `group_users` VALUES (47, 4, 1, '0000-00-00');
-INSERT INTO `group_users` VALUES (48, 5, 1, '0000-00-00');
-INSERT INTO `group_users` VALUES (49, 6, 1, '0000-00-00');
-INSERT INTO `group_users` VALUES (50, 7, 1, '0000-00-00');
-INSERT INTO `group_users` VALUES (51, 8, 1, '0000-00-00');
-INSERT INTO `group_users` VALUES (52, 9, 1, '0000-00-00');
-INSERT INTO `group_users` VALUES (53, 10, 1, '0000-00-00');
-INSERT INTO `group_users` VALUES (54, 11, 1, '0000-00-00');
-INSERT INTO `group_users` VALUES (55, 12, 1, '0000-00-00');
-INSERT INTO `group_users` VALUES (56, 13, 1, '0000-00-00');
-INSERT INTO `group_users` VALUES (57, 1, 2, '0000-00-00');
-INSERT INTO `group_users` VALUES (58, 2, 3, '0000-00-00');
-INSERT INTO `group_users` VALUES (59, 9, 4, '0000-00-00');
+INSERT INTO `group_users` VALUES (1, 1, 1, 0x323030342d31322d3132);
+INSERT INTO `group_users` VALUES (45, 2, 1, 0x303030302d30302d3030);
+INSERT INTO `group_users` VALUES (46, 3, 1, 0x303030302d30302d3030);
+INSERT INTO `group_users` VALUES (47, 4, 1, 0x303030302d30302d3030);
+INSERT INTO `group_users` VALUES (48, 5, 1, 0x303030302d30302d3030);
+INSERT INTO `group_users` VALUES (49, 6, 1, 0x303030302d30302d3030);
+INSERT INTO `group_users` VALUES (50, 7, 1, 0x303030302d30302d3030);
+INSERT INTO `group_users` VALUES (51, 8, 1, 0x303030302d30302d3030);
+INSERT INTO `group_users` VALUES (52, 9, 1, 0x303030302d30302d3030);
+INSERT INTO `group_users` VALUES (53, 10, 1, 0x303030302d30302d3030);
+INSERT INTO `group_users` VALUES (54, 11, 1, 0x303030302d30302d3030);
+INSERT INTO `group_users` VALUES (55, 12, 1, 0x303030302d30302d3030);
+INSERT INTO `group_users` VALUES (56, 13, 1, 0x303030302d30302d3030);
+INSERT INTO `group_users` VALUES (57, 1, 2, 0x303030302d30302d3030);
+INSERT INTO `group_users` VALUES (58, 2, 3, 0x303030302d30302d3030);
+INSERT INTO `group_users` VALUES (59, 9, 4, 0x303030302d30302d3030);
 
-DROP TABLE IF EXISTS `groups`;
-CREATE TABLE IF NOT EXISTS `groups` (
+-- --------------------------------------------------------
+
+-- 
+-- Estructura de tabla para la tabla `groups`
+-- 
+
+CREATE TABLE `groups` (
   `id_group` int(11) unsigned NOT NULL auto_increment,
   `name` varchar(20) NOT NULL default '',
   `name_web` varchar(100) NOT NULL default '',
   `descrip` text NOT NULL,
   PRIMARY KEY  (`id_group`)
-) TYPE=MyISAM AUTO_INCREMENT=14 ;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=14 ;
+
+-- 
+-- Volcar la base de datos para la tabla `groups`
+-- 
 
 INSERT INTO `groups` VALUES (1, 'superadmin', 'Super Administrador', 'Persona con capacidad de acceso a todas las herremientas de la aplicacion');
-INSERT INTO `groups` VALUES (2, 'admin', 'Administrador', 'Personal con permiso de acceso en todos los módulos internos de la aplicación con pequeñas restricciones');
+INSERT INTO `groups` VALUES (2, 'admin', 'Administrador', 'Personal con permiso de acceso en todos los m?dulos internos de la aplicaci?n con peque?as restricciones');
 INSERT INTO `groups` VALUES (3, 'conductor', 'Conductores', '');
 INSERT INTO `groups` VALUES (4, 'user', 'Usuario', '');
-INSERT INTO `groups` VALUES (5, 'Grupo de Prácticas', 'Grupo de Pr&aacute;cticas', 'Personal de prácticas en empresa que tendrán acceso a la aplicación');
+INSERT INTO `groups` VALUES (5, 'Grupo de Pr?cticas', 'Grupo de Pr&aacute;cticas', 'Personal de pr?cticas en empresa que tendr?n acceso a la aplicaci?n');
 INSERT INTO `groups` VALUES (6, 'contable', 'Contables', '');
 INSERT INTO `groups` VALUES (7, 'limpieza', 'Limpieza', '');
 INSERT INTO `groups` VALUES (8, 'root', 'Root', '');
@@ -179,9 +273,13 @@ INSERT INTO `groups` VALUES (11, 'guest', 'Invitado', '');
 INSERT INTO `groups` VALUES (12, 'gerente', 'Gerente', '');
 INSERT INTO `groups` VALUES (13, 'administrativo', 'Administrativo', '');
 
+-- --------------------------------------------------------
 
-DROP TABLE IF EXISTS `holydays`;
-CREATE TABLE IF NOT EXISTS `holydays` (
+-- 
+-- Estructura de tabla para la tabla `holydays`
+-- 
+
+CREATE TABLE `holydays` (
   `id_holy` int(11) NOT NULL auto_increment,
   `id_emp` int(11) NOT NULL default '0',
   `gone` date NOT NULL default '0000-00-00',
@@ -190,17 +288,24 @@ CREATE TABLE IF NOT EXISTS `holydays` (
   `descrip` text NOT NULL,
   PRIMARY KEY  (`id_holy`),
   KEY `id_emp` (`id_emp`)
-) TYPE=MyISAM AUTO_INCREMENT=9 ;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=10 ;
 
+-- 
+-- Volcar la base de datos para la tabla `holydays`
+-- 
 
-INSERT INTO `holydays` VALUES (1, 1, '2004-08-06', '2004-08-19', 0, 'sdasdfasdfasdfa');
-INSERT INTO `holydays` VALUES (3, 0, '0000-00-00', '2004-12-07', 2, '');
-INSERT INTO `holydays` VALUES (8, 0, '0000-00-00', '0000-00-00', 2, '');
+INSERT INTO `holydays` VALUES (1, 1, 0x323030342d30382d3036, 0x323030342d30382d3139, 0, 'sdasdfar');
+INSERT INTO `holydays` VALUES (3, 0, 0x303030302d30302d3030, 0x323030342d31322d3037, 2, '');
+INSERT INTO `holydays` VALUES (8, 0, 0x303030302d30302d3030, 0x303030302d30302d3030, 2, '');
+INSERT INTO `holydays` VALUES (9, 2, 0x303030302d30302d3030, 0x303030302d30302d3030, 2, '');
 
+-- --------------------------------------------------------
 
+-- 
+-- Estructura de tabla para la tabla `ins`
+-- 
 
-DROP TABLE IF EXISTS `ins`;
-CREATE TABLE IF NOT EXISTS `ins` (
+CREATE TABLE `ins` (
   `id_in` int(11) unsigned NOT NULL default '0',
   `id_vendor` int(11) unsigned NOT NULL default '0',
   `id_corp` int(11) unsigned NOT NULL default '0',
@@ -210,25 +315,42 @@ CREATE TABLE IF NOT EXISTS `ins` (
   `re` int(11) NOT NULL default '0',
   `total_value` double NOT NULL default '0',
   PRIMARY KEY  (`id_in`)
-) TYPE=MyISAM;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+-- 
+-- Volcar la base de datos para la tabla `ins`
+-- 
 
 
+-- --------------------------------------------------------
 
-DROP TABLE IF EXISTS `laborers`;
-CREATE TABLE IF NOT EXISTS `laborers` (
+-- 
+-- Estructura de tabla para la tabla `laborers`
+-- 
+
+CREATE TABLE `laborers` (
   `id_laborer` int(11) unsigned NOT NULL auto_increment,
   `id_emp` int(11) unsigned NOT NULL default '0',
   `id_vehicle` int(11) unsigned NOT NULL default '0',
   `date` date NOT NULL default '0000-00-00',
   PRIMARY KEY  (`id_laborer`)
-) TYPE=MyISAM AUTO_INCREMENT=4 ;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=6 ;
 
+-- 
+-- Volcar la base de datos para la tabla `laborers`
+-- 
 
-INSERT INTO `laborers` VALUES (3, 1, 206, '2005-02-02');
+INSERT INTO `laborers` VALUES (3, 1, 206, 0x323030352d30322d3032);
+INSERT INTO `laborers` VALUES (4, 2, 206, 0x303030302d30302d3030);
+INSERT INTO `laborers` VALUES (5, 2, 208, 0x303030302d30302d3030);
 
+-- --------------------------------------------------------
 
-DROP TABLE IF EXISTS `log_methods`;
-CREATE TABLE IF NOT EXISTS `log_methods` (
+-- 
+-- Estructura de tabla para la tabla `log_methods`
+-- 
+
+CREATE TABLE `log_methods` (
   `id_log_method` int(11) unsigned NOT NULL auto_increment,
   `id_user` int(11) unsigned NOT NULL default '0',
   `id_method` int(11) unsigned NOT NULL default '0',
@@ -237,15 +359,21 @@ CREATE TABLE IF NOT EXISTS `log_methods` (
   `sql_sentence` text NOT NULL,
   `afected` tinyint(3) unsigned NOT NULL default '0',
   PRIMARY KEY  (`id_log_method`)
-) TYPE=MyISAM AUTO_INCREMENT=2 ;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
 
+-- 
+-- Volcar la base de datos para la tabla `log_methods`
+-- 
 
 INSERT INTO `log_methods` VALUES (1, 1, 1, '0000-00-00 00:00:00', 2, '', 0);
 
+-- --------------------------------------------------------
 
+-- 
+-- Estructura de tabla para la tabla `log_sessions`
+-- 
 
-DROP TABLE IF EXISTS `log_sessions`;
-CREATE TABLE IF NOT EXISTS `log_sessions` (
+CREATE TABLE `log_sessions` (
   `id_log_session` int(11) unsigned NOT NULL auto_increment,
   `id_session` int(11) unsigned NOT NULL default '0',
   `date_in` datetime NOT NULL default '0000-00-00 00:00:00',
@@ -255,22 +383,32 @@ CREATE TABLE IF NOT EXISTS `log_sessions` (
   `id_user` int(11) unsigned NOT NULL default '0',
   `country` varchar(20) NOT NULL default '',
   PRIMARY KEY  (`id_log_session`)
-) TYPE=MyISAM AUTO_INCREMENT=2 ;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
 
+-- 
+-- Volcar la base de datos para la tabla `log_sessions`
+-- 
 
-INSERT INTO `log_sessions` VALUES (1, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '00:00:00', '127.0.0.1', 1, 'españa');
+INSERT INTO `log_sessions` VALUES (1, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 0x30303a30303a3030, '127.0.0.1', 1, 'espa?a');
 
+-- --------------------------------------------------------
 
-DROP TABLE IF EXISTS `methods`;
-CREATE TABLE IF NOT EXISTS `methods` (
+-- 
+-- Estructura de tabla para la tabla `methods`
+-- 
+
+CREATE TABLE `methods` (
   `id_method` int(11) unsigned NOT NULL auto_increment,
   `name` varchar(20) NOT NULL default '',
   `name_web` varchar(50) NOT NULL default '',
   `id_module` int(11) unsigned NOT NULL default '0',
   `id_type_method` tinyint(3) NOT NULL default '0',
   PRIMARY KEY  (`id_method`)
-) TYPE=MyISAM AUTO_INCREMENT=58 ;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=67 ;
 
+-- 
+-- Volcar la base de datos para la tabla `methods`
+-- 
 
 INSERT INTO `methods` VALUES (1, 'add', 'A&ntilde;adir', 1, 1);
 INSERT INTO `methods` VALUES (2, 'modify', 'Modificar', 1, 1);
@@ -304,14 +442,23 @@ INSERT INTO `methods` VALUES (32, 'list', 'Listar', 9, 0);
 INSERT INTO `methods` VALUES (33, 'view', 'Ver', 9, 0);
 INSERT INTO `methods` VALUES (34, 'select', 'Seleccionar', 7, 1);
 INSERT INTO `methods` VALUES (35, 'list', 'Listar', 20, 0);
-INSERT INTO `methods` VALUES (36, 'add', 'Añadir', 20, 0);
+INSERT INTO `methods` VALUES (36, 'add', 'A?adir', 20, 0);
 INSERT INTO `methods` VALUES (37, 'modify', 'Modificar', 20, 0);
 INSERT INTO `methods` VALUES (38, 'delete', 'Borrar', 20, 0);
 INSERT INTO `methods` VALUES (40, 'list', 'Listar', 22, 0);
+INSERT INTO `methods` VALUES (58, 'list', 'Listar', 37, 0);
+INSERT INTO `methods` VALUES (59, 'view', 'Ver', 37, 0);
+INSERT INTO `methods` VALUES (60, 'add', 'AÃ±adir', 37, 0);
+INSERT INTO `methods` VALUES (61, 'modify', 'Modificar', 37, 0);
+INSERT INTO `methods` VALUES (62, 'delete', 'Borrar', 37, 0);
 
+-- --------------------------------------------------------
 
-DROP TABLE IF EXISTS `modules`;
-CREATE TABLE IF NOT EXISTS `modules` (
+-- 
+-- Estructura de tabla para la tabla `modules`
+-- 
+
+CREATE TABLE `modules` (
   `id_module` int(11) unsigned NOT NULL auto_increment,
   `name` varchar(50) NOT NULL default '',
   `name_web` varchar(50) NOT NULL default '',
@@ -322,8 +469,11 @@ CREATE TABLE IF NOT EXISTS `modules` (
   `order` int(10) unsigned NOT NULL default '0',
   PRIMARY KEY  (`id_module`),
   UNIQUE KEY `nombre` (`name`)
-) TYPE=MyISAM AUTO_INCREMENT=35 ;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=42 ;
 
+-- 
+-- Volcar la base de datos para la tabla `modules`
+-- 
 
 INSERT INTO `modules` VALUES (1, 'users', 'Usuarios', 'index.php?module=users', 1, 0, 18, 11);
 INSERT INTO `modules` VALUES (2, 'news', 'Noticias', 'index.php?module=news', 1, 1, 0, 1);
@@ -332,28 +482,35 @@ INSERT INTO `modules` VALUES (4, 'corps', 'Empresas', 'index.php?module=corps', 
 INSERT INTO `modules` VALUES (5, 'groups', 'Grupos', 'index.php?module=groups', 1, 0, 18, 12);
 INSERT INTO `modules` VALUES (6, 'emps', 'Empleados', 'index.php?module=emps', 1, 0, 34, 33);
 INSERT INTO `modules` VALUES (7, 'error', 'Errores', 'index.php?module=error', 0, 0, 0, 0);
-INSERT INTO `modules` VALUES (8, 'modules', 'Módulos', 'index.php?module=modules', 1, 0, 29, 21);
-INSERT INTO `modules` VALUES (9, 'cat_emps', 'Categorías de Empleados', 'index.php?module=cat_emps', 1, 0, 6, 34);
-INSERT INTO `modules` VALUES (10, 'holydays', 'Altas/Bajas', 'index.php?module=holydays', 1, 0, 34, 35);
-INSERT INTO `modules` VALUES (11, 'products', 'Productos', 'index.php?module=products', 1, 1, 34, 2);
-INSERT INTO `modules` VALUES (12, 'services', 'Servicios', 'index.php?module=services', 1, 1, 34, 3);
-INSERT INTO `modules` VALUES (13, 'vehicles_gestion', 'Gestión de vehículos', '', 1, 0, -2, 40);
-INSERT INTO `modules` VALUES (14, 'cat_vehicles', 'Categorías de vehículos', 'index.php?module=cat_vehicles', 1, 0, 19, 42);
+INSERT INTO `modules` VALUES (8, 'modules', 'M&oacute;dulos', 'index.php?module=modules', 1, 0, 29, 21);
+INSERT INTO `modules` VALUES (9, 'cat_emps', 'Categor&iacute;as de Empleados', 'index.php?module=cat_emps', 1, 0, 6, 34);
+INSERT INTO `modules` VALUES (10, 'holydays', 'Altas/Bajas', 'index.php?module=holydays', 0, 0, 34, 35);
+INSERT INTO `modules` VALUES (11, 'products', 'Productos', 'index.php?module=products', 1, 1, 35, 2);
+INSERT INTO `modules` VALUES (12, 'services', 'Servicios', 'index.php?module=services', 1, 1, 36, 3);
+INSERT INTO `modules` VALUES (13, 'vehicles_gestion', 'Gesti&oacute;n de veh&iacute;culos', '', 1, 0, -2, 40);
+INSERT INTO `modules` VALUES (14, 'cat_vehicles', 'Categor&iacute;as de veh&iacute;culos', 'index.php?module=cat_vehicles', 1, 0, 19, 42);
 INSERT INTO `modules` VALUES (15, 'drivers', 'Conductores', 'index.php?module=drivers', 1, 0, 13, 43);
 INSERT INTO `modules` VALUES (16, 'contact', 'Contacto', 'index.php?module=contact', 1, 1, 0, 4);
 INSERT INTO `modules` VALUES (17, 'sessions', 'Sesiones', 'index.php?module=sessions', 1, 0, 18, 13);
-INSERT INTO `modules` VALUES (18, 'access_gestion', 'Gestión de acceso', '', 1, 0, -2, 10);
-INSERT INTO `modules` VALUES (19, 'vehicles', 'Vehículos de la empresa', 'index.php?module=vehicles', 1, 0, 13, 41);
-INSERT INTO `modules` VALUES (29, 'modules_gestion', 'Gestión de módulos', '', 1, 0, -2, 20);
-INSERT INTO `modules` VALUES (30, 'cat_prods', 'Categorí­as de Productos', 'index.php?module=cat_prods', 1, 0, 11, 0);
+INSERT INTO `modules` VALUES (18, 'access_gestion', 'Acceso', '', 1, 0, -2, 10);
+INSERT INTO `modules` VALUES (19, 'vehicles', 'Veh&iacute;culos de la empresa', 'index.php?module=vehicles', 1, 0, 13, 41);
+INSERT INTO `modules` VALUES (29, 'modules_gestion', 'MÃ³dulos', '', 1, 1, -2, 20);
+INSERT INTO `modules` VALUES (30, 'cat_prods', 'Categor&iacute;as de Productos', 'index.php?module=cat_prods', 1, 0, 11, 0);
 INSERT INTO `modules` VALUES (31, 'laborers', 'Peones de carga', 'index.php?module=laborers', 1, 0, 13, 44);
-INSERT INTO `modules` VALUES (32, 'stock_gestion', 'Gestión de stock', '', 1, 0, -2, 50);
+INSERT INTO `modules` VALUES (32, 'stock_gestion', 'Gesti&oacute;n de stock', '', 1, 0, -2, 50);
 INSERT INTO `modules` VALUES (33, 'vendors', 'Proveedores', 'index.php?module=vendors', 1, 0, 32, 51);
-INSERT INTO `modules` VALUES (34, 'corps_gestion', 'Gestión de Empresas', '', 1, 0, -2, 30);
+INSERT INTO `modules` VALUES (34, 'corps_gestion', 'Empresas', '', 1, 0, -2, 30);
+INSERT INTO `modules` VALUES (35, 'products_gestion', 'Ges. Productos', '', 1, 0, -2, 0);
+INSERT INTO `modules` VALUES (36, 'services_gestion', 'Ges. Servicios', '', 1, 0, -2, 0);
+INSERT INTO `modules` VALUES (37, 'cat_servs', 'Categor&iacute;as de Servicios', 'index.php?module=cat_servs', 1, 0, 12, 0);
 
+-- --------------------------------------------------------
 
-DROP TABLE IF EXISTS `out_lines`;
-CREATE TABLE IF NOT EXISTS `out_lines` (
+-- 
+-- Estructura de tabla para la tabla `out_lines`
+-- 
+
+CREATE TABLE `out_lines` (
   `id_out_line` int(11) unsigned NOT NULL default '0',
   `id_out` int(11) unsigned NOT NULL default '0',
   `id_prod` int(11) unsigned NOT NULL default '0',
@@ -363,10 +520,20 @@ CREATE TABLE IF NOT EXISTS `out_lines` (
   `re` int(10) unsigned NOT NULL default '0',
   `subtotal` double unsigned NOT NULL default '0',
   PRIMARY KEY  (`id_out_line`)
-) TYPE=MyISAM;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
-DROP TABLE IF EXISTS `outs`;
-CREATE TABLE IF NOT EXISTS `outs` (
+-- 
+-- Volcar la base de datos para la tabla `out_lines`
+-- 
+
+
+-- --------------------------------------------------------
+
+-- 
+-- Estructura de tabla para la tabla `outs`
+-- 
+
+CREATE TABLE `outs` (
   `id_out` int(11) unsigned NOT NULL default '0',
   `id_client` int(11) unsigned NOT NULL default '0',
   `id_corp` mediumint(11) unsigned NOT NULL default '0',
@@ -376,36 +543,53 @@ CREATE TABLE IF NOT EXISTS `outs` (
   `re` int(11) NOT NULL default '0',
   `total_value` double NOT NULL default '0',
   PRIMARY KEY  (`id_out`)
-) TYPE=MyISAM;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+-- 
+-- Volcar la base de datos para la tabla `outs`
+-- 
 
 
+-- --------------------------------------------------------
 
+-- 
+-- Estructura de tabla para la tabla `per_group_methods`
+-- 
 
-DROP TABLE IF EXISTS `per_group_methods`;
-CREATE TABLE IF NOT EXISTS `per_group_methods` (
+CREATE TABLE `per_group_methods` (
   `id_per_group_method` int(11) unsigned NOT NULL auto_increment,
   `id_group` int(11) unsigned NOT NULL default '0',
   `id_method` int(11) unsigned NOT NULL default '0',
   `per` tinyint(3) unsigned NOT NULL default '0',
   PRIMARY KEY  (`id_per_group_method`)
-) TYPE=MyISAM AUTO_INCREMENT=5 ;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
 
+-- 
+-- Volcar la base de datos para la tabla `per_group_methods`
+-- 
 
 INSERT INTO `per_group_methods` VALUES (1, 9, 2, 1);
 INSERT INTO `per_group_methods` VALUES (2, 9, 5, 1);
 INSERT INTO `per_group_methods` VALUES (3, 9, 20, 1);
 INSERT INTO `per_group_methods` VALUES (4, 9, 23, 1);
 
+-- --------------------------------------------------------
 
-DROP TABLE IF EXISTS `per_group_modules`;
-CREATE TABLE IF NOT EXISTS `per_group_modules` (
+-- 
+-- Estructura de tabla para la tabla `per_group_modules`
+-- 
+
+CREATE TABLE `per_group_modules` (
   `id_per_group_module` int(10) unsigned NOT NULL auto_increment,
   `id_group` int(10) unsigned NOT NULL default '0',
   `id_module` int(10) unsigned NOT NULL default '0',
   `per` tinyint(3) unsigned NOT NULL default '0',
   PRIMARY KEY  (`id_per_group_module`)
-) TYPE=MyISAM AUTO_INCREMENT=90 ;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=90 ;
 
+-- 
+-- Volcar la base de datos para la tabla `per_group_modules`
+-- 
 
 INSERT INTO `per_group_modules` VALUES (1, 9, 1, 1);
 INSERT INTO `per_group_modules` VALUES (68, 9, 6, 1);
@@ -431,29 +615,43 @@ INSERT INTO `per_group_modules` VALUES (87, 2, 20, 1);
 INSERT INTO `per_group_modules` VALUES (88, 2, 21, 1);
 INSERT INTO `per_group_modules` VALUES (89, 2, 22, 1);
 
+-- --------------------------------------------------------
 
-DROP TABLE IF EXISTS `per_user_methods`;
-CREATE TABLE IF NOT EXISTS `per_user_methods` (
+-- 
+-- Estructura de tabla para la tabla `per_user_methods`
+-- 
+
+CREATE TABLE `per_user_methods` (
   `id_per_user_method` int(11) unsigned NOT NULL auto_increment,
   `id_user` int(11) unsigned NOT NULL default '0',
   `id_method` int(11) unsigned NOT NULL default '0',
   `per` tinyint(3) unsigned NOT NULL default '0',
   PRIMARY KEY  (`id_per_user_method`)
-) TYPE=MyISAM AUTO_INCREMENT=2 ;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
 
+-- 
+-- Volcar la base de datos para la tabla `per_user_methods`
+-- 
 
 INSERT INTO `per_user_methods` VALUES (1, 4, 17, 1);
 
+-- --------------------------------------------------------
 
-DROP TABLE IF EXISTS `per_user_modules`;
-CREATE TABLE IF NOT EXISTS `per_user_modules` (
+-- 
+-- Estructura de tabla para la tabla `per_user_modules`
+-- 
+
+CREATE TABLE `per_user_modules` (
   `id_per_user_module` int(10) unsigned NOT NULL auto_increment,
   `id_user` int(10) unsigned NOT NULL default '0',
   `id_module` int(10) unsigned NOT NULL default '0',
   `per` tinyint(3) unsigned NOT NULL default '0',
   PRIMARY KEY  (`id_per_user_module`)
-) TYPE=MyISAM AUTO_INCREMENT=88 ;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=88 ;
 
+-- 
+-- Volcar la base de datos para la tabla `per_user_modules`
+-- 
 
 INSERT INTO `per_user_modules` VALUES (67, 1, 7, 1);
 INSERT INTO `per_user_modules` VALUES (68, 2, 7, 1);
@@ -461,50 +659,73 @@ INSERT INTO `per_user_modules` VALUES (72, 4, 5, 1);
 INSERT INTO `per_user_modules` VALUES (74, 3, 7, 1);
 INSERT INTO `per_user_modules` VALUES (87, 4, 7, 1);
 
+-- --------------------------------------------------------
 
-DROP TABLE IF EXISTS `products`;
-CREATE TABLE IF NOT EXISTS `products` (
+-- 
+-- Estructura de tabla para la tabla `products`
+-- 
+
+CREATE TABLE `products` (
   `id_product` int(11) NOT NULL auto_increment,
   `id_corp` int(11) NOT NULL default '0',
   `name` varchar(50) NOT NULL default '',
   `name_web` varchar(50) NOT NULL default '',
   `path_photo` varchar(255) NOT NULL default '',
-  `pvp` decimal(10,0) NOT NULL default '0',
-  `tax` decimal(10,0) NOT NULL default '0',
-  `pvp_tax` decimal(10,0) NOT NULL default '0',
-  `minimun_stock` decimal(10,0) NOT NULL default '0',
+  `pvp` decimal(10,2) NOT NULL default '0.00',
+  `tax` decimal(10,2) NOT NULL default '0.00',
+  `pvp_tax` decimal(10,2) NOT NULL default '0.00',
+  `minimun_stock` decimal(10,2) NOT NULL default '0.00',
   PRIMARY KEY  (`id_product`),
   KEY `id_corp` (`id_corp`)
-) TYPE=MyISAM AUTO_INCREMENT=14 ;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=16 ;
 
+-- 
+-- Volcar la base de datos para la tabla `products`
+-- 
 
-INSERT INTO `products` VALUES (6, 1, 'dasfaafd', 'adafdafd', 'images/products/6.GIF', 33, 3333, 3333, 0);
-INSERT INTO `products` VALUES (5, 1, 'wer', 'wer', 'images/products/5.JPG', 3, 3, 3, 0);
-INSERT INTO `products` VALUES (9, 1, 'Producto3', 'producto 3', 'images/products/9.GIF', 3, 3, 3, 0);
-INSERT INTO `products` VALUES (12, 1, 'adfadfdddd', 'adfsafaffd', 'images/products/12.JPG', 44, 4, 44, 0);
-INSERT INTO `products` VALUES (13, 1, 'adfad', 'afadf', 'images/products/13.JPG', 3, 3, 3, 0);
+INSERT INTO `products` VALUES (6, 1, 'dasfaafd', 'adafdafd', 'images/products/6.GIF', 33.00, 3333.00, 3333.00, 0.00);
+INSERT INTO `products` VALUES (5, 1, 'wer', 'wer', 'images/products/5.JPG', 3.00, 3.00, 3.00, 0.00);
+INSERT INTO `products` VALUES (9, 1, 'Producto3', 'producto 3', 'images/products/9.GIF', 3.00, 3.00, 3.00, 0.00);
+INSERT INTO `products` VALUES (12, 1, 'adfadfdddd', 'adfsafaffd', 'images/products/12.JPG', 44.00, 4.00, 44.00, 0.00);
+INSERT INTO `products` VALUES (13, 1, 'adfad', 'afadf', 'images/products/13.JPG', 3.00, 3.00, 3.00, 0.00);
 
+-- --------------------------------------------------------
 
-DROP TABLE IF EXISTS `refs`;
-CREATE TABLE IF NOT EXISTS `refs` (
+-- 
+-- Estructura de tabla para la tabla `refs`
+-- 
+
+CREATE TABLE `refs` (
   `id_ref` int(11) unsigned NOT NULL default '0',
   `id_prod` int(11) unsigned NOT NULL default '0',
   `id_vendor` int(11) unsigned NOT NULL default '0',
   `name` varchar(20) NOT NULL default '',
   `last_pvd` int(11) unsigned NOT NULL default '0',
   PRIMARY KEY  (`id_ref`)
-) TYPE=MyISAM;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+-- 
+-- Volcar la base de datos para la tabla `refs`
+-- 
 
 
-DROP TABLE IF EXISTS `rel_emps_cats`;
-CREATE TABLE IF NOT EXISTS `rel_emps_cats` (
+-- --------------------------------------------------------
+
+-- 
+-- Estructura de tabla para la tabla `rel_emps_cats`
+-- 
+
+CREATE TABLE `rel_emps_cats` (
   `id_rel_emp_cat` int(11) NOT NULL auto_increment,
   `id_emp` int(11) NOT NULL default '0',
   `id_cat_emp` int(11) NOT NULL default '0',
   PRIMARY KEY  (`id_rel_emp_cat`),
   KEY `id_emp` (`id_emp`,`id_cat_emp`)
-) TYPE=MyISAM AUTO_INCREMENT=16 ;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=16 ;
 
+-- 
+-- Volcar la base de datos para la tabla `rel_emps_cats`
+-- 
 
 INSERT INTO `rel_emps_cats` VALUES (6, 7, 1);
 INSERT INTO `rel_emps_cats` VALUES (9, 9, 1);
@@ -515,16 +736,23 @@ INSERT INTO `rel_emps_cats` VALUES (13, 1, 7);
 INSERT INTO `rel_emps_cats` VALUES (14, 2, 7);
 INSERT INTO `rel_emps_cats` VALUES (15, 10, 7);
 
+-- --------------------------------------------------------
 
-DROP TABLE IF EXISTS `rel_prods_cats`;
-CREATE TABLE IF NOT EXISTS `rel_prods_cats` (
+-- 
+-- Estructura de tabla para la tabla `rel_prods_cats`
+-- 
+
+CREATE TABLE `rel_prods_cats` (
   `id_rel_prod_cat` int(11) NOT NULL auto_increment,
   `id_product` int(11) NOT NULL default '0',
   `id_cat_prod` int(11) NOT NULL default '0',
   PRIMARY KEY  (`id_rel_prod_cat`),
   KEY `id_prod` (`id_product`,`id_cat_prod`)
-) TYPE=MyISAM AUTO_INCREMENT=22 ;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=26 ;
 
+-- 
+-- Volcar la base de datos para la tabla `rel_prods_cats`
+-- 
 
 INSERT INTO `rel_prods_cats` VALUES (16, 12, 24);
 INSERT INTO `rel_prods_cats` VALUES (17, 12, 26);
@@ -532,16 +760,48 @@ INSERT INTO `rel_prods_cats` VALUES (18, 12, 27);
 INSERT INTO `rel_prods_cats` VALUES (19, 13, 31);
 INSERT INTO `rel_prods_cats` VALUES (20, 13, 32);
 INSERT INTO `rel_prods_cats` VALUES (21, 13, 33);
+INSERT INTO `rel_prods_cats` VALUES (22, 6, 24);
+INSERT INTO `rel_prods_cats` VALUES (23, 6, 25);
+INSERT INTO `rel_prods_cats` VALUES (24, 6, 26);
+INSERT INTO `rel_prods_cats` VALUES (25, 6, 27);
 
+-- --------------------------------------------------------
 
-DROP TABLE IF EXISTS `rel_vehicles_cats`;
-CREATE TABLE IF NOT EXISTS `rel_vehicles_cats` (
+-- 
+-- Estructura de tabla para la tabla `rel_servs_cats`
+-- 
+
+CREATE TABLE `rel_servs_cats` (
+  `id_rel_serv_cat` int(11) NOT NULL auto_increment,
+  `id_service` int(11) NOT NULL default '0',
+  `id_cat_serv` int(11) NOT NULL default '0',
+  PRIMARY KEY  (`id_rel_serv_cat`),
+  KEY `id_service` (`id_service`,`id_cat_serv`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 PACK_KEYS=0 AUTO_INCREMENT=4 ;
+
+-- 
+-- Volcar la base de datos para la tabla `rel_servs_cats`
+-- 
+
+INSERT INTO `rel_servs_cats` VALUES (2, 2, 2);
+INSERT INTO `rel_servs_cats` VALUES (3, 4, 3);
+
+-- --------------------------------------------------------
+
+-- 
+-- Estructura de tabla para la tabla `rel_vehicles_cats`
+-- 
+
+CREATE TABLE `rel_vehicles_cats` (
   `id_rel_vehicle_cat` int(11) unsigned NOT NULL auto_increment,
   `id_vehicle` int(11) unsigned NOT NULL default '0',
   `id_cat_vehicle` int(11) unsigned NOT NULL default '0',
   PRIMARY KEY  (`id_rel_vehicle_cat`)
-) TYPE=MyISAM AUTO_INCREMENT=52 ;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=54 ;
 
+-- 
+-- Volcar la base de datos para la tabla `rel_vehicles_cats`
+-- 
 
 INSERT INTO `rel_vehicles_cats` VALUES (46, 205, 1);
 INSERT INTO `rel_vehicles_cats` VALUES (7, 2, 10);
@@ -559,47 +819,103 @@ INSERT INTO `rel_vehicles_cats` VALUES (49, 208, 1);
 INSERT INTO `rel_vehicles_cats` VALUES (50, 209, 1);
 INSERT INTO `rel_vehicles_cats` VALUES (51, 210, 1);
 
+-- --------------------------------------------------------
 
-DROP TABLE IF EXISTS `sessions`;
-CREATE TABLE IF NOT EXISTS `sessions` (
+-- 
+-- Estructura de tabla para la tabla `services`
+-- 
+
+CREATE TABLE `services` (
+  `id_service` int(11) NOT NULL auto_increment,
+  `id_corp` int(11) NOT NULL default '0',
+  `name` varchar(50) NOT NULL default '',
+  `name_web` varchar(50) NOT NULL default '',
+  `path_photo` varchar(255) NOT NULL default '',
+  `pvp` decimal(10,0) NOT NULL default '0',
+  `tax` decimal(10,0) NOT NULL default '0',
+  `pvp_tax` decimal(10,0) NOT NULL default '0',
+  `minimun_stock` decimal(10,0) NOT NULL default '0',
+  PRIMARY KEY  (`id_service`),
+  KEY `id_corp` (`id_corp`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=6 ;
+
+-- 
+-- Volcar la base de datos para la tabla `services`
+-- 
+
+INSERT INTO `services` VALUES (2, 1, 'asdfadsf', 'asdfadfasdf', 'images/services/2.GIF', 33, 44, 5, 1);
+INSERT INTO `services` VALUES (3, 1, 'ffdsa', 'fadsfasd', '', 4234, 234234, 23423423, 34234);
+INSERT INTO `services` VALUES (4, 1, 'adfa', 'adfsafa', '', 4345, 354, 345, 345);
+INSERT INTO `services` VALUES (5, 1, 'dsfafd', 'afdfd', 'images/services/5.JPG', 44, 44, 44, 3);
+
+-- --------------------------------------------------------
+
+-- 
+-- Estructura de tabla para la tabla `sessions`
+-- 
+
+CREATE TABLE `sessions` (
   `id_session` int(10) unsigned NOT NULL auto_increment,
   `id_session_php` varchar(255) NOT NULL default '',
   `id_user` int(11) NOT NULL default '0',
   `up` datetime NOT NULL default '0000-00-00 00:00:00',
   `down` datetime default '0000-00-00 00:00:00',
   PRIMARY KEY  (`id_session`)
-) TYPE=MyISAM AUTO_INCREMENT=2 ;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
 
+-- 
+-- Volcar la base de datos para la tabla `sessions`
+-- 
 
-INSERT INTO `sessions` VALUES (1, 'adfadfadfadfadfa', 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00');
+INSERT INTO `sessions` VALUES (1, '13e3dd22f19bcf73e0f32cc8c01f38a6', 1, '2005-03-18 17:00:22', '2005-03-18 17:28:55');
+INSERT INTO `sessions` VALUES (2, '38673e46d14ba0a18c09ab037f32e717', 1, '2005-03-18 17:29:01', '2005-03-18 17:58:51');
+INSERT INTO `sessions` VALUES (3, '676eafcea7ec1888d09b1de472246e60', 1, '2005-03-18 17:58:55', '0000-00-00 00:00:00');
 
+-- --------------------------------------------------------
 
-DROP TABLE IF EXISTS `stock`;
-CREATE TABLE IF NOT EXISTS `stock` (
+-- 
+-- Estructura de tabla para la tabla `stock`
+-- 
+
+CREATE TABLE `stock` (
   `id_stock` int(11) unsigned NOT NULL default '0',
   `id_storage` int(11) unsigned NOT NULL default '0',
   `id_prod` int(11) unsigned NOT NULL default '0',
   `actual_number` int(20) NOT NULL default '0',
   PRIMARY KEY  (`id_stock`)
-) TYPE=MyISAM;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+-- 
+-- Volcar la base de datos para la tabla `stock`
+-- 
 
 
+-- --------------------------------------------------------
 
+-- 
+-- Estructura de tabla para la tabla `storages`
+-- 
 
-DROP TABLE IF EXISTS `storages`;
-CREATE TABLE IF NOT EXISTS `storages` (
+CREATE TABLE `storages` (
   `id_storage` int(11) unsigned NOT NULL default '0',
   `id_corp` int(11) unsigned NOT NULL default '0',
   `address` varchar(255) NOT NULL default '',
   `descrip` text NOT NULL,
   PRIMARY KEY  (`id_storage`)
-) TYPE=MyISAM;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+-- 
+-- Volcar la base de datos para la tabla `storages`
+-- 
 
 
+-- --------------------------------------------------------
 
+-- 
+-- Estructura de tabla para la tabla `users`
+-- 
 
-DROP TABLE IF EXISTS `users`;
-CREATE TABLE IF NOT EXISTS `users` (
+CREATE TABLE `users` (
   `id_user` int(10) unsigned NOT NULL auto_increment,
   `login` varchar(20) NOT NULL default '',
   `passwd` varchar(20) NOT NULL default '',
@@ -610,25 +926,36 @@ CREATE TABLE IF NOT EXISTS `users` (
   `internal` tinyint(3) NOT NULL default '0',
   `active` tinyint(3) NOT NULL default '0',
   PRIMARY KEY  (`id_user`)
-) TYPE=MyISAM AUTO_INCREMENT=6 ;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=6 ;
+
+-- 
+-- Volcar la base de datos para la tabla `users`
+-- 
 
 INSERT INTO `users` VALUES (1, 'admin', 'sta3war2', 'David', 'Vaquero', 'Santiago', 'David Vaquero Santiago', 0, 0);
 INSERT INTO `users` VALUES (2, 'admin2', 'sta3war2', 'Daniel', 'GonzÃ¡lez', 'Zaballos', 'Daniel GonzÃ¡lez Zaballos', 1, 1);
 INSERT INTO `users` VALUES (3, 'Elena', 'elena', 'Elena', 'Resuival', '', '', 0, 0);
-INSERT INTO `users` VALUES (4, 'rocio', 'rocio', 'Rocío', 'Gutiérrez', 'González', 'Rocío Gutiérrez González', 0, 0);
+INSERT INTO `users` VALUES (4, 'rocio', 'rocio', 'Roc', 'Guti?rrez', 'Gonz?lez', 'Roc?o Guti?rrez Gonz?lez', 0, 0);
 INSERT INTO `users` VALUES (5, 'prueba', 'prueba', 'usuario_prueba', '', '', '', 0, 0);
 
+-- --------------------------------------------------------
 
-DROP TABLE IF EXISTS `vehicles`;
-CREATE TABLE IF NOT EXISTS `vehicles` (
+-- 
+-- Estructura de tabla para la tabla `vehicles`
+-- 
+
+CREATE TABLE `vehicles` (
   `id_vehicle` int(11) unsigned NOT NULL auto_increment,
   `id_corp` int(11) unsigned NOT NULL default '0',
   `number_plate` varchar(10) NOT NULL default '',
   `alias` varchar(255) NOT NULL default '',
   `path_photo` varchar(255) NOT NULL default '',
   PRIMARY KEY  (`id_vehicle`)
-) TYPE=MyISAM AUTO_INCREMENT=211 ;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=213 ;
 
+-- 
+-- Volcar la base de datos para la tabla `vehicles`
+-- 
 
 INSERT INTO `vehicles` VALUES (205, 2, 'asdfas', 'sadfasf', 'images/vehicles/205.JPG');
 INSERT INTO `vehicles` VALUES (203, 2, 'afd', 'dsafas', 'images/vehicles/203.JPG');
@@ -636,9 +963,13 @@ INSERT INTO `vehicles` VALUES (204, 2, 'sdfas', 'asfdsda', 'images/vehicles/204.
 INSERT INTO `vehicles` VALUES (206, 1, 'adfasf', 'sdfsaf', 'images/vehicles/206.JPG');
 INSERT INTO `vehicles` VALUES (208, 1, 'fgsdfg', 'gfdsg', 'images/vehicles/208.JPG');
 
+-- --------------------------------------------------------
 
-DROP TABLE IF EXISTS `vendors`;
-CREATE TABLE IF NOT EXISTS `vendors` (
+-- 
+-- Estructura de tabla para la tabla `vendors`
+-- 
+
+CREATE TABLE `vendors` (
   `id_vendor` int(11) unsigned NOT NULL auto_increment,
   `id_corp` int(11) unsigned NOT NULL default '0',
   `name` varchar(20) NOT NULL default '',
@@ -658,6 +989,9 @@ CREATE TABLE IF NOT EXISTS `vendors` (
   `mobile_phone` varchar(15) NOT NULL default '',
   `notes` text NOT NULL,
   PRIMARY KEY  (`id_vendor`)
-) TYPE=MyISAM AUTO_INCREMENT=4 ;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=7 ;
 
+-- 
+-- Volcar la base de datos para la tabla `vendors`
+-- 
 

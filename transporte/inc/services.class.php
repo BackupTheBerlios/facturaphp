@@ -301,12 +301,12 @@ class services{
 	
 	function insert_categories($id_service){
 		$rel_servs_cat = new rel_servs_cats();
-		
-		foreach($this->serv_cat_list as $cat){
-			$rel_servs_cat->id_cat_serv=$cat['id_cat_serv'];
-			$rel_servs_cat->id_service=$id_service;
-			$rel_servs_cat->add();
-		}
+		if (is_array($this->prod_cat_list))
+			foreach($this->serv_cat_list as $cat){
+				$rel_servs_cat->id_cat_serv=$cat['id_cat_serv'];
+				$rel_servs_cat->id_service=$id_service;
+				$rel_servs_cat->add();
+			}
 		return 0;
 	}
 	
