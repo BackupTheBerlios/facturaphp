@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.3, created on 2004-07-07 00:31:43
+<?php /* Smarty version 2.6.3, created on 2004-07-13 14:31:17
          compiled from top.tpl */ ?>
 <body style="top-margin:0px; left-margin:0px" background="pics/fond.gif">
 
@@ -11,7 +11,7 @@
 			<table width="100%">
 				<tr>
 					<td height="100px"><img src="pics/logo.gif"></td>
-	  				<td align="right" valign="middle"><img src="pics/tux.gif" width="133" height="100"><img src="pics/dragdrop.png"></td>
+	  				<td align="right" valign="middle"><img src="pics/dragdrop.gif"></td>
 				</tr>
 				<tr class="barraNavegacion">
 					<td colspan="2" ><?php echo $this->_tpl_vars['nav_bar']; ?>

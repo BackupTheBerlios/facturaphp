@@ -5,10 +5,11 @@ require_once ('config.inc.php');
 //require_once ("/Users/david/Sites/transporte/inc/adodb/adodb.inc.php");
 class group_users{
 //internal vars
-	var &id_group_user; 
+	var $id_group_user; 
 	var $id_group;
 	var $id_user;
 	var $up;
+	var $theme;
 //BBDD name vars
 	var $db_name;
 	var $db_ip;
@@ -17,14 +18,11 @@ class group_users{
 	var $db_port;
 	var $db_type;
 	var $table_prefix;
-	var $table_name='users';
+	var $table_name='group_users';
+	var $ddbb_id_group_user='id_group_user';
+	var $ddbb_id_group='id_group';
 	var $ddbb_id_user='id_user';
-  	var $ddbb_login='login';
-  	var $ddbb_passwd='passwd';
-  	var $ddbb_name='name';
-  	var $ddbb_last_name='last_name';
-  	var $ddbb_last_name2='last_name2';
-  	var $ddbb_full_name='full_name';
+  	var $ddbb_up='up';
 	var $db;
 	var $result;  	
 //variables complementarias	
@@ -33,7 +31,7 @@ class group_users{
   	var $fields_list;
   	var $error;
   	//constructor
-	function users(){
+	function group_users(){
 		//coge las variables globales del fichero config.inc.php
 		global $DDBB_TYPE, $DDBB_NAME, $IP_DDBB, $DDBB_USER, $DDBB_PASS, $DDBB_PORT, $TABLE_PREFIX;
 		$this->db_type=$DDBB_TYPE;
@@ -50,10 +48,10 @@ class group_users{
 		//este array de alguna manera aumatizada
 		************************/
 		$this->fields_list= new fields();
-		$this->fields_list->add($this->ddbb_id_group_users, $this->id_group_users, 'int', 11);
-		$this->fields_list->add($this->ddbb_id_group, $this->id_group, 'int', 11);
-		$this->fields_list->add($this->ddbb_id_user, $this->id_user, 'int', 11);
-		$this->fields_list->add($this->ddbb_up, $this->up, 'date',);
+		$this->fields_list->add($this->ddbb_id_group_user, $this->id_group_user, 'int', 11,0);
+		$this->fields_list->add($this->ddbb_id_group, $this->id_group, 'int', 11,0);
+		$this->fields_list->add($this->ddbb_id_user, $this->id_user, 'int', 11,0);
+		$this->fields_list->add($this->ddbb_up, $this->up, 'date',11,0);
 		//print_r($this);
 		//se puede acceder a los grupos por numero de campo o por nombre de campo
 		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
@@ -102,7 +100,6 @@ class group_users{
 		$this->num=0;
 		while (!$this->result->EOF) {
 			//cogemos los datos del usuario
-	var $up;
 			$this->group_users_list[$this->num][$this->ddbb_id_group_user]=$this->result->fields[$this->ddbb_id_group_user];
 			$this->group_users_list[$this->num][$this->ddbb_id_group]=$this->result->fields[$this->ddbb_id_group];
 			$this->group_users_list[$this->num][$this->ddbb_id_user]=$this->result->fields[$this->ddbb_id_user];
@@ -336,4 +333,5 @@ class group_users{
 	
 	}
 }
+
 ?>

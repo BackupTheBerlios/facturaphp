@@ -48,10 +48,10 @@ class per_user_modules{
 		//este array de alguna manera aumatizada
 		************************/
 		$this->fields_list= new fields();
-		$this->fields_list->add($this->ddbb_id_per_user_module, $this->id_per_user_module, 'int', 11);
-		$this->fields_list->add($this->ddbb_id_user, $this->id_user, 'varchar', 20);
-		$this->fields_list->add($this->ddbb_id_module, $this->id_module, 'varchar', 20);
-		$this->fields_list->add($this->ddbb_per, $this->per, 'varchar', 100);		
+		$this->fields_list->add($this->ddbb_id_per_user_module, $this->id_per_user_module, 'int', 11,0);
+		$this->fields_list->add($this->ddbb_id_user, $this->id_user, 'int', 11,0);
+		$this->fields_list->add($this->ddbb_id_module, $this->id_module, 'int', 11,0);
+		$this->fields_list->add($this->ddbb_per, $this->per, 'tinyint', 3,0);		
 		//print_r($this);
 		//se puede acceder a los usuarios por numero de campo o por nombre de campo
 		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
@@ -288,6 +288,6 @@ class per_user_modules{
 
 	
 	}
-	  
+}	  
 	
 ?>

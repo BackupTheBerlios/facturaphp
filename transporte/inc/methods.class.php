@@ -296,5 +296,5 @@ class methods{
 	
 	}
 	  
-	
+}
 ?>

@@ -1,7 +1,7 @@
 <?php
 //clase que da soporte a los usuarios del programa
 //enlaza con la bbdd 
-require_once ('config.inc.php');
+require_once('config.inc.php');
 //require_once ("/Users/david/Sites/transporte/inc/adodb/adodb.inc.php");
 class log_methods{
 //internal vars
@@ -289,5 +289,5 @@ class log_methods{
 	
 	}
 	  
-	
+}
 ?>

@@ -54,8 +54,8 @@ class sessions{
 		$this->fields_list->add($this->ddbb_id_session, $this->id_session, 'int', 11);
 		$this->fields_list->add($this->ddbb_id_session_php, $this->id_session_php, 'int', 11);
 		$this->fields_list->add($this->ddbb_id_user, $this->id_user, 'int', 11);
-		$this->fields_list->add($this->ddbb_up, $this->up, 'date',);
-		$this->fields_list->add($this->ddbb_down, $this->down, 'date',);
+		$this->fields_list->add($this->ddbb_up, $this->up, 'date',11);
+		$this->fields_list->add($this->ddbb_down, $this->down, 'date',11);
 		//print_r($this);
 		//se puede acceder a las sesiones por numero de campo o por nombre de campo
 		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;

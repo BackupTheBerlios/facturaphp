@@ -13,6 +13,7 @@ class log_sessions{
 	var $ip;
 	var $id_user;
 	var $country;
+	var $theme;
 //BBDD name vars
 	var $db_name;
 	var $db_ip;
@@ -21,14 +22,14 @@ class log_sessions{
 	var $db_port;
 	var $db_type;
 	var $table_prefix;
-	var $table_name='users';
-	var $ddbb_id_user='id_user';
-  	var $ddbb_login='login';
-  	var $ddbb_passwd='passwd';
-  	var $ddbb_name='name';
-  	var $ddbb_last_name='last_name';
-  	var $ddbb_last_name2='last_name2';
-  	var $ddbb_full_name='full_name';
+	var $table_name='log_sessions';
+	var $ddbb_id_log_session='id_log_session';
+  	var $ddbb_in='in';
+  	var $ddbb_out='out';
+  	var $ddbb_timeout='timeout';
+  	var $ddbb_ip='ip';
+  	var $ddbb_id_user='id_user';
+  	var $ddbb_country='country';
 	var $db;
 	var $result;  	
 //variables complementarias	
@@ -37,7 +38,7 @@ class log_sessions{
   	var $fields_list;
   	var $error;
   	//constructor
-	function users(){
+	function log_sessions(){
 		//coge las variables globales del fichero config.inc.php
 		global $DDBB_TYPE, $DDBB_NAME, $IP_DDBB, $DDBB_USER, $DDBB_PASS, $DDBB_PORT, $TABLE_PREFIX;
 		$this->db_type=$DDBB_TYPE;
@@ -56,12 +57,12 @@ class log_sessions{
 		$this->fields_list= new fields();		
 		$this->fields_list->add($this->ddbb_id_log_session, $this->id_log_session, 'int', 11);
 		$this->fields_list->add($this->ddbb_id_session, $this->id_session, 'int', 11);		
-		$this->fields_list->add($this->ddbb_in, $this->in, 'datetime',);
-		$this->fields_list->add($this->ddbb_out, $this->out, 'datetime',);
-		$this->fields_list->add($this->ddbb_timeout, $this->timeout, 'datetime',);		
+		$this->fields_list->add($this->ddbb_in, $this->in, 'datetime',11);
+		$this->fields_list->add($this->ddbb_out, $this->out, 'datetime',11);
+		$this->fields_list->add($this->ddbb_timeout, $this->timeout, 'datetime',11);		
 		$this->fields_list->add($this->ddbb_ip, $this->ip, 'varchar', 20);		
 		$this->fields_list->add($this->ddbb_id_user, $this->id_user, 'int', 11);		
-		$this->fields_list->add($this->ddbb_country $this->country, 'varchar', 20);
+		$this->fields_list->add($this->ddbb_country, $this->country, 'varchar', 20);
 		//print_r($this);
 		//se puede acceder a las sesiones por numero de campo o por nombre de campo
 		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
@@ -110,21 +111,16 @@ class log_sessions{
 		$this->num=0;
 		while (!$this->result->EOF) {
 			//cogemos los datos del usuario
-var $id_log_session;
-	var $id_session; 
-	var $in;
-	var $out;
-	var $timeout;
-	var $ip;
-	var $id_user;
-	var $country;
+	
 
 			$this->sessions_list[$this->num][$this->ddbb_id_log_session]=$this->result->fields[$this->ddbb_id_log_session];
 			$this->sessions_list[$this->num][$this->ddbb_id_session]=$this->result->fields[$this->ddbb_id_session];			
-			$this->sessions_list[$this->num][$this->ddbb_id_session_php]=$this->result->fields[$this->ddbb_id_session_php];
-			$this->sessions_list[$this->num][$this->ddbb_id_user]=$this->result->fields[$this->ddbb_id_user];
-			$this->sessions_list[$this->num][$this->ddbb_up]=$this->result->fields[$this->ddbb_up];
-			$this->sessions_list[$this->num][$this->ddbb_down]=$this->result->fields[$this->ddbb_down];			
+			$this->sessions_list[$this->num][$this->ddbb_in]=$this->result->fields[$this->ddbb_in];
+			$this->sessions_list[$this->num][$this->ddbb_out]=$this->result->fields[$this->ddbb_out];
+			$this->sessions_list[$this->num][$this->ddbb_timeout]=$this->result->fields[$this->ddbb_timeout];
+			$this->sessions_list[$this->num][$this->ddbb_ip]=$this->result->fields[$this->ddbb_ip];
+			$this->sessions_list[$this->num][$this->ddbb_id_user]=$this->result->fields[$this->ddbb_id_user];		
+			$this->sessions_list[$this->num][$this->ddbb_country]=$this->result->fields[$this->ddbb_country];	
 			//nos movemos hasta el siguiente registro de resultado de la consulta
 			$this->result->MoveNext();
 			$this->num++;
@@ -180,11 +176,15 @@ var $id_log_session;
 			return 0;
 			$this->db->close();
 		}else{
-			$this->id_session=$id;
-			$this->id_session_php=$this->result->fields[$this->ddbb_session_php];
+			$this->id_log_session=$id;
+			$this->id_session=$this->result->fields[$this->ddbb_session];
+			$this->in=$this->result->fields[$this->ddbb_in];
+			$this->out=$this->result->fields[$this->ddbb_out];
+			$this->datetime=$this->result->fields[$this->ddbb_datetime];
+			$this->ip=$this->result->fields[$this->ddbb_ip];
 			$this->id_user=$this->result->fields[$this->ddbb_id_user];
-			$this->up=$this->result->fields[$this->ddbb_up];
-			$this->down=$this->result->fields[$this->ddbb_down];
+			$this->country=$this->result->fields[$this->ddbb_ip];
+			
 			$this->db->close();
 			return 1;
 		}
@@ -202,7 +202,7 @@ var $id_log_session;
 		//realiza una conexi—n permanente con la bbdd
 		$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
 		//mete la consulta para coger los campos de la bbdd
-		$this->sql="SELECT * FROM ".$this->table_prefix.$this->table_name. " WHERE ".$this->ddbb_id_session." = -1" ;
+		$this->sql="SELECT * FROM ".$this->table_prefix.$this->table_name. " WHERE ".$this->ddbb_id_log_session." = -1" ;
 		//la ejecuta y guarda los resultados
 		$this->result = $this->db->Execute($this->sql);
 		//si falla 
