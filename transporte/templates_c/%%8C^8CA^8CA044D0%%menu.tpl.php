@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.3, created on 2004-07-19 17:55:12
+<?php /* Smarty version 2.6.3, created on 2004-09-23 16:52:05
          compiled from menu.tpl */ ?>
 		<table width="90%" class="cajaMenu" cellpadding="3" cellspacing="0">
 			<tr>
@@ -8,7 +8,7 @@
 			<tr class="textoMenu">
 			  <td width="10px">&nbsp;</td>
 			  <td>
-			  	- <a href="#" class="enlaceMenu">Inicio</a><br>
+			  	- <a href="index.php" class="enlaceMenu">Inicio</a><br>
 			  </td>
 			</tr>
 			<tr class="textoMenu">

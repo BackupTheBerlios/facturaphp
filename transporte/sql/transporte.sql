@@ -1,13 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 2.6.0-alpha2
+-- version 2.6.0-beta2
 -- http://www.phpmyadmin.net
 -- 
 -- Servidor: localhost
--- Tiempo de generaci�n: 06-08-2004 a las 15:14:01
--- Versi�n del servidor: 4.0.15
--- Versi�n de PHP: 4.3.3
+-- Tiempo de generación: 24-09-2004 a las 13:46:21
+-- Versión del servidor: 4.0.18
+-- Versión de PHP: 4.3.8-9
 -- 
--- Base de datos : `transporte`
+-- Base de datos: `transporte`
 -- 
 
 -- --------------------------------------------------------
@@ -107,13 +107,25 @@ CREATE TABLE `group_users` (
   `id_user` int(11) unsigned NOT NULL default '0',
   `up` date NOT NULL default '0000-00-00',
   PRIMARY KEY  (`id_group_user`)
-) TYPE=MyISAM AUTO_INCREMENT=45 ;
+) TYPE=MyISAM AUTO_INCREMENT=57 ;
 
 -- 
 -- Volcar la base de datos para la tabla `group_users`
 -- 
 
 INSERT INTO `group_users` VALUES (1, 1, 2, '2004-12-12');
+INSERT INTO `group_users` VALUES (45, 2, 1, '0000-00-00');
+INSERT INTO `group_users` VALUES (46, 3, 1, '0000-00-00');
+INSERT INTO `group_users` VALUES (47, 4, 1, '0000-00-00');
+INSERT INTO `group_users` VALUES (48, 5, 1, '0000-00-00');
+INSERT INTO `group_users` VALUES (49, 6, 1, '0000-00-00');
+INSERT INTO `group_users` VALUES (50, 7, 1, '0000-00-00');
+INSERT INTO `group_users` VALUES (51, 8, 1, '0000-00-00');
+INSERT INTO `group_users` VALUES (52, 9, 1, '0000-00-00');
+INSERT INTO `group_users` VALUES (53, 10, 1, '0000-00-00');
+INSERT INTO `group_users` VALUES (54, 11, 1, '0000-00-00');
+INSERT INTO `group_users` VALUES (55, 12, 1, '0000-00-00');
+INSERT INTO `group_users` VALUES (56, 13, 1, '0000-00-00');
 
 -- --------------------------------------------------------
 
@@ -134,6 +146,18 @@ CREATE TABLE `groups` (
 -- 
 
 INSERT INTO `groups` VALUES (1, 'Mi_grupo', 'Mi grupo', 'descripcion adicional sobre mi grupo');
+INSERT INTO `groups` VALUES (2, 'admin', 'Administrador', '');
+INSERT INTO `groups` VALUES (3, 'conductor', 'Conductores', '');
+INSERT INTO `groups` VALUES (4, 'user', 'Usuario', '');
+INSERT INTO `groups` VALUES (5, 'superadmin', 'Super Administrador', '');
+INSERT INTO `groups` VALUES (6, 'contable', 'Contables', '');
+INSERT INTO `groups` VALUES (7, 'limpieza', 'Limpieza', '');
+INSERT INTO `groups` VALUES (8, 'root', 'Root', '');
+INSERT INTO `groups` VALUES (9, 'simple_user', 'Usuario Simple', '');
+INSERT INTO `groups` VALUES (10, 'test', 'Test', '');
+INSERT INTO `groups` VALUES (11, 'guest', 'Invitado', '');
+INSERT INTO `groups` VALUES (12, 'group12', 'Grupo 12', '');
+INSERT INTO `groups` VALUES (13, 'group13', 'Grupo 13', '');
 
 -- --------------------------------------------------------
 
@@ -386,10 +410,11 @@ CREATE TABLE `users` (
   `internal` tinyint(3) NOT NULL default '0',
   `active` tinyint(3) NOT NULL default '0',
   PRIMARY KEY  (`id_user`)
-) TYPE=MyISAM AUTO_INCREMENT=84 ;
+) TYPE=MyISAM AUTO_INCREMENT=85 ;
 
 -- 
 -- Volcar la base de datos para la tabla `users`
 -- 
 
 INSERT INTO `users` VALUES (1, 'admin', 'sta3war2', 'David', 'Vaquero', 'Santiago', 'David Vaquero Santiago', 0, 0);
+INSERT INTO `users` VALUES (84, 'admin2', 'sta3war2', 'Daniel', 'González', 'Zaballos', 'Daniel González Zaballos', 1, 1);
