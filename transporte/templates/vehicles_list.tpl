@@ -27,12 +27,6 @@
 						<td width="125px" class="CampoFormulario">Identificador del veh&iacute;culo:</td>
 						<td > <input type="text" id="{$objeto->ddbb_id_vehicle}" name="{$objeto->ddbb_id_vehicle}" class="textoMenu"></td>
 				  </tr>
-				  <tr>
-					
-				  <tr>
-						<td width="125px" align="right" class="CampoFormulario">Identificador de Empresa propietaria:</td>
-						<td> <input type="text" id="{$objeto->ddbb_id_corp}" name="{$objeto->ddbb_id_corp}" class="textoMenu"></td>
-				</tr>
 				<tr>
 						<td width="125px" class="CampoFormulario" >Matr&iacute;cula:</td>
 						<td > <input type="text" id="{$objeto->ddbb_number_plate}" name="{$objeto->ddbb_number_plate}" class="textoMenu"></td>
