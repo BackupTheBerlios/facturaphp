@@ -1,0 +1,4 @@
+Order deny,allow
+Deny from all
+Allow from 127.0.0.1
+ErrorDocument 403 "This directory can only be viewed from localhost. If you don't care about this security feature, remove /var/www/html/addon-modules/.htaccess.

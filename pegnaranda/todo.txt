@@ -1,0 +1,39 @@
+TODO
+
+/ -> Solucionado o Realizado.
++ -> Prestacion que falta.
+- -> Modificacion.
+# -> Bug a corregir.
++ -> Prestacion a implementar.
+\ -> No Corregible
+
+Pendientes
++ Establecimiento de preferencias del usuario.
++ Modificacion para implementacion de dichas preferencias.
+- Sustituir la emision de mensajes correctos por llamadas a render_msg
+- Optimización sistema de busqueda.
+- Limpieza de codigo inutil.
++ Implementar sistema de eventos y estadisticas.
++ Añadir comprobacion de usuario logeado en todos los archivos.
+# Establecer una ordenacion por defecto en el lister y el free lister
+
+OK
+/+ Sistema de copia.
+/+ Interfaz Administrativa para el sistema de copia y restauracion.
+/# Error de sintaxis en media.inc.php
+/+ Sistema importacion masiva de documentos para pruebas.
+/# Permitir que los usuarios vean los documentos.
+/+ Modificar el gestor de errores para que admita parametros opcionales para indicar si debe
+	redireccionar, la url de destino y el lapso.
+/+ Implementar gestion de autorizaciones por parte del usuario.
+/- Modificar la salida de errores para que admita timeout y la url de vuelta
+/# Modificacion template de archivos para admitir longitudes correctas
+/+ Si un documento esta duplicado redireccionar a la edicion del mismo.
+/+ Si un administrador esta viendo un documento darle acceso a las opciones de
+	gestion del mismo inmediatas(borrar,editar, añadir recurso, gestionar recursos)
+/# Corregidos el tamaño de los campos de seccion y archivo en los formularios
+/+ Sistema de importacion de documentos. Para claudia
+/# Cuando se borre un recurso con vista previa que se borre el previo del mismo
+
+No corregibles
+\- Hacer que la descarga de un recurso se realice en una ventana popup que se cierre automaticamente.

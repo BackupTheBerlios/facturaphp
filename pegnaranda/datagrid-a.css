@@ -1,0 +1,60 @@
+DIV.hpenaranda
+	{
+		font-size: 11px;
+		font-family: verdana, helvetica, arial, sans-serif;
+		width: 93%;
+		}
+
+DIV.hpenaranda TABLE
+	{
+		border-collapse: collapse;
+		border: 1px;
+		border-style: solid;
+		border-color: #5d8553;
+		background-color: #D1E99D;
+		}
+
+DIV.hpenaranda A
+	{
+		text-decoration: none;
+		font-weight: bold;
+		color: #8800CC;
+		}
+
+DIV.hpenaranda A:hover
+	{
+		text-decoration: none;
+		font-weight: bold;
+		color: #8800CC;
+		background-color: #FFFFFF;
+		}
+
+div.hpenaranda table th
+	{
+		border-width: 1px;
+		border-style: solid;
+		border-color: #5d8553;
+		background-color: #5D8553;
+		color: #D1E99D;
+		font-size: 13px;
+		font-weight: bold;
+		text-align: center;
+		margin: 3px;
+		}
+
+div.hpenaranda table td
+	{
+		background-color: #D1E99D;
+		color: #5D8553;
+		font-size: 11px;
+		text-align: justify;
+		border: 1px solid #5d8553;
+		}
+
+div.hpenaranda table td:hover
+	{
+		background-color: #FFFFFF;
+		color: #5D8553;
+		font-size: 11px;
+		text-align: justify;
+		}

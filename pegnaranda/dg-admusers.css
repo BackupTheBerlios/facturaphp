@@ -1,0 +1,75 @@
+DIV.admUsuarios
+	{
+		font-size: 11px;
+		font-family: verdana, helvetica, arial, sans-serif;
+		width: 93%;
+		}
+
+DIV.admUsuarios TABLE
+	{
+		border-collapse: collapse;
+		border: 1px;
+		border-style: solid;
+		border-color: #5d8553;
+		background-color: #feeab1;
+		}
+
+DIV.admUsuarios A
+	{
+		text-decoration: none;
+		font-weight: bold;
+		color: #D1E99D;
+		}
+
+DIV.admUsuarios A:hover
+	{
+		text-decoration: none;
+		font-weight: bold;
+		color: #8800CC;
+		background-color: #FFFFFF;
+		}
+
+div.admUsuarios table th
+	{
+		border-width: 1px;
+		border-style: solid;
+		border-color: #fdcf51;
+		background-color: #106010;
+		color: #fdcf51;
+		font-size: 13px;
+		font-weight: bold;
+		text-align: center;
+		margin: 3px;
+		}
+
+div.admUsuarios table td
+	{
+		background-color: #feeab1;
+		color: #5D8553;
+		font-size: 11px;
+		text-align: justify;
+		border: 1px solid #5d8553;
+		}
+
+div.admUsuarios table td A
+	{
+		text-decoration: none;
+		font-weight: bold;
+		color: #106010;
+		}
+
+div.admUsuarios table td A:hover
+	{
+		text-decoration: none;
+		font-weight: bold;
+		color: #8800EE;
+		background-color: #FFFFFF;
+		}
+
+div.admUsuarios table td:hover
+	{
+		background-color: #FFFFFF;
+		color: #5D8553;
+		font-size: 11px;
+		text-align: justify;
+		}

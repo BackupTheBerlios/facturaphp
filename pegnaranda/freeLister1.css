@@ -1,0 +1,75 @@
+DIV.usrListado
+	{
+		font-size: 11px;
+		font-family: verdana, helvetica, arial, sans-serif;
+		width: 98%;
+		}
+
+DIV.usrListado TABLE
+	{
+		border-style: none;
+		border-color: #5d8553;
+		background-color: #feeab1;
+		}
+
+DIV.usrListado A
+	{
+		text-decoration: none;
+		font-weight: bold;
+		color: #D1E99D;
+		}
+
+DIV.usrListado A:hover
+	{
+		text-decoration: none;
+		font-weight: bold;
+		color: #8800CC;
+		background-color: #FFFFFF;
+		}
+
+div.usrListado table th
+	{
+		background-color: #106010;
+		color: #fdcf51;
+		font-size: 13px;
+		font-weight: bold;
+		text-align: center;
+		margin: 3px;
+		width: 500px;
+		}
+
+div.usrListado table td
+	{
+		background-color: #feeab1;
+		color: #5D8553;
+		font-size: 11px;
+		text-align: justify;
+		}
+
+div.usrListado table td A
+	{
+		text-decoration: none;
+		font-weight: bold;
+		color: #106010;
+		}
+
+div.usrListado table td A img
+	{
+		border: none;
+		}
+
+div.usrListado table td A:hover
+	{
+		text-decoration: none;
+		font-weight: bold;
+		color: #8800EE;
+		background-color: #FFFFFF;
+		}
+
+div.usrListado table td:hover
+	{
+		background-color: #FFFFFF;
+		color: #5D8553;
+		font-size: 11px;
+		text-align: justify;
+		}

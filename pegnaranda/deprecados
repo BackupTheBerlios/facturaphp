@@ -1,0 +1,105 @@
+/* DIV.bloque
+	{
+		background-color: #feeab1;
+		color: #106010;
+		width: 33%;
+		min-width: 120px;
+		}
+
+DIV.bloque
+	{
+		background-color: #feeab1;
+		color: #106010;
+		width: 33%;
+		min-width: 120px;
+		}
+
+DIV.bloque:hover
+	{
+		background-color: #fafffa;
+		}
+DIV.bloque>h1
+	{
+		background-color: #106010;
+		color:#fdcf51;
+		font-weight: bold;
+		text-align: left;
+		font-size: 13px;
+		}
+
+DIV.bloque>h1:before
+	{
+		content: "Tema: ";
+		background-color: #106010;
+		color:#fdcf51;
+		font-weight: bold;
+		text-align: left;
+		font-size: 13px;
+		}
+
+DIV.bloque>P
+	{
+		padding: 2px;
+		margin: 2px;
+		}
+
+DIV.bloque>P:first-letter
+	{
+		font-size:15px;
+		font-weight: bold;
+		}
+
+DIV.bloque>P:hover
+	{
+		border: solid;
+		border-width: 2px;
+		border-color: #AA0000;
+		margin: -1px;
+		padding: 2px;
+		}
+
+DIV.bloque>A
+	{
+		color: #106010;
+		font-size:11px;
+		text-decoration: none;
+		}
+
+DIV.bloque>A:hover
+	{
+		color: #20BA34;
+		border: solid;
+		border-width: 1px;
+		}
+
+*/
+Init();
+$table=GetTable('usuarios');
+$cols=GetCols('usuarios');
+$z=new Lister("hpenaranda","Select * from $table",3,array(
+				array('dbname'=>$cols['uid'],'label'=>"UID",'width'=>"150px",'sortable'=>true),
+				array('dbname'=>$cols['uname'],'label'=>"Usuario",'width'=>"150px")),$cols['uid'],
+				array(array('funcion'=>'callbakz','valor'=>$cols['uid'])));
+if ($sf!="")
+	{
+		$z->SetSort($sf,$up);}
+$z->table="$table";
+$z->where="";
+$z->GeneralActions=array(array('funcion'=>'callAdd'),array('funcion'=>'callRet'));
+if ($start!="")
+	{
+		$z->SetStart($start);}
+print_r($z->render());
+die();
+
+function callAdd()
+	{
+		return array('etiqueta'=>"New User",'url'=>"newuser.php");}
+function callRet()
+	{
+		return array('etiqueta'=>"Inicio",'url'=>"index.php");}
+
+function callbakz($clave,$valor)
+	{
+		return array('etiqueta'=>"Hello",'url'=>CurrentUrl()."?x=$valor");}
+

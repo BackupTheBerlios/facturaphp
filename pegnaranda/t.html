@@ -1,0 +1,21 @@
+<html>
+<body>
+<center> Prueba de Edicion ...</center><br />
+<script language="Javascript">
+	function changez(formitem,valuez)
+		{
+			document.forms['delta'].elements[formitem].value=valuez;}
+</script>
+<form action="t.php" method="POST" enctype="application/x-www-form-urlencoded" name="delta">
+
+<input type="text" size="50" maxlength="90" name="T[1]"  onchange="changez('r1','edited')"><br />
+<input type="password" size="50" maxlength="90" name="A[1]"  onchange="changez('r1','edited')"><br />
+<input type="hidden" name="r1" value="VIRGIN" ><br />
+<input type="text" size="50" maxlength="90" name="T[2]"  onchange="changez('r2','edited')"><br />
+<input type="password" size="50" maxlength="90" name="A[2]"  onchange="changez('r2','edited')"><br />
+<input type="hidden" name="r2" value="VIRGIN" ><br />
+<input type="hidden" name="count" value="2" ><br />
+<input type="submit" name="Enviar">
+</form>
+</body>
+</html>

@@ -1,0 +1,75 @@
+DIV.admSecciones
+	{
+		font-size: 11px;
+		font-family: verdana, helvetica, arial, sans-serif;
+		width: 93%;
+		}
+
+DIV.admSecciones TABLE
+	{
+		border-collapse: collapse;
+		border: 1px;
+		border-style: solid;
+		border-color: #5d8553;
+		background-color: #feeab1;
+		}
+
+DIV.admSecciones A
+	{
+		text-decoration: none;
+		font-weight: bold;
+		color: #D1E99D;
+		}
+
+DIV.admSecciones A:hover
+	{
+		text-decoration: none;
+		font-weight: bold;
+		color: #8800CC;
+		background-color: #FFFFFF;
+		}
+
+div.admSecciones table th
+	{
+		border-width: 1px;
+		border-style: solid;
+		border-color: #fdcf51;
+		background-color: #106010;
+		color: #fdcf51;
+		font-size: 13px;
+		font-weight: bold;
+		text-align: center;
+		margin: 3px;
+		}
+
+div.admSecciones table td
+	{
+		background-color: #feeab1;
+		color: #5D8553;
+		font-size: 11px;
+		text-align: justify;
+		border: 1px solid #5d8553;
+		}
+
+div.admSecciones table td A
+	{
+		text-decoration: none;
+		font-weight: bold;
+		color: #106010;
+		}
+
+div.admSecciones table td A:hover
+	{
+		text-decoration: none;
+		font-weight: bold;
+		color: #8800EE;
+		background-color: #FFFFFF;
+		}
+
+div.admSecciones table td:hover
+	{
+		background-color: #FFFFFF;
+		color: #5D8553;
+		font-size: 11px;
+		text-align: justify;
+		}
