@@ -67,7 +67,7 @@
 						
 					</div>					
 					 <script>	
-					  	document.getElementById("divMostrar").innerHTML = vehicles_1;
+					  	document.getElementById("divMostrar").innerHTML = drivers_1;
 					  </script>
 					  <br>
 					  <table align="center" width="400" cellpadding="0" cellspacing="0">
