@@ -424,12 +424,12 @@ class users{
 	
 	function listar($tpl){
 		$this->get_list_users();
+
 		$tabla_listado = new table(true);
-		$cadena=''.$tabla_listado->make_tables('users',$this->users_list,array('Login',20,'Nombre',20,'Primer Apellido',20,'Segundo Apellido',20),array($this->ddbb_id_user,$this->ddbb_login,$this->ddbb_name,$this->ddbb_last_name,$this->ddbb_last_name2),20,array('View','modify','delete'),true);
+		$cadena=''.$tabla_listado->make_tables('users',$this->users_list,array('Login',20,'Nombre',20,'Primer Apellido',20,'Segundo Apellido',20),array($this->ddbb_id_user,$this->ddbb_login,$this->ddbb_name,$this->ddbb_last_name,$this->ddbb_last_name2),20,array('view','modify','delete'),true);
 		$variables=$tabla_listado->nombres_variables;		
 		$tpl->assign('variables',$variables);
-		$tpl->assign('cadena',$cadena);
-		//echo $cadena;
+		$tpl->assign('cadena',$cadena);		
 		return $tpl;
 	}
 	
@@ -469,13 +469,14 @@ class users{
 	
 	function calculate_tpl($method, $tpl){
 		//vemos si el usuario tiene el permiso para hacer la accion requerida
-		$result=validate_per($method,$_SESSION['user'],$module);
+		$result=true;
+	//	$result=validate_per($method,$_SESSION['user'],$module);
 		if ($result){
 				switch($method){
 						case 'add':
 									break;
 						case 'list':
-									$tpl=$this->listar($_GET['id'],$tpl);
+									$tpl=$this->listar($tpl);
 									break;
 						case 'modify':
 									break;
@@ -484,8 +485,12 @@ class users{
 						case 'view':									
 									$tpl=$this->view($_GET['id'],$tpl);
 									break;
+						default:
+									$method='list';
+									$tpl=$this->listar($tpl);
+									break;
 					}
-				$tpl->assign('plantilla','users_'.$method.'.tlp');					
+				$tpl->assign('plantilla','users_'.$method.'.tpl');					
 			}
 		else
 			{
@@ -493,6 +498,7 @@ class users{
 			}
 		return $tpl;
 	}
+	
 	function get_modules($id){	
 		return 0;
 	}

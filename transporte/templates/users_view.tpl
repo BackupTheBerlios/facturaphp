@@ -2,7 +2,7 @@
 
 	{php}
 		$mi_modulo=$this->_tpl_vars['objeto'];
-		echo $this->_tpl_vars['cadena'];		
+		echo $this->_tpl_vars['cadena'];	
 	{/php}
 
 {include file=capas.tpl}

@@ -105,7 +105,7 @@ if(isset($_GET['module'])||isset($_SESSION['module'])){
 //en el caso de queno haya modulo definido se deja la plantilla por defecto
 //en el caso de que no se haya pasado metodo se prenta el listado con la
 //busqueda del modulo
-$objeto= initialize_object($module);
+$objeto= initialize_object($module_name);
 
 
 //coge las sesiones abiertas y los usuarios registrados
@@ -117,16 +117,23 @@ $num_sessions=$session->num();
 $tpl->assign('num_sessions',$num_sessions);
 //calcula la barra de navegaci—n y titulo de la pagina
 if ($objeto===null){
-	$nav_bar='Gesti&oacuten';
-	$title='Gesti&oacuten';
+	$nav_bar='Gesti&oacute;n';
+	$title='Gesti&oacute;n';
 	$plantilla='default.tpl';
+	$tpl->assign('plantilla',$plantilla);
 }
 else
 {
-	$nav_bar=$objeto->bar();
-	$title=$objeto->title();
+	//$nav_bar=$objeto->bar();
+	//$title=$objeto->title();
 	//calculala plantilla a presentar
-	$tpl=$objeto->caculate_tpl($method,$tpl);
+	if (!isset($_GET['method'])){
+			$method=null;
+		}
+	else{
+			$method=$_GET['method'];
+		}
+	$tpl=$objeto->calculate_tpl($method,$tpl);
  
 	//elige la plantilla a presentar
 	
@@ -139,10 +146,10 @@ $tpl->assign('nav_bar',$nav_bar);
 //presenta las plantillas
 
 // ****************************** prueba de lectura de usuarios
-$obje=new users();
+//$obje=new users();
 //*********************************************** listado
  //listado
-/* $tpl=$obje->list($tpl);
+/* $tpl=$obje->listar($tpl);
  //fin listadohttp://127.0.0.1/transporte/index.php*/
 
 /* ***************************** Edicion
@@ -151,7 +158,7 @@ $tpl->assign('objeto',$obje);
 */ //***************** fin Edicion
 
 //********************************************** Vista
-$tpl=$obje->view(1,$tpl);
+//$tpl=$obje->view(1,$tpl);
 // ****************************** fin Vista*/
 
 $tpl->display($index_template);

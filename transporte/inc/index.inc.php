@@ -3,15 +3,11 @@ global $INSTALL_DIR;
 
 require_once($INSTALL_DIR.'inc/includes.php');
 
-function initialize_object($module){
-	if(!isset($module)||$module=='')
-		{
-			$module='index';
-		}	
+function initialize_object($module){	
 	
 	switch($module){
-		case 'users':		
-					$objeto=new users();					
+		case 'users':
+					$objeto=new users();		
 					break;
 		case 'groups':
 					$objeto=new groups();

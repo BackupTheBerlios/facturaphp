@@ -6,7 +6,7 @@
 			<tr class="textoMenu">
 			  <td width="10px">&nbsp;</td>
 			  <td>
-			  	- <a href="#" class="enlaceMenu">Inicio</a><br>
+			  	- <a href="index.php" class="enlaceMenu">Inicio</a><br>
 			  </td>
 			</tr>
 			<tr class="textoMenu">
