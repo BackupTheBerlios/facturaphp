@@ -24,11 +24,12 @@
 					  <td colspan="2" class="cabeceraCampoFormulario">B&uacute;squeda:</td>
 				  </tr>
 				  <tr>
-						<td ><input type="text" id="{$objeto->ddbb_search}" name="{$objeto->ddbb_search}" value="{$objeto->search_query}" class="textoMenu"></td><td><img src="pics/buscar.gif"></td>
+						<td  width="125px" align="right" class="CampoFormulario">Introduzca su b&uacute;squeda:</td>
+						<td><input type="text" id="{$objeto->ddbb_search}" name="{$objeto->ddbb_search}" value="{$objeto->search_query}" class="textoMenu"></td>
 				  </tr>
 				  <tr>
 						<td width="125" class="CampoFormulario">Nº de Registros por p&aacute;gina:</td>
-						<td><select name="Registros">
+						<td><select name="Registros" >
 						  <option selected>10</option>
 						  <option>30</option>
 						  <option>50</option>

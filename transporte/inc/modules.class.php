@@ -14,6 +14,8 @@ class modules{
 	var $theme;
 	var $publico;
 	var $parent;
+	var $search;
+	var $search_query;
 //BBDD name vars
 	var $db_name;
 	var $db_ip;
@@ -31,6 +33,7 @@ class modules{
 	var $ddbb_public='public';
 	var $ddbb_parent = 'parent';
 	var $ddbb_order = 'order';
+	var $ddbb_search='search';
 	var $db;
 	var $result;  	
 //variables complementarias	
@@ -71,6 +74,11 @@ class modules{
 		$this->fields_list->add($this->ddbb_public, $this->publico, 'tinyint', 3,0);
 		$this->fields_list->add($this->ddbb_parent, $this->parent, 'tinyint', 3,0);	
 		$this->fields_list->add($this->ddbb_order, $this->order, 'int', 11,0);	
+		
+		$this->search[0]= 'name';
+		$this->search[1]= 'name_web';
+		
+		
 		//print_r($this);
 		//se puede acceder a los usuarios por numero de campo o por nombre de campo
 	/*	$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
@@ -96,45 +104,156 @@ class modules{
 	}
 	
 	function get_list_modules (){
-		//se puede acceder a los usuarios por numero de campo o por nombre de campo
-		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
-		//crea una nueva conexi—n con una bbdd (mysql)
-		$this->db = NewADOConnection($this->db_type);
-		//le dice que no salgan los errores de conexi—n de la ddbb por pantalla
-		$this->db->debug=false;
-		//realiza una conexi—n permanente con la bbdd
-		$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
-		//mete la consulta
-		$this->sql="SELECT * FROM ".$this->table_prefix.$this->table_name." ORDER BY 'order'";
-		//la ejecuta y guarda los resultados
-		$this->result = $this->db->Execute($this->sql);
-		//si falla 
-		if ($this->result === false){
-			$this->error=1;
-			$this->db->close();
+		if (isset($_POST['submit_modules_search']))
+		{
+			//Obtener datos del formulario de búsqueda
+			$this->get_fields_from_search_post();
+			//Generar consulta
+			/*
+			if($this->search_query[0]=='\\')
+			{*/
+				/************PRUEBAS**********************************/
+			//	print "Cadena ****".$this->search_query."**** ";
+			//	print "numero de caracteres ".strlen($this->search_query);
+			/*	for($i=0;$i<=strlen($this->search_query);$i++)
+				print $this->search_query[$i];
+			*/	
+				
+				/***********************************************/
+				
+			/*	
+				
+				switch($this->search_query[1])
+				{
+					case '"': 	$empiece = "comilla_doble";
+								//Guardar consulta para no modificar la variable 
+								//que se mande denuevo al formulario
+								$query =  $this->search_query;
+								
+								//Se va creando la nueva query que se mandará mas tarde 
+								//al formulario (se busca la siquiente ocurrencia de comillas)
+								$query = substr ($this->search_query, 2);
+								$cadena = substr ($this->search_query, 2, stripos($query, '"'));
+								
+								//Preparar la cadena para volver a mostrarla sin caracteres de PHP
+								$this->search_query = stripslashes($cadena);
+								
+								print "DOBLE";
+								break;
+					case '\'':	$empiece = "comilla_simple";
+								//Guardar consulta para no modificar la variable 
+								//que se mande denuevo al formulario
+								$query =  $this->search_query;
+								
+								//Se va creando la nueva query que se mandará mas tarde 
+								//al formulario (se busca la siquiente ocurrencia de comillas)
+								$query = substr ($this->search_query, 2);
+								$cadena = substr ($this->search_query, 2, stripos($query, '\''));
+								
+								//Preparar la cadena para volver a mostrarla sin caracteres de PHP
+								$this->search_query = stripslashes($cadena);
+													
+								print "SIMPLE";
+								break;
+					default: break;
+				}
+			}*/
+			
+			//Crear query
+			$my_search = new search();
+			$query = $my_search->get_query($this->search_query, FALSE, $this->search, $this->fields_list);
+				
+			//se puede acceder a los usuarios por numero de campo o por nombre de campo
+			$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
+			//crea una nueva conexi—n con una bbdd (mysql)
+			$this->db = NewADOConnection($this->db_type);
+			//le dice que no salgan los errores de conexi—n de la ddbb por pantalla
+			$this->db->debug=false;
+			//realiza una conexi—n permanente con la bbdd
+			$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
+			//mete la consulta
+			$this->sql="SELECT * FROM ".$this->table_prefix.$this->table_name." WHERE ".$query;
+	print "LA SQL es ".$this->sql;
+			//la ejecuta y guarda los resultados
+			$this->result = $this->db->Execute($this->sql);
+			//si falla 
+			if ($this->result === false)
+			{
+				$this->error=1;
+				$this->db->close();
 
-			return 0;
-		}  
+				return 0;
+			}  
 		
-		$this->num=0;
-		while (!$this->result->EOF) {
-			//cogemos los datos del usuario
-			$this->modules_list[$this->num][$this->ddbb_id_module]=$this->result->fields[$this->ddbb_id_module];
-			$this->modules_list[$this->num][$this->ddbb_name_web]=$this->result->fields[$this->ddbb_name_web];
-			$this->modules_list[$this->num][$this->ddbb_name]=$this->result->fields[$this->ddbb_name];
-			$this->modules_list[$this->num][$this->ddbb_path]=$this->result->fields[$this->ddbb_path];
-			$this->modules_list[$this->num][$this->ddbb_active]=$this->result->fields[$this->ddbb_active];
-			$this->modules_list[$this->num][$this->ddbb_public]=$this->result->fields[$this->ddbb_public];
-			$this->modules_list[$this->num][$this->ddbb_parent]=$this->result->fields[$this->ddbb_parent];
-			$this->modules_list[$this->num][$this->ddbb_order]=$this->result->fields[$this->ddbb_order];
-			//nos movemos hasta el siguiente registro de resultado de la consulta
-			$this->result->MoveNext();
-			$this->num++;
+			$this->num=0;
+			while (!$this->result->EOF)
+			 {
+				//cogemos los datos del usuario
+				$this->modules_list[$this->num][$this->ddbb_id_module]=$this->result->fields[$this->ddbb_id_module];
+				$this->modules_list[$this->num][$this->ddbb_name_web]=$this->result->fields[$this->ddbb_name_web];
+				$this->modules_list[$this->num][$this->ddbb_name]=$this->result->fields[$this->ddbb_name];
+				$this->modules_list[$this->num][$this->ddbb_path]=$this->result->fields[$this->ddbb_path];
+				$this->modules_list[$this->num][$this->ddbb_active]=$this->result->fields[$this->ddbb_active];
+				$this->modules_list[$this->num][$this->ddbb_public]=$this->result->fields[$this->ddbb_public];
+				$this->modules_list[$this->num][$this->ddbb_parent]=$this->result->fields[$this->ddbb_parent];
+				$this->modules_list[$this->num][$this->ddbb_order]=$this->result->fields[$this->ddbb_order];
+				//nos movemos hasta el siguiente registro de resultado de la consulta
+				$this->result->MoveNext();
+				$this->num++;
+			}
+			$this->db->close();
+			return $this->num;	
+		}
+		//en el caso de que SI este definido submit_add
+		else
+		{
+			//se puede acceder a los usuarios por numero de campo o por nombre de campo
+			$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
+			//crea una nueva conexi—n con una bbdd (mysql)
+			$this->db = NewADOConnection($this->db_type);
+			//le dice que no salgan los errores de conexi—n de la ddbb por pantalla
+			$this->db->debug=false;
+			//realiza una conexi—n permanente con la bbdd
+			$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
+			//mete la consulta
+			$this->sql="SELECT * FROM ".$this->table_prefix.$this->table_name." ORDER BY 'order'";
+			//la ejecuta y guarda los resultados
+			$this->result = $this->db->Execute($this->sql);
+			//si falla 
+			if ($this->result === false){
+				$this->error=1;
+				$this->db->close();
+	
+				return 0;
+			}  
+			
+			$this->num=0;
+			while (!$this->result->EOF) 
+			{
+				//cogemos los datos del usuario
+				$this->modules_list[$this->num][$this->ddbb_id_module]=$this->result->fields[$this->ddbb_id_module];
+				$this->modules_list[$this->num][$this->ddbb_name_web]=$this->result->fields[$this->ddbb_name_web];
+				$this->modules_list[$this->num][$this->ddbb_name]=$this->result->fields[$this->ddbb_name];
+				$this->modules_list[$this->num][$this->ddbb_path]=$this->result->fields[$this->ddbb_path];
+				$this->modules_list[$this->num][$this->ddbb_active]=$this->result->fields[$this->ddbb_active];
+				$this->modules_list[$this->num][$this->ddbb_public]=$this->result->fields[$this->ddbb_public];
+				$this->modules_list[$this->num][$this->ddbb_parent]=$this->result->fields[$this->ddbb_parent];
+				$this->modules_list[$this->num][$this->ddbb_order]=$this->result->fields[$this->ddbb_order];
+				//nos movemos hasta el siguiente registro de resultado de la consulta
+				$this->result->MoveNext();
+				$this->num++;
+			}
 		}
 		$this->db->close();
 		return $this->num;
 	
 	}
+	
+	function get_fields_from_search_post(){
+		//Cogemos los campos principales de búsqueda
+		$this->search_query=$_POST[$this->ddbb_search];
+		return 0;
+	}	
 	
 	function get_list_modules_menu()
 	{
@@ -590,6 +709,7 @@ class modules{
 									
 						case 'list':
 									$tpl=$this->listar($tpl);
+									$tpl->assign("objeto",$this);
 									break;
 						case 'modify':									
 									$this->read($_GET['id']);
@@ -639,6 +759,7 @@ class modules{
 						default:
 									$this->method='list';
 									$tpl=$this->listar($tpl);
+									$tpl->assign("objeto",$this);
 									break;
 					}
 				$tpl->assign('plantilla','modules_'.$this->method.'.tpl');					

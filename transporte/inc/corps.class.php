@@ -296,8 +296,6 @@ class corps{
 	
 	function get_fields_from_search_post(){
 		//Cogemos los campos principales de búsqueda
-	//	print "Se toman datos del formulario\n";
-	//	$this->search_query=htmlentities($_POST[$this->ddbb_search]);
 		$this->search_query=$_POST[$this->ddbb_search];
 		return 0;
 	}	

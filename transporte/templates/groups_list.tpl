@@ -18,17 +18,13 @@
 			<table width="250px" align="center">
 
 					 <tr>
-					  <td colspan="2" class="cabeceraCampoFormulario">Criterios de b&uacute;squeda:</td>
+					  <td colspan="2" class="cabeceraCampoFormulario">B&uacute;squeda:</td>
 				  </tr>
 					<tr>
-						<td width="125" align="right" class="CampoFormulario" nowrap>Nombre:</td>
-						<td > <input type="text" id="{$objeto->ddbb_name}" name="{$objeto->ddbb_name}" class="textoMenu"></td>
-					</tr>
-					<tr>
-						<td width="125" class="CampoFormulario">Nombre web: </td>
-						<td > <input type="password" id="{$objeto->ddbb_name_web}" name="{$objeto->ddbb_name_web}" class="textoMenu"></td>
+						<td  width="125px" align="right" class="CampoFormulario">Introduzca su b&uacute;squeda:</td>
+						<td ><input type="text" id="{$objeto->ddbb_search}" name="{$objeto->ddbb_search}" value="{$objeto->search_query}" class="textoMenu"></td>
 				  </tr>
-				    <tr>
+				  <tr>
 						<td width="125" class="CampoFormulario">Nº de Registros por p&aacute;gina:</td>
 						<td><select name="Registros">
 						  <option selected>10</option>
@@ -37,7 +33,7 @@
 						</select></td>
 				 </tr>
 				 <tr>
-				 	<td align="center" colspan="2"><input type="submit" value="Buscar" name="Submit" class="botones"></td>
+				 	<td align="center" colspan="2"><input type="submit" value="Buscar" name="submit_groups_search" class="botones"></td>
 				 </tr>
 				  </table>
 				</table>				</form><br>
