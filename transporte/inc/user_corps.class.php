@@ -39,6 +39,7 @@ var $emp;
 								$method='list';
 								$user = new users();
 								$id_user = $user->get_id($_SESSION['user']);
+
 								$this->emp = new emps();
 								$num_corps = $this->emp->get_user_corps($id_user);
 								$tpl=$this->listar($tpl);

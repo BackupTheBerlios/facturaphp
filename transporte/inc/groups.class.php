@@ -505,7 +505,7 @@ class groups{
 	function listar($tpl){
 		$this->get_list_groups();
 		
-		if($_SESSION['user']='admin')
+		if($_SESSION['user']=='admin')
 		{
 			$acciones = array('view', 'modify', 'delete');
 			$add = true;

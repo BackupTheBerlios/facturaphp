@@ -606,7 +606,7 @@ class emps{
 	{
 		$this->get_list_emps($_SESSION['ident_corp']);
 		
-		if($_SESSION['user']='admin')
+		if($_SESSION['user']=='admin')
 		{
 			$acciones = array('view', 'modify', 'delete');
 			$add = true;

@@ -247,7 +247,7 @@ class corps{
 			$variables_modulos=$tabla_listado->nombres_variables;
 		}
 		else{
-			if($_SESSION['user']='admin')
+			if($_SESSION['user']=='admin')
 			{
 				$acciones = array('view', 'modify', 'delete');
 				$add = true;
@@ -478,7 +478,7 @@ class corps{
 			}
 			else
 			{	
-				if($_SESSION['user']='admin')
+				if($_SESSION['user']=='admin')
 				{
 					$acciones = array('view', 'modify', 'delete');
 					$add = true;

@@ -6,10 +6,25 @@
 			</tr>
 			<tr class="textoMenu">
 			  <td width="10px">&nbsp;</td>
-			 
+			  {php}
+			  if(!isset($_SESSION['ident_corp']))
+			  {
+			  {/php}
 			  <td>
 			  	- <a href="index.php?" class="enlaceMenu">Inicio</a><br>
-			  </td>			
+			  </td>
+			  {php}
+			  }
+			  else
+			  {
+			  {/php}
+			  
+				  <td>
+				  	- <a href="index.php?module=user_corps" class="enlaceMenu">Inicio</a><br>
+				  </td>
+			  {php}
+			  }
+			  {/php}
 			</tr>
 			{php}
 				$module = new modules();
@@ -36,7 +51,8 @@
 					$i++;
 					
 				}
-
+				
+				
 			{/php}
 			
 		</table>

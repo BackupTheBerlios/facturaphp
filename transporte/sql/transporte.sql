@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 -- 
 -- Servidor: localhost
--- Tiempo de generación: 16-11-2004 a las 14:23:00
+-- Tiempo de generación: 17-11-2004 a las 14:40:59
 -- Versión del servidor: 4.0.20
 -- Versión de PHP: 4.3.8-5
 -- 
@@ -92,7 +92,7 @@ CREATE TABLE IF NOT EXISTS `emps` (
   `country` varchar(50) NOT NULL default '',
   PRIMARY KEY  (`id_emp`),
   KEY `id_corp` (`id_corp`,`id_user`)
-) TYPE=MyISAM AUTO_INCREMENT=6 ;
+) TYPE=MyISAM AUTO_INCREMENT=7 ;
 
 -- 
 -- Volcar la base de datos para la tabla `emps`
@@ -103,6 +103,7 @@ INSERT INTO `emps` VALUES (2, 1, 1, 'David', 'Vaquero', 'Santiago', '2004-10-25'
 INSERT INTO `emps` VALUES (3, 2, 1, 'David', 'Vaquero', 'Santiago', '0000-00-00', '', '', '', '', '', '', '', '', '');
 INSERT INTO `emps` VALUES (4, 3, 1, 'David', 'Vaquero', 'Santiago', '0000-00-00', '', '', '', '', '', '', '', '', '');
 INSERT INTO `emps` VALUES (5, 3, 2, 'Daniel', 'González', 'Zaballos', '0000-00-00', '', '', '', '', '', '', '', '', '');
+INSERT INTO `emps` VALUES (6, 2, 4, 'Rocío', 'Gutiérrez', 'González', '0000-00-00', '923268475', '665053440', '', 'rocio_gg15@hotmail.com', 'Camino de Miranda 38', 'Salamanca', 'CyL', '37008', 'España');
 
 -- --------------------------------------------------------
 
@@ -117,13 +118,13 @@ CREATE TABLE IF NOT EXISTS `group_users` (
   `id_user` int(11) unsigned NOT NULL default '0',
   `up` date NOT NULL default '0000-00-00',
   PRIMARY KEY  (`id_group_user`)
-) TYPE=MyISAM AUTO_INCREMENT=57 ;
+) TYPE=MyISAM AUTO_INCREMENT=59 ;
 
 -- 
 -- Volcar la base de datos para la tabla `group_users`
 -- 
 
-INSERT INTO `group_users` VALUES (1, 1, 2, '2004-12-12');
+INSERT INTO `group_users` VALUES (1, 1, 1, '2004-12-12');
 INSERT INTO `group_users` VALUES (45, 2, 1, '0000-00-00');
 INSERT INTO `group_users` VALUES (46, 3, 1, '0000-00-00');
 INSERT INTO `group_users` VALUES (47, 4, 1, '0000-00-00');
@@ -136,6 +137,8 @@ INSERT INTO `group_users` VALUES (53, 10, 1, '0000-00-00');
 INSERT INTO `group_users` VALUES (54, 11, 1, '0000-00-00');
 INSERT INTO `group_users` VALUES (55, 12, 1, '0000-00-00');
 INSERT INTO `group_users` VALUES (56, 13, 1, '0000-00-00');
+INSERT INTO `group_users` VALUES (57, 1, 2, '0000-00-00');
+INSERT INTO `group_users` VALUES (58, 2, 3, '0000-00-00');
 
 -- --------------------------------------------------------
 
@@ -156,11 +159,11 @@ CREATE TABLE IF NOT EXISTS `groups` (
 -- Volcar la base de datos para la tabla `groups`
 -- 
 
-INSERT INTO `groups` VALUES (1, 'Mi_grupo', 'Mi grupo', 'descripcion adicional sobre mi grupo');
+INSERT INTO `groups` VALUES (1, 'superadmin', 'Super Administrador', '');
 INSERT INTO `groups` VALUES (2, 'admin', 'Administrador', '');
 INSERT INTO `groups` VALUES (3, 'conductor', 'Conductores', '');
 INSERT INTO `groups` VALUES (4, 'user', 'Usuario', '');
-INSERT INTO `groups` VALUES (5, 'superadmin', 'Super Administrador', '');
+INSERT INTO `groups` VALUES (5, 'Migrupo', 'Mi Grupo', '');
 INSERT INTO `groups` VALUES (6, 'contable', 'Contables', '');
 INSERT INTO `groups` VALUES (7, 'limpieza', 'Limpieza', '');
 INSERT INTO `groups` VALUES (8, 'root', 'Root', '');
@@ -309,21 +312,13 @@ CREATE TABLE IF NOT EXISTS `modules` (
 -- 
 
 INSERT INTO `modules` VALUES (1, 'users', 'Usuarios', '/inc/', 1, 0, 0);
-INSERT INTO `modules` VALUES (2, 'clients', 'Clientes del programa', '/inc/', 0, 0, 9);
 INSERT INTO `modules` VALUES (3, 'news', 'Noticias', '/inc/', 0, 1, 0);
-INSERT INTO `modules` VALUES (4, 'products', 'Productos', '/inc/', 0, 0, 9);
-INSERT INTO `modules` VALUES (5, 'services', 'Servicios', '/inc/', 0, 0, 9);
-INSERT INTO `modules` VALUES (6, 'contact', 'Contactos', '/inc/', 0, 0, 0);
 INSERT INTO `modules` VALUES (7, 'user_corps', 'Empresas usuario', '/inc/', 0, 0, 0);
 INSERT INTO `modules` VALUES (9, 'corps', 'Empresas', '/inc/', 1, 0, 0);
 INSERT INTO `modules` VALUES (10, 'groups', 'Grupos', '/inc/', 1, 0, 0);
 INSERT INTO `modules` VALUES (11, 'emps', 'Empleados', '/inc/', 1, 0, 9);
 INSERT INTO `modules` VALUES (12, 'error', 'Errores', '/inc/', 0, 0, 0);
-INSERT INTO `modules` VALUES (13, 'bill_received', 'Facturas cobradas', '/inc/', 0, 0, 9);
-INSERT INTO `modules` VALUES (14, 'bill_unreceived', 'Facturas pendientes de cobro', '/inc/', 0, 0, 9);
-INSERT INTO `modules` VALUES (15, 'Stock', 'Almacén', '/inc/', 0, 0, 9);
 INSERT INTO `modules` VALUES (16, 'modules', 'Módulos', '/inc/', 0, 0, 0);
-INSERT INTO `modules` VALUES (17, 'methods', 'Métodos', '/inc/', 0, 0, 16);
 
 -- --------------------------------------------------------
 
@@ -384,7 +379,7 @@ CREATE TABLE IF NOT EXISTS `per_user_methods` (
   `id_method` int(11) unsigned NOT NULL default '0',
   `per` tinyint(3) unsigned NOT NULL default '0',
   PRIMARY KEY  (`id_per_user_method`)
-) TYPE=MyISAM AUTO_INCREMENT=71 ;
+) TYPE=MyISAM AUTO_INCREMENT=74 ;
 
 -- 
 -- Volcar la base de datos para la tabla `per_user_methods`
@@ -413,6 +408,9 @@ INSERT INTO `per_user_methods` VALUES (67, 1, 15, 1);
 INSERT INTO `per_user_methods` VALUES (68, 1, 16, 1);
 INSERT INTO `per_user_methods` VALUES (69, 1, 17, 1);
 INSERT INTO `per_user_methods` VALUES (70, 1, 21, 1);
+INSERT INTO `per_user_methods` VALUES (71, 4, 24, 1);
+INSERT INTO `per_user_methods` VALUES (72, 0, 0, 0);
+INSERT INTO `per_user_methods` VALUES (73, 4, 20, 1);
 
 -- --------------------------------------------------------
 
@@ -427,7 +425,7 @@ CREATE TABLE IF NOT EXISTS `per_user_modules` (
   `id_module` int(10) unsigned NOT NULL default '0',
   `per` tinyint(3) unsigned NOT NULL default '0',
   PRIMARY KEY  (`id_per_user_module`)
-) TYPE=MyISAM AUTO_INCREMENT=87 ;
+) TYPE=MyISAM AUTO_INCREMENT=89 ;
 
 -- 
 -- Volcar la base de datos para la tabla `per_user_modules`
@@ -453,6 +451,8 @@ INSERT INTO `per_user_modules` VALUES (82, 1, 14, 1);
 INSERT INTO `per_user_modules` VALUES (83, 1, 15, 1);
 INSERT INTO `per_user_modules` VALUES (84, 1, 16, 1);
 INSERT INTO `per_user_modules` VALUES (85, 1, 17, 1);
+INSERT INTO `per_user_modules` VALUES (87, 4, 7, 1);
+INSERT INTO `per_user_modules` VALUES (88, 4, 9, 1);
 
 -- --------------------------------------------------------
 
@@ -536,7 +536,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   `internal` tinyint(3) NOT NULL default '0',
   `active` tinyint(3) NOT NULL default '0',
   PRIMARY KEY  (`id_user`)
-) TYPE=MyISAM AUTO_INCREMENT=85 ;
+) TYPE=MyISAM AUTO_INCREMENT=86 ;
 
 -- 
 -- Volcar la base de datos para la tabla `users`
@@ -545,3 +545,4 @@ CREATE TABLE IF NOT EXISTS `users` (
 INSERT INTO `users` VALUES (1, 'admin', 'sta3war2', 'David', 'Vaquero', 'Santiago', 'David Vaquero Santiago', 0, 0);
 INSERT INTO `users` VALUES (2, 'admin2', 'sta3war2', 'Daniel', 'GonzÃ¡lez', 'Zaballos', 'Daniel GonzÃ¡lez Zaballos', 1, 1);
 INSERT INTO `users` VALUES (3, 'Elena', 'elena', 'Elena', 'Resuival', '', '', 0, 0);
+INSERT INTO `users` VALUES (4, 'rocio', 'rocio', 'Rocío', 'Gutiérrez', 'González', 'Rocío Gutiérrez González', 0, 0);

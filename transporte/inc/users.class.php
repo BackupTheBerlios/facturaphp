@@ -605,7 +605,7 @@ class users{
 		$this->get_list_users();
 		$tabla_listado = new table(true);
 		
-		if($_SESSION['user']='admin')
+		if($_SESSION['user']=='admin')
 			{
 				$acciones = array('view', 'modify', 'delete');
 				$add = true;
@@ -785,6 +785,40 @@ class users{
 		}
 		$this->db->close();
 		return $this->num;
+	}
+	
+	function is_admin($id_user)
+	{
+		$num_groups = $this->get_groups($id_user);
+		
+		$i = 0;
+		while($i < $num_groups)
+		{
+			//Recorremos la lista de grupos al que pertenece el usuario en busca de si pertenece al grupo admin
+			if($this->groups_list[$i]['id_group'] == 2)
+			{
+				return true;
+			}
+			$i++;
+		}
+		return false;
+	}
+	
+	function is_super($id_user)
+	{
+		$num_groups = $this->get_groups($id_user);
+		
+		$i = 0;
+		while($i < $num_groups)
+		{
+			//Recorremos la lista de grupos al que pertenece el usuario en busca de si pertenece al grupo admin
+			if($this->groups_list[$i]['id_group'] == 1)
+			{
+				return true;
+			}
+			$i++;
+		}
+		return false;
 	}
 	
 	
