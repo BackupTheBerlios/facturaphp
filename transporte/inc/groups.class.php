@@ -504,8 +504,12 @@ class groups{
 	
 	function listar($tpl){
 		$this->get_list_groups();
+		
+		$per = new permissions();
+		$per->get_permissions_list('groups');
+		
 		$tabla_listado = new table(true);
-		$cadena=''.$tabla_listado->make_tables('groups',$this->groups_list,array('Nombre',40,'Nombre Web',40),array($this->ddbb_id_group,$this->ddbb_name,$this->ddbb_name_web),10,array('view','modify','delete'),true);
+		$cadena=''.$tabla_listado->make_tables('groups',$this->groups_list,array('Nombre',40,'Nombre Web',40),array($this->ddbb_id_group,$this->ddbb_name,$this->ddbb_name_web),10,$per->permissions_module,$per->add);
 		$variables=$tabla_listado->nombres_variables;		
 		$tpl->assign('variables',$variables);
 		$tpl->assign('cadena',$cadena);		
@@ -563,17 +567,18 @@ class groups{
 		return $tpl;
 	}
 	
-	function bar($method,$corp){	
+	
+	function bar($method,$corp){
 		if ($method!=$this->method){
 			$method = $this->method;
-		}
+		}		
 		if ($corp != ""){
-			$corp='<a href="index.php">'.$corp.' ::';
+			$corp='<a href="index.php?module=user_corps&method=select&id='.$_SESSION['ident_corp'].'">'.$corp.' ::';
 		}
-		$nav_bar = '<a href="index.php">Zona privada</a> :: '.$corp.' <a href="index.php?module=groups">Grupos</a>';
+		$nav_bar = '<a>Zona privada</a> :: '.$corp.' <a href="index.php?module=groups">Grupos</a>';
 		$nav_bar=$nav_bar.$this->localice($method);
 		return $nav_bar;
-	}	
+	}		
 
 	function title($method,$corp){
 		if ($method!=$this->method){

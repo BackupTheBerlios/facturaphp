@@ -247,7 +247,10 @@ class corps{
 			$variables_modulos=$tabla_listado->nombres_variables;
 		}
 		else{
-			$cadena=''.$tabla_listado->make_tables('corps',$this->corps_list,array('Nombre',20,'Nombre completo',20,'CIF|NIF',20,'Telefono',20),array($this->ddbb_id_corp,$this->ddbb_name,$this->ddbb_full_name,$this->ddbb_cif_nif,$this->ddbb_phone),20,array('view','modify','delete'),true);
+			$per = new permissions();
+			$per->get_permissions_list('corps');
+		
+			$cadena=''.$tabla_listado->make_tables('corps',$this->corps_list,array('Nombre',20,'Nombre completo',20,'CIF|NIF',20,'Telefono',20),array($this->ddbb_id_corp,$this->ddbb_name,$this->ddbb_full_name,$this->ddbb_cif_nif,$this->ddbb_phone),20,$per->permissions_module,$per->add);
 			$variables=$tabla_listado->nombres_variables;		
 		}		
 		$tpl->assign('variables',$variables);
@@ -493,15 +496,19 @@ class corps{
 			return $tpl;
 				
 	}
+
 	
-	function bar($method,$corp){		
+	function bar($method,$corp){
+		if ($method!=$this->method){
+			$method = $this->method;
+		}		
 		if ($corp != ""){
-			$corp='<a href="index.php">'.$corp.' ::';
+			$corp='<a href="index.php?module=user_corps&method=select&id='.$_SESSION['ident_corp'].'">'.$corp.' ::';
 		}
-		$nav_bar = '<a href="index.php">Zona privada</a> :: '.$corp.' <a href="index.php?module=corps">Empresas</a>';
+		$nav_bar = '<a>Zona privada</a> :: '.$corp.' <a href="index.php?module=corps">Empresas</a>';
 		$nav_bar=$nav_bar.$this->localice($method);
 		return $nav_bar;
-	}	
+	}		
 
 	function title($method,$corp){
 		if ($corp != ""){

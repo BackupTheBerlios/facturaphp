@@ -13,6 +13,7 @@ require_once('per_group_modules.class.php');
 require_once('per_user_modules.class.php');
 require_once('per_group_methods.class.php');
 require_once('per_user_methods.class.php');
+require_once('permissions.class.php');
 //require_once('permissions_modules.class.php');
 //require_once('permissions_methods.class.php');
 require_once('products.class.php');

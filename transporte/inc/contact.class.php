@@ -22,12 +22,15 @@ class contact{
 		return $tpl;
 	}
 
-
-	function bar($method,$corp){		
+	function bar($method,$corp){
+		if ($method!=$this->method){
+			$method = $this->method;
+		}		
 		if ($corp != ""){
-			$corp='<a href="index.php">'.$corp.' ::';
+			$corp='<a href="index.php?module=user_corps&method=select&id='.$_SESSION['ident_corp'].'">'.$corp.' ::';
 		}
-		$nav_bar = '<a href="index.php">Zona Pública</a> :: '.$corp.' <a href="index.php?module=news">Contacto</a>';
+		$nav_bar = '<a>Zona Pública</a> :: '.$corp.' <a href="index.php?module=contact">Contacto</a>';
+	
 		return $nav_bar;
 	}	
 

@@ -23,15 +23,18 @@ class clients{
 		return $tpl;
 	}
 
-
-	function bar($method,$corp){		
+	function bar($method,$corp){
+		if ($method!=$this->method){
+			$method = $this->method;
+		}		
 		if ($corp != ""){
-			$corp='<a href="index.php">'.$corp.' ::';
+			$corp='<a href="index.php?module=user_corps&method=select&id='.$_SESSION['ident_corp'].'">'.$corp.' ::';
 		}
-		$nav_bar = '<a href="index.php">Zona Privada</a> :: '.$corp.' <a href="index.php?module=clients">Clientes</a>';
+		$nav_bar = '<a>Zona privada</a> :: '.$corp.' <a href="index.php?module=clients">Clientes</a>';
+	
 		return $nav_bar;
 	}	
-
+	
 	function title($method,$corp)
 	{
 		if ($corp != ""){
