@@ -816,7 +816,7 @@ class users{
 			$this->per_modules[$modulo_num]->id_module = $this->modules->modules_list[$modulo_num]['id_module'];
 			$this->per_modules[$modulo_num]->module_name = $this->modules->modules_list[$modulo_num]['name'];
 			$this->per_modules[$modulo_num]->web_name = $this->modules->modules_list[$modulo_num]['name_web'];
-			$this->per_modules[$modulo_num]->public = $this->modules->modules_list[$modulo_num]['public'];
+			$this->per_modules[$modulo_num]->publico = $this->modules->modules_list[$modulo_num]['public'];
 			$this->per_modules[$modulo_num]->validate_per_module($id_user);
 		
 		}

@@ -41,7 +41,7 @@
 				while($i!=$user->num_modules)
 				{
 			
-					if(($user->per_modules[$i]->per == 1)&&($user->per_modules[$i]->public==0))
+					if(($user->per_modules[$i]->per == 1)&&($user->per_modules[$i]->publico==0))
 					{
 					{/php}
 				

@@ -17,7 +17,7 @@ class permissions_modules{
 	var $module_name; //Nombre del modulo
 	var $web_name;
 	var $per;
-	var $public;
+	var $publico;
 	//var $list_methods; No hace falta porque la lista de metodos por módulo la encontraremos con el numero de metodos listando los nombres que aparecen en cada campo de per_module_methods
 	
 //
