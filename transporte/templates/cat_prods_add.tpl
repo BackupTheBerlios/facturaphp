@@ -28,7 +28,7 @@
 				</tr>
 					 <tr>
 						<td width="125px" align="right" class="CampoFormulario">Categoria Padre:</td>
-						<td> <select id="{$objeto->ddbb_id_cat_emp}" name="{$objeto->ddbb_id_cat_emp}">
+						<td> <select id="{$objeto->ddbb_id_parent_cat}" name="{$objeto->ddbb_id_parent_cat}">
 						<option value="0" selected>Ninguna</option>
 						
 						{section name="nombre" loop=$objeto->cat_prods_list}

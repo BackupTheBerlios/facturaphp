@@ -290,7 +290,7 @@ class cat_prods{
 		}
 		//rellenamos el array con los datos de los atributos de la clase
 		$record = array();
-		$record[$this->ddbb_id_vehicle]=$this_vehicle;
+		$record[$this->ddbb_id_cat_prod]=$this->id_cat_prod;
 		$record[$this->ddbb_path_photo]=$_SESSION['ruta_photo'];
 		//calculamos la sql de insercin respecto a los atributos
 		$this->sql = $this->db->GetUpdateSQL($this->result, $record);
@@ -585,7 +585,7 @@ class cat_prods{
 		$this->name=$_POST[$this->ddbb_name];
 		$this->descrip=$_POST[$this->ddbb_descrip];
 		$this->path_photo = $_SESSION['ruta_photo'];
-		
+		$this->id_parent_cat=$_POST[$this->ddbb_id_parent_cat];
 		//Colocar de manera provisional hasta que se haga la validacion de fields
 		//************Bloque
 		if ($this->name==""){
@@ -679,7 +679,7 @@ class cat_prods{
 			$method = $this->method;
 		}		
 		if ($corp != ""){
-			$corp='<a href="index.php?module=corps&method=view&id='.$_SESSION['ident_corp'].'">'.$corp.' ::';
+			$corp='<a href="index.php?module=corps&method=view&id='.$_SESSION['ident_corp'].'">'.$corp.'</a> ::';
 		}
 		$nav_bar = '<a href="index.php?module=user_corps">Zona privada</a> :: '.$corp.' <a href="index.php?module=cat_prods">Categor&iacute;a de productos</a>';
 		$nav_bar=$nav_bar.$this->localice($method);

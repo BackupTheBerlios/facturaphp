@@ -34,4 +34,22 @@ if((isset($_GET['module']))&& (isset($_GET['method']))&&($_GET['module']=='cat_p
    $_SESSION['ruta_temporal'] =  $_FILES['path_photo']['tmp_name'];
    $_SESSION['tamanno_photo'] = $_FILES['path_photo']['size'];
 }
+
+//Si se añade la foto de un producto
+if((isset($_GET['module']))&& (isset($_GET['method']))&&($_GET['module']=='products')&&($_GET['method']=='add'))
+{
+   $_SESSION['ruta_photo'] = "";
+   $_SESSION['nombre_photo'] = $_FILES['path_photo']['name'];
+   $_SESSION['ruta_temporal'] =  $_FILES['path_photo']['tmp_name'];
+   $_SESSION['tamanno_photo'] = $_FILES['path_photo']['size'];
+}
+
+//Si se modifica la foto de un producto
+if((isset($_GET['module']))&& (isset($_GET['method']))&&($_GET['module']=='products')&&($_GET['method']=='modify'))
+{
+   $_SESSION['ruta_photo'] = "";
+   $_SESSION['nombre_photo'] = $_FILES['path_photo']['name'];
+   $_SESSION['ruta_temporal'] =  $_FILES['path_photo']['tmp_name'];
+   $_SESSION['tamanno_photo'] = $_FILES['path_photo']['size'];
+}
 ?>

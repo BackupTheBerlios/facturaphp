@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.3, created on 2004-10-27 19:19:46
+<?php /* Smarty version 2.6.3, created on 2005-01-27 15:44:51
          compiled from users_add.tpl */ ?>
 <td valign="top">
 <?php $_smarty_tpl_vars = $this->_tpl_vars;
@@ -22,7 +22,7 @@ unset($_smarty_tpl_vars);
 		<table width="250px" align="center">
 
 					<tr>
-					  <td colspan="2" class="cabeceraCampoFormulario">Datos de Empresa:</td>
+					  <td colspan="2" class="cabeceraCampoFormulario">Datos de Login:</td>
 				  </tr>
 					<tr>
 						<td width="125px" align="right" class="CampoFormulario" nowrap>Login:</td>
@@ -121,7 +121,7 @@ $this->_sections['indice']['last']       = ($this->_sections['indice']['iteratio
 " <?php if ($this->_tpl_vars['grupos'][$this->_sections['indice']['index']]->belong == true): ?>checked<?php endif; ?>><?php echo $this->_tpl_vars['grupos'][$this->_sections['indice']['index']]->name_web; ?>
 
 				<?php $this->_sections['indice']['index']+=1;
-					echo $this->_sections['indice']['index'];  ?>
+					$this->_sections['indice']['iteration']+=1; ?>
 				
 				</td>
 				<?php if (! $this->_sections['indice']['last']): ?>
@@ -141,7 +141,7 @@ $this->_sections['indice']['last']       = ($this->_sections['indice']['iteratio
 			</table>
 		</td>
 		</tr>	
-				</table>
+		</table>
 		</td>
 		</tr>	
 		
@@ -262,6 +262,6 @@ _metodo_<?php echo $this->_tpl_vars['modulos']->per_modules[$this->_sections['in
 			<input type="reset" Value="Limpiar Datos" class="botones">
 			</td>
 		</tr>
-	  	</table> 
+	  	</table>
 	</form>
 </td>

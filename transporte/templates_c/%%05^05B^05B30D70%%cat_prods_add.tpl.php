@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.3, created on 2005-01-13 18:30:44
+<?php /* Smarty version 2.6.3, created on 2005-01-26 17:20:04
          compiled from cat_prods_add.tpl */ ?>
 <td valign="top">
 <form method="post" action="index.php?module=cat_prods&method=add" name="form_central" enctype="multipart/form-data">
@@ -33,8 +33,8 @@
 				</tr>
 					 <tr>
 						<td width="125px" align="right" class="CampoFormulario">Categoria Padre:</td>
-						<td> <select id="<?php echo $this->_tpl_vars['objeto']->ddbb_id_cat_emp; ?>
-" name="<?php echo $this->_tpl_vars['objeto']->ddbb_id_cat_emp; ?>
+						<td> <select id="<?php echo $this->_tpl_vars['objeto']->ddbb_id_parent_cat; ?>
+" name="<?php echo $this->_tpl_vars['objeto']->ddbb_id_parent_cat; ?>
 ">
 						<option value="0" selected>Ninguna</option>
 						

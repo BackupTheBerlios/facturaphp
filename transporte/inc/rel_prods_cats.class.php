@@ -7,7 +7,7 @@ require_once ($ADODB_DIR."adodb.inc.php");
 class rel_prods_cats{
 //internal vars
 	var $id_rel_prod_cat; 
-	var $id_prod;
+	var $id_product;
 	var $id_cat_prod;
 	var $theme;
 //BBDD name vars
@@ -20,7 +20,7 @@ class rel_prods_cats{
 	var $table_prefix;
 	var $table_name='rel_prods_cats';
 	var $ddbb_id_rel_prod_cat='id_rel_prod_cat';
-	var $ddbb_id_prod='id_prod';
+	var $ddbb_id_product='id_product';
 	var $ddbb_id_cat_prod='id_cat_prod';
 	var $db;
 	var $result;  	
@@ -48,7 +48,7 @@ class rel_prods_cats{
 		************************/
 		$this->fields_list= new fields();
 		$this->fields_list->add($this->ddbb_id_rel_prod_cat, $this->id_rel_prod_cat, 'int', 11,0);
-		$this->fields_list->add($this->ddbb_id_prod, $this->id_prod, 'int', 11,0);
+		$this->fields_list->add($this->ddbb_id_product, $this->id_product, 'int', 11,0);
 		$this->fields_list->add($this->ddbb_id_cat_prod, $this->id_cat_prod, 'int', 11,0);
 		//print_r($this);
 		//se puede acceder a los grupos por numero de campo o por nombre de campo
@@ -99,7 +99,7 @@ class rel_prods_cats{
 		while (!$this->result->EOF) {
 			//cogemos los datos del usuario
 			$this->rel_prods_cats_list[$this->num][$this->ddbb_id_rel_prod_cat]=$this->result->fields[$this->ddbb_id_rel_prod_cat];
-			$this->rel_prods_cats_list[$this->num][$this->ddbb_id_prod]=$this->result->fields[$this->ddbb_id_prod];
+			$this->rel_prods_cats_list[$this->num][$this->ddbb_id_product]=$this->result->fields[$this->ddbb_id_product];
 			$this->rel_prods_cats_list[$this->num][$this->ddbb_id_cat_prod]=$this->result->fields[$this->ddbb_id_cat_prod];
 			//nos movemos hasta el siguiente registro de resultado de la consulta
 			$this->result->MoveNext();
@@ -158,7 +158,7 @@ class rel_prods_cats{
 			$this->db->close();
 		}else{
 			$this->id_rel_prod_cat=$id;
-			$this->id_prod=$this->result->fields[$this->ddbb_id_prod];
+			$this->id_product=$this->result->fields[$this->ddbb_id_product];
 			$this->id_cat_prod=$this->result->fields[$this->ddbb_id_cat_prod];
 			$this->db->close();
 			return 1;
@@ -186,7 +186,7 @@ class rel_prods_cats{
 		}
 		//rellenamos el array con los datos de los atributos de la clase
 		$record = array();
-		$record[$this->ddbb_id_prod] = $this->id_prod;
+		$record[$this->ddbb_id_product] = $this->id_product;
 		$record[$this->ddbb_id_cat_prod]=$this->id_cat_prod;
 		//calculamos la sql de insercin respecto a los atributos
 		$this->sql = $this->db->GetInsertSQL($this->result, $record);
@@ -260,7 +260,7 @@ class rel_prods_cats{
 		//rellenamos el array con los datos de los atributos de la clase
 		$record = array();
 		$record[$this->ddbb_id_rel_prod_cat]=$this->id_rel_prod_cat;
-		$record[$this->ddbb_id_prod]=$this->id_prod;
+		$record[$this->ddbb_id_product]=$this->id_product;
 		$record[$this->ddbb_id_cat_prod]=$this->id_cat_prod;				
 		//calculamos la sql de insercin respecto a los atributos
 		$this->sql = $this->db->GetUpdateSQL($this->result, $record);
@@ -292,7 +292,7 @@ class rel_prods_cats{
 	
 	}
 	
-	function get_rel_prod_cat($id_prod){
+	function get_rel_prod_cat($id_product){
 	
 		//se puede acceder a los usuarios por numero de campo o por nombre de campo
 		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
@@ -303,7 +303,7 @@ class rel_prods_cats{
 		//realiza una conexin permanente con la bbdd
 		$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
 		//mete la consulta
-		$this->sql='SELECT * FROM '.$this->table_name.'  WHERE `'.$this->ddbb_id_prod.'` = \''.$id_prod.'\' LIMIT 1';
+		$this->sql='SELECT * FROM '.$this->table_name.'  WHERE `'.$this->ddbb_id_product.'` = \''.$id_product.'\'';
 		//la ejecuta y guarda los resultados
 		$this->result = $this->db->Execute($this->sql);
 		if ($this->result === false){
@@ -317,12 +317,13 @@ class rel_prods_cats{
 
 			//cogemos los datos del usuario
 			$this->rel_prods_cats_list[$this->num]['id_rel_prod_cat']=$this->result->fields['id_rel_prod_cat'];
+			$this->rel_prods_cats_list[$this->num]['id_cat_prod']=$this->result->fields['id_cat_prod'];
 			//nos movemos hasta el siguiente registro de resultado de la consulta
 			$this->result->MoveNext();
 			$this->num++;
 		}
 		$this->db->close();		
-		return $this->rel_prods_cats_list[0]['id_rel_prod_cat'];
+		return $this->rel_prods_cats_list;
 	}
 	
 }

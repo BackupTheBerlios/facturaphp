@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.3, created on 2004-11-26 18:55:11
+<?php /* Smarty version 2.6.3, created on 2005-01-26 17:08:35
          compiled from emps_add.tpl */ ?>
 <td valign="top">
 <script>
@@ -204,6 +204,9 @@ $this->_sections['indice']['last']       = ($this->_sections['indice']['iteratio
 				 <tr>
 						<td width="125" class="CampoFormulario" nowrap>Fecha de alta:</td>
 						<td > <!--<input type="text" id="come"  name="fields[multi_edit][0][up]" class="textoMenu">-->						
+				<input type="hidden" name="<?php echo $this->_tpl_vars['holyday']->ddbb_ill; ?>
+" id="<?php echo $this->_tpl_vars['holyday']->ddbb_ill; ?>
+" value="2">
 				 <input class="textoMenu" type="text" name="comeChanged" value="00-00-0000" "size="15" maxlength="99" class="textfield" id="comeChanged" readonly>
 				 <input class="textoMenu" type="hidden" name="<?php echo $this->_tpl_vars['holyday']->ddbb_come; ?>
 " id="<?php echo $this->_tpl_vars['holyday']->ddbb_come; ?>
