@@ -231,7 +231,7 @@ class drivers{
 				$this->drivers_list[$this->num][$this->ddbb_id_date]=$temp[$i][$this->ddbb_id_date];
 			
 				//Tratamos los datos para poder presentarselos al usuario
-				$this->preparar_datos($this->drivers_list[$this->num][$this->ddbb_id_emp], $this->drivers_list[$this->num][$this->ddbb_id_vehicle]);
+				$this->preparar_datos($this->drivers_list[$this->num][$this->ddbb_id_emp]);
 	
 				$this->num++;
 			}
