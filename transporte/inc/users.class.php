@@ -542,12 +542,32 @@ class users{
 			//listado de modulos
 			$tabla_modulos = new table(false);
 
-			if ($this->get_modules($id)==0){
+			if ($this->num_modules==0){
 
 				$cadena=$cadena.$tabla_modulos->tabla_vacia('modules');
 				$variables_modulos=$tabla_modulos->nombres_variables;
 			}
-			
+			else{	
+				//Se prepara el array de permisos
+				for($i = 0;$i<$this->num_modules;$i++)
+				{
+					if($this->per_modules[$i]->per == 1)
+					{
+						$permissions[$i]['id_module']=$this->per_modules[$i]->id_module;
+						$permissions[$i]['name']=$this->per_modules[$i]->web_name;
+						$permissions[$i]['methods'] = "";
+						for($j=0;$j<$this->per_modules[$i]->num_methods;$j++)
+							if($this->per_modules[$i]->per_methods[$j]->per ==1)
+							{
+								$permissions[$i]['methods'] = $permissions[$i]['methods'].' '.$this->per_modules[$i]->per_methods[$j]->method_name_web;
+							}
+					}
+				}
+				
+					
+				$cadena=$cadena.$tabla_modulos->make_tables('modules',$permissions,array('Nombre del modulo',20,'Métodos en los que se tiene permiso',120),array('id_module','name', 'methods'),10,null,false);
+				$variables_modulos=$tabla_modulos->nombres_variables;
+			}
 			
 			
 			//$tpl->assign('list_modules', $this->list_modules_availables($id))
