@@ -19,26 +19,26 @@
 				  </tr>
 					<tr>
 						<td width="125px" align="right" class="CampoFormulario" nowrap>Login:</td>
-						<td > <input type="text" id="{$objeto->ddbb_login}" name="{$objeto->ddbb_login}" class="textoMenu"></td>
+						<td > <input type="text" id="{$objeto->ddbb_login}" name="{$objeto->ddbb_login}" class="textoMenu" value="{$objeto->login}"></td>
 					</tr>
 					<tr>
 						<td width="125px" class="CampoFormulario">Password:</td>
-						<td > <input type="password" id="{$objeto->ddbb_passwd}" name="{$objeto->ddbb_passwd}" class="textoMenu"></td>
+						<td > <input type="password" id="{$objeto->ddbb_passwd}" name="{$objeto->ddbb_passwd}" class="textoMenu" value="{$objeto->passwd}"></td>
 				  </tr>
 				  <tr>
 					  <td colspan="2" class="cabeceraCampoFormulario">Datos del Usuario:</td>
 				  </tr>
 				  <tr>
 						<td width="125px" align="right" class="CampoFormulario">Nombre:</td>
-						<td> <input type="text" id="{$objeto->ddbb_name}" name="{$objeto->ddbb_name}" class="textoMenu"></td>
+						<td> <input type="text" id="{$objeto->ddbb_name}" name="{$objeto->ddbb_name}" class="textoMenu" value="{$objeto->name}"></td>
 					</tr>
 					<tr>
 						<td width="125px" class="CampoFormulario" >Primer Apellido:</td>
-						<td > <input type="text" id="{$objeto->ddbb_last_name}" name="{$objeto->ddbb_last_name}" class="textoMenu"></td>
+						<td > <input type="text" id="{$objeto->ddbb_last_name}" name="{$objeto->ddbb_last_name}" class="textoMenu" value="{$objeto->last_name}"></td>
 				  </tr>
 				  <tr>
 						<td width="125px" class="CampoFormulario">Segundo Apellido:</td>
-						<td > <input type="text" id="{$objeto->ddbb_last_name2}" name="{$objeto->ddbb_last_name2}" class="textoMenu"></td>
+						<td > <input type="text" id="{$objeto->ddbb_last_name2}" name="{$objeto->ddbb_last_name2}" class="textoMenu" value="{$objeto->last_name2}"></td>
 				  </tr>
 				   <tr>
 					  <td colspan="2" class="cabeceraCampoFormulario">Otros datos: </td>

@@ -3,6 +3,7 @@
 //enlaza con la bbdd 
 global $ADODB_DIR, $INSTALL_DIR;
 require_once ($INSTALL_DIR.'inc/config.inc.php');
+require_once ($INSTALL_DIR.'inc/table.class.php');
 require_once ($ADODB_DIR."adodb.inc.php");
 class users{
 //internal vars
@@ -41,6 +42,12 @@ class users{
   	var $num;
   	var $fields_list;
   	var $error;
+//variables del listado de grupos al que pertenece el usuario	
+	var $groups_list;
+	var $id_group;
+	var $group_name;
+//variables del listado de modulos al que pertenece el usuario	
+	
   	//constructor
 	function users(){
 		//coge las variables globales del fichero config.inc.php
@@ -362,12 +369,109 @@ class users{
 	
 	}
 	
-	function view ($id){
-	
+	function view ($id,$tpl){
+	/*
+		Cosas que faltan por hacer:
+			De forma general, mirar los permisos del usuario que vaya a acceder aqui, para saber si tiene permisos de borrar editar ver etc...
+			Averiguar como pasar el numero de registros, si va a ser a grupos a grupos, si va a ser a modulos, a modulos
+			Order By (y mantener la búsqueda en el caso de que hubiera hecha una y averiguar la "pestaña" a la que hace referencia)
+			Busquedas
+	*/
+			$cadena='';			
+			// Leemos el usuario y se lo pasamos a la plantilla
+			$this->read($id);
+			$tpl->assign('objeto',$this);
+			//listado de modulos
+			$tabla_modulos = new table(false);
+			if ($this->get_modules($id)==0){
+				$cadena=$cadena.$tabla_modulos->tabla_vacia('modules');
+				$variables_modulos=$tabla_modulos->nombres_variables;
+			}
+			
+			
+			
+			//$tpl->assign('list_modules', $this->list_modules_availables($id))
+			//listado de permisos por modulos
+			$tabla_grupos = new table(false);
+			//listado de grupos
+			if ($this->get_groups($id)==0){
+				$cadena=$tabla_modulos->tabla_vacia('group_users');
+				$variables_modulos=$tabla_gruposs->nombres_variables;
+			}
+			else{					
+				$cadena=$cadena.$tabla_grupos->make_tables('group_users',$this->groups_list,array('Nombre de grupo',75),array('id_group','name_web'),10,array('delete'),true);
+				$variables_grupos=$tabla_grupos->nombres_variables;
+			}
+			$i=0;
+			while($i<(count($variables_grupos)+count($variables_modulos))){
+				for($j=0;$j<count($variables_grupos);$j++){
+					$variable[$i]=$variables_grupos[$j];
+					$i++;
+				}
+				for($k=0;$k<count($variables_modulos);$k++){
+					$variable[$i]=$variables_modulos[$k];
+					$i++;
+				}
+			}
+			
+						
+			$tpl->assign('variables',$variables);
+			$tpl->assign('cadena',$cadena);
+			//			
+			return $tpl;
+				
 	}
 	
+	function listar($tpl){
+		$this->get_list_users();
+		$tabla_listado = new table(true);
+		$cadena=''.$tabla_listado->make_tables('users',$this->users_list,array('Login',20,'Nombre',20,'Primer Apellido',20,'Segundo Apellido',20),array($this->ddbb_id_user,$this->ddbb_login,$this->ddbb_name,$this->ddbb_last_name,$this->ddbb_last_name2),20,array('View','modify','delete'),true);
+		$variables=$tabla_listado->nombres_variables;
+		$tpl->assign('variables',$variables);
+		$tpl->assign('cadena',$cadena);
+		return $tpl;
+	}
+	function get_groups($id){
+		//se puede acceder a los usuarios por numero de campo o por nombre de campo
+		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
+		//crea una nueva conexi—n con una bbdd (mysql)
+		$this->db = NewADOConnection($this->db_type);
+		//le dice que no salgan los errores de conexi—n de la ddbb por pantalla
+		$this->db->debug=false;
+		//realiza una conexi—n permanente con la bbdd
+		$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
+		//mete la consulta
+		$this->sql='SELECT `groups`.`id_group` , `groups`.`name_web` FROM `groups` INNER JOIN `group_users` ON `groups`.`id_group` = `group_users`.`id_group` WHERE `group_users`.`id_user` = \''.$id.'\'';
+		//la ejecuta y guarda los resultados
+		$this->result = $this->db->Execute($this->sql);
+		if ($this->result === false){
+			$this->error=1;
+			$this->db->close();
+
+			return 0;
+		}  
+		
+		$this->num=0;
+		while (!$this->result->EOF) {
+			//cogemos los datos del usuario
+			$this->groups_list[$this->num]['id_group']=$this->result->fields['id_group'];
+			$this->groups_list[$this->num]['name_web']=$this->result->fields['name_web'];
+			//nos movemos hasta el siguiente registro de resultado de la consulta
+			$this->result->MoveNext();
+			$this->num++;
+		}
+		$this->db->close();
+		return $this->num;
+	}
+	
+	function get_modules($id){	
+		return 0;
+	}
+
 	function admin ($id){
 	
+	
 	}
+	
 }
 ?>

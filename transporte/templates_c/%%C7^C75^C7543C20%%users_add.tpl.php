@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.3, created on 2004-08-11 04:21:07
+<?php /* Smarty version 2.6.3, created on 2004-08-27 12:19:43
          compiled from users_add.tpl */ ?>
 <td valign="top">
 <form method="post" action="index.php?module=users&method=add">
@@ -11,8 +11,8 @@
 						 <img src="pics/usuariosico.png" width="32" height="32">
 						</td>
 						<td width="93%" valign="middle"  nowrap>Alta de usuarios</td>
-								</tr>
-						</table>
+			  </tr>
+		  </table>
 						<br>
 		<table width="250px" align="center">
 
@@ -88,7 +88,7 @@
 					<td Colspan="4" width="60%">Permisos</td>
 				</tr>
 			<?php 
-			$linea=0;
+				$linea=0;
 			 ?>
 			<?php if (count($_from = (array)$this->_tpl_vars['modules_list'])):
     foreach ($_from as $this->_tpl_vars['module_element']):

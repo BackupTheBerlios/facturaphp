@@ -8,53 +8,29 @@
 						<td width="7%">
 						 <img src="pics/usuariosico.png" width="32" height="32">
 						</td>
-						<td width="93%" valign="middle"  nowrap>Alta de usuarios</td>
+						<td width="93%" valign="middle"  nowrap>Alta de grupos</td>
 			  </tr>
 		  </table>
 						<br>
 		<table width="250px" align="center">
 
 					<tr>
-					  <td colspan="2" class="cabeceraCampoFormulario">Datos de Login:</td>
+					  <td colspan="2" class="cabeceraCampoFormulario">Datos del grupo :</td>
 				  </tr>
 					<tr>
-						<td width="125px" align="right" class="CampoFormulario" nowrap>Login:</td>
-						<td > <input type="text" id="{$objeto->ddbb_login}" name="{$objeto->ddbb_login}" class="textoMenu"></td>
+						<td width="125" align="right" class="CampoFormulario" nowrap>Nombre:</td>
+						<td > <input type="text" id="{$objeto->ddbb_name}" name="{$objeto->ddbb_name}" class="textoMenu"></td>
 					</tr>
 					<tr>
-						<td width="125px" class="CampoFormulario">Password:</td>
-						<td > <input type="password" id="{$objeto->ddbb_passwd}" name="{$objeto->ddbb_passwd}" class="textoMenu"></td>
+						<td width="125" class="CampoFormulario">Nombre web: </td>
+						<td > <input type="password" id="{$objeto->ddbb_name_web}" name="{$objeto->ddbb_name_web}" class="textoMenu"></td>
 				  </tr>
 				  <tr>
-					  <td colspan="2" class="cabeceraCampoFormulario">Datos del Usuario:</td>
-				  </tr>
-				  <tr>
-						<td width="125px" align="right" class="CampoFormulario">Nombre:</td>
-						<td> <input type="text" id="{$objeto->ddbb_name}" name="{$objeto->ddbb_name}" class="textoMenu"></td>
+						<td width="125" align="right" class="CampoFormulario">Descripcion:</td>
+						<td rowspan="2" ><textarea name="{$objeto->ddbb_descrip}" class="textoMenu" id="{$objeto->ddbb_descrip}"></textarea> </td>
 					</tr>
-					<tr>
-						<td width="125px" class="CampoFormulario" >Primer Apellido:</td>
-						<td > <input type="text" id="{$objeto->ddbb_last_name}" name="{$objeto->ddbb_last_name}" class="textoMenu"></td>
-				  </tr>
-				  <tr>
-						<td width="125px" class="CampoFormulario">Segundo Apellido:</td>
-						<td > <input type="text" id="{$objeto->ddbb_last_name2}" name="{$objeto->ddbb_last_name2}" class="textoMenu"></td>
-				  </tr>
-				   <tr>
-					  <td colspan="2" class="cabeceraCampoFormulario">Otros datos: </td>
-				  </tr>
-				  <tr>
-				  	<!--
-					Colocarlo de forma que quede igual que con los listados de permisos más abajo puestos
-					<td colspan="2"><table border="0">
-						
-						</table></td>-->
-						<td width="125px" class="CampoFormulario">Grupo:</td>
-						<td > <select class="textoMenu" id="{$objeto->ddbb_id_group}" name="{$objeto->ddbb_id_group}">
-							{foreach from=$groups_list item=group_element}
-								<option value="{$group_element->id_group}">{$group_element->name_web}</option>
-							{/foreach}							
-						</select></td>
+					<tr>						
+						<td >&nbsp;</td>
 				  </tr>
 				</table>
 </td>

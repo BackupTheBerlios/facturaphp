@@ -1,4 +1,12 @@
 <td valign="top">
+
+	{php}
+		$mi_modulo=$this->_tpl_vars['objeto'];
+		echo $this->_tpl_vars['cadena'];		
+	{/php}
+
+{include file=capas.tpl}
+	
 			<table width="100%" cellpadding="0" cellspacing="0"  bgcolor="#000000">
 						<tr Class="CabeceraModulo">
 						<td width="7%">
@@ -47,13 +55,13 @@
 							<br>
 							<p align="center" class="cabeceraCampoFormulario">Listados de por m&oacute;dulos y grupos</p>
 							<br>
-							
+					<a name="listado">
 					  <table align="center" width="400" cellspacing="0" cellpadding="0">
 					  <tr>
 					  	<td width="50%" align="center">
-					<img src="pics/pestagna-modulossobre.gif" width="71" height="23"  name="boton" id="Modulos" onClick="Ocultar(this,'Modulos')"> 					</td>
+					<img src="pics/pestagna-modulessobre.gif" width="71" height="23"  name="boton" id="modules" onClick="Ocultar(this,'modules_1')"> 					</td>
 					  	<td width="50%"  align="center">
-					<img src="pics/pestagna-grupos.gif" width="71" height="23" id="Grupos" name="boton" onClick="Ocultar(this,'Grupos')">
+					<img src="pics/pestagna-group_users.gif" width="71" height="23" id="group_users" name="boton" onClick="Ocultar(this,'group_users_1')">
 						</td>
 					  	
 					  </tr>
@@ -66,7 +74,7 @@
 						
 					</div>					
 					 <script>	
-					  	document.getElementById("divMostrar").innerHTML = modulos;
+					  	document.getElementById("divMostrar").innerHTML = modules_1;
 					  </script>
 					  <br>
 					  <table align="center" width="400" cellpadding="0" cellspacing="0">
@@ -83,79 +91,5 @@
 						</td>
 					</tr>
 					
-				</TABLE><!--
-                  <input type="hidden" name="id_client">
-                          <input type="hidden" name="id_corp">
-
-						<table width="250px" align="center">
-
-					 <tr>
-					  <td colspan="2" class="cabeceraCampoFormulario">Datos del Cliente:</td>
-				  </tr>
-				  <tr>
-						<td width="125px" align="right" class="CampoFormulario">Nombre:</td>
-						<td> <input type="text" id="name" name="name" class="textoMenu"></td>
-					</tr>
-					<tr>
-						<td width="125px" class="CampoFormulario" >Nombre completo:</td>
-						<td > <input type="text" id="full_name" name="full_name" class="textoMenu"></td>
-				  </tr>
-				  <tr>
-						<td width="125px" class="CampoFormulario">CIF/NIF:</td>
-						<td > <input type="text" id="last_name" name="cif_nif" class="textoMenu"></td>
-				  </tr>
-				  <tr>
-						<td width="125px" class="CampoFormulario">Direcci&oacute;n:</td>
-						<td > <input type="text" id="last_name" name="address" class="textoMenu"></td>
-				 </tr>
-				  <tr>
-						<td width="125px" class="CampoFormulario">Direcci&oacute;n fiscal:</td>
-						<td > <input type="text" id="last_name" name="fiscal_address" class="textoMenu"></td>
-				 </tr>
-				  <tr>
-				    <td class="CampoFormulario">Direcci&oacute;n postal: </td>
-				    <td ><input type="text" id="fiscal_address" name="postal_address" class="textoMenu"></td>
-			    </tr>
-				  <tr>
-						<td width="125px" class="CampoFormulario">C&oacute;digo postal:</td>
-						<td > <input type="text" id="last_name" name="postal_code" class="textoMenu"></td>
-				 </tr>
-				  <tr>
-						<td width="125px" class="CampoFormulario">Localidad:</td>
-						<td > <input type="text" id="last_name" name="city" class="textoMenu"></td>
-				 </tr>
-				  <tr>
-						<td width="125px" class="CampoFormulario">Provincia:</td>
-						<td > <input type="text" id="last_name" name="state" class="textoMenu"></td>
-				 </tr>
-				  <tr>
-						<td width="125px" class="CampoFormulario">Pa&iacute;s:</td>
-						<td > <input type="text" id="last_name" name="country" class="textoMenu"></td>
-				 </tr>
-				  <tr>
-						<td width="125px" class="CampoFormulario">Tel&eacute;fono:</td>
-						<td > <input type="text" id="last_name" name="phone" class="textoMenu"></td>
-				 </tr>
-				  <tr>
-						<td width="125px" class="CampoFormulario">Tel&eacute;fono m&oacute;vil:</td>
-						<td > <input type="text" id="last_name" name="mobile_phone" class="textoMenu"></td>
-				 </tr>
-				<tr>
-						<td width="125px" class="CampoFormulario">Fax:</td>
-						<td > <input type="text" id="last_name" name="fax" class="textoMenu"></td>
-				 </tr>
-				  <tr>
-						<td width="125px" class="CampoFormulario">URL:</td>
-						<td > <input type="text" id="last_name" name="url" class="textoMenu"></td>
-				 </tr>
-				  <tr>
-						<td width="125px" class="CampoFormulario">E-mail:</td>
-						<td > <input name="mail" type="text" class="textoMenu" id="last_name"></td>
-				 </tr>
- 				  <tr>
-						<td width="125px" class="CampoFormulario">Notas:</td>
-						<td >&nbsp; </td>
-				 </tr>
-				 <tr><td colspan="2"><textarea name="notes" cols="28" rows="2" id="notes"></textarea></td></tr>
-				</table>-->
+				</TABLE>
 			</td>

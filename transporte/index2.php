@@ -125,16 +125,16 @@ $tpl->assign('nav_bar',$nav_bar);
 // ****************************** prueba de lectura de usuarios
 $obje=new users();
 //*********************************************** listado
-/* //listado
+//listado
 $obje->listar($tpl);
- *///fin listadohttp://127.0.0.1/transporte/index.php
+ //fin listado*/
 
 /* ***************************** Edicion
 $obje->read(1);
 $tpl->assign('objeto',$obje);
-*/ //***************** fin Edicion
+ //***************** fin Edicion*/
 
-//********************************************** Vista
+/* //********************************************** Vista
 $tpl=$obje->view(1,$tpl);
 // ****************************** fin Vista*/
 
