@@ -47,6 +47,7 @@ class users{
 //variables del listado de grupos al que pertenece el usuario	
 	var $groups_list;
 	var $checkbox;
+	var $checkbox_groups;
 	var $num_groups;
 	var $num_users;
 	var $id_group;
@@ -250,6 +251,7 @@ class users{
 		if (!isset($_POST['submit_add'])){
 			//Mostrar plantilla vacía	
 			//pasarle a la plantilla los modulos y grupos con sus respectivos checkbox a checked false
+			//Modulos
 			$this->checkbox=new permissions_modules;
 			$modules=new modules();
 			for($i=0;$i<$modules->num;$i++){
@@ -258,8 +260,15 @@ class users{
 				$this->checkbox->per_modules[$i]->module_name=$modules->modules_list[$i]['name_web'];
 				$this->checkbox->per_modules[$i]->validate_per_module(0);
 			}
+			
+			//Grupos
+			$groups= new groups();
+			for($i=0;$i<$groups->num;i++){
+				$this->checkbox_groups[$i]= new groups;
+					
+			}
+			
 
-			//$tpl->assign('usuarios',$this->per_module_methods);
 			
 			return 0;
 		}
@@ -268,6 +277,7 @@ class users{
 						
 			//Introducir los datos de post.
 			$this->get_fields_from_post();
+		
 			//$this->insert_post();
 			
 			//Validacion
@@ -324,6 +334,7 @@ class users{
 					//$this->insert_per_groups();
 					//capturammos el id de la linea insertada
 					$this->id_user=$this->db->Insert_ID();
+
 					$this->add_per_modules_methods();
 					//print("<pre>::".$this->id_user."::</pre>");
 					//devolvemos el id de la tabla ya que todo ha ido bien
@@ -373,53 +384,86 @@ class users{
 	}
 	
 	function modify(){
-	
-		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
-		//crea una nueva conexi—n con una bbdd (mysql)
-		$this->db = NewADOConnection($this->db_type);
-		//le dice que no salgan los errores de conexi—n de la ddbb por pantalla
-		$this->db->debug=false;
-		//realiza una conexi—n permanente con la bbdd
-		$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
-		//mete la consulta para coger los campos de la bbdd
-		$this->sql="SELECT * FROM ".$this->table_prefix.$this->table_name. " WHERE ".$this->ddbb_id_user." = \"".$this->id_user."\"" ;
-		//la ejecuta y guarda los resultados
-		$this->result = $this->db->Execute($this->sql);
-		//si falla 
-		if ($this->result === false){
-			$this->error=1;
-			$this->db->close();
-			return 0;
-		}
-		//rellenamos el array con los datos de los atributos de la clase
-		$record = array();
-		$record[$this->ddbb_id_user]=$this->id_user;
-		$record[$this->ddbb_login] = $this->login;
-		$record[$this->ddbb_passwd]=$this->passwd;
-		$record[$this->ddbb_name]=$this->name;
-		$record[$this->ddbb_last_name]=$this->last_name;
-		$record[$this->ddbb_last_name2]=$this->last_name2;
-		$record[$this->ddbb_full_name]=$this->full_name;
-		$record[$this->ddbb_internal]=$this->internal;
-		$record[$this->ddbb_active]=$this->active;
-		//calculamos la sql de inserci—n respecto a los atributos
-		$this->sql = $this->db->GetUpdateSQL($this->result, $record);
-		//insertamos el registro
-		$this->db->Execute($this->sql);
-		//si se ha insertado una fila
-		if($this->db->Affected_Rows()==1){
-			//capturammos el id de la linea insertada
-			$this->db->close();
-			//devolvemos el id de la tabla ya que todo ha ido bien
-			return $this->id_user;
-		}else {
-			//devolvemos 0 ya que no se ha insertado el registro
-			$this->error=-1;
-			$this->db->close();
-			return 0;
-		}
+		if (!isset($_POST['submit_modify'])){
+			//Mostrar plantilla vacía	
+			//pasarle a la plantilla los modulos y grupos con sus respectivos checkbox a checked false
+			$this->checkbox=new permissions_modules;
+			$modules=new modules();
+			for($i=0;$i<$modules->num;$i++){
+				$this->checkbox->per_modules[$i]=new permissions_modules;
+				$this->checkbox->per_modules[$i]->id_module=$modules->modules_list[$i]['id_module'];
+				$this->checkbox->per_modules[$i]->module_name=$modules->modules_list[$i]['name_web'];
+				$this->checkbox->per_modules[$i]->validate_per_module($this->id_user);
+			}
 
-	
+			//$tpl->assign('usuarios',$this->per_module_methods);
+			
+			return 0;
+		}
+		else{
+			//Introducir los datos de post.
+			$this->get_fields_from_post();
+		
+			//$this->insert_post();
+			
+			//Validacion
+			//$return=validate_fields();
+			
+			//En caso de que la validacion haya sido fallida se muestra la plantilla
+			//con los campos erroneos marcados con un *
+			$return=true; //Para pruebas dejar esta linea sin comentar
+			
+			if (!$return){
+				//Mostrar plantilla con datos erroneos
+				
+			}
+			else{
+				$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
+				//crea una nueva conexi—n con una bbdd (mysql)
+				$this->db = NewADOConnection($this->db_type);
+				//le dice que no salgan los errores de conexi—n de la ddbb por pantalla
+				$this->db->debug=false;
+				//realiza una conexi—n permanente con la bbdd
+				$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
+				//mete la consulta para coger los campos de la bbdd
+				$this->sql="SELECT * FROM ".$this->table_prefix.$this->table_name. " WHERE ".$this->ddbb_id_user." = \"".$this->id_user."\"" ;
+				//la ejecuta y guarda los resultados
+				$this->result = $this->db->Execute($this->sql);
+				//si falla 
+				if ($this->result === false){
+					$this->error=1;
+					$this->db->close();
+					return 0;
+				}
+				//rellenamos el array con los datos de los atributos de la clase
+				$record = array();
+				$record[$this->ddbb_id_user]=$this->id_user;
+				$record[$this->ddbb_login] = $this->login;
+				$record[$this->ddbb_passwd]=$this->passwd;
+				$record[$this->ddbb_name]=$this->name;
+				$record[$this->ddbb_last_name]=$this->last_name;
+				$record[$this->ddbb_last_name2]=$this->last_name2;
+				$record[$this->ddbb_full_name]=$this->full_name;
+				$record[$this->ddbb_internal]=$this->internal;
+				$record[$this->ddbb_active]=$this->active;
+				//calculamos la sql de inserci—n respecto a los atributos
+				$this->sql = $this->db->GetUpdateSQL($this->result, $record);
+				//insertamos el registro
+				$this->db->Execute($this->sql);
+				//si se ha insertado una fila
+				if($this->db->Affected_Rows()==1){
+					//capturammos el id de la linea insertada
+					$this->db->close();
+					//devolvemos el id de la tabla ya que todo ha ido bien
+					return $this->id_user;
+				}else {
+					//devolvemos 0 ya que no se ha insertado el registro
+					$this->error=-1;
+					$this->db->close();
+					return 0;
+				}
+			}
+		}	
 	}
 	  
 	function validate_user($user, $passwd){
@@ -512,9 +556,9 @@ class users{
 			{
 				//print "USUARIO ".$this->users_list[$i]['id_user']."::::::::::::::";
 				//Una vez sabído el identificador de usuario, se puede pedir que realice su lista de permisos
-				$this->users_per_module[$i] = new permissions_modules();
-				$this->users_per_module[$i]->validate_per_user($this->users_list[$i]['id_user']);
-				
+//				$this->users_per_module[$i] = new permissions_modules();
+	//			$this->users_per_module[$i]->validate_per_user($this->users_list[$i]['id_user']);
+				$this->validate_per_user($this->users_list[$i]['id_user']);
 				//validate_per_user($this->users_list[$i]['id_user']);
 				//$cosa[$i]=$i;
 			}
@@ -550,8 +594,7 @@ class users{
 						case 'add':									
 									if ($this->add() !=0){
 										$method="list";
-										$tpl=$this->listar($tpl);
-										
+										$tpl=$this->listar($tpl);										
 										$tpl->assign("message","&nbsp;<br>Usuario a&ntilde;adido correctamente<br>&nbsp;");
 									}
 									$tpl->assign("objeto",$this);
@@ -561,6 +604,14 @@ class users{
 									$tpl=$this->listar($tpl);
 									break;
 						case 'modify':
+									$this->read($_GET['id']);
+									if ($this->modify() !=0){
+										$method="list";
+										$tpl=$this->listar($tpl);										
+										$tpl->assign("message","&nbsp;<br>Usuario modificado correctamente<br>&nbsp;");
+									}
+									$tpl->assign("objeto",$this);
+									$tpl->assign("modulos",$this->checkbox);
 									break;
 						case 'delete':
 									break;
@@ -594,6 +645,7 @@ class users{
 		//$this->get_groups_from_post();
 		//Cogemos los checkboxn de modulos-grupos
 		$modules_methods=$this->get_modules_methods_from_post();
+
 		return 0;
 	}	
 
@@ -613,14 +665,14 @@ class users{
 						$this->checkbox->per_modules[$i]->per=0;
 					}
 					//aqui hacemos lo mismo pero con los metodos.
-					for($j=0;$j<count($checkbox->per_modules[$i]->per_methods);$j++){
+
+					for($j=0;$j<count($this->checkbox->per_modules[$i]->per_methods);$j++){
 								$this->checkbox->per_modules[$i]->per_methods[$j]->per=$_POST['modulo_'.$this->checkbox->per_modules[$i]->id_module.'_metodo_'.$this->checkbox->per_modules[$i]->per_methods[$j]->id_method];
 								if (($this->checkbox->per_modules[$i]->per_methods[$j]->per=="") || ($this->checkbox->per_modules[$i]->per_methods[$j]->per==null)){
 									$this->checkbox->per_modules[$i]->per_methods->per=0;
 								}								
 					}
 			}		
-		echo count($this->checkbox->per_modules);
 		return 0;			 			
 	}
 	
@@ -732,10 +784,8 @@ class users{
 	}
 	
 	function add_per_modules_methods(){
-		$this->checkbox=new permissions_modules();
 		$per_user_modules=new per_user_modules();
-		$per_user_methods=new per_user_methods();			
-		
+		$per_user_methods=new per_user_methods();					
 			for($i=0;$i<count($this->checkbox->per_modules);$i++){																					
 					if ($this->checkbox->per_modules[$i]->per==1){			
 								
@@ -744,9 +794,10 @@ class users{
 						$per_user_modules->per=1;						
 						$per_user_modules->add();
 						}
-					for($j=0;$j<count($checkbox->per_modules[$i]->per_methods);$j++){
+
+					for($j=0;$j<count($this->checkbox->per_modules[$i]->per_methods);$j++){
 								if ($this->checkbox->per_modules[$i]->per_methods[$j]->per==1){
-									$per_user_modules->id_module=$this->checkbox->per_modules[$i]->per_methods[$j]->id_method;
+									$per_user_methods->id_method=$this->checkbox->per_modules[$i]->per_methods[$j]->id_method;
 									$per_user_methods->id_user=$this->id_user;
 									$per_user_methods->per=1;
 									$per_user_methods->add();

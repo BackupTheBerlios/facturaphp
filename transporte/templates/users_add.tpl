@@ -1,32 +1,5 @@
 <td valign="top">
-{literal}
-<script>
-	
-	function clickCheckbox(){
-	
-	}
-	
-	function selectRow(){
-	
-	}
-	
-	function selectAll(){
-		for (var i=0;i<document.forms["form_central"].elements.length;i++){
-			if(document.forms["form_central"].elements[i].type=="checkbox"){
-				document.forms["form_central"].elements[i].checked=true;
-				}
-		}
-	}
-    function unselectAll(){
-		for (var i=0;i<document.forms["form_central"].elements.length;i++){
-			if(document.forms["form_central"].elements[i].type=="checkbox"){
-				document.forms["form_central"].elements[i].checked=false;
-				}
-		}
-	}
-    
-</script>
-{/literal}
+{include file=checkbox.tpl}
 <form method="post" action="index.php?module=users&method=add" name="form_central">
 	  	<table align="center" width="100%">
 		<tr>
@@ -166,13 +139,12 @@
 			<tr  class="cabeceraMultiLinea"><td colspan="2">&nbsp;</td></tr>
 			</table>
 		
-			<br>
-			<br> 								
+											
 		</td>
 		</tr>
 		<tr>
 			<td align="center"><br><br>
-			<input type="submit" name="submit_add" id ="name="submit_add" "value="A&ntilde;adir" class="botones">			
+			<input type="submit" name="submit_add" id =" name="submit_add" "value="A&ntilde;adir" class="botones">			
 			<input type="reset" Value="Limpiar Datos" class="botones">
 			</td>
 		</tr>
