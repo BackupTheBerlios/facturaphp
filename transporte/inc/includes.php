@@ -1,5 +1,6 @@
 <?php
 require_once('config.inc.php');
+require_once('menu.class.php');
 require_once('corps.class.php');
 require_once('contact.class.php');
 require_once('clients.class.php');

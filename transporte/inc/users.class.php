@@ -1137,6 +1137,7 @@ class users{
 			$this->per_modules[$modulo_num]->web_name = $this->modules->modules_list[$modulo_num]['name_web'];
 			$this->per_modules[$modulo_num]->publico = $this->modules->modules_list[$modulo_num]['public'];
 			$this->per_modules[$modulo_num]->parent = $this->modules->modules_list[$modulo_num]['parent'];
+			$this->per_modules[$modulo_num]->active = $this->modules->modules_list[$modulo_num]['active'];
 			$this->per_modules[$modulo_num]->validate_per_module($id_user);
 		
 		}
