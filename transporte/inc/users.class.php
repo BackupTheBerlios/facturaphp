@@ -20,6 +20,7 @@ class users{
 	var $active;
 	var $theme;
 	var $registrados;
+	var $retype;
 //BBDD name vars
 	var $db_name;
 	var $db_ip;
@@ -87,10 +88,10 @@ class users{
 		//este array de alguna manera aumatizada
 		************************/
 		$this->fields_list= new fields();
-		$this->fields_list->add($this->ddbb_id_user, $this->id_user, 'int', 11,0);
-		$this->fields_list->add($this->ddbb_login, $this->login, 'varchar', 20,0);
-		$this->fields_list->add($this->ddbb_passwd, $this->passwd, 'varchar', 20,0);
-		$this->fields_list->add($this->ddbb_name, $this->name, 'varchar', 20,0);
+		$this->fields_list->add($this->ddbb_id_user, $this->id_user, 'int', 11,0,1);
+		$this->fields_list->add($this->ddbb_login, $this->login, 'varchar', 20,0,1);
+		$this->fields_list->add($this->ddbb_passwd, $this->passwd, 'varchar', 20,0,1);
+		$this->fields_list->add($this->ddbb_name, $this->name, 'varchar', 20,0,1);
 		$this->fields_list->add($this->ddbb_last_name, $this->last_name, 'varchar', 20,0);
 		$this->fields_list->add($this->ddbb_last_name2, $this->last_name2, 'varchar', 20,0 );
 		$this->fields_list->add($this->ddbb_full_name, $this->full_name, 'varchar', 100,0);		
@@ -462,14 +463,26 @@ class users{
 						
 			//Validacion
 			//$return=validate_fields();
-			
+			$this->id_user=0;
+			$this->fields_list->modify_value($this->ddbb_id_user,$this->id_user);
+			$this->fields_list->modify_value($this->ddbb_login,$this->login);
+			$this->fields_list->modify_value($this->ddbb_passwd,$this->passwd);
+			$this->fields_list->modify_value($this->ddbb_name,$this->name);
+			$this->fields_list->modify_value($this->ddbb_last_name,$this->last_name);
+			$this->fields_list->modify_value($this->ddbb_last_name2,$this->last_name2);
+			//validamos
+			$return=$this->fields_list->validate();	
+			$return=$return && $this->fields_list->compare_passwd($this->passwd,$this->retype);
+			$array=$this->take_logins();
+			$return_login=$this->fields_list->validate_login($this->login,$array);
+			$return=$return && $return_login;		
 			//En caso de que la validacion haya sido fallida se muestra la plantilla
 			//con los campos erroneos marcados con un *
-			$return=true; //Para pruebas dejar esta linea sin comentar
+			
 			
 			if (!$return){
 				//Mostrar plantilla con datos erroneos
-				
+				return -1;
 			}
 			else{
 				//Si todo es correcto si meten los datos
@@ -677,20 +690,37 @@ class users{
 			return 0;
 		}
 		else{
+			/*************
+			 * 
+			 *OJO!!! ANTES DE COGER LOS DATOS DEL FORMULARIO ASIGNAR EL LOGIN
+			 *
+			 */
+			$login=$this->login;
 			//Introducir los datos de post.
 			$this->get_fields_from_post();
 			//$this->insert_post();
 			
 			//Validacion
 			//$return=validate_fields();
-			
+			$this->fields_list->modify_value($this->ddbb_id_user,$this->id_user);
+			$this->fields_list->modify_value($this->ddbb_login,$this->login);
+			$this->fields_list->modify_value($this->ddbb_passwd,$this->passwd);
+			$this->fields_list->modify_value($this->ddbb_name,$this->name);
+			$this->fields_list->modify_value($this->ddbb_last_name,$this->last_name);
+			$this->fields_list->modify_value($this->ddbb_last_name2,$this->last_name2);
+			//validamos
+			$return=$this->fields_list->validate();	
+			$return=$return && $this->fields_list->compare_passwd($this->passwd,$this->retype);
+			$array=$this->take_logins();
+			$return_login=$this->fields_list->validate_login($this->login,$array,$login);
+			$return=$return && $return_login;
 			//En caso de que la validacion haya sido fallida se muestra la plantilla
 			//con los campos erroneos marcados con un *
-			$return=true; //Para pruebas dejar esta linea sin comentar
+			
 			
 			if (!$return){
 				//Mostrar plantilla con datos erroneos
-				
+				return -1;
 			}
 			else{
 				$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
@@ -980,7 +1010,7 @@ class users{
 		$this->method=$method;
 				switch($method){
 						case 'add':									
-									if ($this->add() !=0){
+									/*if ($this->add() !=0){
 										$this->method="list";
 										$tpl=$this->listar($tpl);										
 										$tpl->assign("message","&nbsp;<br>Usuario a&ntilde;adido correctamente<br>&nbsp;");
@@ -988,17 +1018,58 @@ class users{
 									$tpl->assign("objeto",$this);
 									$tpl->assign("modulos",$this->checkbox);
 									$tpl->assign("grupos",$this->checkbox_groups);
+									break;*/
+									$return=$this->add();
+									switch ($return){										
+										case 0: //por defecto												
+												break;
+										case -1: //Errores al intentar añadir datos
+												for ($i=0;$i<count($this->fields_list->array_error);$i+=2){
+													$tpl->assign("error_".$this->fields_list->array_error[$i],$this->fields_list->array_error[$i+1]);
+												}												
+												break;
+										default: //Si se ha añadido
+												$this->method="list";
+												$tpl=$this->listar($tpl);										
+												$tpl->assign("message","&nbsp;<br>Usuario a&ntilde;adido correctamente<br>&nbsp;");
+												break;
+									}
+									
+									$tpl->assign("objeto",$this);
+									$tpl->assign("modulos",$this->checkbox);
+									$tpl->assign("grupos",$this->checkbox_groups);
+									$tpl->assign("objeto",$this);
 									break;
 									
 						case 'list':
 									$tpl=$this->listar($tpl);
 									break;
 						case 'modify':
-									$this->read($_GET['id']);
+									/*$this->read($_GET['id']);
 									if ($this->modify() !=0){
 										$this->method="list";
 										$tpl=$this->listar($tpl);										
 										$tpl->assign("message","&nbsp;<br>Usuario modificado correctamente<br>&nbsp;");
+									}
+									$tpl->assign("objeto",$this);
+									$tpl->assign("modulos",$this->checkbox);
+									$tpl->assign("grupos",$this->checkbox_groups);
+									break;*/
+									$this->read($_GET['id']);				
+									$return=$this->modify();
+									switch ($return){										
+										case 0: //por defecto
+												break;
+										case -1: //Errores al intentar añadir datos
+												for ($i=0;$i<count($this->fields_list->array_error);$i+=2){
+													$tpl->assign("error_".$this->fields_list->array_error[$i],$this->fields_list->array_error[$i+1]);
+												}
+												break;
+										default: //Si se ha añadido
+												$this->method="list";
+										$tpl=$this->listar($tpl);										
+										$tpl->assign("message","&nbsp;<br>Usuario modificado correctamente<br>&nbsp;");
+												break;
 									}
 									$tpl->assign("objeto",$this);
 									$tpl->assign("modulos",$this->checkbox);
@@ -1037,24 +1108,13 @@ class users{
 		if ($this->is_emps){
 			$prefix="user_";
 		}
-		$this->login=$_POST[$prefix.$this->ddbb_login];
-		$this->passwd=$_POST[$prefix.$this->ddbb_passwd];
-		$this->name=$_POST[$prefix.$this->ddbb_name];
-		$this->last_name=$_POST[$prefix.$this->ddbb_last_name];
-		$this->last_name2=$_POST[$prefix.$this->ddbb_last_name2];	
+		$this->login=htmlentities($_POST[$prefix.$this->ddbb_login]);
+		$this->passwd=htmlentities($_POST[$prefix.$this->ddbb_passwd]);
+		$this->retype=htmlentities($_POST[$prefix.$this->ddbb_retype]);
+		$this->name=htmlentities($_POST[$prefix.$this->ddbb_name]);
+		$this->last_name=htmlentities($_POST[$prefix.$this->ddbb_last_name]);
+		$this->last_name2=htmlentities($_POST[$prefix.$this->ddbb_last_name2]);			
 		
-		//Colocar de manera provisional hasta que se haga la validacion de fields
-		//************Bloque
-		if ($this->name==""){
-			$this->name=" ";
-		}
-		if ($this->last_name==""){
-			$this->last_name=" ";
-		}
-		if ($this->last_name2==""){
-			$this->last_name2=" ";
-		}
-		//************Fin Bloque
 
 		//Cogemos los checkbox de grupos
 		$this->get_groups_from_post();
@@ -1088,7 +1148,7 @@ class users{
 		$modules=new modules();
 		$num_modules = $modules->get_list_modules();
 			for($i=0;$i<$num_modules;$i++){
-				$this->checkbox->per_modules[$i]=new permissions_modules;				
+				$this->checkbox->per_modules[$i]=new permissions_modules();	
 				$this->checkbox->per_modules[$i]->id_module=$modules->modules_list[$i]['id_module'];
 				$this->checkbox->per_modules[$i]->module_name=$modules->modules_list[$i]['name_web'];
 				$this->checkbox->per_modules[$i]->validate_per_module(0);
@@ -1102,8 +1162,8 @@ class users{
 
 					for($j=0;$j<count($this->checkbox->per_modules[$i]->per_methods);$j++){
 								$this->checkbox->per_modules[$i]->per_methods[$j]->per=$_POST['modulo_'.$this->checkbox->per_modules[$i]->id_module.'_metodo_'.$this->checkbox->per_modules[$i]->per_methods[$j]->id_method];
-								if ($this->checkbox->per_modules[$i]->per_methods[$j]->per!=1){
-									$this->checkbox->per_modules[$i]->per_methods->per=0;
+								if ($this->checkbox->per_modules[$i]->per_methods[$j]->per!=1){									
+									$this->checkbox->per_modules[$i]->per_methods[$j]->per=0;
 								}								
 					}
 			}		
@@ -1475,6 +1535,17 @@ class users{
 				
 			}
 	}
+	
+	function take_logins(){
+		if(!is_array($this->users_list))
+			$this->get_list_users();
+		$array=array();
+		for($i=0;$i<count($this->users_list);$i++){
+			$array[$i]=$this->users_list[$i]['login'];
+		}
+		return $array;
+	}	
+	
 	
 	function admin ($id){
 	

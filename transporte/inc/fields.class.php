@@ -256,24 +256,31 @@ class fields{
 		}
 	}
 	
-	
-	/*
-is_array -- Averigua si una variable es un array.
-is_bool --  Encuentra si una variable es de tipo booleana
-is_double -- Averigua si una variable es un valor double (número decimal).
-is_float -- Averigua si una variable es un flotante.
-is_int -- Averigua si una variable es un valor entero.
-is_integer -- Averigua si una variable es un valor entero.
-is_long -- Averigua si una varible es un valor entero.
-is_null --  Encuentra si una variable es NULL
-is_numeric --  Encuentra si una variable es un número o una cadena numérica
-is_object -- Averigua si una varible es un objeto.
-is_real -- Averigua si una varible es un número real.
-is_resource --  Encuentra si una variable es un recurso
-is_scalar --  Encuentra si una variable es un escalar
-is_string -- Averigua si una varible es una cadena de caracteres (string).	
-	*/
-	
-	
+	function compare_passwd($original,$retyped){
+		if(strcmp(html_entity_decode($original),html_entity_decode($retyped))!=0){
+			array_push($this->array_error,"retype","Error *: Las contraseñas no coinciden");
+			return false;
+		}
+		else
+			return true;			
 	}
+	
+	function validate_login($login,$array,$name=""){
+		//name es el nombre que tenia al principio, por si se viene de un "modify"
+		
+		if ($name!="" && html_entity_decode($name)==html_entity_decode($login))
+			return true;
+		echo "login es $login y name es $name";
+		print_r($array);
+		if (is_array($array))
+			for($i=0;$i<count($array);$i++){
+				if (html_entity_decode($login) == html_entity_decode($array[$i])){
+					array_push($this->array_error,"login","Error *: El nombre de usuario ya existe");
+					return false;
+				}
+			}
+		return true;
+	}
+	
+}
 ?>
