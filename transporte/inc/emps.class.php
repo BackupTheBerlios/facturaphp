@@ -568,19 +568,19 @@ class emps{
 			//									
 			return $tpl;
 				
-	}
+	}*/
 	
 	function listar($tpl){
-		$this->get_list_users();
+		$this->get_list_emps();
 
 		$tabla_listado = new table(true);
-		$cadena=''.$tabla_listado->make_tables('users',$this->users_list,array('Login',20,'Nombre',20,'Primer Apellido',20,'Segundo Apellido',20),array($this->ddbb_id_user,$this->ddbb_login,$this->ddbb_name,$this->ddbb_last_name,$this->ddbb_last_name2),20,array('view','modify','delete'),true);
+		$cadena=''.$tabla_listado->make_tables('emps',$this->emps_list,array('Nombre',20,'Primer Apellido',20,'Segundo Apellido',20),array($this->ddbb_name,$this->ddbb_last_name,$this->ddbb_last_name2),20,array('view','modify','delete'),true);
 		$variables=$tabla_listado->nombres_variables;		
 		$tpl->assign('variables',$variables);
 		$tpl->assign('cadena',$cadena);		
 		return $tpl;
 	}
-	*/
+	
 	
 	function calculate_tpl($method, $tpl){
 		//vemos si el usuario tiene el permiso para hacer la accion requerida
