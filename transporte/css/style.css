@@ -117,8 +117,7 @@ a.enlaceMenu:visited{
 	background-color: #EEEEEE;
 }
 
-td.cabeceraCampoFormulario{ 
-	
+td.cabeceraCampoFormulario{ 	
 	font-weight:bold;
 	color:#000000;
 	font-family:Verdana, Arial, Helvetica, sans-serif;
@@ -139,8 +138,7 @@ td.cabeceraCampoFormulario{
 tr.cabeceraMultiLinea {
 	background-color:#000000;
 	font-family: verdana;
-	font-weight:bold;
-	
+	font-weight:bold;	
 	font-size: 10px;
 	color:#FFFFFF;
 	text-align:center;

@@ -1,6 +1,6 @@
 <html>
 <head>
-	<title>Resuival :: Zona privada :: Inicio</title>
+	<title>Resuival :: Zona privada :: Empleados :: Alta/Modificaci&oacute;n de empleados</title>
 </head>
 <link rel="stylesheet" href="css/style.css"> 
 <body style="top-margin:0px; left-margin:0px" background="pics/fond.gif">
@@ -13,7 +13,7 @@
 	  				<td align="right" valign="middle"><img src="pics/dragdrop.png"></td>
 				</tr>
 				<tr class="barraNavegacion">
-					<td colspan="2" >Zona privada::Inicio</td>
+					<td colspan="2" >Resuival :: Zona privada :: Empleados :: Alta/Modificaci&oacute;n de empleados </td>
 				</tr>
 			</table>		
 		</td>	  
@@ -80,7 +80,7 @@
 			<tr class="textoMenu">
 			  <td width="10px">&nbsp;</td>
 			  <td>
-			  	- <a href="#" class="enlaceMenu">Camiones</a><br>
+			  	- <a href="#" class="enlaceMenu">Veh&iacute;culos</a><br>
 			  </td>
 			</tr>
 			<tr class="textoMenu">
@@ -141,16 +141,99 @@
 			</tr>
 		</table>
 	  </td>
-	  <td valign="top"><table width="95%" align="center">
-	  <tr><td align="center">
-	  		<h3>ZONA PRIVADA</h3>
-	  		<br>
-	  		<br>
-	  		<br>
-	  		<img src="pics/logogrande.gif">
-	  </td>
-</tr>
-	  </table></td>
+	  <td valign="top"><form>
+	  	<table align="center" width="100%">
+		<tr>
+		<td valign="top">
+			<table width="100%" cellpadding="0" cellspacing="0"  bgcolor="#000000">
+						<tr>
+						<td width="7%">&nbsp;
+						<img src="pics/clientesico.png" width="32" height="32">
+						 <!--<img src="pics/usuariosico.png" width="32" height="32">-->
+						</td>
+						<td width="93%" valign="middle" Class="CabeceraModulo" nowrap>Alta/Modificaci&oacute;n de empleados </td>
+				</tr>
+			  </table>
+						<br>
+	<input type="hidden" name="id_emps">
+	<input type="hidden" name="id_corp">
+	<input type="hidden" name="id_user">
+
+		<table width="250px" align="center">
+
+					 <tr>
+					  <td colspan="2" class="cabeceraCampoFormulario">Datos del contacto:</td>
+				  </tr>
+				  <tr>
+						<td width="125" align="right" class="CampoFormulario">Nombre:</td>
+						<td> <input type="text" id="name" name="name" class="textoMenu"></td>
+					</tr>
+					<tr>
+						<td width="125" class="CampoFormulario" >Primer apellido: </td>
+						<td > <input type="text" id="last_name" name="last_name" class="textoMenu"></td>
+				  </tr>
+				  <tr>
+						<td width="125" class="CampoFormulario">Segundo apellido:</td>
+						<td > <input type="text" id="last_name" name="last_name2" class="textoMenu"></td>
+				  </tr>
+				  <tr>
+						<td width="125" class="CampoFormulario" nowrap>Fecha de nacimiento:</td>
+						<td > <input type="text" id="last_name" name="birthday" class="textoMenu"></td>
+				 </tr>
+				  <tr>
+						<td width="125" class="CampoFormulario">Direcci&oacute;n:</td>
+						<td > <input type="text" id="last_name" name="address" class="textoMenu"></td>
+				 </tr>
+				  <tr>
+						<td width="125" class="CampoFormulario">C&oacute;digo postal:</td>
+						<td > <input type="text" id="last_name" name="postal_code" class="textoMenu"></td>
+				 </tr>
+				  <tr>
+						<td width="125" class="CampoFormulario">Localidad:</td>
+						<td > <input type="text" id="last_name" name="city" class="textoMenu"></td>
+				 </tr>
+				  <tr>
+						<td width="125" class="CampoFormulario">Provincia:</td>
+						<td > <input type="text" id="last_name" name="state" class="textoMenu"></td>
+				 </tr>
+				  <tr>
+						<td width="125" class="CampoFormulario">Pa&iacute;s:</td>
+						<td > <input type="text" id="last_name" name="country" class="textoMenu"></td>
+				 </tr>
+				  <tr>
+						<td width="125" class="CampoFormulario">Tel&eacute;fono:</td>
+						<td > <input type="text" id="last_name" name="phone" class="textoMenu"></td>
+				 </tr>
+				  <tr>
+						<td width="125" class="CampoFormulario">Tel&eacute;fono m&oacute;vil:</td>
+						<td > <input type="text" id="last_name" name="mobile_phone" class="textoMenu"></td>
+				 </tr>
+				<tr>
+						<td width="125" class="CampoFormulario">Fax:</td>
+						<td > <input type="text" id="last_name" name="fax" class="textoMenu"></td>
+				 </tr>
+				  <tr>
+						<td width="125" class="CampoFormulario">E-mail:</td>
+						<td > <input name="mail" type="text" class="textoMenu" id="mail"></td>
+				 </tr>
+				  <tr>
+						<td width="125" class="CampoFormulario">Categoria:</td>
+						<td><select name="category">
+						  <option>Administrador</option>
+						  <option>Conductores</option>
+						  <option>Nuevo...</option>
+						</select></td>
+				 </tr>
+				</table>
+			</td>
+		</tr>				
+		<tr>
+			<td align="center"><br><br><input type="submit" name="enviar" value="A&ntilde;adir/Modificar" class="botones">
+			<input type="reset" Value="Borrar Datos" class="botones">
+			</td>
+		</tr>
+	  	</table> 
+		</form></td>
 	</tr>
 	<tr>
 	  <td colspan="2" height="100px" class="piePagina">
