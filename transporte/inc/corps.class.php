@@ -246,22 +246,12 @@ class corps{
 			$cadena=$cadena.$tabla_listado->tabla_vacia('corps');
 			$variables_modulos=$tabla_listado->nombres_variables;
 		}
-		else{
-			if($_SESSION['user']=='admin')
-			{
-				$acciones = array('view', 'modify', 'delete');
-				$add = true;
-			}
-			else
-			{
-				$per = new permissions();
-				$per->get_permissions_list('corps');
-				
-				$acciones = $per->permissions_module;
-				$add = $per->add;
-			}
-		
-			$cadena=''.$tabla_listado->make_tables('corps',$this->corps_list,array('Nombre',20,'Nombre completo',20,'CIF|NIF',20,'Telefono',20),array($this->ddbb_id_corp,$this->ddbb_name,$this->ddbb_full_name,$this->ddbb_cif_nif,$this->ddbb_phone),20,$acciones,$add);
+		else
+		{
+			$per = new permissions();
+			$per->get_permissions_list('corps');
+	
+			$cadena=''.$tabla_listado->make_tables('corps',$this->corps_list,array('Nombre',20,'Nombre completo',20,'CIF|NIF',20,'Telefono',20),array($this->ddbb_id_corp,$this->ddbb_name,$this->ddbb_full_name,$this->ddbb_cif_nif,$this->ddbb_phone),20,$per->permissions_module,$per->add);
 			$variables=$tabla_listado->nombres_variables;		
 		}		
 		$tpl->assign('variables',$variables);
@@ -285,7 +275,11 @@ class corps{
 									break;
 						case 'delete':
 									break;
-						case 'view':									
+						case 'view':		
+									if($_SESSION['super'] || $_SESSION['admin'])
+									{
+										$_SESSION['ident_corp'] = $_GET['id'];
+									}							
 									$tpl=$this->view($_GET['id'],$tpl);
 									break;
 						default:
@@ -459,6 +453,8 @@ class corps{
 			Order By (y mantener la búsqueda en el caso de que hubiera hecha una y averiguar la "pestaña" a la que hace referencia)
 			Busquedas
 	*/
+			
+	
 			$cadena='';			
 			// Leemos la empresa y se lo pasamos a la plantilla
 			$this->read($id);
@@ -478,21 +474,10 @@ class corps{
 			}
 			else
 			{	
-				if($_SESSION['user']=='admin')
-				{
-					$acciones = array('view', 'modify', 'delete');
-					$add = true;
-				}
-				else
-				{
-					$per = new permissions();
-					$per->get_permissions_list('emps');
-					
-					$acciones = $per->permissions_module;
-					$add = $per->add;
-				}
+				$per = new permissions();
+				$per->get_permissions_list('corps');
 							
-				$cadena=''.$tabla_empleados->make_tables('emps',$empleados->emps_list,array('Nombre',20,'Primer Apellido',20,'Segundo Apellido',20),array('id_emp', 'name','last_name','last_name2'),10,$acciones,$add);
+				$cadena=''.$tabla_empleados->make_tables('emps',$empleados->emps_list,array('Nombre',20,'Primer Apellido',20,'Segundo Apellido',20),array('id_emp', 'name','last_name','last_name2'),10,$per->permissions_module,$per->add);
 		
 				$variables_empleados=$tabla_empleados->nombres_variables;
 			}

@@ -605,24 +605,12 @@ class emps{
 	function listar($tpl)
 	{
 		$this->get_list_emps($_SESSION['ident_corp']);
+	
+		$per = new permissions();
+		$per->get_permissions_list('emps');
 		
-		if($_SESSION['user']=='admin')
-		{
-			$acciones = array('view', 'modify', 'delete');
-			$add = true;
-
-		}
-		else
-		{
-			$per = new permissions();
-			$per->get_permissions_list('emps');
-			
-			$acciones = $per->permissions_module;
-			$add = $per->add;
-		}
-
 		$tabla_listado = new table(true);
-		$cadena=''.$tabla_listado->make_tables('emps',$this->emps_list,array('Nombre',20,'Primer Apellido',20,'Segundo Apellido',20),array($this->ddbb_id_emp, $this->ddbb_name,$this->ddbb_last_name,$this->ddbb_last_name2),10,$acciones,$add);
+		$cadena=''.$tabla_listado->make_tables('emps',$this->emps_list,array('Nombre',20,'Primer Apellido',20,'Segundo Apellido',20),array($this->ddbb_id_emp, $this->ddbb_name,$this->ddbb_last_name,$this->ddbb_last_name2),10,$per->permissions_module,$per->add);
 		$variables=$tabla_listado->nombres_variables;		
 		$tpl->assign('variables',$variables);
 		$tpl->assign('cadena',$cadena);		

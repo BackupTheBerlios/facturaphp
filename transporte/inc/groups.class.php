@@ -498,29 +498,33 @@ class groups{
 	
 	}*/
 	
-	function view ($id){
-	
+	function view ($id,$tpl)
+	{
+	/*
+		Cosas que faltan por hacer:
+			De forma general, mirar los permisos del usuario que vaya a acceder aqui, para saber si tiene permisos de borrar editar ver etc...
+			Averiguar como pasar el numero de registros, si va a ser a grupos a grupos, si va a ser a modulos, a modulos
+			Order By (y mantener la búsqueda en el caso de que hubiera hecha una y averiguar la "pestaña" a la que hace referencia)
+			Busquedas
+	*/
+			$cadena='';			
+			// Leemos el empleado y se lo pasamos a la plantilla
+			$this->read($id);
+			$tpl->assign('objeto',$this);
+			
+			//			
+			return $tpl;
+				
 	}
 	
 	function listar($tpl){
 		$this->get_list_groups();
 		
-		if($_SESSION['user']=='admin')
-		{
-			$acciones = array('view', 'modify', 'delete');
-			$add = true;
-		}
-		else
-		{
-			$per = new permissions();
-			$per->get_permissions_list('groups');
-			
-			$acciones = $per->permissions_module;
-			$add = $per->add;
-		}
-		
+		$per = new permissions();
+		$per->get_permissions_list('groups');
+				
 		$tabla_listado = new table(true);
-		$cadena=''.$tabla_listado->make_tables('groups',$this->groups_list,array('Nombre',40,'Nombre Web',40),array($this->ddbb_id_group,$this->ddbb_name,$this->ddbb_name_web),10,$acciones,$add);
+		$cadena=''.$tabla_listado->make_tables('groups',$this->groups_list,array('Nombre',40,'Nombre Web',40),array($this->ddbb_id_group,$this->ddbb_name,$this->ddbb_name_web),10,$per->permissions_module,$per->add);
 		$variables=$tabla_listado->nombres_variables;		
 		$tpl->assign('variables',$variables);
 		$tpl->assign('cadena',$cadena);		
