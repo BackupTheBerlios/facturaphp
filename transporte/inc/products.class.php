@@ -858,7 +858,7 @@ class products{
 		$fin_fila="</tr>";
 		$ini_col='<td valign="top" nowrap>';
 		$fin_col="</td>";
-		$NUM_MAX_COLS=5;
+		$NUM_MAX_COLS=1;
 		//Por cada columna un padre y sus hijos.
 		$cadena='<table border="0">';
 		$num_current_col=$NUM_MAX_COLS+1;		
