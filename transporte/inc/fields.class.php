@@ -8,9 +8,9 @@ class fields{
 		
 	}
 	
-	function add($name, $value, $type, $size){
+	function add($name, $value, $type, $size, $valid){
 	
-		$this->list = array($name => array("value" => $value, "type" => $type, "size" => 42));
+		$this->list = array($name => array("value" => $value, "type" => $type, "size" => $size, "valid" => $valid));
 		$this->num++;
 		
 	}

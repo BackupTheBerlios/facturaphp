@@ -54,13 +54,13 @@ class users{
 		//este array de alguna manera aumatizada
 		************************/
 		$this->fields_list= new fields();
-		$this->fields_list->add($this->ddbb_id_user, $this->id_user, 'int', 11);
-		$this->fields_list->add($this->ddbb_login, $this->login, 'varchar', 20);
-		$this->fields_list->add($this->ddbb_passwd, $this->passwd, 'varchar', 20);
-		$this->fields_list->add($this->ddbb_name, $this->name, 'varchar', 20);
-		$this->fields_list->add($this->ddbb_last_name, $this->last_name, 'varchar', 20);
-		$this->fields_list->add($this->ddbb_last_name2, $this->last_name2, 'varchar', 20 );
-		$this->fields_list->add($this->ddbb_full_name, $this->full_name, 'varchar', 100);		
+		$this->fields_list->add($this->ddbb_id_user, $this->id_user, 'int', 11,0);
+		$this->fields_list->add($this->ddbb_login, $this->login, 'varchar', 20,0);
+		$this->fields_list->add($this->ddbb_passwd, $this->passwd, 'varchar', 20,0);
+		$this->fields_list->add($this->ddbb_name, $this->name, 'varchar', 20,0);
+		$this->fields_list->add($this->ddbb_last_name, $this->last_name, 'varchar', 20,0);
+		$this->fields_list->add($this->ddbb_last_name2, $this->last_name2, 'varchar', 20,0 );
+		$this->fields_list->add($this->ddbb_full_name, $this->full_name, 'varchar', 100,0);		
 		//print_r($this);
 		//se puede acceder a los usuarios por numero de campo o por nombre de campo
 		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
