@@ -53,7 +53,12 @@ class users{
 	var $group_name;
 	var $users_per_module;
 //variables del listado de modulos al que pertenece el usuario	
-	
+		
+//Modulos a los que tiene acceso el usuario
+	var $per_modules;
+	var $modules;
+	var $num_modules;
+
   	//constructor
 	function users(){
 		//coge las variables globales del fichero config.inc.php
@@ -147,6 +152,32 @@ class users{
 	
 	}
 	
+	function get_id($login)
+	{
+		//se puede acceder a los usuarios por numero de campo o por nombre de campo
+		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
+		//crea una nueva conexi—n con una bbdd (mysql)
+		$this->db = NewADOConnection($this->db_type);
+		//le dice que no salgan los errores de conexi—n de la ddbb por pantalla
+		$this->db->debug=false;
+		//realiza una conexi—n permanente con la bbdd
+		$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
+		//mete la consulta
+		//$this->sql="SELECT 'id_user' FROM ".$this->table_prefix.$this->table_name." WHERE ".$this->ddbb_name."=".$name_user;
+		$this->sql="SELECT `id_user` FROM `users` WHERE `login` = \"".$login."\"";
+		//la ejecuta y guarda los resultados
+		$this->result = $this->db->Execute($this->sql);
+		//si falla 
+		if ($this->result === false){
+			$this->error=1;
+			$this->db->close();
+
+			return 0;
+		}  
+		
+		return $this->result->fields['id_user'];
+	}
+	
 	function get_add_form(){
 	
 		
@@ -203,6 +234,11 @@ class users{
 			$this->internal=$this->result->fields[$this->ddbb_internal];
 			$this->active=$this->result->fields[$this->ddbb_active];
 			$this->db->close();
+			
+			
+			//Una vez sabído el identificador de usuario, se puede pedir que realice su lista de permisos
+			$this->validate_per_user($this->id_user);
+			
 			return 1;
 		}
 		
@@ -293,7 +329,6 @@ class users{
 					//print("<pre>::".$this->id_user."::</pre>");
 					//devolvemos el id de la tabla ya que todo ha ido bien
 					$this->db->close();
-
 					return $this->id_user;
 				}else {
 					
@@ -377,7 +412,6 @@ class users{
 			//capturammos el id de la linea insertada
 			$this->db->close();
 			//devolvemos el id de la tabla ya que todo ha ido bien
-
 			return $this->id_user;
 		}else {
 			//devolvemos 0 ya que no se ha insertado el registro
@@ -645,6 +679,33 @@ class users{
 		$title=$title.$this->localice($method);		
 		return $title;
 	}		
+	
+	
+	//Función que indicará para qué tiene permisos un usuario (ya sea por los grupos a los que pertenece o por él mísmo)
+	//Para ello se hará un listado de modulos_metodos_permiso en cada metodo de cada modulo
+	//Se usará una lista de permissions que contendrá por cada id_modulo (indice de la lista) el metodo (nombre e id de este) y permiso
+	//El nombre del modulo se puede obtener gracias al id_modulo desde la lista de modulos a los que se tiene permiso
+	//
+	function validate_per_user($id_user)
+	{			
+		$this->modules = new modules();
+	
+		$this->num_modules = $this->modules->get_list_modules();
+
+		for ($modulo_num = 0; $modulo_num < $this->num_modules; $modulo_num++) 
+		{
+			//Como se tiene el numero de modulos entonces se puede ver nombre e identificador en $this->modules->modules_list
+			//Así será mas fácil recorrer la matriz, y no hay problemas de pasar un hash a smarty ya que no los acepta
+			$this->per_modules[$modulo_num] = new permissions_modules();
+			$this->per_modules[$modulo_num]->id_module = $this->modules->modules_list[$modulo_num]['id_module'];
+			$this->per_modules[$modulo_num]->module_name = $this->modules->modules_list[$modulo_num]['name'];
+			$this->per_modules[$modulo_num]->validate_per_module($id_user);
+		
+		}
+	}
+	
+	
+	
 	
 	function localice($method){	
 		switch($method){
