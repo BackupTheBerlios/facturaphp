@@ -266,7 +266,7 @@ class users{
 			for($i=0;$i<$groups->num;$i++){
 				$this->checkbox_groups[$i]= new groups();
 				$this->checkbox_groups[$i]->read($groups->groups_list[$i][$groups->ddbb_id_group]);
-				echo $this->checkbox_groups[$i]->id_group;
+				
 			}
 
 			return 0;
@@ -654,10 +654,10 @@ class users{
 			for($i=0;$i<$groups->num;$i++){
 				$this->checkbox_groups[$i]= new groups();
 				$this->checkbox_groups[$i]->read($groups->groups_list[$i][$groups->ddbb_id_group]);
-				echo $this->checkbox_groups[$i]->id_group;
+				
 			}
 			for($i=0;$i<$groups->num;$i++){
-				echo "grupo_".$this->checkbox_groups[$i]->id_group;
+				
 				$this->checkbox_groups[$i]->belong=$_POST["grupo_".$this->checkbox_groups[$i]->id_group];
 				if($this->checkbox_groups[$i]->belong!=1){
 					$this->checkbox_groups[$i]->belong=0;
@@ -804,7 +804,7 @@ class users{
 		$groups=new groups();
 		$group_users= new group_users();
 		for($i=0;$i<$groups->num;$i++){
-			echo $this->checkbox_groups[$i]->id_group."modulo->belong".$this->checkbox_groups[$i]->belong."<br>";
+		
 			if($this->checkbox_groups[$i]->belong==1){
 				$group_users->id_group=$this->checkbox_groups[$i]->id_group;
 				$group_users->id_user=$this->id_user;

@@ -80,7 +80,7 @@
 				<td>
 				<input type="checkbox" value="1" name="grupo_{$grupos[indice]->id_group}" {if $grupos[indice]->belong==true}checked{/if}>{$grupos[indice]->name_web}
 				{php}$this->_sections['indice']['index']+=1;
-					echo $this->_sections['indice']['index']; {/php}
+					$this->_sections['indice']['iteration']+=1;{/php}
 				
 				</td>
 				{if !$smarty.section.indice.last}
