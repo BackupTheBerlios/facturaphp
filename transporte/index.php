@@ -113,8 +113,9 @@ $tpl->assign('num_sessions',$num_sessions);
 
 $tpl->assign('title',$title);
 $tpl->assign('nav_bar',$nav_bar);
-$tpl->display($index_template);
+
  
 //elige la plantilla a presentar
 //presenta las plantillas
+$tpl->display($index_template);
 ?>
