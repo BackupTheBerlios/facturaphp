@@ -267,6 +267,7 @@ class corps{
 	//	$result=validate_per($method,$_SESSION['user'],$module);
 		if ($result){
 								$this->method=$method;
+				
 				switch($method){
 
 						case 'add':

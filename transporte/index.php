@@ -9,9 +9,12 @@
 session_start();
 
 //realiza todos los includes necesarios
-require_once('inc/config.inc.php');
-require_once('inc/index.inc.php');
+//Si estamos en windows comentar el config que tenga / si no comentar el config \\
+require_once('inc\\config.inc.php');
+//require_once('inc/config.inc.php');
 global $INSTALL_DIR;
+require_once('inc/index.inc.php');
+
 
 require_once($INSTALL_DIR.'inc/includes.php');
 //inicializamos algunas variables
@@ -246,7 +249,7 @@ if(isset($_SESSION['user']) && isset($_GET['module']))
 			{
 				$method=$_GET['method'];
 			}
-		
+			
 			if(($_GET['module'] != 'user_corps') &&($method != 'select'))
 			{
 				if($permiso->validate_per($_SESSION['user'], $_GET['module'], $method) == 0)
@@ -291,6 +294,14 @@ else
 	///*************************************
 	
 	//En este orden
+	if (!isset($_GET['method']))
+			{
+				$method=null;
+			}
+			else
+			{
+				$method=$_GET['method'];
+			}
 	$tpl=$objeto->calculate_tpl($method,$tpl);
 	
 	

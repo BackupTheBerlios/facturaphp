@@ -1,4 +1,4 @@
-9<?php
+<?php
 //clase que da soporte a los usuarios del programa
 //enlaza con la bbdd 
 global $ADODB_DIR, $INSTALL_DIR;

@@ -42,6 +42,7 @@
 	$DDBB_TYPE="mysql";
 	$DDBB_PORT="3306";
 	$INSTALL_DIR="C:\\wamp\\www\\transporte\\";
+	//$INSTALL_DIR="C:/wamp/www/transporte/";
 	//**************************************************************
 	//Configuración De Dani (Linux)
 /*	
@@ -92,13 +93,13 @@
 	$INSTALL_DIR="C:\\Archivos de programa\\EasyPHP1-7\\www\\transporte\\";
 	*/
 	
-	$WIN32=false;
-	//$WIN32=true;
+	//$WIN32=false;
+	$WIN32=true;
 	$BARRA_WINDOWS="\\";
 	$BARRA_LINUX="/";
 	//$SLASH="/";
-	$SLASH=$BARRA_WINDOWS;
-	//$SLASH=$BARRA_LINUX;
+	//$SLASH=$BARRA_WINDOWS;
+	$SLASH=$BARRA_LINUX;
 	$ADODB_DIR=$INSTALL_DIR."inc".$SLASH."adodb".$SLASH;
 	$SMARTY_DIR=$INSTALL_DIR."inc".$SLASH."smarty".$SLASH;
 	$SMARTY_TEMPLATES_DIR=$INSTALL_DIR."templates".$SLASH;
