@@ -27,13 +27,15 @@ if(!isset($_SESSION['user'])){
 		//printf('usuario validado');
 		$session=new sessions();
 		$session->register();
-		//registra la variable de sesion user cone l nombre de usuario
+		//registra la variable de sesion user con el nombre de usuario
 		$_SESSION['user']=$_POST['user'];
 		//como el usuario esta validado asigna su nombre a la plantilla
 		$tpl->assign('user_name',$_SESSION['user']);
 		$tpl->assign('login',0);
-		//inicializa la plantilla de index del programa principal
-		$index_template="index.tpl";	
+		//inicializa la plantilla principal de empresas a las que pertenece el usuario
+		//El usuario está logeado y se le presenta la plantilla de las empresas con las que trabaja
+		$index_template="index.tpl";
+
 		
 	}else{
 		//printf('usuario no validado');
@@ -119,13 +121,13 @@ $tpl->assign('num_sessions',$num_sessions);
 if ($objeto===null){
 	$nav_bar='Gesti&oacute;n';
 	$title='Gesti&oacute;n';
-	$plantilla='default.tpl';
+	$plantilla='wellcome.tpl';
 	$tpl->assign('plantilla',$plantilla);
 }
 else
 {
 	
-	//calculala plantilla a presentar
+	//calcula la plantilla a presentar
 	if (!isset($_GET['method'])){
 			$method=null;
 		}
@@ -149,8 +151,8 @@ else
 	//pasa las variables de la presentaci—n a la plantilla dependiente del objeto
 
 	$tpl->assign('title',$title);
-$tpl->assign('nav_bar',$nav_bar);
-
+	$tpl->assign('nav_bar',$nav_bar);
+	
 //presenta las plantillas
 
 // ****************************** prueba de lectura de usuarios

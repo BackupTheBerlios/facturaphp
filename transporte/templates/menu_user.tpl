@@ -6,9 +6,10 @@
 			<tr class="textoMenu">
 			  <td width="10px">&nbsp;</td>
 			  <td>
-			  	- <a href="index.php" class="enlaceMenu">Inicio</a><br>
+			  	- <a href="index.php?module=user_corps" class="enlaceMenu">Inicio</a><br>
 			  </td>
 			</tr>
+			
 			<tr class="textoMenu">
 			  <td width="10px">&nbsp;</td>
 			  <td>
@@ -33,5 +34,24 @@
 			  	- <a href="index.php?module=services" class="enlaceMenu">Servicios</a><br>
 			  </td>
 			</tr>
+			{section name="i" loop=$user_menu->per_modules}
+				{if $user_menu->per_modules[i]->per==1}
+					<tr class="textoMenu">
+						<td width="10px">&nbsp;</td>
+								{if $user_menu->per_modules[i]->module_name == 'usuarios'}	
+										<td>
+										- <a href="index.php?module=users" class="enlaceMenu">Usuarios</a><br>
+										</td></tr>
+										
+								{/if}
+								{if $user_menu->per_modules[i]->module_name == 'clientes'}	
+									<td>
+									- <a href="index.php?module=clients" class="enlaceMenu">Clientes</a><br>
+									</td></tr>
+								{/if}
+					        
+				{/if}
+			{/section}
 		</table>
 		<br>
+		
