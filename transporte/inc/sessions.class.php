@@ -333,5 +333,82 @@ class sessions{
 			
 		}
 	}
+	
+		
+	function calculate_tpl($method, $tpl){
+		$this->method=$method;
+				switch($method){		
+						case 'list':
+									$tpl=$this->listar($tpl);
+									break;
+						case 'delete':
+									$this->read($_GET['id']);
+									if ($this->remove($_GET['id'])==0){
+										//$tpl->assign("message",$this->emps);
+									}
+									else{
+										$this->cat_vehicles_list = "";
+										$this->method="list";
+										$tpl=$this->listar($tpl);
+										$tpl->assign("message","&nbsp;<br>Sesi&oacute;n borrada correctamente<br>&nbsp;");
+									}
+									$tpl->assign("objeto",$this);
+									break;
+						case 'view':									
+									$tpl=$this->view($_GET['id'],$tpl);
+									break;
+						default:
+									$this->method='list';
+									$tpl=$this->listar($tpl);
+									break;
+					}
+				$tpl->assign('plantilla','sessions_'.$this->method.'.tpl');					
+		
+		return $tpl;
+	}
+
+	function bar($method,$corp){
+		if ($method!=$this->method){
+			$method = $this->method;
+		}		
+	if ($corp != ""){
+			$corp='<a href="index.php?module=user_corps&method=select&id='.$_SESSION['ident_corp'].'">'.$corp.' ::';
+		}
+		$nav_bar = '<a>Zona privada</a> :: '.$corp.' <a href="index.php?module=sessions">Sesiones</a>';
+		$nav_bar=$nav_bar.$this->localice($method);
+		return $nav_bar;
+	}	
+
+	function title($method,$corp){
+		if ($method!=$this->method){
+			$method = $this->method;
+		}
+		if ($corp != ""){
+			$corp=$corp." ::";
+		}
+		$title = "Zona Privada :: $corp Sesiones";
+		$title=$title.$this->localice($method);		
+		return $title;
+	}		
+	
+	
+	function localice($method){	
+		switch($method){
+						
+						case 'list':
+									$localice=" :: Buscar Sesiones";
+									break;
+						case 'delete':
+									$localice=" :: Borrar Sesiones";
+									break;
+						case 'view':
+									$localice=" :: Ver Sesiones";	
+									break;
+						default:
+									$localice=" :: Buscar Sesiones";
+									break;
+		}
+		return $localice;
+	}
 }
 ?>
