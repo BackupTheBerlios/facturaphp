@@ -105,7 +105,11 @@ class fields{
 							}							
 							break;
 				default: break;
-			}			
+			}		
+			if($this->lista[$name_keys[$i]]["value"]==""){
+				//echo $this->lista[$name_keys[$i]]["type"]." ".$name_keys[$i]."<br>";
+				$this->lista[$name_keys[$i]]["value"]=null;
+			}
 		}
 		
 		return $error;

@@ -1,8 +1,6 @@
 <td valign="top">
 {$cadena}
-	{php}
-		echo $this->_tpl_vars['cadena'];
-	{/php}
+	
 
 {include file=capas.tpl}
 

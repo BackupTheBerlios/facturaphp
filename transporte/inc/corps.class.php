@@ -135,61 +135,11 @@ class corps{
 		{
 			//Obtener datos del formulario de búsqueda
 			$this->get_fields_from_search_post();
-			//Generar consulta
-			/*
-			if($this->search_query[0]=='\\')
-			{*/
-				/************PRUEBAS**********************************/
-			//	print "Cadena ****".$this->search_query."**** ";
-			//	print "numero de caracteres ".strlen($this->search_query);
-			/*	for($i=0;$i<=strlen($this->search_query);$i++)
-				print $this->search_query[$i];
-			*/	
-				
-				/***********************************************/
-				
-			/*	
-				
-				switch($this->search_query[1])
-				{
-					case '"': 	$empiece = "comilla_doble";
-								//Guardar consulta para no modificar la variable 
-								//que se mande denuevo al formulario
-								$query =  $this->search_query;
-								
-								//Se va creando la nueva query que se mandará mas tarde 
-								//al formulario (se busca la siquiente ocurrencia de comillas)
-								$query = substr ($this->search_query, 2);
-								$cadena = substr ($this->search_query, 2, stripos($query, '"'));
-								
-								//Preparar la cadena para volver a mostrarla sin caracteres de PHP
-								$this->search_query = stripslashes($cadena);
-								
-								print "DOBLE";
-								break;
-					case '\'':	$empiece = "comilla_simple";
-								//Guardar consulta para no modificar la variable 
-								//que se mande denuevo al formulario
-								$query =  $this->search_query;
-								
-								//Se va creando la nueva query que se mandará mas tarde 
-								//al formulario (se busca la siquiente ocurrencia de comillas)
-								$query = substr ($this->search_query, 2);
-								$cadena = substr ($this->search_query, 2, stripos($query, '\''));
-								
-								//Preparar la cadena para volver a mostrarla sin caracteres de PHP
-								$this->search_query = stripslashes($cadena);
-													
-								print "SIMPLE";
-								break;
-					default: break;
-				}
-			}*/
 			
 			//Crear query
 			$my_search = new search();
 			$query = $my_search->get_query($this->search_query, FALSE, $this->search, $this->fields_list);
-				
+			
 			//se puede acceder a los usuarios por numero de campo o por nombre de campo
 			$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
 			//crea una nueva conexi—n con una bbdd (mysql)

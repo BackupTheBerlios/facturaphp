@@ -77,7 +77,10 @@ function initialize_object($module)
 					break;	
 		case 'sessions':
 					$objeto=new sessions();
-					break;	
+					break;
+		case 'cat_clients':
+					$objeto=new cat_clients();
+					break;
 		default:		
 					if(!isset($_SESSION['user']))
 					{

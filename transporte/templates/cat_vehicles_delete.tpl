@@ -7,7 +7,7 @@
                           <!--<img src="pics/usuariosico.png" width="32" height="32">-->
 						</td>
 						<td width="93%" valign="middle"  nowrap>
-						  Borrar usuarios </td>
+						  Borrar categor&iacute;as de veh&íacute;culos</td>
 				</tr>
 	</table>
 			  <form method="post" action="index.php?module=cat_vehicles&method=delete&id={$objeto->id_cat_vehicle}">			  

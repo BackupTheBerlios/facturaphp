@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.3, created on 2004-11-30 13:28:11
+<?php /* Smarty version 2.6.3, created on 2005-03-31 10:06:57
          compiled from corps_list.tpl */ ?>
 <td valign="top">
 
@@ -25,38 +25,18 @@ unset($_smarty_tpl_vars);
 			  <table width="100%">
 			   <tr><td class="message" align="center"><?php echo $this->_tpl_vars['message']; ?>
 </td></tr>
-			  <tr><td valign="top"><form method="post" action="index.php?module=corps&method=list">
+			  <tr><td valign="top"><form method="post" action="index.php?module=corps&method=list" name="form_searchs">
 			  	<table width="250px" align="center">
 				 <tr>
-					  <td colspan="2" class="cabeceraCampoFormulario">Criterios de b&uacute;squeda:</td>
-				  </tr>
-					 <tr>
-						<td width="125px" class="CampoFormulario">Nombre:</td>
-						<td > <input type="text" id="<?php echo $this->_tpl_vars['objeto']->ddbb_name; ?>
-" name="<?php echo $this->_tpl_vars['objeto']->ddbb_name; ?>
-" class="textoMenu"></td>
+					  <td colspan="2" class="cabeceraCampoFormulario">B&uacute;squeda:</td>
 				  </tr>
 				  <tr>
-					
-				  <tr>
-						<td width="125px" align="right" class="CampoFormulario">Nombre completo:</td>
-						<td> <input type="text" id="<?php echo $this->_tpl_vars['objeto']->ddbb_full_name; ?>
-" name="<?php echo $this->_tpl_vars['objeto']->ddbb_full_name; ?>
-" class="textoMenu"></td>
-				</tr>
-					<tr>
-						<td width="125px" class="CampoFormulario" >CIF/NIF:</td>
-						<td > <input type="text" id="<?php echo $this->_tpl_vars['objeto']->ddbb_cif_nif; ?>
-" name="<?php echo $this->_tpl_vars['objeto']->ddbb_cif_nif; ?>
-" class="textoMenu"></td>
+						<td ><input type="text" id="<?php echo $this->_tpl_vars['objeto']->ddbb_search; ?>
+" name="<?php echo $this->_tpl_vars['objeto']->ddbb_search; ?>
+" value="<?php echo $this->_tpl_vars['objeto']->search_query; ?>
+" class="textoMenu"></td><td><img src="pics/buscar.gif"></td>
 				  </tr>
 				  <tr>
-						<td width="125px" class="CampoFormulario" >Telefono:</td>
-						<td > <input type="text" id="<?php echo $this->_tpl_vars['objeto']->ddbb_phone; ?>
-" name="<?php echo $this->_tpl_vars['objeto']->ddbb_phone; ?>
-" class="textoMenu"></td>
-				  </tr>
-				    <tr>
 						<td width="125" class="CampoFormulario">Nº de Registros por p&aacute;gina:</td>
 						<td><select name="Registros">
 						  <option selected>10</option>
@@ -65,7 +45,7 @@ unset($_smarty_tpl_vars);
 						</select></td>
 				 </tr>
 				 <tr>
-				 	<td align="center" colspan="2"><input type="submit" value="Buscar" name="Submit" class="botones"></td>
+				 	<td align="center" colspan="2"><input type="submit" value="Buscar" name="submit_corps_search" class="botones"></td>
 				 </tr>
 				  </table>
 				</form><br>

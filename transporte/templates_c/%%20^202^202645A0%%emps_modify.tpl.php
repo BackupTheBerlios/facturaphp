@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.3, created on 2005-03-29 12:45:16
+<?php /* Smarty version 2.6.3, created on 2005-03-30 10:34:39
          compiled from emps_modify.tpl */ ?>
 <td valign="top">
 <script>
@@ -295,7 +295,7 @@ $this->_sections['indice']['last']       = ($this->_sections['indice']['iteratio
 						</select></td>
 			</tr>
 			<tr class="textoMenu" align="center"><td>
-				<input type="radio" <?php if ($this->_tpl_vars['usuarios']->id_user != 0 && $this->_tpl_vars['usuarios']->id_user != ""): ?>checked <?php endif; ?> name="user" id="new_user" value="<?php if ($this->_tpl_vars['usuarios']->id_user == 0 || $this->_tpl_vars['usuarios']->id_user == ""): ?>new<?php else: ?>modify<?php endif; ?>" onChange="enableDisable(this.value)"> <?php if ($this->_tpl_vars['usuarios']->id_user == 0 || $this->_tpl_vars['usuarios']->id_user == ""): ?>Crear un nuevo usuario<?php else: ?>Modificar el usuario<?php endif; ?>
+				<input type="radio" <?php if (( $this->_tpl_vars['usuarios']->id_user != 0 && $this->_tpl_vars['usuarios']->id_user != "" ) || $this->_tpl_vars['radio'] == 'new' || $this->_tpl_vars['radio'] == 'modify'): ?>checked <?php endif; ?> name="user" id="new_user" value="<?php if ($this->_tpl_vars['usuarios']->id_user == 0 || $this->_tpl_vars['usuarios']->id_user == ""): ?>new<?php else: ?>modify<?php endif; ?>" onChange="enableDisable(this.value)"> <?php if ($this->_tpl_vars['usuarios']->id_user == 0 || $this->_tpl_vars['usuarios']->id_user == ""): ?>Crear un nuevo usuario<?php else: ?>Modificar el usuario<?php endif; ?>
 			</td></tr>
 			</table>
 			</td>
@@ -328,7 +328,7 @@ $this->_sections['indice']['last']       = ($this->_sections['indice']['iteratio
 </font></td>
 				  </tr>
 				  <tr>
-						<td width="125px" class="CampoFormulario">Password:</td>
+						<td width="125px" class="CampoFormulario">Reescriba password:</td>
 						<td > <input type="password" id="user_retype" name="user_retype" value="<?php echo $this->_tpl_vars['usuarios']->retype; ?>
 " class="textoMenu"><font class="error"><?php echo $this->_tpl_vars['user_error_retype']; ?>
 </font></td>
