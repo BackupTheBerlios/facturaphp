@@ -184,7 +184,31 @@ class holydays{
 	}
 	
 	function add(){
-	
+			if (!isset($_POST['submit_add'])){
+			//Mostrar plantilla vacía	
+			//pasarle a la plantilla los modulos y grupos con sus respectivos checkbox a checked false
+			//Modulos
+			
+			return 0;
+		}
+		//en el caso de que SI este definido submit_add
+		else{
+						
+			//Introducir los datos de post.
+			$this->get_fields_from_post();	
+						
+			//Validacion
+			//$return=validate_fields();
+			
+			//En caso de que la validacion haya sido fallida se muestra la plantilla
+			//con los campos erroneos marcados con un *
+			$return=true; //Para pruebas dejar esta linea sin comentar
+			
+			if (!$return){
+				//Mostrar plantilla con datos erroneos
+				
+			}
+			else{
 		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
 		//crea una nueva conexi—n con una bbdd (mysql)
 		$this->db = NewADOConnection($this->db_type);
@@ -227,7 +251,8 @@ class holydays{
 			$this->error=-1;
 			$this->db->close();
 			return 0;
-		}			
+		}		
+			}}	
 	}
 	
 	function remove($id){
@@ -260,7 +285,28 @@ class holydays{
 	}
 	
 	function modify(){
-	
+	if (!isset($_POST['submit_modify'])){
+			
+			
+			return 0;
+		}
+		else{
+			//Introducir los datos de post.
+			$this->get_fields_from_post();
+			//$this->insert_post();
+			
+			//Validacion
+			//$return=validate_fields();
+			
+			//En caso de que la validacion haya sido fallida se muestra la plantilla
+			//con los campos erroneos marcados con un *
+			$return=true; //Para pruebas dejar esta linea sin comentar
+			
+			if (!$return){
+				//Mostrar plantilla con datos erroneos
+				
+			}
+			else{
 		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
 		//crea una nueva conexi—n con una bbdd (mysql)
 		$this->db = NewADOConnection($this->db_type);
@@ -303,22 +349,32 @@ class holydays{
 			$this->db->close();
 			return 0;
 		}
-
+			}}
 	
 	}
 	  
 	function calculate_tpl($method, $tpl){
 		$this->method=$method;
 				switch($method){
-						case 'add':									
+						case 'add':					
+									$empleado=new emps();
+									
+									
+									$empleado->read($_GET["id_emp"]);
+									
+									$tpl->assign("empleado",$empleado);
+													
 									if ($this->add() !=0){
-										$this->method="list";
-										$tpl=$this->listar($tpl);										
-										$tpl->assign("message","&nbsp;<br>Usuario a&ntilde;adido correctamente<br>&nbsp;");
+										$this->method="emps_view";																				
+										$tpl->assign("message","&nbsp;<br>Baja a&ntilde;adida correctamente<br>&nbsp;");			
+										$tpl=$empleado->view($this->id_emp,$tpl);		
+																	
+										$tpl->assign("plantilla","emps_view.tpl");
+										return $tpl;
 									}
+
+									
 									$tpl->assign("objeto",$this);
-									$tpl->assign("modulos",$this->checkbox);
-									$tpl->assign("grupos",$this->checkbox_groups);
 									break;
 									
 						case 'list':
@@ -326,14 +382,38 @@ class holydays{
 									break;
 						case 'modify':
 									$this->read($_GET['id']);
+									$empleado=new emps();									
+									
+									$empleado->read($this->id_emp);
+									
+									$tpl->assign("empleado",$empleado);
+									
+							if ($this->come!="0000-00-00"){
+								list($anno,$mes,$dia)=sscanf($this->come,"%d-%d-%d");
+								$tpl->assign("comecambiado","$dia-$mes-$anno");
+							}
+							else{
+								$tpl->assign("comecambiado","00-00-0000");
+							}
+							if ($this->gone!="0000-00-00"){
+								list($anno,$mes,$dia)=sscanf($this->gone,"%d-%d-%d");
+								$tpl->assign("gonecambiado","$dia-$mes-$anno");
+							}
+							else{
+								$tpl->assign("gonecambiado","00-00-0000");
+							}
+									
+									
 									if ($this->modify() !=0){
-										$this->method="list";
-										$tpl=$this->listar($tpl);										
-										$tpl->assign("message","&nbsp;<br>Usuario modificado correctamente<br>&nbsp;");
+											$this->method="emps_view";																				
+										$tpl->assign("message","&nbsp;<br>Baja/Alta modificada correctamente<br>&nbsp;");			
+										$tpl=$empleado->view($this->id_emp,$tpl);		
+																	
+										$tpl->assign("plantilla","emps_view.tpl");
+										return $tpl;
 									}
 									$tpl->assign("objeto",$this);
-									$tpl->assign("modulos",$this->checkbox);
-									$tpl->assign("grupos",$this->checkbox_groups);
+									
 									break;
 						case 'delete':
 									$this->read($_GET['id']);
@@ -363,10 +443,19 @@ class holydays{
 		if ($method!=$this->method){
 			$method = $this->method;
 		}		
+		
+		if ($method=="emps_view"){
+			$empleados=new emps();
+			$this->method="view";
+			return $empleados->bar("view",$corp);
+		}
+		
 	if ($corp != ""){
 			$corp='<a href="index.php?module=user_corps&method=select&id='.$_SESSION['ident_corp'].'">'.$corp.' ::';
 		}
-		$nav_bar = '<a>Zona privada</a> :: '.$corp.' <a href="index.php?module=emps">Empleados</a>';
+		$empleado=new emps();
+		$empleado->read($_GET["id_emp"]);
+		$nav_bar = '<a>Zona privada</a> :: '.$corp.' <a href="index.php?module=emps">Empleados</a> :: <a href="index.php?module=emps&method=view&id='.$empleado->id_emp.'">Ver Empleados</a>';
 		$nav_bar=$nav_bar.$this->localice($method);
 		return $nav_bar;
 	}	
@@ -375,10 +464,15 @@ class holydays{
 		if ($method!=$this->method){
 			$method = $this->method;
 		}
+		if ($method=="emps_view"){
+			$empleados=new emps();
+			$this->method="view";
+			return $empleados->title("view",$corp);
+		}
 		if ($corp != ""){
 			$corp=$corp." ::";
 		}
-		$title = "Zona Privada :: $corp Empleados";
+		$title = "Zona Privada :: $corp Empleados :: Ver Usuario";
 		$title=$title.$this->localice($method);		
 		return $title;
 	}
@@ -401,10 +495,18 @@ class holydays{
 									$localice=" :: Ver Baja-Alta";									
 									break;
 						default:
-									$localice=" :: Buscar Alba/Baja";
+									$localice=" :: Buscar Alta/Baja";
 									break;
 		}
 		return $localice;
+	}
+	
+		function get_fields_from_post(){		
+			$this->id_emp=$_POST[$this->ddbb_id_emp];
+			$this->come=$_POST[$this->ddbb_come];
+			$this->ill=$_POST[$this->ddbb_ill];
+			$this->descrip=$_POST[$this->ddbb_descrip];
+			
 	}
 	
 	

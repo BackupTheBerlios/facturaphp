@@ -948,24 +948,25 @@ class emps{
 			
 			$cadena="";
 			$tabla_vacaciones = new table(false);
+			$tabla_vacaciones->parameter_add="&id_emp=".$this->id_emp;
 			if($holydays)
 			{
 				
-				//listado de grupos
+				//listado de holydays
 				if ($this->get_holydays($this->id_emp)==0)
 				{
 					$cadena=$cadena.$tabla_vacaciones->tabla_vacia('holydays',false);
 					$variables_vacaciones=$tabla_vacaciones->nombres_variables;
 				}
 				else
-				{		
+				{
 					$per = new permissions();
 					$num = $per->get_permissions_list('holydays');
 					
 					$permisos = $per->permissions_module;
 
 								
-					$cadena=$cadena.$tabla_vacaciones->make_tables('holydays',$this->holydays_list,array('Fecha de baja',25,'Fecha de alta',25,'Motivo',25),array('id_holyday','gone','come','ill'),10,$per->permissions_module,$per->add);
+					$cadena=$cadena.$tabla_vacaciones->make_tables('holydays',$this->holydays_list,array('Fecha de baja',25,'Fecha de alta',25,'Motivo',25),array('id_holy','gone','come','ill'),10,$per->permissions_module,$per->add);
 					$variables_vacaciones=$tabla_vacaciones->nombres_variables;
 				}
 			}
@@ -976,13 +977,14 @@ class emps{
 			}
 			
 			$i=0;
-			while($i<(count($variables_grupos)+count($variables_modulos))){
+			while($i<(count($variables_vacaciones))){
 				for($j=0;$j<count($variables_vacaciones);$j++){
 					$variables[$i]=$variables_vacaciones[$j];
+					
 					$i++;
 				}
 			}
-			
+
 			
 			$tpl->assign('variables',$variables);
 			$tpl->assign('cadena',$cadena);
@@ -1013,7 +1015,7 @@ class emps{
 		$this->num=0;
 		while (!$this->result->EOF) {
 			//cogemos los datos del usuario
-			$this->holydays_list[$this->num]['id_holyday']=$this->result->fields['id_holyday'];
+			$this->holydays_list[$this->num]['id_holy']=$this->result->fields['id_holy'];
 			$this->holydays_list[$this->num]['gone']=$this->result->fields['gone'];
 			$this->holydays_list[$this->num]['come']=$this->result->fields['come'];
 			switch($this->result->fields['ill']){

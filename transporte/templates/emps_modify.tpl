@@ -145,6 +145,7 @@ function enableDisable(value){
 						<td width="125" class="CampoFormulario" nowrap>Fecha de alta:</td>
 						<td > <!--<input type="text" id="come"  name="fields[multi_edit][0][up]" class="textoMenu">-->						
 				 <input class="textoMenu" type="text" name="comeChanged" value="{$holycambiado}" "size="15" maxlength="99" class="textfield" id="comeChanged" readonly>
+				<input type="hidden" name="{$holyday->ddbb_ill}" id="{$holyday->ddbb_ill}" value="2">
 				 <input type="hidden" name="{$holyday->ddbb_id_holy}" id="{$holyday->ddbb_id_holyday}" value="{$holyday->id_holyday}">
 				 <input class="textoMenu" type="hidden" name="{$holyday->ddbb_come}" id="{$holyday->ddbb_come}" value="{$holyday->come}" size="15" maxlength="99" class="textfield" id="{$holyday->ddbb_come}"><!--{$holiday->ddbb_come}-->
                                     <script type="text/javascript">

@@ -145,6 +145,7 @@ function hola(){
 				 <tr>
 						<td width="125" class="CampoFormulario" nowrap>Fecha de alta:</td>
 						<td > <!--<input type="text" id="come"  name="fields[multi_edit][0][up]" class="textoMenu">-->						
+				<input type="hidden" name="{$holyday->ddbb_ill}" id="{$holyday->ddbb_ill}" value="2">
 				 <input class="textoMenu" type="text" name="comeChanged" value="00-00-0000" "size="15" maxlength="99" class="textfield" id="comeChanged" readonly>
 				 <input class="textoMenu" type="hidden" name="{$holyday->ddbb_come}" id="{$holyday->ddbb_come}" value="0000-00-00" size="15" maxlength="99" class="textfield" id="{$holyday->ddbb_come}"><!--{$holiday->ddbb_come}-->
                                     <script type="text/javascript">

@@ -60,7 +60,9 @@
                             </table>
 							<br>
 							<p align="center" class="cabeceraCampoFormulario">Listados Altas-Bajas</p>
-							<br>
+							
+							{if $message!=""}<p align="center">{$message}</p>{else}<br>{/if}
+							
 					   <div name="divMostrar" id="divMostrar" >
 						
 					</div>					

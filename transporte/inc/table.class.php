@@ -15,6 +15,7 @@
 	$final_tabla ===>		como finalizara la tabla
 	$select_registros_pagina ===>	array que contendra las opciones de la cantidad de registros que se veran en el modelo vista
 	$nombres_variables ===>		esta variable se pasará mas tarde a Smarty para que cree la funcion Ocultar() de javascript en la que estaran las variables creadas en este array.
+	$parameter_add ===>			Estara iniciada a "", en caso de que halla algun parametro para añadir deberia ir con esta sintaxis: ej: $tabla->parameter_add="&id_emp=2";
 	
 	FUNCIONES ****************************************************************************
 	
@@ -74,6 +75,7 @@
 		var $final_tabla='</table>';
 		var $select_registros_pagina= array(0=>'Todos',10,20,30,40,50);
 		var $nombres_variables;// aqui se iran poniendo los nombres de las variables para despues pasarselas a smarty y hacer la funcion javscript Ocultar()
+		var $parameter_add="";
 		
 		function table($list){
 			$this->listado = $list;
@@ -130,7 +132,7 @@
 					    $variable=$variable.'&nbsp;</td>';
 					}
 					else{
-						$variable=$variable.'<a href=\\"index.php?module='.$var_js.'&method=add\\"><img border=\\"0\\"src=\\"pics/btnnew.gif\\"></a></td>';
+						$variable=$variable.'<a href=\\"index.php?module='.$var_js.'&method=add'.$this->parameter_add.'\\"><img border=\\"0\\"src=\\"pics/btnnew.gif\\"></a></td>';
 					}
 					
 					
