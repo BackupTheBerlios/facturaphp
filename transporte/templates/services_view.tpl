@@ -18,14 +18,14 @@
 						<td valign="top">
 							<table width="100%">
 							<tr class="cabeceraMultiLinea">
-								<td colspan="2" height="23" nowrap>Identificador de Categor&iacute;a: {$objeto->id_product}</td>
+								<td colspan="2" height="23" nowrap>Identificador de Categor&iacute;a: {$objeto->id_service}</td>
 								<td align="center" colspan="2">
 									{section name="indice" loop=$acciones}			
 									{if $acciones[indice]== 'modify'}
-										<a href="index.php?module=products&method={$acciones[indice]}&id={$objeto->id_product}">
+										<a href="index.php?module=services&method={$acciones[indice]}&id={$objeto->id_service}">
 											<img src="pics/btn{$acciones[indice]}.gif" border="0"></a>
 									{else}
-										<a href="index.php?module=products&method={$acciones[indice]}&id={$objeto->id_product}">
+										<a href="index.php?module=services&method={$acciones[indice]}&id={$objeto->id_service}">
 											<img src="pics/btn{$acciones[indice]}.gif" border="0"></a>
 									{/if}	
 									{/section}
@@ -51,7 +51,7 @@
                               </tr>
                               <tr>
 								<td colspan="4" align="center">
-                               <a href="index.php?module=products&method=show&id={$objeto->id_product}"><img src="{$objeto->path_photo}" height="120"></a>
+                               <a href="index.php?module=services&method=show&id={$objeto->id_service}"><img src="{$objeto->path_photo}" height="120"></a>
 					   </td>                               
                               </tr>
                     		

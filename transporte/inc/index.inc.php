@@ -48,6 +48,9 @@ function initialize_object($module)
 		case 'services':
 					$objeto=new services();
 					break;
+		case 'cat_servs':
+					$objeto=new cat_servs();
+					break;
 		case 'error':
 					$objeto=new error();
 					break;

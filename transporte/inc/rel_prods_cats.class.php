@@ -26,6 +26,7 @@ class rel_prods_cats{
 	var $result;  	
 //variables complementarias	
   	var $rel_prods_cats_list;
+	var $rel_prod_cat;
   	var $num;
   	var $fields_list;
   	var $error;
@@ -303,6 +304,7 @@ class rel_prods_cats{
 		//realiza una conexin permanente con la bbdd
 		$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
 		//mete la consulta
+		
 		$this->sql='SELECT * FROM '.$this->table_name.'  WHERE `'.$this->ddbb_id_product.'` = \''.$id_product.'\'';
 		//la ejecuta y guarda los resultados
 		$this->result = $this->db->Execute($this->sql);
@@ -314,16 +316,16 @@ class rel_prods_cats{
 		
 		$this->num=0;
 		while (!$this->result->EOF) {
-
+			
 			//cogemos los datos del usuario
-			$this->rel_prods_cats_list[$this->num]['id_rel_prod_cat']=$this->result->fields['id_rel_prod_cat'];
-			$this->rel_prods_cats_list[$this->num]['id_cat_prod']=$this->result->fields['id_cat_prod'];
+			$this->rel_prod_cat[$this->num]['id_rel_prod_cat']=$this->result->fields['id_rel_prod_cat'];
+			$this->rel_prod_cat[$this->num]['id_cat_prod']=$this->result->fields['id_cat_prod'];
 			//nos movemos hasta el siguiente registro de resultado de la consulta
 			$this->result->MoveNext();
 			$this->num++;
 		}
 		$this->db->close();		
-		return $this->rel_prods_cats_list;
+		return $this->rel_prod_cat;
 	}
 	
 }

@@ -247,10 +247,10 @@ class products{
 			$record[$this->ddbb_pvp]=$this->pvp;
 			$record[$this->ddbb_tax] = $this->tax;
 			$record[$this->ddbb_pvp_tax]=$this->pvp_tax;
-			$record[$this->ddbb_minimum_stock]=$this->minimum_stock;
+			$record[$this->ddbb_minimun_stock]=$this->minimun_stock;
 			//calculamos la sql de inserci—n respecto a los atributos
 			$this->sql = $this->db->GetInsertSQL($this->result, $record);
-			//print($this->sql);
+			
 			//insertamos el registro
 			$this->db->Execute($this->sql);
 			//si se ha insertado una fila
@@ -288,7 +288,7 @@ class products{
 		
 		foreach($this->prod_cat_list as $cat){
 			$rel_prods_cat->id_cat_prod=$cat['id_cat_prod'];
-			$rel_prods_cat->id_prod=$id_product;
+			$rel_prods_cat->id_product=$id_product;
 			$rel_prods_cat->add();
 		}
 		return 0;
@@ -471,7 +471,6 @@ class products{
 		$Affected_Rows=$this->db->Affected_Rows();
 		
 		$return_categories=$this->modify_categories();
-		echo $return_categories;
 		if(($Affected_Rows==1)||($this->sql=="")||$return_categories==1){
 			//capturammos el id de la linea insertada
 			$this->db->close();
@@ -827,11 +826,13 @@ class products{
 	function table_categories($new){
 		//Esta funcion hara el listado de checkbox de las categorias jerarquizadas
 		//Buscamos las categorias jerarquizadas comenzando por las categorias padre.
+		
 		$array_cat=$this->get_categories(0,true);
+		
 
 		//Si no es para nuevo: Buscamos las categorias relacionadas con el producto
 		if (!$new){
-			if ($this->id_product="" || $this->id_product!=0){
+			if ($this->id_product!="" && $this->id_product!=0){
 				$rel = new rel_prods_cats();
 				$this->prod_cat_list=$rel->get_rel_prod_cat($this->id_product);
 			}
@@ -839,7 +840,6 @@ class products{
 				$new=true;
 			}
 		}
-
 		//Construimos la tabla con los arrays
 		if (count($array_cat)!=0)
 			$table=$this->build_table($new,$array_cat);

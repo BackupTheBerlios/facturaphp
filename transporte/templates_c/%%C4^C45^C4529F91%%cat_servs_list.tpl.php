@@ -1,6 +1,13 @@
+<?php /* Smarty version 2.6.3, created on 2005-02-03 19:28:15
+         compiled from cat_servs_list.tpl */ ?>
 <td valign="top">
-{$cadena}
-{include file=capas.tpl}
+<?php echo $this->_tpl_vars['cadena']; ?>
+
+<?php $_smarty_tpl_vars = $this->_tpl_vars;
+$this->_smarty_include(array('smarty_include_tpl_file' => "capas.tpl", 'smarty_include_vars' => array()));
+$this->_tpl_vars = $_smarty_tpl_vars;
+unset($_smarty_tpl_vars);
+ ?>
 
 	  <table width="100%" cellpadding="0" cellspacing="0"  bgcolor="#000000">
 						<tr Class="CabeceraModulo">
@@ -9,12 +16,13 @@
                           <!--<img src="pics/usuariosico.png" width="32" height="32">-->
 						</td>
 						<td width="93%" valign="middle"  nowrap>
-						  Buscar Productos </td>
+						  Buscar Categor&iacute;as de servicios </td>
 				</tr>
 			  </table>
 			  <table width="100%">
-			  <tr><td class="message" align="center">{$message}</td></tr>
-			  <tr><td valign="top"><form method="post" action="index.php?module=products&method=list">
+			  <tr><td class="message" align="center"><?php echo $this->_tpl_vars['message']; ?>
+</td></tr>
+			  <tr><td valign="top"><form method="post" action="index.php?module=cat_servs&method=list">
 			  	<table width="250px" align="center">
 				 <tr>
 					  <td colspan="2" class="cabeceraCampoFormulario">Criterios de b&uacute;squeda:</td>
@@ -22,12 +30,11 @@
 					
 				  <tr>
 						<td width="125px" align="right" class="CampoFormulario">Nombre:</td>
-						<td> <input type="text" id="{$objeto->ddbb_name}" name="{$objeto->ddbb_name}" class="textoMenu"></td>
+						<td> <input type="text" id="<?php echo $this->_tpl_vars['objeto']->ddbb_name; ?>
+" name="<?php echo $this->_tpl_vars['objeto']->ddbb_name; ?>
+" class="textoMenu"></td>
 				</tr>
-					<tr>
-						<td width="125px" class="CampoFormulario" >Nombre Web:</td>
-						<td > <input type="text" id="{$objeto->ddbb_name_web}" name="{$objeto->ddbb_name_web}" class="textoMenu"></td>
-				  </tr>				  
+				
 				    <tr>
 						<td width="125" class="CampoFormulario">Nº de Registros por p&aacute;gina:</td>
 						<td><select name="Registros">
@@ -45,7 +52,7 @@
 						
 					</div>	
 					 <script>	
-					  	document.getElementById("divMostrar").innerHTML = products_1;
+					  	document.getElementById("divMostrar").innerHTML = cat_servs_1;
 					  </script>
 				  
 			  </td></tr></table>

@@ -9,12 +9,12 @@
                           <!--<img src="pics/usuariosico.png" width="32" height="32">-->
 						</td>
 						<td width="93%" valign="middle"  nowrap>
-						  Buscar Productos </td>
+						  Buscar Servicios </td>
 				</tr>
 			  </table>
 			  <table width="100%">
 			  <tr><td class="message" align="center">{$message}</td></tr>
-			  <tr><td valign="top"><form method="post" action="index.php?module=products&method=list">
+			  <tr><td valign="top"><form method="post" action="index.php?module=services&method=list">
 			  	<table width="250px" align="center">
 				 <tr>
 					  <td colspan="2" class="cabeceraCampoFormulario">Criterios de b&uacute;squeda:</td>
@@ -45,7 +45,7 @@
 						
 					</div>	
 					 <script>	
-					  	document.getElementById("divMostrar").innerHTML = products_1;
+					  	document.getElementById("divMostrar").innerHTML = services_1;
 					  </script>
 				  
 			  </td></tr></table>
