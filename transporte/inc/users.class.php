@@ -1,7 +1,7 @@
 <?php
 //clase que da soporte a los usuarios del programa
 //enlaza con la bbdd 
-global $ADODB_DIR;
+global $ADODB_DIR, $INSTALL_DIR;
 require_once ($INSTALL_DIR.'inc/config.inc.php');
 require_once ($ADODB_DIR."adodb.inc.php");
 class users{

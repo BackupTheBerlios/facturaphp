@@ -35,7 +35,10 @@ class fields{
 	
 	function validate($fields_form){
 	
+		for ($i=0;i<$this->num;$i++){
 		
+		
+		}		
 	
 	}
 }

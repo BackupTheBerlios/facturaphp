@@ -8,7 +8,10 @@
 //inicia o retoma una sesion
 session_start();
 //realiza todos los includes necesarios
-require_once('inc/includes.php');
+require_once('inc/config.inc.php');
+global $INSTALL_DIR;
+
+require_once($INSTALL_DIR.'inc/includes.php');
 //inicializamos algunas variables
 $title="::Gesti&oacute;n::";
 $nav_bar="::Gesti&oacute;n::";
