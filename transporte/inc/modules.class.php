@@ -601,7 +601,6 @@ class modules{
 												$tpl->assign("padres",$this->modules_list);
 												$tpl->assign("objeto",$this);
 												$tpl->assign("module_methods",$this->module_methods);
-												//$tpl->assign("tabla_checkbox",$this->table_categories(false));
 												break;
 										case -1: //Errores al intentar añadir datos
 												for ($i=0;$i<count($this->fields_list->array_error);$i+=2){
@@ -611,7 +610,6 @@ class modules{
 												$tpl->assign("padres",$this->modules_list);
 												$tpl->assign("objeto",$this);
 												$tpl->assign("module_methods",$this->module_meth);
-												//$tpl->assign("tabla_checkbox",$this->table_categories(false));
 												break;
 										default: //Si se ha añadido
 												$this->method="list";
