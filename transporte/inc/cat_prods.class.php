@@ -208,10 +208,10 @@ class cat_prods{
 			$this->fields_list->modify_value($this->ddbb_descrip,$this->descrip);
 			//validamos
 			$return=$this->fields_list->validate();	
-			$return=$this->validate_categories();
+			$return=$return && $this->validate_categories();
 			//En caso de que la validacion haya sido fallida se muestra la plantilla
 			//con los campos erroneos marcados con un *
-			$return=true; //Para pruebas dejar esta linea sin comentar
+		
 			
 			if (!$return){
 				//Mostrar plantilla con datos erroneos
@@ -340,7 +340,7 @@ class cat_prods{
 	if (!isset($_POST["submit_delete"])){
 				//Miramos a ver si hay algun producto que tenga esta categoria
 				$this->view_prods($this->id_cat_prod);					
-							
+				
 				return 0;
 			}
 			else{
@@ -471,7 +471,8 @@ class cat_prods{
 	
 	function view_prods($id){
 		
-			$product = new products();				
+			$product = new products();	
+			$product->get_list_products();			
 				$result=$product->verify_products($id);
 				$this->productos="";
 				if ($result!=0){
@@ -513,7 +514,7 @@ class cat_prods{
 			$this->fields_list->modify_value($this->ddbb_descrip,$this->descrip);
 			//validamos
 			$return=$this->fields_list->validate();	
-
+			$return=$return && $this->validate_categories();
 			
 			//En caso de que la validacion haya sido fallida se muestra la plantilla
 			//con los campos erroneos marcados con un *
@@ -627,14 +628,12 @@ class cat_prods{
 						case 'add':												
 									$return=$this->add();
 									switch ($return){										
-										case 0: //por defecto
-												$tpl->assign("tabla_checkbox",$this->table_categories(true));
+										case 0: //por defecto												
 												break;
 										case -1: //Errores al intentar añadir datos
 												for ($i=0;$i<count($this->fields_list->array_error);$i+=2){
 													$tpl->assign("error_".$this->fields_list->array_error[$i],$this->fields_list->array_error[$i+1]);
-												}
-												$tpl->assign("tabla_checkbox",$this->table_categories(false));
+												}												
 												break;
 										default: //Si se ha añadido
 												$this->method="list";
@@ -675,8 +674,10 @@ class cat_prods{
 						case 'delete':
 									
 									$this->read($_GET['id']);
-									if ($this->remove($_GET['id'])!=0){
-									
+									if ($this->remove($_GET['id'])==0){
+										$tpl->assign("message",$this->productos);
+									}
+									else{
 										$this->cat_prods_list="";
 										$this->method="list";
 										$tpl=$this->listar($tpl);

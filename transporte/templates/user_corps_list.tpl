@@ -14,5 +14,6 @@
 	 <script>	
 	  	document.getElementById("divMostrar").innerHTML = user_corps_1;
 	  </script>
+</td>
   
 			

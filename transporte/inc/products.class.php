@@ -1065,5 +1065,39 @@ class products{
 	
 	}
 	
+	function verify_products($id){
+		//se puede acceder a los usuarios por numero de campo o por nombre de campo
+		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
+		//crea una nueva conexin con una bbdd (mysql)
+		$this->db = NewADOConnection($this->db_type);
+		//le dice que no salgan los errores de conexin de la ddbb por pantalla
+		$this->db->debug=false;
+		//realiza una conexin permanente con la bbdd
+		$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
+		//mete la consulta
+		$this->sql='SELECT `products`.`name`, `products`.`name_web`, `products`.`id_product` FROM `rel_prods_cats` INNER JOIN `products` ON `rel_prods_cats`.`id_product` = `products`.`id_product` WHERE `rel_prods_cats`.`id_cat_prod` = \''.$id.'\'';
+		//la ejecuta y guarda los resultados
+		$this->result = $this->db->Execute($this->sql);
+		if ($this->result === false){
+			$this->error=1;
+			$this->db->close();
+			return 0;
+		}  
+		
+		$this->num=0;
+		while (!$this->result->EOF) {
+			//cogemos los datos del usuario
+			$this->prod_cat_list[$this->num]['id_product']=$this->result->fields['id_product'];
+			$this->prod_cat_list[$this->num]['name']=$this->result->fields['name'];
+			$this->prod_cat_list[$this->num]['name_web']=$this->result->fields['name_web'];
+			//nos movemos hasta el siguiente registro de resultado de la consulta
+			$this->result->MoveNext();
+			$this->num++;
+		}
+
+		$this->db->close();
+		return $this->num;
+	}
+	
 }
 ?>

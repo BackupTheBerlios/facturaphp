@@ -61,7 +61,7 @@ class cat_servs{
 		$this->fields_list->add($this->ddbb_name, $this->name, 'varchar', 50,0);
 		$this->fields_list->add($this->ddbb_id_parent_cat, $this->id_parent_cat, 'int', 11,0);
 		$this->fields_list->add($this->ddbb_path_photo, $this->path_photo, 'varchar', 255,0);
-		$this->fields_list->add($this->ddbb_descrip, $this->descrip, 'int', 11,0);
+		$this->fields_list->add($this->ddbb_descrip, $this->descrip, 'text', 255,0);
 		//print_r($this);
 		//se puede acceder a los grupos por numero de campo o por nombre de campo
 	/*	$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
@@ -194,16 +194,17 @@ class cat_servs{
 			//Introducir los datos de post.
 			$this->get_fields_from_post();	
 						
-			//Validacion
-			//$return=validate_fields();
-			
-			//En caso de que la validacion haya sido fallida se muestra la plantilla
-			//con los campos erroneos marcados con un *
-			$return=true; //Para pruebas dejar esta linea sin comentar
-			
+			$this->id_cat_serv=0;
+			$this->fields_list->modify_value($this->ddbb_id_cat_serv,$this->id_cat_serv);
+			$this->fields_list->modify_value($this->ddbb_id_parent_cat,$this->id_parent_cat);
+			$this->fields_list->modify_value($this->ddbb_name,$this->name);
+			$this->fields_list->modify_value($this->ddbb_descrip,$this->descrip);
+			//validamos
+			$return=$this->fields_list->validate();	
+			$return=$return && $this->validate_categories();
 			if (!$return){
 				//Mostrar plantilla con datos erroneos
-				
+				return -1;
 			}
 			else{
 				//Si todo es correcto si meten los datos
@@ -263,6 +264,17 @@ class cat_servs{
 		}	
 		}
 		}				
+	}
+	
+	function validate_categories(){
+	/**********************
+	 * Posibilidades:
+	 * 		1-	Si es categoria padre, no puede elegir
+	 * 			categorias hijas,nietas... como su cateogoria
+	 * 			padre
+	 * 		2-	
+	 */
+	return true;
 	}
 	
 	function modify_photo($id_cat_serv)
@@ -486,14 +498,20 @@ class cat_servs{
 			
 			//Validacion
 			//$return=validate_fields();
-			
+			$this->fields_list->modify_value($this->ddbb_id_cat_serv,$this->id_cat_serv);
+			$this->fields_list->modify_value($this->ddbb_id_parent_cat,$this->id_parent_cat);
+			$this->fields_list->modify_value($this->ddbb_name,$this->name);
+			$this->fields_list->modify_value($this->ddbb_descrip,$this->descrip);
+			//validamos
+			$return=$this->fields_list->validate();	
+			$return=$return && $this->validate_categories();
 			//En caso de que la validacion haya sido fallida se muestra la plantilla
 			//con los campos erroneos marcados con un *
-			$return=true; //Para pruebas dejar esta linea sin comentar
+			
 			
 			if (!$return){
 				//Mostrar plantilla con datos erroneos
-				
+				return -1;	
 			}
 			else{
 		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
@@ -599,14 +617,12 @@ class cat_servs{
 						case 'add':									
 									$return=$this->add();
 									switch ($return){										
-										case 0: //por defecto
-												$tpl->assign("tabla_checkbox",$this->table_categories(true));
+										case 0: //por defecto												
 												break;
 										case -1: //Errores al intentar añadir datos
 												for ($i=0;$i<count($this->fields_list->array_error);$i+=2){
 													$tpl->assign("error_".$this->fields_list->array_error[$i],$this->fields_list->array_error[$i+1]);
-												}
-												$tpl->assign("tabla_checkbox",$this->table_categories(false));
+												}												
 												break;
 										default: //Si se ha añadido
 												$this->method="list";
@@ -626,13 +642,13 @@ class cat_servs{
 									$return=$this->modify();
 									switch ($return){										
 										case 0: //por defecto
-												$tpl->assign("tabla_checkbox",$this->table_categories(false));
+												//$tpl->assign("tabla_checkbox",$this->table_categories(false));
 												break;
 										case -1: //Errores al intentar añadir datos
 												for ($i=0;$i<count($this->fields_list->array_error);$i+=2){
 													$tpl->assign("error_".$this->fields_list->array_error[$i],$this->fields_list->array_error[$i+1]);
 												}
-												$tpl->assign("tabla_checkbox",$this->table_categories(false));
+												//$tpl->assign("tabla_checkbox",$this->table_categories(false));
 												break;
 										default: //Si se ha añadido
 												$this->method="list";
@@ -646,8 +662,10 @@ class cat_servs{
 						case 'delete':
 									
 									$this->read($_GET['id']);
-									if ($this->remove($_GET['id'])!=0){
-									
+									if ($this->remove($_GET['id'])==0){
+										$tpl->assign("message",$this->servicios);
+									}
+									else{
 										$this->cat_servs_list="";
 										$this->method="list";
 										$tpl=$this->listar($tpl);
@@ -672,11 +690,11 @@ class cat_servs{
 		return $tpl;
 	}
 		
-	function view_emps($id){
+	/*function view_emps($id){
 		
 			$emp = new rel_emps_cats();
 			$emp->get_list_rel_emps_cats();				
-				$result=$emp->verify_emps($id);
+				$result=$emp->verify_servives($id);
 				$this->empleados="";
 				if ($result!=0){
 					$this->empleados="<p>Atención esta categor&iacute;a tiene asignados los siguientes empleados:";
@@ -691,7 +709,7 @@ class cat_servs{
 					$this->empleados.="Si borra esta categor&iacute;a, se borrar&aacute; la relaci&oacute;n con estos empleados";
 					$this->empleados.="</p>";
 				}			
-	}
+	}*/
 	
 	function bar($method,$corp){
 		if ($method!=$this->method){

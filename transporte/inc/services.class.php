@@ -1060,5 +1060,39 @@ class services{
 	
 	}
 	
+	function verify_services($id){
+		//se puede acceder a los usuarios por numero de campo o por nombre de campo
+		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
+		//crea una nueva conexin con una bbdd (mysql)
+		$this->db = NewADOConnection($this->db_type);
+		//le dice que no salgan los errores de conexin de la ddbb por pantalla
+		$this->db->debug=false;
+		//realiza una conexin permanente con la bbdd
+		$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
+		//mete la consulta
+		$this->sql='SELECT `services`.`name`, `services`.`name_web`, `services`.`id_service` FROM `rel_servs_cats` INNER JOIN `services` ON `rel_servs_cats`.`id_service` = `services`.`id_service` WHERE `rel_servs_cats`.`id_cat_serv` = \''.$id.'\'';
+		//la ejecuta y guarda los resultados
+		$this->result = $this->db->Execute($this->sql);
+		if ($this->result === false){
+			$this->error=1;
+			$this->db->close();
+			return 0;
+		}  
+		
+		$this->num=0;
+		while (!$this->result->EOF) {
+			//cogemos los datos del usuario
+			$this->serv_cat_list[$this->num]['id_service']=$this->result->fields['id_service'];
+			$this->serv_cat_list[$this->num]['name']=$this->result->fields['name'];
+			$this->serv_cat_list[$this->num]['name_web']=$this->result->fields['name_web'];
+			//nos movemos hasta el siguiente registro de resultado de la consulta
+			$this->result->MoveNext();
+			$this->num++;
+		}
+
+		$this->db->close();
+		return $this->num;
+	}
+	
 }
 ?>

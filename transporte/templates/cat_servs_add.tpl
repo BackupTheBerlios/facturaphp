@@ -20,7 +20,7 @@
 					
 				  <tr>
 						<td width="125px" align="right" class="CampoFormulario">Nombre:</td>
-						<td> <input type="text" id="{$objeto->ddbb_name}" name="{$objeto->ddbb_name}" class="textoMenu"><font class="error">{$error_name}</font></td>
+						<td> <input type="text" id="{$objeto->ddbb_name}" name="{$objeto->ddbb_name}" value="{$objeto->name}" class="textoMenu"><font class="error">{$error_name}</font></td>
 					</tr>
 					<tr>
 				 	<td width="125px" class="CampoFormulario" >Imagen:</td>
@@ -29,10 +29,10 @@
 					 <tr>
 						<td width="125px" align="right" class="CampoFormulario">Categoria Padre:</td>
 						<td> <select id="{$objeto->ddbb_id_parent_cat}" name="{$objeto->ddbb_id_parent_cat}">
-						<option value="0" selected>Ninguna</option>
+						<option value="0" {if $objeto->id_parent_cat == 0}selected{/if}>Ninguna</option>
 						
 						{section name="nombre" loop=$objeto->cat_servs_list}
-							<option value="{$objeto->cat_servs_list[nombre].id_cat_serv}">
+							<option value="{$objeto->cat_servs_list[nombre].id_cat_serv}" {if $objeto->id_parent_cat == $objeto->cat_servs_list[nombre].id_cat_serv} selected {/if}>
 								{$objeto->cat_servs_list[nombre].name}
 							</option>
 						{/section}	<font class="error">{$error_id_parent_cat}</font>					
@@ -40,7 +40,7 @@
 					</tr>
 					  <tr>
 						<td width="125" align="right" class="CampoFormulario">Descripcion:</td>
-						<td rowspan="2" ><textarea name="{$objeto->ddbb_descrip}" class="textoMenu" id="{$objeto->ddbb_descrip}"></textarea><font class="error">{$error_descrip}</font> </td>
+						<td rowspan="2" ><textarea name="{$objeto->ddbb_descrip}" class="textoMenu" id="{$objeto->ddbb_descrip}">value="{$objeto->descrip}"</textarea><font class="error">{$error_descrip}</font> </td>
 					</tr>
 		</table>
 		</td>

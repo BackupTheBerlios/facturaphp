@@ -1,7 +1,4 @@
 <td valign="top">
-
-	
-
 <table width="100%" cellpadding="10" cellspacing="10"  bgcolor="#F0FFFF">
 	<tr class="barraNavegacion">
 		<td align="middle" valign="middle"><font color="#000000">Bienvenid@ a esta aplicación</font></td>
@@ -16,6 +13,7 @@
 		<td align="middle" valign="middle"><img src="pics/copiarPegar.png"></td>
 	</tr>
 </table>
+</td>
 
 
 	
