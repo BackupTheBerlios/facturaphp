@@ -580,7 +580,7 @@ class users{
 			$this->checkbox=new permissions_modules();
 			$modules=new modules();
 			$num_modules = $modules->get_list_modules();
-			$k=0;print "//////////////MODULOS  ".$num_modules. "//////";
+			$k=0;
 			for($i=0;$i<$num_modules;$i++)
 			{
 				if($_SESSION['super'])
@@ -977,8 +977,8 @@ class users{
 						case 'list':
 									$tpl=$this->listar($tpl);
 									break;
-						case 'modify':print "ENTRA READ ";
-									$this->read($_GET['id']);print "ENTRA EN MODIFY";
+						case 'modify':
+									$this->read($_GET['id']);
 									if ($this->modify() !=0){
 										$this->method="list";
 										$tpl=$this->listar($tpl);										
@@ -1176,10 +1176,10 @@ class users{
 			$this->per_modules[$modulo_num]->publico = $this->modules->modules_list[$modulo_num]['public'];
 			$this->per_modules[$modulo_num]->parent = $this->modules->modules_list[$modulo_num]['parent'];
 			$this->per_modules[$modulo_num]->active = $this->modules->modules_list[$modulo_num]['active'];
-print "ANTES DE VALIDATE PER MODULE ";
+
 			$this->per_modules[$modulo_num]->validate_per_module($id_user);
 		
-		}print "TERMINA ";
+		}
 	}
 	
 	function validate_per_user_module($id_user, $module)
