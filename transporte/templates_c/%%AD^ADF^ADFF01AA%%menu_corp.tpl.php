@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.3, created on 2004-11-22 17:05:02
+<?php /* Smarty version 2.6.3, created on 2004-12-14 17:20:31
          compiled from menu_corp.tpl */ ?>
 		<table width="90%" class="cajaMenu" cellpadding="3" cellspacing="0">
 			<tr>
@@ -64,7 +64,7 @@
 						while($i!=$modules->num)
 						{
 					
-							if(($modules->modules_list[$i]['public']==0)&&($modules->modules_list[$i]['name'] != "error")&&($modules->modules_list[$i]['name'] != "emps"))
+							if(($modules->modules_list[$i]['public']==0)&&($modules->modules_list[$i]['name'] != "error")&&($modules->modules_list[$i]['name'] != "services")&&($modules->modules_list[$i]['name'] != "holydays")&&($modules->modules_list[$i]['name'] != "emps"))
 							{
 							 ?>
 						
@@ -94,7 +94,7 @@
 						while($i!=$modules->num)
 						{
 					
-							if(($modules->modules_list[$i]['public']==0)&&($modules->modules_list[$i]['name'] != "error"))
+							if(($modules->modules_list[$i]['public']==0)&&($modules->modules_list[$i]['name'] != "error")&&($modules->modules_list[$i]['name'] != "services"))
 							{
 							 ?>
 						

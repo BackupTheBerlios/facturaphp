@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.3, created on 2004-11-30 15:52:49
+<?php /* Smarty version 2.6.3, created on 2004-12-13 22:13:06
          compiled from corps_view.tpl */ ?>
 <td valign="top">
 
@@ -122,7 +122,7 @@ $this->_sections['indice']['last']       = ($this->_sections['indice']['iteratio
 				
 				<td>
 				<?php if ($this->_tpl_vars['acciones'][$this->_sections['indice']['index']] == 'modify'): ?>
-				<a href="index.php?module=cat_emps&method=<?php echo $this->_tpl_vars['acciones'][$this->_sections['indice']['index']]; ?>
+				<a href="index.php?module=corps&method=<?php echo $this->_tpl_vars['acciones'][$this->_sections['indice']['index']]; ?>
 &id=<?php echo $this->_tpl_vars['objeto']->id_corp; ?>
 ">
 				<img src="pics/btn<?php echo $this->_tpl_vars['acciones'][$this->_sections['indice']['index']]; ?>

@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.3, created on 2004-11-30 21:40:26
+<?php /* Smarty version 2.6.3, created on 2004-12-14 17:30:11
          compiled from emps_view.tpl */ ?>
 <td valign="top">
 <?php echo $this->_tpl_vars['cadena']; ?>
@@ -16,29 +16,20 @@ unset($_smarty_tpl_vars);
 						<img src="pics/clientesico.png" width="32" height="32">
 						 <!--<img src="pics/usuariosico.png" width="32" height="32">-->
 						</td>
-						<td width="93%" valign="middle" nowrap>Detalle de usuarios </td>
+						<td width="93%" valign="middle" nowrap>Detalle de empleados </td>
 				</tr>
 			  </table>
 				<br>
 				<TABLE width="95%" align="center">
 					<tr class="cabeceraMultiLinea">
-						<td width="50%" height="23" nowrap>Identificador de Usuario: <?php echo $this->_tpl_vars['objeto']->id_emp; ?>
+						<td width="50%" height="23" nowrap>Identificador de Empleado: <?php echo $this->_tpl_vars['objeto']->id_emp; ?>
 
 						</td>
 						<td nowrap width="50%">&nbsp;</td>
 					</tr>
 					<tr>
 						<td colspan="2">
-							<table width="90%" align="center">
-                              <tr height="15px">
-                                <td width="25%"  nowrap class="camposVistas">Login:</td>
-                                <td nowrap width="25%" class="datosVista"><?php echo $this->_tpl_vars['objeto']->login; ?>
-</td>
-								<td height="21" nowrap class="camposVistas">Contrase&ntilde;a:</td>
-                                <td nowrap class="datosVista"> <?php echo $this->_tpl_vars['objeto']->passwd; ?>
-</td>
-                                
-                              </tr>
+							<table width="90%" align="center">                             
                               
                               <tr height="15px">
                                 <td width="25%" nowrap class="camposVistas">Nombre:</td>
@@ -49,9 +40,51 @@ unset($_smarty_tpl_vars);
 </td>
                                 
                               </tr>
-                              <tr height="15px">                               
+                              <tr height="15px">
                                <td height="21" nowrap class="camposVistas">Segundo Apellido: </td>
                                 <td nowrap class="datosVista"><?php echo $this->_tpl_vars['objeto']->last_name2; ?>
+</td>
+								 <td width="25%"  nowrap class="camposVistas">Direcci&oacute;n: </td>
+                                 <td width="25%" class="datosVista"><?php echo $this->_tpl_vars['objeto']->address; ?>
+</td>
+                                
+                              </tr>
+                              <tr height="15px">
+                               <td height="21" nowrap class="camposVistas">Ciudad: </td>
+                                <td nowrap class="datosVista"><?php echo $this->_tpl_vars['objeto']->city; ?>
+</td>
+								 <td width="25%"  nowrap class="camposVistas">Provincia: </td>
+                                 <td width="25%" class="datosVista"><?php echo $this->_tpl_vars['objeto']->state; ?>
+</td>
+                                
+                              </tr>
+                              <tr height="15px">
+                               <td height="21" nowrap class="camposVistas">Pa&iacute;s: </td>
+                                <td nowrap class="datosVista"><?php echo $this->_tpl_vars['objeto']->country; ?>
+</td>
+								 <td width="25%"  nowrap class="camposVistas">C&oacute;digo Postal: </td>
+                                 <td width="25%" class="datosVista"><?php echo $this->_tpl_vars['objeto']->postal_code; ?>
+</td>                                
+                              </tr>
+                              <tr height="15px">
+                               <td height="21" nowrap class="camposVistas">Tel&eacute;fono: </td>
+                                <td nowrap class="datosVista"><?php echo $this->_tpl_vars['objeto']->phone; ?>
+</td>
+								 <td width="25%"  nowrap class="camposVistas">Tel&eacute;fono M&oacute;vil: </td>
+                                 <td width="25%" class="datosVista"><?php echo $this->_tpl_vars['objeto']->mobile_phone; ?>
+</td>                                
+                              </tr>
+                              <tr height="15px">
+                               <td height="21" nowrap class="camposVistas">Fecha nacimiento: </td>
+                                <td nowrap class="datosVista"><?php echo $this->_tpl_vars['cumplecambiado']; ?>
+</td>
+								 <td width="25%"  nowrap class="camposVistas">E-mail: </td>
+                                 <td width="25%" class="datosVista"><?php echo $this->_tpl_vars['objeto']->mail; ?>
+</td>                                
+                              </tr>
+                              <tr height="15px">                               
+                               <td height="21" nowrap class="camposVistas">Usuario: </td>
+                                <td nowrap class="datosVista"><?php echo $this->_tpl_vars['user_emp']; ?>
 </td>
 								<td><table align="center"><tr>
 				<?php unset($this->_sections['indice']);
@@ -102,7 +135,10 @@ $this->_sections['indice']['last']       = ($this->_sections['indice']['iteratio
                             </table>
 							<br>
 							<p align="center" class="cabeceraCampoFormulario">Listados Altas-Bajas</p>
-							<br>
+							
+							<?php if ($this->_tpl_vars['message'] != ""): ?><p align="center"><?php echo $this->_tpl_vars['message']; ?>
+</p><?php else: ?><br><?php endif; ?>
+							
 					   <div name="divMostrar" id="divMostrar" >
 						
 					</div>					

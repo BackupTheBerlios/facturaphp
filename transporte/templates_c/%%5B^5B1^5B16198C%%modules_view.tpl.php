@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.3, created on 2004-11-23 00:30:48
+<?php /* Smarty version 2.6.3, created on 2004-12-13 23:12:44
          compiled from modules_view.tpl */ ?>
 <td valign="top">
 <?php echo $this->_tpl_vars['cadena']; ?>
@@ -61,10 +61,7 @@ unset($_smarty_tpl_vars);
 </td>
 								 <td>
 								 	<table align="center"><tr>
-<!-- Elegir el modo a hacer-->	
-											<!--<?php echo $this->_tpl_vars['acciones']; ?>
--->
-											<!--<?php unset($this->_sections['indice']);
+				<?php unset($this->_sections['indice']);
 $this->_sections['indice']['name'] = 'indice';
 $this->_sections['indice']['loop'] = is_array($_loop=$this->_tpl_vars['acciones']) ? count($_loop) : max(0, (int)$_loop); unset($_loop);
 $this->_sections['indice']['show'] = true;
@@ -88,13 +85,23 @@ $this->_sections['indice']['index_next'] = $this->_sections['indice']['index'] +
 $this->_sections['indice']['first']      = ($this->_sections['indice']['iteration'] == 1);
 $this->_sections['indice']['last']       = ($this->_sections['indice']['iteration'] == $this->_sections['indice']['total']);
 ?>
-												<td>
-												<a href="index.php?module=modules&method=<?php echo $this->_tpl_vars['acciones'][$this->_sections['indice']['index']]; ?>
-&id=<?php echo $this->_tpl_vars['objeto']->id_group; ?>
+				
+				<td>
+				<?php if ($this->_tpl_vars['acciones'][$this->_sections['indice']['index']] == 'modify'): ?>
+				<a href="index.php?module=modules&method=<?php echo $this->_tpl_vars['acciones'][$this->_sections['indice']['index']]; ?>
+&id=<?php echo $this->_tpl_vars['objeto']->id_module; ?>
 ">
-												<img src="pics/btn<?php echo $this->_tpl_vars['acciones'][$this->_sections['indice']['index']]; ?>
+				<img src="pics/btn<?php echo $this->_tpl_vars['acciones'][$this->_sections['indice']['index']]; ?>
 .gif" border="0"></a></td>
-											<?php endfor; endif; ?>-->
+				<?php else: ?>
+				<td><a href="index.php?module=modules&method=<?php echo $this->_tpl_vars['acciones'][$this->_sections['indice']['index']]; ?>
+&id=<?php echo $this->_tpl_vars['objeto']->id_module; ?>
+">
+				<img src="pics/btn<?php echo $this->_tpl_vars['acciones'][$this->_sections['indice']['index']]; ?>
+.gif" border="0" ></a></td>
+				<?php endif; ?>
+				
+				<?php endfor; endif; ?>
 									</tr></table>
 							</td>
 								<td></td>

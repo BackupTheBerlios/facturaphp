@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.3, created on 2004-11-17 17:32:58
+<?php /* Smarty version 2.6.3, created on 2004-12-14 17:20:40
          compiled from menu_user.tpl */ ?>
 		<table width="90%" class="cajaMenu" cellpadding="3" cellspacing="0">
 			<tr>
@@ -45,6 +45,13 @@
 					$i++;
 					
 				}
+				 ?>
+				<tr class="textoMenu">
+				<td width="10px">&nbsp;</td>
+				<td>
+					- <a href="index.php?module=contact" class="enlaceMenu">Contactos
+				</a><br></td></tr>
+				<?php 
 
 				if(($_SESSION['admin'] == false)&&($_SESSION['super'] == false))
 				{
@@ -56,7 +63,7 @@
 					while($i!=$user->num_modules)
 					{
 				
-						if(($user->per_modules[$i]->per == 1)&&($user->per_modules[$i]->publico==0)&&($user->per_modules[$i]->module_name!='error'))
+						if(($user->per_modules[$i]->per == 1)&&($user->per_modules[$i]->publico==0)&&($user->per_modules[$i]->module_name!='error')&&($user->per_modules[$i]->module_name!='holydays'))
 						{
 						 ?>
 					
@@ -86,7 +93,7 @@
 					while($i!=$modules->num)
 					{
 				
-						if(($modules->modules_list[$i]['name'] != "error")&&($modules->modules_list[$i]['public']==0))
+						if(($modules->modules_list[$i]['name'] != "error")&&($modules->modules_list[$i]['name'] != "holydays")&&($modules->modules_list[$i]['public']==0))
 						{
 						 ?>
 					
