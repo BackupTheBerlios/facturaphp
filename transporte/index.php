@@ -9,6 +9,7 @@
 session_start();
 //realiza todos los includes necesarios
 require_once('inc/config.inc.php');
+require_once('inc/index.inc.php');
 global $INSTALL_DIR;
 
 require_once($INSTALL_DIR.'inc/includes.php');
@@ -100,6 +101,13 @@ if(isset($_GET['module'])||isset($_SESSION['module'])){
 	$operations_list=$module->get_module_operations_list($module_name);
 }
 
+//inicializar el objeto que corresponda
+//en el caso de queno haya modulo definido se deja la plantilla por defecto
+//en el caso de que no se haya pasado metodo se prenta el listado con la
+//busqueda del modulo
+$objeto= initialize_object($module);
+
+
 //coge las sesiones abiertas y los usuarios registrados
 $users= new users();
 $num=$users->num;
@@ -108,26 +116,34 @@ $session= new sessions();
 $num_sessions=$session->num();
 $tpl->assign('num_sessions',$num_sessions);
 //calcula la barra de navegaci—n y titulo de la pagina
+if ($objeto===null){
+	$nav_bar='Gesti&oacuten';
+	$title='Gesti&oacuten';
+	$plantilla='default.tpl';
+}
+else
+{
+	$nav_bar=$objeto->bar();
+	$title=$objeto->title();
+	//calculala plantilla a presentar
+	$tpl=$objeto->caculate_tpl($method,$tpl);
+ 
+	//elige la plantilla a presentar
+	
+}
+	//pasa las variables de la presentaci—n a la plantilla dependiente del objeto
 
-//calcula la plantilla a presentar
-
-//pasa las variables de la presentaci—n a la plantilla dependiente del objeto
-
-
-
-$tpl->assign('title',$title);
+	$tpl->assign('title',$title);
 $tpl->assign('nav_bar',$nav_bar);
 
- 
-//elige la plantilla a presentar
 //presenta las plantillas
 
 // ****************************** prueba de lectura de usuarios
 $obje=new users();
 //*********************************************** listado
-/* //listado
-$obje->listar($tpl);
- *///fin listadohttp://127.0.0.1/transporte/index.php
+ //listado
+/* $tpl=$obje->list($tpl);
+ //fin listadohttp://127.0.0.1/transporte/index.php*/
 
 /* ***************************** Edicion
 $obje->read(1);

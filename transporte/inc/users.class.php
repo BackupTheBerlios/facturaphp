@@ -396,7 +396,7 @@ class users{
 			//listado de grupos
 			if ($this->get_groups($id)==0){
 				$cadena=$tabla_modulos->tabla_vacia('group_users');
-				$variables_modulos=$tabla_gruposs->nombres_variables;
+				$variables_modulos=$tabla_grupos->nombres_variables;
 			}
 			else{					
 				$cadena=$cadena.$tabla_grupos->make_tables('group_users',$this->groups_list,array('Nombre de grupo',75),array('id_group','name_web'),10,array('delete'),true);
@@ -405,11 +405,11 @@ class users{
 			$i=0;
 			while($i<(count($variables_grupos)+count($variables_modulos))){
 				for($j=0;$j<count($variables_grupos);$j++){
-					$variable[$i]=$variables_grupos[$j];
+					$variables[$i]=$variables_grupos[$j];
 					$i++;
 				}
 				for($k=0;$k<count($variables_modulos);$k++){
-					$variable[$i]=$variables_modulos[$k];
+					$variables[$i]=$variables_modulos[$k];
 					$i++;
 				}
 			}
@@ -426,11 +426,14 @@ class users{
 		$this->get_list_users();
 		$tabla_listado = new table(true);
 		$cadena=''.$tabla_listado->make_tables('users',$this->users_list,array('Login',20,'Nombre',20,'Primer Apellido',20,'Segundo Apellido',20),array($this->ddbb_id_user,$this->ddbb_login,$this->ddbb_name,$this->ddbb_last_name,$this->ddbb_last_name2),20,array('View','modify','delete'),true);
-		$variables=$tabla_listado->nombres_variables;
+		$variables=$tabla_listado->nombres_variables;		
 		$tpl->assign('variables',$variables);
 		$tpl->assign('cadena',$cadena);
+		//echo $cadena;
 		return $tpl;
 	}
+	
+	
 	function get_groups($id){
 		//se puede acceder a los usuarios por numero de campo o por nombre de campo
 		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
@@ -464,6 +467,32 @@ class users{
 		return $this->num;
 	}
 	
+	function calculate_tpl($method, $tpl){
+		//vemos si el usuario tiene el permiso para hacer la accion requerida
+		$result=validate_per($method,$_SESSION['user'],$module);
+		if ($result){
+				switch($method){
+						case 'add':
+									break;
+						case 'list':
+									$tpl=$this->listar($_GET['id'],$tpl);
+									break;
+						case 'modify':
+									break;
+						case 'delete':
+									break;
+						case 'view':									
+									$tpl=$this->view($_GET['id'],$tpl);
+									break;
+					}
+				$tpl->assign('plantilla','users_'.$method.'.tlp');					
+			}
+		else
+			{
+			
+			}
+		return $tpl;
+	}
 	function get_modules($id){	
 		return 0;
 	}

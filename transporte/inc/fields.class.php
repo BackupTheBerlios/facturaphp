@@ -18,7 +18,7 @@ class fields{
 	
 	function add($name, $value, $type, $size, $valid){
 	
-		$this->list = array($name => array("value" => $value, "type" => $type, "size" => $size, "valid" => $valid));
+		$this->list = array ($name => array("value" => $value, "type" => $type, "size" => $size, "valid" => $valid));
 		$this->num++;
 		
 	}
@@ -35,10 +35,11 @@ class fields{
 	
 	function validate($fields_form){
 	
-		for ($i=0;i<$this->num;$i++){
+		/*for ($i=0;i<$this->num;$i++){
 		
 		
-		}		
+			
+		}*/		
 	
 	}
 }

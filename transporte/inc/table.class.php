@@ -129,7 +129,7 @@
 					    $variable=$variable.'&nbsp;</td>';
 					}
 					else{
-						$variable=$variable.'c</td>';
+						$variable=$variable.'<a href=\\"index.php?module='.$var_js.'&method=add\\"><img border=\\"0\\"src=\\"pics/btnnew.gif\\"></a></td>';
 					}
 					//NUMERO DE REGISTROS POR PÁGINA
 					$variable=$variable.'<td width=\\"40%\\" align=\\"center\\"><span class=\\"cabeceraCampoFormulario\\">Registros por p&aacute;gina:</span> <select class=\\"textoMenu\\">';					
@@ -144,7 +144,7 @@
 					$variable=$variable.'</select></td>';
 					
 					// BUSQUEDA
-					$variable=$variable.'<td width=\\"40%\\" align=\\"right\\"><form action=\\"index.php?module=&method=view&id=&search=\\"><input class=\\"textoMenu\\ type=\\"text\\" name\\"'.$var_js.'\\" id=\\"'.$var_js.'\\"> <input type=\\"submit\\" class=\\"botones\\" value=\\"Buscar\\"></form></td>';
+					$variable=$variable.'<td width=\\"40%\\" align=\\"right\\"><form action=\\"index.php?module=&method=view&id=&search=\\"><img src=\\"pics/buscar.gif\\"><input class=\\"textoMenu\\ type=\\"text\\" name\\"'.$var_js.'\\" id=\\"'.$var_js.'\\"> <input type=\\"submit\\" class=\\"botones\\" value=\\"Buscar\\"></form></td>';
 					
 					// FIN
 					$variable=$variable.'</tr></table>';
@@ -197,14 +197,13 @@
 				$curr_pag++;
 			} // while			
 			$cadena=$cadena."\n\r".'</script>';	
-			echo $cadena;
 			// devolvemos el resultado.<
 			return $cadena;				
 		}
 		
 		function tabla_vacia($var_js){
 			$cadena='<script>'."\n\r";
-			$cadena=$cadena.$var_js.'_1=\"<table align=\\"center\\"><tr align=\\"center\\"><td><a href=\\"index.php?module='.$var_js.'method=add\\"><img border=\\"0\\"src=\\"pics/btnnew.gif\\"></a></td></tr><tr align=\\"center\\"><td><h3>No hay registros</h3></td></tr></table>\";';
+			$cadena=$cadena.$var_js.'_1="<table align=\\"center\\"><tr align=\\"center\\"><td><a href=\\"index.php?module='.$var_js.'method=add\\"><img border=\\"0\\"src=\\"pics/btnnew.gif\\"></a></td></tr><tr align=\\"center\\"><td><h3>No hay registros</h3></td></tr></table>";';
 			$cadena=$cadena."\n\r".'</script>';
 			$this->nombres_variables=array(0=>$var_js.'_1');
 			return $cadena;

@@ -17,7 +17,7 @@ class log_methods{
 	var $url;
 	var $mail;
 	var $city;
-	var $state
+	var $state;
 	var $postal_code;
 	var $country;
 	var $phone;
@@ -324,7 +324,8 @@ class log_methods{
 		
 	}
 	
-	function modify(){
+	function modify()
+	{
 	
 		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
 		//crea una nueva conexi—n con una bbdd (mysql)
@@ -378,9 +379,9 @@ class log_methods{
 			$this->db->close();
 			return 0;
 		}
-
 	
 	}
+	
 	  
 }
 ?>

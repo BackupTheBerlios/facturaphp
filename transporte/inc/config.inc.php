@@ -6,7 +6,7 @@
  * @version $Id$
  * @copyright 2003 
  **/
- 	/*
+ 	
 	define('INSTALL_DIRECTORY', '/Users/david/Sites/transporte/');
 	define('INSTALL_IS_WINDOWS',TRUE);
 	define('SMARTY_DIRECTORY', INSTALL_DIRECTORY . 'inc/smarty');
@@ -18,7 +18,7 @@
 	define('DDBB_PREFIX','');
 	define('DDBB_TYPE','mysql');
 	define('DDBB_PORT','3306');
-	*/
+	
 
 	//**************************************************************
 	//Configuración De Dani (Windows)
@@ -33,19 +33,19 @@
 	$INSTALL_DIR="D:\\Archivos de programa\\EasyPHP1-7\\www\\transporte\\";*/
 	//**************************************************************
 	//Configuración De Dani (Linux)
-	
+	/*
 	$DDBB_NAME="transporte";
 	$DDBB_USER="root";
-	$DDBB_PASS="";
+	$DDBB_PASS="sta3war2";
 	$IP_DDBB="localhost";
 	$TABLE_PREFIX="";
 	$DDBB_TYPE="mysql";
 	$DDBB_PORT="3306";
 	$INSTALL_DIR="/var/www/transporte/";
-	
+	*/
 	// *************************************************
 	//Configuracion de David
-/*
+
 	$DDBB_NAME="transporte";
 	$DDBB_USER="root";
 	$DDBB_PASS="sta3war2";
@@ -55,7 +55,7 @@
 	$DDBB_PORT="3306";
 	$INSTALL_DIR="/Users/david/Sites/transporte/";
 	
-	*/
+	
 	// *************************************************
 	//Configuracion de LUpus
 /*

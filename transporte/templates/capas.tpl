@@ -6,7 +6,7 @@
 	   var botones = document.getElementsByName('boton');
    		for (i=0; i < botones.length; i++) 
       		botones[i].src = 'pics/pestagna-' + botones[i].id + '.gif';
-		obj.src = 'pics/pestagna-' + cadena + 'sobre.gif';
+		obj.src = 'pics/pestagna-' + obj.id + 'sobre.gif';
 	}
 	function Ocultar(obj,cad){
 		if (obj!=''){
