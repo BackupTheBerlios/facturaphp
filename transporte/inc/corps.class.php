@@ -80,20 +80,21 @@ class corps{
 		$this->fields_list= new fields();
 		$this->fields_list->add($this->ddbb_id_corp, $this->id_corp, 'int', 11,0);
 		$this->fields_list->add($this->ddbb_name, $this->name, 'varchar', 20,0);
-		$this->fields_list->add($this->ddbb_full_name, $this->full_name, 'varchar', 20,0);
-		$this->fields_list->add($this->ddbb_cif_nif, $this->cif_nif, 'cif_nif', 11,0);		
-		$this->fields_list->add($this->ddbb_address, $this->address, 'varchar', 100,0);		
-		$this->fields_list->add($this->ddbb_fiscal_address, $this->fiscal_address, 'tinyint', 3,0);				
-		$this->fields_list->add($this->ddbb_url, $this->url, 'int', 11,0);
-		$this->fields_list->add($this->ddbb_mail, $this->mail, 'varchar', 20,0);
-		$this->fields_list->add($this->ddbb_city, $this->city, 'varchar', 20,0);
-		$this->fields_list->add($this->ddbb_state, $this->state, 'cif_nif', 11,0);		
-		$this->fields_list->add($this->ddbb_postal_code, $this->postal_code, 'varchar', 100,0);		
-		$this->fields_list->add($this->ddbb_country, $this->country, 'tinyint', 3,0);				
-		$this->fields_list->add($this->ddbb_phone, $this->phone, 'cif_nif', 11,0);		
-		$this->fields_list->add($this->ddbb_mobile_phone, $this->mobile_phone, 'varchar', 100,0);		
-		$this->fields_list->add($this->ddbb_fax, $this->fax, 'tinyint', 3,0);				
-		$this->fields_list->add($this->ddbb_notes, $this->notes, 'tinyint', 3,0);						
+		$this->fields_list->add($this->ddbb_full_name, $this->full_name, 'varchar', 50,0);
+		$this->fields_list->add($this->ddbb_cif_nif, $this->cif_nif, 'cif_nif', 10,0);		
+		$this->fields_list->add($this->ddbb_address, $this->address, 'varchar', 255,0);	
+		$this->fields_list->add($this->ddbb_postal_address, $this->postal_address, 'varchar', 255,0);		
+		$this->fields_list->add($this->ddbb_fiscal_address, $this->fiscal_address, 'varchar', 255,0);				
+		$this->fields_list->add($this->ddbb_url, $this->url, 'varchar', 255,0);
+		$this->fields_list->add($this->ddbb_mail, $this->mail, 'varchar', 100,0);
+		$this->fields_list->add($this->ddbb_city, $this->city, 'varchar', 50,0);
+		$this->fields_list->add($this->ddbb_state, $this->state, 'varchar', 50,0);		
+		$this->fields_list->add($this->ddbb_postal_code, $this->postal_code, 'varchar', 10,0);		
+		$this->fields_list->add($this->ddbb_country, $this->country, 'varchar', 50,0);				
+		$this->fields_list->add($this->ddbb_phone, $this->phone, 'varchar', 15,0);		
+		$this->fields_list->add($this->ddbb_mobile_phone, $this->mobile_phone, 'varchar', 15,0);		
+		$this->fields_list->add($this->ddbb_fax, $this->fax, 'varchar', 15,0);				
+		$this->fields_list->add($this->ddbb_notes, $this->notes, 'varchar', 255,0);						
 		//print_r($this);
 		//se puede acceder a los usuarios por numero de campo o por nombre de campo
 		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
@@ -167,32 +168,6 @@ class corps{
 		return $this->num;	
 	}
 	
-	function get_id($name)
-	{
-		//se puede acceder a los usuarios por numero de campo o por nombre de campo
-		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
-		//crea una nueva conexin con una bbdd (mysql)
-		$this->db = NewADOConnection($this->db_type);
-		//le dice que no salgan los errores de conexin de la ddbb por pantalla
-		$this->db->debug=false;
-		//realiza una conexin permanente con la bbdd
-		$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
-		//mete la consulta
-		//$this->sql="SELECT 'id_user' FROM ".$this->table_prefix.$this->table_name." WHERE ".$this->ddbb_name."=".$name_user;
-		$this->sql="SELECT `id_corp` FROM `corps` WHERE `name` = \"".$name."\"";
-		//la ejecuta y guarda los resultados
-		$this->result = $this->db->Execute($this->sql);
-		//si falla 
-		if ($this->result === false){
-			$this->error=1;
-			$this->db->close();
-
-			return 0;
-		}  
-		
-		return $this->result->fields['id_corp'];
-	}
-	
 	function get_add_form(){
 	
 		
@@ -245,13 +220,13 @@ class corps{
 			$this->cif_nif=$this->result->fields[$this->ddbb_cif_nif];
 			$this->address=$this->result->fields[$this->ddbb_address];
 			$this->fiscal_address=$this->result->fields[$this->ddbb_fiscal_address];
-			$this->postal_address=$this->result->fields[$this->postal_address];
+			$this->postal_address=$this->result->fields[$this->ddbb_postal_address];
 			$this->url=$this->result->fields[$this->ddbb_url];
 			$this->mail=$this->result->fields[$this->ddbb_mail];
 			$this->city=$this->result->fields[$this->ddbb_city];
 			$this->state=$this->result->fields[$this->ddbb_state];
 			$this->postal_code=$this->result->fields[$this->ddbb_postal_code];
-			$this->country=$this->result->fields[$this->country];
+			$this->country=$this->result->fields[$this->ddbb_country];
 			$this->phone=$this->result->fields[$this->ddbb_phone];
 			$this->mobile_phone=$this->result->fields[$this->ddbb_mobile_phone];
 			$this->fax=$this->result->fields[$this->ddbb_fax];
@@ -460,6 +435,63 @@ class corps{
 			return 0;
 		}
 	
+	}
+	
+	function view ($id,$tpl){
+	/*
+		Cosas que faltan por hacer:
+			De forma general, mirar los permisos del usuario que vaya a acceder aqui, para saber si tiene permisos de borrar editar ver etc...
+			Averiguar como pasar el numero de registros, si va a ser a grupos a grupos, si va a ser a modulos, a modulos
+			Order By (y mantener la búsqueda en el caso de que hubiera hecha una y averiguar la "pestaña" a la que hace referencia)
+			Busquedas
+	*/
+			$cadena='';			
+			// Leemos la empresa y se lo pasamos a la plantilla
+			$this->read($id);
+			$tpl->assign('objeto',$this);
+			
+			/*
+			//listado de modulos
+			$tabla_modulos = new table(false);
+
+			if ($this->get_modules($id)==0){
+
+				$cadena=$cadena.$tabla_modulos->tabla_vacia('modules');
+				$variables_modulos=$tabla_modulos->nombres_variables;
+			}
+			
+			
+			
+			//$tpl->assign('list_modules', $this->list_modules_availables($id))
+			//listado de permisos por modulos
+			$tabla_grupos = new table(false);
+			//listado de grupos
+			if ($this->get_groups($id)==0){
+				$cadena=$cadena.$tabla_grupos->tabla_vacia('group_users');
+				$variables_grupos=$tabla_grupos->nombres_variables;
+			}
+			else{					
+				$cadena=$cadena.$tabla_grupos->make_tables('group_users',$this->groups_list,array('Nombre de grupo',75),array('id_group','name_web'),10,array('delete'),true);
+				$variables_grupos=$tabla_grupos->nombres_variables;
+			}
+			$i=0;
+			while($i<(count($variables_grupos)+count($variables_modulos))){
+				for($j=0;$j<count($variables_grupos);$j++){
+					$variables[$i]=$variables_grupos[$j];
+					$i++;
+				}
+				for($k=0;$k<count($variables_modulos);$k++){
+					$variables[$i]=$variables_modulos[$k];
+					$i++;
+				}
+			}
+			
+			$tpl->assign('variables',$variables);
+			$tpl->assign('cadena',$cadena);
+			*/
+			//			
+			return $tpl;
+				
 	}
 	
 	function bar($method,$corp){		

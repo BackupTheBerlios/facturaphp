@@ -12,7 +12,8 @@ require_once ($ADODB_DIR."adodb.inc.php");
 class user_corps{
 				
 //Internas	
-var $num_corps;
+var $emp;
+
 
 
 
@@ -29,14 +30,26 @@ var $num_corps;
 		switch($method)
 		{
 				case 'select':	
+				
+								$my_corp = new corps();
+								$tpl = $my_corp->view($_SESSION['ident_corp'],$tpl);
 								$tpl->assign('plantilla','corps_view.tpl');	
 								break;
 				default:
 								$method='list';
+								$user = new users();
+								$id_user = $user->get_id($_SESSION['user']);
+								$this->emp = new emps();
+								$num_corps = $this->emp->get_user_corps($id_user);
 								$tpl=$this->listar($tpl);
 
-								if($this->num_corps == 1)
+								if($num_corps == 1)
+								{
+									$_SESSION['ident_corp'] = $this->emp->corps_list[0]['id_corp'];
+									$my_corp = new corps();
+									$tpl = $my_corp->view($this->emp->corps_list[0]['id_corp'],$tpl);
 									$tpl->assign('plantilla','corps_view.tpl');	
+								}
 								else
 									$tpl->assign('plantilla','user_corps_'.$method.'.tpl');	
 								break;
@@ -49,13 +62,8 @@ var $num_corps;
 	
 	function listar($tpl)
 	{
-		$user = new users();
-		$id_user = $user->get_id($_SESSION['user']);
-		$emp = new emps();
-		$this->num_corps = $emp->get_user_corps($id_user);
-
 		$tabla_listado = new table(true);
-		$cadena=''.$tabla_listado->make_tables('user_corps',$emp->corps_list,array('Nombre',50),array('id_corp','name'),10,array('select'),false);
+		$cadena=''.$tabla_listado->make_tables('user_corps',$this->emp->corps_list,array('Nombre',50),array('id_corp','name'),10,array('select'),false);
 		$variables=$tabla_listado->nombres_variables;		
 		$tpl->assign('variables',$variables);
 		$tpl->assign('cadena',$cadena);		
@@ -65,6 +73,7 @@ var $num_corps;
 	function bar($method,$corp){		
 		if ($corp != ""){
 			$corp='<a href="index.php">'.$corp.' ::';
+			$this->corp_name = $corp;
 		}
 		$nav_bar = '<a href="index.php">Zona privada</a> :: '.$corp.' <a href="index.php?module=user_corps">Usuario empresas</a>';
 		$nav_bar=$nav_bar;

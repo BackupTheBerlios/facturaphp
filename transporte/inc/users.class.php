@@ -573,23 +573,7 @@ class users{
 					$i++;
 				}
 			}
-			//****
-			$num_users = $this->get_list_users();
-				
-			for($i=0;$i<$num_users;$i++)
-			{
-				//print "USUARIO ".$this->users_list[$i]['id_user']."::::::::::::::";
-				//Una vez sabído el identificador de usuario, se puede pedir que realice su lista de permisos
-//				$this->users_per_module[$i] = new permissions_modules();
-	//			$this->users_per_module[$i]->validate_per_user($this->users_list[$i]['id_user']);
-				$this->validate_per_user($this->users_list[$i]['id_user']);
-				//validate_per_user($this->users_list[$i]['id_user']);
-				//$cosa[$i]=$i;
-			}
-			//print "EL permiso para usuario 1 en modulo usuarios metodo annadir es ".$this->users_per_module[0]->per_module_methods[0]->per_methods[0]->per;
-			
-			$tpl->assign('usuarios',$this);
-			//****			
+		
 			$tpl->assign('variables',$variables);
 			$tpl->assign('cadena',$cadena);
 			//			

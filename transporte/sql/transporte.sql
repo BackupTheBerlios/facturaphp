@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 -- 
 -- Servidor: localhost
--- Tiempo de generación: 09-11-2004 a las 13:40:50
+-- Tiempo de generación: 11-11-2004 a las 13:14:43
 -- Versión del servidor: 4.0.20
 -- Versión de PHP: 4.3.8-5
 -- 
@@ -63,7 +63,7 @@ CREATE TABLE IF NOT EXISTS `corps` (
 -- 
 
 INSERT INTO `corps` VALUES (1, 'Resuival', 'Resuival', '', '', '', '', '', '', '', '', '', '', '', '', '', '');
-INSERT INTO `corps` VALUES (2, 'Copiar-pegar', 'Copiar-Pegar Salamanca', '', '', '', '', '', '', '', '', '', '', '', '', '', '');
+INSERT INTO `corps` VALUES (2, 'Copiar-pegar', 'Copiar-Pegar Salamanca', '70881082', 'Alfonso IX', 'Alfonso IX', 'Alfonso IX', 'www.copiar-pegar.com', 'david@copiar-pegar.com', 'Salamanca', 'CyL', '37008', 'España', '923268475', '923268477', '665053440', 'Empresa de desarrollo basado en el software libre. Impulsadora de conocimientos mediante la enseñanza.');
 INSERT INTO `corps` VALUES (3, 'Drug and Drop', 'Drug and Drop', '', '', '', '', '', '', '', '', '', '', '', '', '', '');
 
 -- --------------------------------------------------------
@@ -92,7 +92,7 @@ CREATE TABLE IF NOT EXISTS `emps` (
   `country` varchar(50) NOT NULL default '',
   PRIMARY KEY  (`id_emp`),
   KEY `id_corp` (`id_corp`,`id_user`)
-) TYPE=MyISAM AUTO_INCREMENT=5 ;
+) TYPE=MyISAM AUTO_INCREMENT=6 ;
 
 -- 
 -- Volcar la base de datos para la tabla `emps`
@@ -102,6 +102,7 @@ INSERT INTO `emps` VALUES (1, 1, 3, 'Elena', '', '', '0000-00-00', '', '', '', '
 INSERT INTO `emps` VALUES (2, 1, 1, 'David', 'Vaquero', 'Santiago', '2004-10-25', '', '', '', '', '', '', '', '', '');
 INSERT INTO `emps` VALUES (3, 2, 1, 'David', 'Vaquero', 'Santiago', '0000-00-00', '', '', '', '', '', '', '', '', '');
 INSERT INTO `emps` VALUES (4, 3, 1, 'David', 'Vaquero', 'Santiago', '0000-00-00', '', '', '', '', '', '', '', '', '');
+INSERT INTO `emps` VALUES (5, 3, 2, 'Daniel', 'González', 'Zaballos', '0000-00-00', '', '', '', '', '', '', '', '', '');
 
 -- --------------------------------------------------------
 
@@ -403,7 +404,7 @@ CREATE TABLE IF NOT EXISTS `per_user_modules` (
   `id_module` int(10) unsigned NOT NULL default '0',
   `per` tinyint(3) unsigned NOT NULL default '0',
   PRIMARY KEY  (`id_per_user_module`)
-) TYPE=MyISAM AUTO_INCREMENT=74 ;
+) TYPE=MyISAM AUTO_INCREMENT=75 ;
 
 -- 
 -- Volcar la base de datos para la tabla `per_user_modules`
@@ -417,6 +418,7 @@ INSERT INTO `per_user_modules` VALUES (70, 1, 3, 1);
 INSERT INTO `per_user_modules` VALUES (71, 1, 4, 1);
 INSERT INTO `per_user_modules` VALUES (72, 1, 5, 1);
 INSERT INTO `per_user_modules` VALUES (73, 1, 6, 1);
+INSERT INTO `per_user_modules` VALUES (74, 3, 7, 1);
 
 -- --------------------------------------------------------
 

@@ -211,6 +211,11 @@ if ($objeto===null)
 }
 else
 {	
+	///*************************************
+	
+	//En este orden
+	$tpl=$objeto->calculate_tpl($method,$tpl);
+	
 	//Se obtiene el nombre de la empresa en la que se está trabajando
 	if(!isset ($_SESSION['ident_corp']))
 		$corp = "";
@@ -220,12 +225,7 @@ else
 		$my_corp->read($_SESSION['ident_corp']);
 		$corp = $my_corp->name;
 	}	
-
-		
-	///*************************************
 	
-	//En este orden
-	$tpl=$objeto->calculate_tpl($method,$tpl);
 	$nav_bar=$objeto->bar($method,$corp);
 	$title=$objeto->title($method,$corp);
 	
@@ -238,24 +238,6 @@ else
 	$tpl->assign('title',$title);
 	$tpl->assign('nav_bar',$nav_bar);
 	
-//presenta las plantillas
-
-// ****************************** prueba de lectura de usuarios
-//$obje=new users();
-//*********************************************** listado
- //listado
-/* $tpl=$obje->listar($tpl);
- //fin listadohttp://127.0.0.1/transporte/index.php*/
-
-/* ***************************** Edicion
-$obje->read(1);
-$tpl->assign('objeto',$obje);
-*/ //***************** fin Edicion
-
-//********************************************** Vista
-//$tpl=$obje->view(1,$tpl);
-
-// ****************************** fin Vista*/
 
 $tpl->display($index_template);
 //print_r($post_user);

@@ -21,12 +21,12 @@
 					</tr>
 					<tr>
 						<td colspan="2">
-							<table width="90%" align="center">
+							<table width="100%" align="center">
                               <tr height="15px">
                                 <td width="25%"  nowrap class="camposVistas">Nombre:</td>
                                 <td nowrap width="25%" class="datosVista">{$objeto->name}</td>
 								<td height="21" nowrap class="camposVistas">Nombre Completo:</td>
-                                <td nowrap class="datosVista">{$objeto->name}</td>
+                                <td nowrap class="datosVista">{$objeto->full_name}</td>
                                 
                               </tr>
                               

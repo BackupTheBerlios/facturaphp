@@ -307,13 +307,14 @@ class emps{
 
 			return 0;
 		}  
-		$this->corps_list[0][$this->ddbb_id_user] = $id_user;
+		//$this->corps_list[0][$this->ddbb_id_user] = $id_user;
 		
 		//Con el id_corp se podrá obtener el nombre de cada empresa en la trabaja id_user
 		$this->num_corps=0;
 		while (!$this->result->EOF) 
 		{
 			$id_corp = $this->result->fields['id_corp'];
+
 			$this->sql="SELECT `name` FROM `corps` WHERE `id_corp` =".$id_corp;
 			//la ejecuta y guarda los resultados
 			$this->result1 = $this->db->Execute($this->sql);
@@ -325,15 +326,9 @@ class emps{
 	
 				return 0;
 			}  
-		/*			
-			$this->corps_list[$this->num_corps] = new user_corps();
-			$this->corps_list[$this->num_corps]->name_corp = $this->result1->fields['name'];
-			$this->corps_list[$this->num_corps]->id_corp = $id_corp;
-			*/
-			
+		
 			$this->corps_list[$this->num_corps][$this->ddbb_id_corp] = $id_corp;
 			$this->corps_list[$this->num_corps]['name'] = $this->result1->fields['name'];
-	
 
 			//nos movemos hasta el siguiente registro de resultado de la consulta
 			$this->result->MoveNext();
