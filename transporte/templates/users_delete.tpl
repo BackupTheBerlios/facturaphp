@@ -10,15 +10,14 @@
 						  Borrar usuarios </td>
 				</tr>
 	</table>
-			  <form action="index.php?module=delete&id={$objeto->id_user}">
+			  <form method="post" action="index.php?module=users&method=delete&id={$objeto->id_user}">			  
 			  
-			  <br>
 			  <br>
 			  <p>Se va a proceder al borrado del usuario {$objeto->login}</p>
 			  <p>Se borrar&aacute;n las relaciones con los grupos a los que pertenezca al igual que los permisos a modulos y metodos en los que esté relacionado</p>
-			  <br>
-			  {$mensaje}
-			  <table align="center"><tr><td align="center"><input type="submit" name="submit_add" id =" name="submit_delete" "value="Borrar" class="botones"></td></tr></table>
+			  {$message}
+  			  <br>
+			  <table align="center"><tr><td align="center"><input type="submit" name="submit_delete" value="Borrar" class="botones"></td></tr></table>
 			  </form>
 			 
 	  </td>
