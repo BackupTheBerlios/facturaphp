@@ -626,7 +626,7 @@ class drivers{
 			else
 			{
 				$usuario = new users();
-				$usuario->read($empleado->id_user);
+				$usuario->read_fields($empleado->id_user);
 				$tpl->assign("emp_driver",$usuario->login);
 			}
 			

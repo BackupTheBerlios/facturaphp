@@ -19,8 +19,7 @@ class menu{
   	
 	function table_modules($id_padre){
 		//Esta funcion hara el listado de los modulos jerarquizados
-		//Buscamos lo modulos jerarquizadas comenzando por los modulos padre.
-		
+		//Buscamos lo modulos jerarquizadas comenzando por los modulos padre.	
 		$array_mod=$this->get_modules($id_padre,true);
 	
 		//Construimos la tabla con los arrays
@@ -28,6 +27,7 @@ class menu{
 			$table=$this->build_table($id_padre, $array_mod);
 		else
 			$table='<p class="mensaje">No hay modulos</p>';
+			
 		//$table es una cadena
 		return $table;
 	}
@@ -138,6 +138,7 @@ class menu{
 		//mete la consulta
 		$uno = 1;
 		$this->sql='SELECT * FROM `modules` WHERE `parent` = \''.$id.'\' AND `active` = '.$uno.' ORDER BY `order`';
+
 		//la ejecuta y guarda los resultados
 		$this->result = $this->db->Execute($this->sql);
 		if ($this->result === false)
@@ -147,8 +148,6 @@ class menu{
 
 			return 0;
 		}
-		
-		
 		
 		if(($id == 0)||($id == -2)||($_SESSION['super'])||(($_SESSION['admin'])&&($this->result->fields['name'] != 'modules')))
 		{
@@ -183,10 +182,11 @@ class menu{
 			}
 			$i=0;
 			$j=0;
+
 			$user= new users(); 
-			$id_user = $user->get_id($_SESSION['user']);
+			$id_user = $_SESSION['ident_user'];
 			$permission = new permissions_modules();
-			
+		
 			while ($i!=$this->num) 
 			{
 				if($permission->validate_per_module_menus($id_user,$temp[$i]['id_module']) == 1)

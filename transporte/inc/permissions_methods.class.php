@@ -190,7 +190,7 @@ class permissions_methods{
 		//print "USUARIO -> ".$id_user.".....";
 		//$this->inicializar_base_datos();
 	
-		$users_list = new users();
+		//$users_list = new users();
 			
 		$num = 0;		
 		$per = false;

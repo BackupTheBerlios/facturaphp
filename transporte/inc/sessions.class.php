@@ -112,9 +112,8 @@ class sessions{
 			$this->sessions_list[$this->num][$this->ddbb_id_user]=$this->result->fields[$this->ddbb_id_user];
 			$this->sessions_list[$this->num][$this->ddbb_up]=$this->result->fields[$this->ddbb_up];
 			$this->sessions_list[$this->num][$this->ddbb_down]=$this->result->fields[$this->ddbb_down];		
-
-			$usuario->read($this->sessions_list[$this->num][$this->ddbb_id_user]);
-			$this->sessions_list[$this->num][$this->ddbb_name] = $usuario->name." ".$usuario->last_name." ".$usuario->last_name2;
+			$usuario->read_fields($this->sessions_list[$this->num][$this->ddbb_id_user]);
+			$this->sessions_list[$this->num][$this->ddbb_name] = $usuario->full_name;
 
 			//Modificación del formato de las fechas para la presentación
 	    	list($anno,$mes,$dia,$hora,$minutos,$segundos)=sscanf($this->sessions_list[$this->num][$this->ddbb_up],"%d-%d-%d %d:%d:%d");
@@ -403,7 +402,7 @@ class sessions{
 				$j++;
 			} 
 		}
-		
+
 		if ($num==0)
 		{
 			$cadena=''.$cadena.$tabla_listado->tabla_vacia('sessions', false);
@@ -452,21 +451,22 @@ class sessions{
 			$this->db->close();
 			return 0;
 		}  
-			$usuario = new users();
+	
+		$usuario = new users();
+
 		$this->num=0;
 		$this->conectados_list = null;
 		while (!$this->result->EOF)
 		{
+			
 			//cogemos los datos del usuario
 			$this->conectados_list[$this->num][$this->ddbb_id_session]=$this->result->fields[$this->ddbb_id_session];
 			$this->conectados_list[$this->num][$this->ddbb_id_session_php]=$this->result->fields[$this->ddbb_id_session_php];
 			$this->conectados_list[$this->num][$this->ddbb_id_user]=$this->result->fields[$this->ddbb_id_user];
 			$this->conectados_list[$this->num][$this->ddbb_up]=$this->result->fields[$this->ddbb_up];
 				
-			
-		
-			$usuario->read($this->conectados_list[$this->num][$this->ddbb_id_user]);
-			$this->conectados_list[$this->num][$this->ddbb_name] = $usuario->name." ".$usuario->last_name." ".$usuario->last_name2;
+			$usuario->read_fields($this->conectados_list[$this->num][$this->ddbb_id_user]);			
+			$this->conectados_list[$this->num][$this->ddbb_name] = $usuario->full_name;
 
 			//Modificación del formato de las fechas para la presentación
 			list($anno,$mes,$dia,$hora,$minutos,$segundos)=sscanf($this->conectados_list[$this->num][$this->ddbb_up],"%d-%d-%d %d:%d:%d");
@@ -488,6 +488,7 @@ class sessions{
 			$this->num++;
 		}
 		$this->db->close();
+
 		return $this->num;
 	}
 /*	
@@ -520,7 +521,8 @@ class sessions{
 	{
 		$this->id_session_php = session_id();
 		$user = new users();
-		$id_user = $user->get_id($_SESSION['user']);
+		print "identificador ".$_SESSION['ident_user'];
+		$id_user = $_SESSION['ident_user'];
 		$this->id_user = $id_user;
 		$this->up = gmdate("Y-m-d H:i:s");	
 	

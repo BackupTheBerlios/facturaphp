@@ -60,7 +60,7 @@ class permissions{
 		else
 		{
 			$user = new users();
-			$id_user = $user->get_id($_SESSION['user']);
+			$id_user = $_SESSION['ident_user'];
 			$user->validate_per_user($id_user);
 		
 			$this->permissions_module = array();

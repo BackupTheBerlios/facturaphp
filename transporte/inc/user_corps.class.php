@@ -38,8 +38,8 @@ var $emp;
 				default:
 								$method='list';
 								$user = new users();
-								$id_user = $user->get_id($_SESSION['user']);
-
+								$id_user = $_SESSION['ident_user'];
+								
 								$this->emp = new emps();
 								$num_corps = $this->emp->get_user_corps($id_user);
 								$tpl=$this->listar($tpl);
