@@ -23,8 +23,29 @@ $nav_bar="::Gesti&oacute;n::";
 
 //inicializa una plantilla
 $tpl= new template;
+//Comprobar si la sesión debe caducar
+if(time() >= $_SESSION['max_page_time'])
+{
+	//Desconectar al usuario porque caducó su sesión
+	$session=new sessions();
+	$session->unregister();
+	unset($_COOKIE[session_name()]);
+	session_unset();
+	session_destroy();
+	session_start();
+		
+	//Se recalcula los módulos públicos para el menú
+	$menu = new menu();
+	$_SESSION['public_modules'] = $menu->table_modules(0);
+		
+	$tpl->assign('user_name','');
+	$tpl->assign('corp_id',0);
+	$tpl->assign('error',0);
+	$tpl->assign('login',1);
+	$index_template='index.tpl';
+	$_SESSION['expire'] = 1;	
+} 
 
-print " CALCULADA LA TEMPLATE ";
 
 /******************************************* Identificación de usuario ***************************************************/
 
