@@ -119,6 +119,7 @@ if(isset($_GET['module']))
 {
 	$module=$_GET['module'];
 	$_SESSION['module']=$module;
+
 	switch ($module)
 	{
 		case ('users'): 
@@ -137,7 +138,7 @@ $menu = new menu();
 
 $tpl->assign('modules_list',$menu->table_modules(-2));
 $tpl->assign('public_modules',$menu->table_modules(0));
-
+$module=new modules();
 //coge las operaciones de ese modulo disponibles
 if(isset($_GET['module'])||isset($_SESSION['module']))
 {

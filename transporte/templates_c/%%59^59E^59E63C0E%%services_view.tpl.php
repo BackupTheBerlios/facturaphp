@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.3, created on 2005-02-03 19:36:03
+<?php /* Smarty version 2.6.3, created on 2005-02-03 20:47:52
          compiled from services_view.tpl */ ?>
 <td valign="top">
 
@@ -54,13 +54,13 @@ $this->_sections['indice']['last']       = ($this->_sections['indice']['iteratio
 ?>			
 									<?php if ($this->_tpl_vars['acciones'][$this->_sections['indice']['index']] == 'modify'): ?>
 										<a href="index.php?module=services&method=<?php echo $this->_tpl_vars['acciones'][$this->_sections['indice']['index']]; ?>
-&id=<?php echo $this->_tpl_vars['objeto']->id_cat_serv; ?>
+&id=<?php echo $this->_tpl_vars['objeto']->id_service; ?>
 ">
 											<img src="pics/btn<?php echo $this->_tpl_vars['acciones'][$this->_sections['indice']['index']]; ?>
 .gif" border="0"></a>
 									<?php else: ?>
 										<a href="index.php?module=services&method=<?php echo $this->_tpl_vars['acciones'][$this->_sections['indice']['index']]; ?>
-&id=<?php echo $this->_tpl_vars['objeto']->id_cat_serv; ?>
+&id=<?php echo $this->_tpl_vars['objeto']->id_service; ?>
 ">
 											<img src="pics/btn<?php echo $this->_tpl_vars['acciones'][$this->_sections['indice']['index']]; ?>
 .gif" border="0"></a>

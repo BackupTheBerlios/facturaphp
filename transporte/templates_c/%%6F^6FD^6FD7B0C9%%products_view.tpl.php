@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.3, created on 2005-02-02 17:37:07
+<?php /* Smarty version 2.6.3, created on 2005-02-03 20:51:21
          compiled from products_view.tpl */ ?>
 <td valign="top">
 
@@ -54,13 +54,13 @@ $this->_sections['indice']['last']       = ($this->_sections['indice']['iteratio
 ?>			
 									<?php if ($this->_tpl_vars['acciones'][$this->_sections['indice']['index']] == 'modify'): ?>
 										<a href="index.php?module=products&method=<?php echo $this->_tpl_vars['acciones'][$this->_sections['indice']['index']]; ?>
-&id=<?php echo $this->_tpl_vars['objeto']->id_cat_prod; ?>
+&id=<?php echo $this->_tpl_vars['objeto']->id_product; ?>
 ">
 											<img src="pics/btn<?php echo $this->_tpl_vars['acciones'][$this->_sections['indice']['index']]; ?>
 .gif" border="0"></a>
 									<?php else: ?>
 										<a href="index.php?module=products&method=<?php echo $this->_tpl_vars['acciones'][$this->_sections['indice']['index']]; ?>
-&id=<?php echo $this->_tpl_vars['objeto']->id_cat_prod; ?>
+&id=<?php echo $this->_tpl_vars['objeto']->id_product; ?>
 ">
 											<img src="pics/btn<?php echo $this->_tpl_vars['acciones'][$this->_sections['indice']['index']]; ?>
 .gif" border="0"></a>

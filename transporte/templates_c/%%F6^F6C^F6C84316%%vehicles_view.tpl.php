@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.3, created on 2005-01-19 15:32:22
+<?php /* Smarty version 2.6.3, created on 2005-02-04 12:50:44
          compiled from vehicles_view.tpl */ ?>
 <td valign="top">
 
@@ -90,14 +90,56 @@ $this->_sections['indice']['last']       = ($this->_sections['indice']['iteratio
 							</tr>	
 						 	</table>
 					   	</td>
+					   	
 					   <td>
                                <a href="index.php?module=vehicles&method=show&id=<?php echo $this->_tpl_vars['objeto']->id_vehicle; ?>
 "><img src="<?php echo $this->_tpl_vars['objeto']->path_photo; ?>
 " height="120"></a>
 					   </td>
+					</tr>
 					</tr>	
+					
+							
+					
+					<a name="listado">
+					  <table align="center" width="400" cellspacing="0" cellpadding="0">
+					  <tr>
+					  <br>
+							<p align="center" class="cabeceraCampoFormulario">Listados de conductores y peones</p>
+					  <br>
+					  </tr>
+					  <tr>
+					  	<td width="50%" align="center">
+					<img src="pics/pestagna-modulessobre.gif" width="71" height="23"  name="boton" id="drivers" onClick="Ocultar(this,'drivers_1')"> 					</td>
+					  	<td width="50%"  align="center">
+					<img src="pics/pestagna-group_users.gif" width="71" height="23" id="laborers" name="boton" onClick="Ocultar(this,'laborers_1')">
+						</td>
+					  	
+					  </tr>
+					  	<td align="center" colspan="2"><img src="pics/barra.gif"></td>
+					  </table>
+
+					  <br>
+					 
+					  <div name="divMostrar" id="divMostrar" >
+						
+					</div>					
+					 <script>	
+					  	document.getElementById("divMostrar").innerHTML = laborers_1;
+					  </script>
+					  <br>
+					  <table align="center" width="400" cellpadding="0" cellspacing="0">
+						  <tr><td><img src="pics/barra.gif"></td></tr>
+					  </table>
+					  <br>
+					  
+  					  </td>
+						
+					</tr>
+					
+					<tr class="cabeceraMultiLinea">
+						<td colspan="2">&nbsp;
+						</td>
+					</tr>
 			 </TABLE>
 </td>
-						
-					
-					

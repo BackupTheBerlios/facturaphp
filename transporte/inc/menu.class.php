@@ -37,7 +37,7 @@ class menu{
 		//Hacemos las iniciaciones pertinentes para intentar
 		//aclarar un poco el codigo
 		$ini_fila='<tr class="textoMenu">';
-		$ini_fila_max='<tr class="textoMenu" font-weight="bold">';
+		$ini_fila_max='<tr class="tituloMenu">';
 		$fin_fila="</tr>\n";
 		$ini_col='<td valign="top">';
 		$fin_col="</td>";
@@ -88,11 +88,11 @@ class menu{
 		//Hacemos las tabulaciones
 		for ($j=0;$j<$tabulaciones;$j++)
 			$cadena=$cadena.$espacios;
-	
-		if(($array_mod['parent'] == -2)&&($array_mod['hijos'] != 0))
+	    
+		if(($array_mod['parent'] == -2)&&(count($array_mod['hijos']) > 0)&&($array_mod['hijos']!= ""))
 		{
 			$cadena=$cadena.'<img src="pics/separador.gif">&nbsp;';
-			$cadena=$cadena.$array_mod['name_web'];
+			$cadena=$cadena.'<b>'.$array_mod['name_web'].'</b>';
 		}
 		else
 		{
@@ -144,6 +144,7 @@ class menu{
 		{
 			$this->error=1;
 			$this->db->close();
+			echo "$id ";
 			return 0;
 		}
 		

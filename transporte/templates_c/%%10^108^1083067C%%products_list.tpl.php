@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.3, created on 2005-01-19 16:32:49
+<?php /* Smarty version 2.6.3, created on 2005-02-03 20:51:15
          compiled from products_list.tpl */ ?>
 <td valign="top">
 <?php echo $this->_tpl_vars['cadena']; ?>
@@ -16,7 +16,7 @@ unset($_smarty_tpl_vars);
                           <!--<img src="pics/usuariosico.png" width="32" height="32">-->
 						</td>
 						<td width="93%" valign="middle"  nowrap>
-						  Buscar usuarios </td>
+						  Buscar Productos </td>
 				</tr>
 			  </table>
 			  <table width="100%">
