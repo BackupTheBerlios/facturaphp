@@ -3,11 +3,17 @@ global $INSTALL_DIR;
 
 require_once($INSTALL_DIR.'inc/includes.php');
 
-function initialize_object($module){	
-	
+function initialize_object($module)
+{
 	switch($module){
 		case 'users':
 					$objeto=new users();		
+					break;
+		case 'user_corps':
+					$objeto=new user_corps();		
+					break;
+		case 'clients':
+					$objeto=new clients();		
 					break;
 		case 'groups':
 					$objeto=new groups();
@@ -27,8 +33,27 @@ function initialize_object($module){
 		case 'methods':
 					$objeto=new methods();
 					break;
+		case 'news':
+					$objeto=new news();
+					break;
+		case 'contact':
+					$objeto=new contact();
+					break;
+		case 'products':
+					$objeto=new products();
+					break;
+		case 'services':
+					$objeto=new services();
+					break;
 		default:		
-					$objeto = null; 
+					if(!isset($_SESSION['user']))
+					{
+						$objeto = null;
+					}
+					else
+					{
+						$objeto=new user_corps();	
+					} 
 					break;
 	}
 	
