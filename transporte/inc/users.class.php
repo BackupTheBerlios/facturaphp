@@ -598,7 +598,6 @@ class users{
 	
 	function listar($tpl){
 		$this->get_list_users();
-
 		$tabla_listado = new table(true);
 		$cadena=''.$tabla_listado->make_tables('users',$this->users_list,array('Login',20,'Nombre',20,'Primer Apellido',20,'Segundo Apellido',20),array($this->ddbb_id_user,$this->ddbb_login,$this->ddbb_name,$this->ddbb_last_name,$this->ddbb_last_name2),10,array('view','modify','delete'),true);
 		$variables=$tabla_listado->nombres_variables;		
