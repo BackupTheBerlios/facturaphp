@@ -135,7 +135,7 @@
 			</table>			</td>
 		</tr>
 		<tr>
-			<td align="center"><br><br><input type="submit" name="enviar" value="A&ntilde;adir/Modificar" class="botones">
+			<td align="center"><br><br><input type="submit" name="enviar" value="A&ntilde;adir" class="botones">
 
 			<input type="reset" Value="Borrar Datos" class="botones">
 			</td>
