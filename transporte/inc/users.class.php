@@ -59,7 +59,13 @@ class users{
 	var $per_modules;
 	var $modules;
 	var $num_modules;
-
+//Estas variables corresponde a las tablas donde hay un "id_user" y dependiendo de las variables se modificara o borrara el valor.
+	var $var_name = "id_user";	
+	var $table_names_modify = array ("emps");
+	var $table_names_delete = array ("group_users","per_user_module","per_user_method");
+	var $empleados;
+	//log_methods ¿donde tiene que ir? a delete o a modify?
+	
   	//constructor
 	function users(){
 		//coge las variables globales del fichero config.inc.php
@@ -272,10 +278,8 @@ class users{
 		else{
 						
 			//Introducir los datos de post.
-			$this->get_fields_from_post();
-		
-			//$this->insert_post();
-			
+			$this->get_fields_from_post();	
+						
 			//Validacion
 			//$return=validate_fields();
 			
@@ -349,34 +353,54 @@ class users{
 			}
 		}
 	}
-	
-	function remove($id){
-	
-		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
-		//crea una nueva conexi—n con una bbdd (mysql)
-		$this->db = NewADOConnection($this->db_type);
-		//le dice que no salgan los errores de conexi—n de la ddbb por pantalla
-		$this->db->debug=false;
-		//realiza una conexi—n permanente con la bbdd
-		$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
-		//mete la consulta para coger los campos de la bbdd
-		//calcula la consulta de borrado.
-		$this->sql="DELETE FROM ".$this->table_prefix.$this->table_name. " WHERE ".$this->ddbb_id_user." = ".$id." LIMIT 1";
-		//la ejecuta y guarda los resultados
-		$this->result = $this->db->Execute($this->sql);
-		//si falla 
-		if ($this->db->Affected_Rows() == 0){
-			$this->error=1;
-			$this->db->close();
-			return 0;
-		}else{
 		
-			$this->error=0;
-			$this->db->close();
-			return 1;
+		function remove($id){
+			if (!isset($_POST["submit_delete"])){
+				//Miramos a ver si hay algun empleado que tenga este usuario
+				$emp = new emps();				
+				$result=$emp->verify_emps($id);
+				$this->empleados="";
+				if ($result!=0){
+					$this->empleados="<p>Atención este usuario tiene asignados los siguientes empleados:";
+					$this->empleados.="<br>";
+					for($i=0;$i<$result;$i++){
+						$this->empleados.="&nbsp;&nbsp;&nbsp;";
+						$this->empleados.=$emp->emps_users_list[$i]["name"]."&nbsp";
+						$this->empleados.=$emp->emps_users_list[$i]["last_name"]."&nbsp";
+						$this->empleados.=$emp->emps_users_list[$i]["last_name2"]."<br>";
+					}
+					$this->empleados.="<br>";
+					$this->empleados.="Si borra este usuario, se borrar&aacute; la relaci&oacute;n con este empleado";
+					$this->empleados.="</p>";
+				}				
+				return 0;
+			}
+			else{
+			$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
+			//crea una nueva conexión con una bbdd (mysql)
+			$this->db = NewADOConnection($this->db_type);
+			//le dice que no salgan los errores de conexión de la ddbb por pantalla
+			$this->db->debug=false;
+			//realiza una conexión permanente con la bbdd
+			$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
+			//mete la consulta para coger los campos de la bbdd
+			//calcula la consulta de borrado.
+			$this->sql="DELETE FROM ".$this->table_prefix.$this->table_name. " WHERE ".$this->ddbb_id_user." = ".$id." LIMIT 1";
+			//la ejecuta y guarda los resultados
+			$this->result = $this->db->Execute($this->sql);
+			//si falla 
+			if ($this->db->Affected_Rows() == 0){
+				$this->error=1;
+				$this->db->close();
+				return 0;
+			}else{
 			
+				$this->error=0;
+				$this->db->close();
+				return 1;
+				
+			}
 		}
-		
 	}
 	
 	function modify(){
@@ -626,6 +650,16 @@ class users{
 									$tpl->assign("grupos",$this->checkbox_groups);
 									break;
 						case 'delete':
+									$this->read($_GET['id']);
+									if ($this->remove($_GET['id'])==0){
+										$tpl->assign("message",$this->empleados);
+									}
+									else{
+										$method="list";
+										$tpl=$this->listar($tpl);
+										$tpl->assign("message","&nbsp;<br>Usuario borrado correctamente<br>&nbsp;");
+									}
+									$tpl->assign("objeto",$this);
 									break;
 						case 'view':									
 									$tpl=$this->view($_GET['id'],$tpl);
@@ -969,6 +1003,8 @@ class users{
 		}		
 		return 0;
 	}
+	
+	
 	
 	function admin ($id){
 	

@@ -62,7 +62,8 @@ class emps{
   	var $error;
 	var $corps_list;
 	var $num_corps;
-	
+	var $emps_users_list;
+
 	
   	//constructor
 	function emps(){
@@ -665,7 +666,40 @@ class emps{
 		return $localice;
 	}
 	
-
+	function verify_emps($id){
+		//se puede acceder a los usuarios por numero de campo o por nombre de campo
+		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
+		//crea una nueva conexin con una bbdd (mysql)
+		$this->db = NewADOConnection($this->db_type);
+		//le dice que no salgan los errores de conexin de la ddbb por pantalla
+		$this->db->debug=false;
+		//realiza una conexin permanente con la bbdd
+		$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
+		//mete la consulta
+		$this->sql='SELECT * FROM `emps` WHERE `id_user` = \''.$id.'\'';
+		//la ejecuta y guarda los resultados
+		$this->result = $this->db->Execute($this->sql);
+		if ($this->result === false){
+			$this->error=1;
+			$this->db->close();
+			return 0;
+		}  
+		
+		$this->num=0;
+		while (!$this->result->EOF) {
+			//cogemos los datos del usuario
+			$this->emps_users_list[$this->num]['id_emp']=$this->result->fields['id_emp'];
+			$this->emps_users_list[$this->num]['name']=$this->result->fields['name'];
+			$this->emps_users_list[$this->num]['last_name']=$this->result->fields['last_name'];
+			$this->emps_users_list[$this->num]['last_name2']=$this->result->fields['last_name2'];
+			//nos movemos hasta el siguiente registro de resultado de la consulta
+			$this->result->MoveNext();
+			$this->num++;
+		}
+		$this->db->close();
+		return $this->num;
+	}
+	
 	function admin ($id){
 	
 	
