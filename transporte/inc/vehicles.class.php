@@ -615,7 +615,7 @@ class vehicles{
 			$id_user = $user->get_id($_SESSION['user']);
 			$user->validate_per_user($id_user);
 			
-			if(!$_SESSION['super'] || !$_SESSION['admin'])
+			if(!$_SESSION['super'] && !$_SESSION['admin'])
 			{	
 				$drivers = false;
 				$laborers = false;
@@ -687,8 +687,8 @@ class vehicles{
 			}
 			else
 			{
-				$cadena=$cadena.$tabla_modulos->make_tables('drivers',$mensaje,array('ACCION NO PERMITIDA',50),array('id_mensaje','mes'),10,null,false);
-				$variables_drivers=$tabla_modulos->nombres_variables;
+				$cadena=$cadena.$tabla_listado_drivers->make_tables('drivers',$mensaje,array('ACCION NO PERMITIDA',50),array('id_mensaje','mes'),10,null,false);
+				$variables_drivers=$tabla_listado_drivers->nombres_variables;
 			}
 			
 			
@@ -715,8 +715,8 @@ class vehicles{
 			}
 			else
 			{
-				$cadena=$cadena.$tabla_grupos->make_tables('laborers',$mensaje,array('ACCION NO PERMITIDA',50),array('id_mensaje','mes'),10,null,false);
-				$variables_laborers=$tabla_grupos->nombres_variables;
+				$cadena=$cadena.$tabla_listado_laborers->make_tables('laborers',$mensaje,array('ACCION NO PERMITIDA',50),array('id_mensaje','mes'),10,null,false);
+				$variables_laborers=$tabla_listado_laborers->nombres_variables;
 			}
 			
 			
