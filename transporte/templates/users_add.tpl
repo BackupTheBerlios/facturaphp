@@ -80,7 +80,40 @@
 				 
 				</table>
 		</td>
-		</tr>		
+		</tr>	
+		<tr>
+		<td valign="top">
+			<br>
+			<table width="90%" align="center" border="0">
+			 <tr>
+					  <td colspan="2" class="cabeceraCampoFormulario">Permisos por modulos-metodos: </td>
+			</tr>
+			<tr class="cabeceraMultiLinea">
+				<td width="30%">Grupos</td>
+				
+			</tr>
+			
+			{php}
+				$linea = 0;
+			{/php}
+			{section name="indice" loop=$grupos}
+				{php}
+				if ($linea==0){
+					$clase="multiLinea1";
+					$linea=1;
+				}				
+				else{
+					$clase="multiLinea2";	
+					$linea=0;
+				}				
+				print('<tr class="'.$clase.'">');
+				{/php}
+				
+				</tr>
+			{/section}
+			</table>
+		</td>
+		</tr>	
 		<tr>
 
 			<td valign="top">

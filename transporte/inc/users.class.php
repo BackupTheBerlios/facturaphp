@@ -46,6 +46,7 @@ class users{
   	var $error;
 //variables del listado de grupos al que pertenece el usuario	
 	var $groups_list;
+	var $checkbox;
 	var $num_groups;
 	var $num_users;
 	var $id_group;
@@ -208,23 +209,23 @@ class users{
 	
 	}
 	
-	function add($tpl){
+	function add(){
 		//Miramos a ver si esta definida el "submit_add" y si no lo esta, pasamos directamente a mostrar la plantilla
 		if (!isset($_POST['submit_add'])){
 			//Mostrar plantilla vacía	
 			//pasarle a la plantilla los modulos y grupos con sus respectivos checkbox a checked false
-			$checkbox=new permissions_modules;
+			$this->checkbox=new permissions_modules;
 			$modules=new modules();
 			for($i=0;$i<$modules->num;$i++){
-				$checkbox->per_modules[$i]=new permissions_modules;
-				$checkbox->per_modules[$i]->id_module=$modules->modules_list[$i]['id_module'];
-				$checkbox->per_modules[$i]->module_name=$modules->modules_list[$i]['name_web'];
-				$checkbox->per_modules[$i]->validate_per_module(0);
+				$this->checkbox->per_modules[$i]=new permissions_modules;
+				$this->checkbox->per_modules[$i]->id_module=$modules->modules_list[$i]['id_module'];
+				$this->checkbox->per_modules[$i]->module_name=$modules->modules_list[$i]['name_web'];
+				$this->checkbox->per_modules[$i]->validate_per_module(0);
 			}
-			$tpl->assign('modulos',$checkbox);
+
 			//$tpl->assign('usuarios',$this->per_module_methods);
 			
-			return $tpl;
+			return 0;
 		}
 		//en el caso de que SI este definido submit_add
 		else{
@@ -236,9 +237,9 @@ class users{
 			//Validacion
 			//$return=validate_fields();
 			
-			//Een caso de que la validacion haya sido fallida se muestra la plantilla
+			//En caso de que la validacion haya sido fallida se muestra la plantilla
 			//con los campos erroneos marcados con un *
-			return $tpl;
+			return 1;
 			$return=true; //Para pruebas dejar esta linea sin comentar
 			
 			if (!$return){
@@ -508,8 +509,14 @@ class users{
 	//	$result=validate_per($method,$_SESSION['user'],$module);
 		if ($result){
 				switch($method){
-						case 'add':
-									$tpl=$this->add($tpl);
+						case 'add':									
+									if ($this->add() !=0){
+										$method="list";
+										$tpl=$this->listar($tpl);
+										
+										$tpl->assign("message","&nbsp;<br>Usuario a&ntilde;adido correctamente<br>&nbsp;");
+									}
+									$tpl->assign("modulos",$this->checkbox);
 									break;
 						case 'list':
 									$tpl=$this->listar($tpl);
@@ -548,15 +555,6 @@ class users{
 		//$this->get_groups_from_post();
 		//Cogemos los checkboxn de modulos-grupos
 		$modules_methods=$this->get_modules_methods_from_post();
-		for($i=0;$i<count($modules_methods->per_modules);$i++){
-			echo "Nombre de modulo:".$modules_methods->per_modules[$i]->module_name."<br>";
-			echo "Permiso:".$modules_methods->per_modules[$i]->per."<br>";
-			echo "&nbsp;&nbsp;&nbsp;Metodos:<br>";
-			for($j=0;$j<count($modules_methods->per_modules[$i]->per_methods);$j++){
-				echo "&nbsp;&nbsp;&nbsp;Nombre de modulo:".$modules_methods->per_modules[$i]->per_methods[$j]->method_name_web."<br>";
-				echo "&nbsp;&nbsp;&nbsp;Permiso:".$modules_methods->per_modules[$i]->per_methods[$j]->per."<br>";				
-			}
-		}
 		return 0;
 	}	
 
@@ -572,13 +570,11 @@ class users{
 			}			
 			for($i=0;$i<$modules->num;$i++){			
 					$checkbox->per_modules[$i]->per=$_POST["modulo_".$checkbox->per_modules[$i]->id_module];
-					echo "***"."modulo_".$checkbox->per_modules[$i]->id_module."***<br>";
 					if (($checkbox->per_modules[$i]->per=="") || ($checkbox->per_modules[$i]->per==null)){
 						$checkbox->per_modules[$i]->per=0;
 					}
 					//aqui hacemos lo mismo pero con los metodos.
 					for($j=0;$j<count($checkbox->per_modules[$i]->per_methods);$j++){
-								echo "***".'modulo_'.$checkbox->per_modules[$i]->id_module.'_metodo_'.$checkbox->per_modules[$i]->per_methods[$j]->id_method."***";
 								$checkbox->per_modules[$i]->per_methods[$j]->per=$_POST['modulo_'.$checkbox->per_modules[$i]->id_module.'_metodo_'.$checkbox->per_modules[$i]->per_methods[$j]->id_method];
 								if (($checkbox->per_modules[$i]->per_methods[$j]->per=="") || ($checkbox->per_modules[$i]->per_methods[$j]->per==null)){
 									$checkbox->per_modules[$i]->per_methods->per=0;

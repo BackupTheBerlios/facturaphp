@@ -136,9 +136,12 @@ else
 	//VER COMO CONSEGUIR EL NOMBRE DE LA EMPRESA CON LA QUE SE ESTA TRABAJANDO
 	$corp="";
 	///*************************************
+	
+	//En este orden
+	$tpl=$objeto->calculate_tpl($method,$tpl);
 	$nav_bar=$objeto->bar($method,$corp);
 	$title=$objeto->title($method,$corp);
-	$tpl=$objeto->calculate_tpl($method,$tpl);
+	
  
 	//elige la plantilla a presentar
 	
