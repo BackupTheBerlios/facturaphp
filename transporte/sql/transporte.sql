@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 -- 
 -- Servidor: localhost
--- Tiempo de generación: 28-10-2004 a las 13:58:20
+-- Tiempo de generación: 09-11-2004 a las 13:40:50
 -- Versión del servidor: 4.0.20
 -- Versión de PHP: 4.3.8-5
 -- 
@@ -17,7 +17,7 @@
 -- 
 
 DROP TABLE IF EXISTS `cat_emps`;
-CREATE TABLE `cat_emps` (
+CREATE TABLE IF NOT EXISTS `cat_emps` (
   `id_cat_emp` int(11) NOT NULL auto_increment,
   `name` varchar(20) NOT NULL default '',
   `descrip` text NOT NULL,
@@ -37,7 +37,7 @@ INSERT INTO `cat_emps` VALUES (1, 'Gestor', 'aadadfada da a dadfad');
 -- 
 
 DROP TABLE IF EXISTS `corps`;
-CREATE TABLE `corps` (
+CREATE TABLE IF NOT EXISTS `corps` (
   `id_corp` int(11) NOT NULL auto_increment,
   `name` varchar(20) NOT NULL default '',
   `full_name` varchar(50) NOT NULL default '',
@@ -73,7 +73,7 @@ INSERT INTO `corps` VALUES (3, 'Drug and Drop', 'Drug and Drop', '', '', '', '',
 -- 
 
 DROP TABLE IF EXISTS `emps`;
-CREATE TABLE `emps` (
+CREATE TABLE IF NOT EXISTS `emps` (
   `id_emp` int(11) NOT NULL auto_increment,
   `id_corp` int(11) NOT NULL default '0',
   `id_user` int(11) NOT NULL default '0',
@@ -110,7 +110,7 @@ INSERT INTO `emps` VALUES (4, 3, 1, 'David', 'Vaquero', 'Santiago', '0000-00-00'
 -- 
 
 DROP TABLE IF EXISTS `group_users`;
-CREATE TABLE `group_users` (
+CREATE TABLE IF NOT EXISTS `group_users` (
   `id_group_user` int(11) unsigned NOT NULL auto_increment,
   `id_group` int(11) unsigned NOT NULL default '0',
   `id_user` int(11) unsigned NOT NULL default '0',
@@ -143,7 +143,7 @@ INSERT INTO `group_users` VALUES (56, 13, 1, '0000-00-00');
 -- 
 
 DROP TABLE IF EXISTS `groups`;
-CREATE TABLE `groups` (
+CREATE TABLE IF NOT EXISTS `groups` (
   `id_group` int(11) unsigned NOT NULL auto_increment,
   `name` varchar(20) NOT NULL default '',
   `name_web` varchar(100) NOT NULL default '',
@@ -176,7 +176,7 @@ INSERT INTO `groups` VALUES (13, 'group13', 'Grupo 13', '');
 -- 
 
 DROP TABLE IF EXISTS `holydays`;
-CREATE TABLE `holydays` (
+CREATE TABLE IF NOT EXISTS `holydays` (
   `id_holy` int(11) NOT NULL auto_increment,
   `id_emp` int(11) NOT NULL default '0',
   `gone` date NOT NULL default '0000-00-00',
@@ -200,7 +200,7 @@ INSERT INTO `holydays` VALUES (1, 1, '2004-08-06', '2004-08-19', 0, 'sdasdfasdfa
 -- 
 
 DROP TABLE IF EXISTS `log_methods`;
-CREATE TABLE `log_methods` (
+CREATE TABLE IF NOT EXISTS `log_methods` (
   `id_log_method` int(11) unsigned NOT NULL auto_increment,
   `id_user` int(11) unsigned NOT NULL default '0',
   `id_method` int(11) unsigned NOT NULL default '0',
@@ -224,7 +224,7 @@ INSERT INTO `log_methods` VALUES (1, 1, 1, '0000-00-00 00:00:00', 2, '', 0);
 -- 
 
 DROP TABLE IF EXISTS `log_sessions`;
-CREATE TABLE `log_sessions` (
+CREATE TABLE IF NOT EXISTS `log_sessions` (
   `id_log_session` int(11) unsigned NOT NULL auto_increment,
   `id_session` int(11) unsigned NOT NULL default '0',
   `date_in` datetime NOT NULL default '0000-00-00 00:00:00',
@@ -249,14 +249,14 @@ INSERT INTO `log_sessions` VALUES (1, 1, '0000-00-00 00:00:00', '0000-00-00 00:0
 -- 
 
 DROP TABLE IF EXISTS `methods`;
-CREATE TABLE `methods` (
+CREATE TABLE IF NOT EXISTS `methods` (
   `id_method` int(11) unsigned NOT NULL auto_increment,
   `name` varchar(20) NOT NULL default '',
   `name_web` varchar(50) NOT NULL default '',
   `id_module` int(11) unsigned NOT NULL default '0',
   `id_type_method` tinyint(3) NOT NULL default '0',
   PRIMARY KEY  (`id_method`)
-) TYPE=MyISAM AUTO_INCREMENT=22 ;
+) TYPE=MyISAM AUTO_INCREMENT=21 ;
 
 -- 
 -- Volcar la base de datos para la tabla `methods`
@@ -272,17 +272,16 @@ INSERT INTO `methods` VALUES (7, 'add', 'A&ntilde;adir', 2, 0);
 INSERT INTO `methods` VALUES (8, 'modify', 'Modificar', 2, 0);
 INSERT INTO `methods` VALUES (9, 'select', 'Seleccionar', 2, 0);
 INSERT INTO `methods` VALUES (10, 'delete', 'Borrar', 2, 0);
-INSERT INTO `methods` VALUES (11, 'view', 'Ver', 2, 0);
-INSERT INTO `methods` VALUES (12, 'add', 'A&ntilde;adir', 3, 0);
-INSERT INTO `methods` VALUES (13, 'modify', 'Modificar', 3, 0);
-INSERT INTO `methods` VALUES (14, 'delete', 'Borrar', 3, 0);
-INSERT INTO `methods` VALUES (15, 'list', 'Listar', 3, 0);
-INSERT INTO `methods` VALUES (16, 'view', 'Ver', 3, 0);
-INSERT INTO `methods` VALUES (17, 'modify', 'Modificar', 4, 0);
-INSERT INTO `methods` VALUES (18, 'add', 'A&ntilde;adir', 4, 0);
-INSERT INTO `methods` VALUES (19, 'delete', 'Borrar', 4, 0);
-INSERT INTO `methods` VALUES (20, 'list', 'Listar', 4, 0);
-INSERT INTO `methods` VALUES (21, 'view', 'Ver', 4, 0);
+INSERT INTO `methods` VALUES (11, 'add', 'A&ntilde;adir', 3, 0);
+INSERT INTO `methods` VALUES (12, 'modify', 'Modificar', 3, 0);
+INSERT INTO `methods` VALUES (13, 'delete', 'Borrar', 3, 0);
+INSERT INTO `methods` VALUES (14, 'list', 'Listar', 3, 0);
+INSERT INTO `methods` VALUES (15, 'modify', 'Modificar', 4, 0);
+INSERT INTO `methods` VALUES (16, 'add', 'A&ntilde;adir', 4, 0);
+INSERT INTO `methods` VALUES (17, 'delete', 'Borrar', 4, 0);
+INSERT INTO `methods` VALUES (18, 'list', 'Listar', 4, 0);
+INSERT INTO `methods` VALUES (19, 'view', 'Ver', 11, 0);
+INSERT INTO `methods` VALUES (20, 'select', 'Seleccionar', 7, 0);
 
 -- --------------------------------------------------------
 
@@ -291,7 +290,7 @@ INSERT INTO `methods` VALUES (21, 'view', 'Ver', 4, 0);
 -- 
 
 DROP TABLE IF EXISTS `modules`;
-CREATE TABLE `modules` (
+CREATE TABLE IF NOT EXISTS `modules` (
   `id_module` int(11) unsigned NOT NULL auto_increment,
   `name` varchar(50) NOT NULL default '',
   `name_web` varchar(50) NOT NULL default '',
@@ -300,22 +299,23 @@ CREATE TABLE `modules` (
   `public` tinyint(3) unsigned NOT NULL default '0',
   PRIMARY KEY  (`id_module`),
   UNIQUE KEY `nombre` (`name`)
-) TYPE=MyISAM AUTO_INCREMENT=12 ;
+) TYPE=MyISAM AUTO_INCREMENT=13 ;
 
 -- 
 -- Volcar la base de datos para la tabla `modules`
 -- 
 
-INSERT INTO `modules` VALUES (1, 'usuarios', 'Usuarios', '/inc/', 1, 0);
-INSERT INTO `modules` VALUES (2, 'clientes', 'Clientes del programa', '/inc/', 0, 0);
+INSERT INTO `modules` VALUES (1, 'users', 'Usuarios', '/inc/', 1, 0);
+INSERT INTO `modules` VALUES (2, 'clients', 'Clientes del programa', '/inc/', 0, 0);
 INSERT INTO `modules` VALUES (3, 'news', 'Noticias', '/inc/', 0, 1);
 INSERT INTO `modules` VALUES (4, 'products', 'Productos', '/inc/', 0, 1);
 INSERT INTO `modules` VALUES (5, 'services', 'Servicios', '/inc/', 0, 1);
 INSERT INTO `modules` VALUES (6, 'contact', 'Contactos', '/inc/', 0, 1);
-INSERT INTO `modules` VALUES (7, 'user_corps', 'User''s corps', '/inc/', 0, 0);
+INSERT INTO `modules` VALUES (7, 'user_corps', 'Empresas usuario', '/inc/', 0, 0);
 INSERT INTO `modules` VALUES (9, 'corps', 'Empresas', '/inc/', 1, 0);
 INSERT INTO `modules` VALUES (10, 'groups', 'Grupos', '/inc/', 1, 0);
 INSERT INTO `modules` VALUES (11, 'emps', 'Empleados', '/inc/', 1, 0);
+INSERT INTO `modules` VALUES (12, 'error', 'Errores', '/inc/', 0, 0);
 
 -- --------------------------------------------------------
 
@@ -324,7 +324,7 @@ INSERT INTO `modules` VALUES (11, 'emps', 'Empleados', '/inc/', 1, 0);
 -- 
 
 DROP TABLE IF EXISTS `per_group_methods`;
-CREATE TABLE `per_group_methods` (
+CREATE TABLE IF NOT EXISTS `per_group_methods` (
   `id_per_group_method` int(11) unsigned NOT NULL auto_increment,
   `id_group` int(11) unsigned NOT NULL default '0',
   `id_method` int(11) unsigned NOT NULL default '0',
@@ -337,7 +337,7 @@ CREATE TABLE `per_group_methods` (
 -- 
 
 INSERT INTO `per_group_methods` VALUES (1, 1, 1, 1);
-INSERT INTO `per_group_methods` VALUES (69, 2, 21, 1);
+INSERT INTO `per_group_methods` VALUES (69, 2, 6, 1);
 INSERT INTO `per_group_methods` VALUES (70, 2, 22, 1);
 INSERT INTO `per_group_methods` VALUES (71, 10, 25, 1);
 
@@ -348,7 +348,7 @@ INSERT INTO `per_group_methods` VALUES (71, 10, 25, 1);
 -- 
 
 DROP TABLE IF EXISTS `per_group_modules`;
-CREATE TABLE `per_group_modules` (
+CREATE TABLE IF NOT EXISTS `per_group_modules` (
   `id_per_group_module` int(10) unsigned NOT NULL auto_increment,
   `id_group` int(10) unsigned NOT NULL default '0',
   `id_module` int(10) unsigned NOT NULL default '0',
@@ -370,13 +370,13 @@ INSERT INTO `per_group_modules` VALUES (68, 12, 2, 1);
 -- 
 
 DROP TABLE IF EXISTS `per_user_methods`;
-CREATE TABLE `per_user_methods` (
+CREATE TABLE IF NOT EXISTS `per_user_methods` (
   `id_per_user_method` int(11) unsigned NOT NULL auto_increment,
   `id_user` int(11) unsigned NOT NULL default '0',
   `id_method` int(11) unsigned NOT NULL default '0',
   `per` tinyint(3) unsigned NOT NULL default '0',
   PRIMARY KEY  (`id_per_user_method`)
-) TYPE=MyISAM AUTO_INCREMENT=46 ;
+) TYPE=MyISAM AUTO_INCREMENT=50 ;
 
 -- 
 -- Volcar la base de datos para la tabla `per_user_methods`
@@ -385,6 +385,10 @@ CREATE TABLE `per_user_methods` (
 INSERT INTO `per_user_methods` VALUES (1, 1, 1, 1);
 INSERT INTO `per_user_methods` VALUES (44, 1, 24, 1);
 INSERT INTO `per_user_methods` VALUES (45, 1, 23, 1);
+INSERT INTO `per_user_methods` VALUES (46, 1, 18, 1);
+INSERT INTO `per_user_methods` VALUES (47, 1, 5, 1);
+INSERT INTO `per_user_methods` VALUES (48, 1, 19, 1);
+INSERT INTO `per_user_methods` VALUES (49, 1, 20, 1);
 
 -- --------------------------------------------------------
 
@@ -393,13 +397,13 @@ INSERT INTO `per_user_methods` VALUES (45, 1, 23, 1);
 -- 
 
 DROP TABLE IF EXISTS `per_user_modules`;
-CREATE TABLE `per_user_modules` (
+CREATE TABLE IF NOT EXISTS `per_user_modules` (
   `id_per_user_module` int(10) unsigned NOT NULL auto_increment,
   `id_user` int(10) unsigned NOT NULL default '0',
   `id_module` int(10) unsigned NOT NULL default '0',
   `per` tinyint(3) unsigned NOT NULL default '0',
   PRIMARY KEY  (`id_per_user_module`)
-) TYPE=MyISAM AUTO_INCREMENT=69 ;
+) TYPE=MyISAM AUTO_INCREMENT=74 ;
 
 -- 
 -- Volcar la base de datos para la tabla `per_user_modules`
@@ -408,6 +412,11 @@ CREATE TABLE `per_user_modules` (
 INSERT INTO `per_user_modules` VALUES (1, 1, 1, 1);
 INSERT INTO `per_user_modules` VALUES (67, 1, 7, 1);
 INSERT INTO `per_user_modules` VALUES (68, 2, 7, 1);
+INSERT INTO `per_user_modules` VALUES (69, 1, 11, 1);
+INSERT INTO `per_user_modules` VALUES (70, 1, 3, 1);
+INSERT INTO `per_user_modules` VALUES (71, 1, 4, 1);
+INSERT INTO `per_user_modules` VALUES (72, 1, 5, 1);
+INSERT INTO `per_user_modules` VALUES (73, 1, 6, 1);
 
 -- --------------------------------------------------------
 
@@ -416,7 +425,7 @@ INSERT INTO `per_user_modules` VALUES (68, 2, 7, 1);
 -- 
 
 DROP TABLE IF EXISTS `products`;
-CREATE TABLE `products` (
+CREATE TABLE IF NOT EXISTS `products` (
   `id_product` int(10) unsigned NOT NULL auto_increment,
   `id_family` int(10) unsigned NOT NULL default '0',
   `name` varchar(20) NOT NULL default '',
@@ -437,7 +446,7 @@ CREATE TABLE `products` (
 -- 
 
 DROP TABLE IF EXISTS `rel_emps_cats`;
-CREATE TABLE `rel_emps_cats` (
+CREATE TABLE IF NOT EXISTS `rel_emps_cats` (
   `id_rel_emp_cat` int(11) NOT NULL auto_increment,
   `id_emp` int(11) NOT NULL default '0',
   `id_cat_emp` int(11) NOT NULL default '0',
@@ -458,7 +467,7 @@ INSERT INTO `rel_emps_cats` VALUES (1, 1, 1);
 -- 
 
 DROP TABLE IF EXISTS `sessions`;
-CREATE TABLE `sessions` (
+CREATE TABLE IF NOT EXISTS `sessions` (
   `id_session` int(10) unsigned NOT NULL auto_increment,
   `id_session_php` varchar(255) NOT NULL default '',
   `id_user` int(11) NOT NULL default '0',
@@ -480,7 +489,7 @@ INSERT INTO `sessions` VALUES (1, 'adfadfadfadfadfa', 1, '0000-00-00 00:00:00', 
 -- 
 
 DROP TABLE IF EXISTS `users`;
-CREATE TABLE `users` (
+CREATE TABLE IF NOT EXISTS `users` (
   `id_user` int(10) unsigned NOT NULL auto_increment,
   `login` varchar(20) NOT NULL default '',
   `passwd` varchar(20) NOT NULL default '',

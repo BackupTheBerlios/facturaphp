@@ -6,25 +6,18 @@
 		{include file=users.tpl}
 		
 		{php}
-			if((isset($_SESSION['user']))&&(isset($_SESSION['corp'])))
+			if((isset($_SESSION['user']))&&(isset($_SESSION['ident_corp']))&&($_SESSION['ident_corp'] != 0))
 			{
 				{/php}
-					{include file=menu_corp.tpl}
+					{include file=menu_user.tpl}
 				{php}
 			}
 			else
-				if((isset($_SESSION['user']))&&(!isset($_SESSION['corp'])))
-				{
-					{/php}
-						{include file=menu_user.tpl}
-					{php}
-				}
-				else
-				{
-					{/php}
-						{include file=menu.tpl}
-					{php}
-				}
+			{
+				{/php}
+					{include file=menu.tpl}
+				{php}
+			}
 		{/php}
 				
 		{include file=sessions.tpl}

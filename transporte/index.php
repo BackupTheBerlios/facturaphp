@@ -7,6 +7,7 @@
 
 //inicia o retoma una sesion
 session_start();
+
 //realiza todos los includes necesarios
 require_once('inc/config.inc.php');
 require_once('inc/index.inc.php');
@@ -19,12 +20,14 @@ $nav_bar="::Gesti&oacute;n::";
 
 //inicializa una plantilla
 $tpl= new template;
+
 //comprueba si existe el usuario en la sesion
-if(!isset($_SESSION['user'])){
+if(!isset($_SESSION['user']))
+{
 	//comprobamos si estan mandando el formulario
 	$post_user= new users(); 
-	if(isset($_POST['passwd'])&& isset($_POST['user'])&&$post_user->validate_user($_POST['user'],$_POST['passwd'])==1){
-		//printf('usuario validado');
+	if(isset($_POST['passwd'])&& isset($_POST['user'])&&$post_user->validate_user($_POST['user'],$_POST['passwd'])==1)
+	{
 		$session=new sessions();
 		$session->register();
 		//registra la variable de sesion user con el nombre de usuario
@@ -34,39 +37,48 @@ if(!isset($_SESSION['user'])){
 		$tpl->assign('login',0);
 		//inicializa la plantilla principal de empresas a las que pertenece el usuario
 		//El usuario está logeado y se le presenta la plantilla de las empresas con las que trabaja
-		$index_template="index.tpl";
-
-		
-	}else{
+		$index_template="index.tpl";	
+	}
+	else
+	{
 		//printf('usuario no validado');
-			if(isset($_POST['user'])){
+		if(isset($_POST['user']))
+		{
 				//segundo intento
 				$tpl->assign('user_name', $_POST['user']);
 				$tpl->assign('error',1);
 				$tpl->assign('login',1);
-			}else{
-				//primer intento
-				$tpl->assign('user_name','');
-				$tpl->assign('error',0);
-				$tpl->assign('login',1);
-			}
-			$index_template='login.tpl';	
+		}
+		else
+		{
+			//primer intento
+			$tpl->assign('user_name','');
+			$tpl->assign('error',0);
+			$tpl->assign('login',1);
+		}
+		$index_template='login.tpl';	
 	
 	}
 	
-}else{
+}
+else
+{
 	//usuario registrado en la sesion
-	if(isset($_POST['submit'])&& $_POST['submit']=='Desconectar'){
+	if(isset($_POST['submit'])&& $_POST['submit']=='Desconectar')
+	{
 		session_destroy();
 		session_start();
 		$tpl->assign('user_name','');
+		$tpl->assign('corp_id',0);
 		$tpl->assign('error',0);
 		$tpl->assign('login',1);
 		$index_template='index.tpl';
-	}else{
-	$tpl->assign('user_name',$_SESSION['user']);
-	$tpl->assign('login',0);
-	$index_template='index.tpl';
+	}
+	else
+	{
+		$tpl->assign('user_name',$_SESSION['user']);
+		$tpl->assign('login',0);
+		$index_template='index.tpl';
 	} 
 }
 
@@ -115,15 +127,26 @@ if(isset($_GET['module'])||isset($_SESSION['module']))
 	$operations_list=$module->get_module_operations_list($module_name);
 }
 
-//Se indica si se trabaja con una empresa, con cuál se está trabajando
-if((isset($_SESSION['user'])) && ((isset($_GET['module'])) && (isset($_GET['method']))))
+//Se comprueba si se pasa de nuevo a elegir empresa
+if(isset($_GET['module'])&& (!isset($_GET['method']))&&($_GET['module']=='user_corps'))
 {
-	if(($_GET['module'] == 'user_corps') && ($_GET['method'] == 'select'))
-		$_SESSION['corp'] = $_GET['id'];
+	//registra la variable de sesion ident_corp con el identificador nulo para diferenciar en los menús
+	$_SESSION['ident_corp']=0;
 }
 
 
 
+//Se indica si se trabaja con una empresa, con cuál se está trabajando
+
+	//Se comprueba si estan eligiendo empresa
+	if(isset($_GET['module'])&& isset($_GET['method'])&&(($_GET['module']=='user_corps')&&($_GET['method']=='select')))
+	{	
+		//registra la variable de sesion user con el nombre de usuario
+		$_SESSION['ident_corp']=$_GET['id'];
+		
+	}	
+
+		
 //2 opciones:
 //- El usuario no está logeado pero el módulo es público, en cuyo caso no habría problema
 //- El usuario está logeado pero intenta entrar en un móudlo donde no tiene permisos
@@ -189,12 +212,12 @@ if ($objeto===null)
 else
 {	
 	//Se obtiene el nombre de la empresa en la que se está trabajando
-	if(!isset($_SESSION['corp']))
+	if(!isset ($_SESSION['ident_corp']))
 		$corp = "";
 	else
 	{
 		$my_corp = new corps();
-		$my_corp->read($_SESSION['corp']);
+		$my_corp->read($_SESSION['ident_corp']);
 		$corp = $my_corp->name;
 	}	
 
