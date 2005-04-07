@@ -79,27 +79,7 @@ class modules{
 		$this->search[1]= 'name_web';
 		
 		
-		//print_r($this);
-		//se puede acceder a los usuarios por numero de campo o por nombre de campo
-	/*	$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
-		//crea una nueva conexi—n con una bbdd (mysql)
-		$this->db = NewADOConnection($this->db_type);
-		//le dice que no salgan los errores de conexi—n de la ddbb por pantalla
-		$this->db->debug=false;
-		//realiza una conexi—n permanente con la bbdd
-		$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
-		//mete la consulta
-		$this->sql="SELECT * FROM ".$this->table_prefix.$this->table_name;
-		//la ejecuta y guarda los resultados
-		$this->result = $this->db->Execute($this->sql);
-		//si falla 
-		if ($this->result === false){
-			$error=1;
-			return 0;
-		}  
-		$this->db->close();*/
-		
-		return $this/*->get_list_modules()*/;	 
+		return $this;	 
 		
 	}
 	
@@ -109,6 +89,35 @@ class modules{
 			//Obtener datos del formulario de búsqueda
 			$this->get_fields_from_search_post();
 						
+			//Generar consulta
+			if($this->search_query[0]=='\\')
+			{	
+				//Guardar consulta para no modificar la variable 
+				//que se mande denuevo al formulario
+				$query =  $this->search_query;
+				
+				//Se va creando la nueva query que se mandará mas tarde 
+				//al formulario (se busca la siquiente ocurrencia de comillas)
+				$query = substr ($this->search_query, 2);
+				
+				switch($this->search_query[1])
+				{
+					case '"':
+								$cadena = substr ($this->search_query, 2, stripos($query, '"'));	
+								//Preparar la cadena para volver a mostrarla sin caracteres de PHP
+								$this->search_query = stripslashes($cadena);
+								
+								break;
+					case '\'':	
+								$cadena = substr ($this->search_query, 2, stripos($query, '\''));
+								//Preparar la cadena para volver a mostrarla sin caracteres de PHP
+								$this->search_query = stripslashes($cadena);
+													
+								break;
+					default: break;
+				}
+			}
+			
 			//Crear query
 			$my_search = new search();
 			$query = $my_search->get_query($this->search_query, FALSE, $this->search, $this->fields_list);
@@ -1070,10 +1079,6 @@ class modules{
 				$i++;
 			}
 		}		
-
-
-
-
 		return 0;
 	}	
 	
@@ -1141,7 +1146,6 @@ class modules{
 				
 		
 		//Borramos
-
 		
 		for($i=0;$i<count($borrados);$i++){
 			$this->delete_per_group_user_methods('per_user_methods',$borrados[$i]['id_method'],'id_method');	
@@ -1152,7 +1156,6 @@ class modules{
 		//Añadimos los nuevos
 		
 		for	($i=0;$i<count($nuevos);$i++){
-
 			$method = new methods();
 			$method->id_module=$this->id_module;
 			$method->name=$nuevos[$i]["name"];
