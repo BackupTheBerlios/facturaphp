@@ -30,6 +30,9 @@ class clients{
 	var $id_pay_type;
 	var $payday="00-00-0000";
 	var $theme;
+	var $search;
+	var $search_query;
+
 //BBDD name vars
 	var $db_name;
 	var $db_ip;
@@ -60,6 +63,7 @@ class clients{
 	var $ddbb_id_pay_type='id_pay_type';
 	var $ddbb_payday='payday';
 	var $ddbb_notes='notes';
+	var $ddbb_search='search';
 	
 	var $db;
 	var $result;  	
@@ -108,41 +112,63 @@ class clients{
 		$this->fields_list->add($this->ddbb_id_cat_client, $this->id_cat_client, 'int', 11,0);
 		$this->fields_list->add($this->ddbb_id_pay_type, $this->id_pay_type, 'int', 11,0);
 		$this->fields_list->add($this->ddbb_payday, $this->payday, 'date', 11,0);
-		//print_r($this);
-		//se puede acceder a los usuarios por numero de campo o por nombre de campo
-/*		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
-		//crea una nueva conexi—n con una bbdd (mysql)
-		$this->db = NewADOConnection($this->db_type);
-		//le dice que no salgan los errores de conexi—n de la ddbb por pantalla
-		$this->db->debug=false;
-		//realiza una conexi—n permanente con la bbdd
-		$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
-		//mete la consulta
-		$this->sql="SELECT * FROM ".$this->table_prefix.$this->table_name;
-		//la ejecuta y guarda los resultados
-		$this->result = $this->db->Execute($this->sql);
-		//si falla 
-		if ($this->result === false){
-			$error=1;
-			return 0;
-		}  
-		$this->db->close();
-	*/	
-		return $this/*->get_list_corps()*/;	 
+	
+		return $this;	 
 		
 	}
 	
 	function get_list_clients (){
-		//se puede acceder a los usuarios por numero de campo o por nombre de campo
+		
+		if (isset($_POST['submit_clients_search']))
+		{
+			//Obtener datos del formulario de búsqueda
+			$this->get_fields_from_search_post();
+			
+			//Generar consulta
+			if($this->search_query[0]=='\\')
+			{	
+				//Guardar consulta para no modificar la variable 
+				//que se mande denuevo al formulario
+				$query =  $this->search_query;
+				
+				//Se va creando la nueva query que se mandará mas tarde 
+				//al formulario (se busca la siquiente ocurrencia de comillas)
+				$query = substr ($this->search_query, 2);
+				
+				switch($this->search_query[1])
+				{
+					case '"':
+								$cadena = substr ($this->search_query, 2, stripos($query, '"'));	
+								//Preparar la cadena para volver a mostrarla sin caracteres de PHP
+								$this->search_query = stripslashes($cadena);
+								
+								break;
+					case '\'':	
+								$cadena = substr ($this->search_query, 2, stripos($query, '\''));
+								//Preparar la cadena para volver a mostrarla sin caracteres de PHP
+								$this->search_query = stripslashes($cadena);
+													
+								break;
+					default: break;
+				}
+			}			
+			//Crear query
+			$my_search = new search();
+			$query = $my_search->get_query($this->search_query, FALSE, $this->search, $this->fields_list);
+		}	
+		//Buscar los empleados de la empresa en la que se está y coincidencia en id con los id de emps en drivers
 		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
-		//crea una nueva conexi—n con una bbdd (mysql)
+		//crea una nueva conexin con una bbdd (mysql)
 		$this->db = NewADOConnection($this->db_type);
-		//le dice que no salgan los errores de conexi—n de la ddbb por pantalla
+		//le dice que no salgan los errores de conexin de la ddbb por pantalla
 		$this->db->debug=false;
-		//realiza una conexi—n permanente con la bbdd
+		//realiza una conexin permanente con la bbdd
 		$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
 		//mete la consulta
-		$this->sql="SELECT * FROM ".$this->table_prefix.$this->table_name;
+		if($query != "")
+			$this->sql="SELECT * FROM ".$this->table_prefix.$this->table_name." WHERE ".$query;
+		else
+			$this->sql="SELECT * FROM ".$this->table_prefix.$this->table_name;
 		//la ejecuta y guarda los resultados
 		$this->result = $this->db->Execute($this->sql);
 		//si falla 
@@ -184,6 +210,13 @@ class clients{
 		$this->db->close();
 		return $this->num;	
 	}
+	
+	function get_fields_from_search_post(){
+		//Cogemos los campos principales de búsqueda
+		$this->search_query=$_POST[$this->ddbb_search];
+		return 0;
+	}
+	
 	/*
 	function get_add_form(){
 	
@@ -318,6 +351,7 @@ class clients{
 									break;									
 						case 'list':
 									$tpl=$this->listar($tpl);
+									$tpl->assign("objeto",$this);
 									break;
 						case 'modify':
 
@@ -376,6 +410,7 @@ class clients{
 						default:
 									$this->method='list';
 									$tpl=$this->listar($tpl);
+									$tpl->assign("objeto",$this);
 									break;
 					}
 				$tpl->assign('plantilla','clients_'.$this->method.'.tpl');					
@@ -757,36 +792,40 @@ class clients{
 			}
 						
 			//Rellenamos de forma provisional las variables con un "no se puede mostrar"
-			*/
 			
+			$clients = new table(false);
 			$facturaspen= new table(false);
 			$facturascob= new table(false);
-			$albaranes= new table(false);
+			$gestionalm= new table(false);
 			$partes= new table(false);
 			
-		
+			$cadena=$cadena.$clients->dont_show('clients');
 			$cadena=$cadena.$facturaspen->dont_show('facturaspen');
 			$cadena=$cadena.$facturascob->dont_show('facturascob');
-			$cadena=$cadena.$albaranes->dont_show('albaranes');
+			$cadena=$cadena.$gestionalm->dont_show('gestionalm');
 			$cadena=$cadena.$partes->dont_show('partes');
 			
-		
+			$variables_clients=$clients->nombres_variables;
 			$variables_facturaspen=$facturaspen->nombres_variables;
 			$variables_facturascob=$facturascobs->nombres_variables;
-			$variables_albaranes=$albaranes->nombres_variables;
+			$variables_gestionalm=$gestionalm->nombres_variables;
 			$variables_partes=$partes->nombres_variables;
 			
-
+			*/
 			
 			$i=0;
-			while($i<(count($variables_contactos)+count($variables_clients)+count($variables_facturaspen)+count($variables_facturascob)+count($variables_products)+count($variables_services)+count($variables_albaranes)+count($variables_partes)))
+			while($i<(count($variables_contactos)))//+count($variables_clients)+count($variables_facturaspen)+count($variables_facturascob)+count($variables_products)+count($variables_services)+count($variables_gestionalm)+count($variables_partes)))
 			{
 				for($j=0;$j<count($variables_contactos);$j++)
 				{
 					$variables[$i]=$variables_contactos[$j];
 					$i++;
-				}		
-				
+				}
+		/*		for($j=0;$j<count($variables_clients);$j++)
+				{
+					$variables[$i]=$variables_clients[$j];
+					$i++;
+				}
 				for($j=0;$j<count($variables_facturaspen);$j++)
 				{
 					$variables[$i]=$variables_facturaspen[$j];
@@ -807,16 +846,16 @@ class clients{
 					$variables[$i]=$variables_services[$j];
 					$i++;
 				}
-				for($j=0;$j<count($variables_albaranes);$j++)
+				for($j=0;$j<count($variables_gestionalm);$j++)
 				{
-					$variables[$i]=$variables_albaranes[$j];
+					$variables[$i]=$variables_gestionalm[$j];
 					$i++;
 				}
 				for($j=0;$j<count($variables_partes);$j++)
 				{
 					$variables[$i]=$variables_partes[$j];
 					$i++;
-				}	
+				}	*/			
 			}
 			
 			//Se comprueba si hay permiso para borrar o modificar

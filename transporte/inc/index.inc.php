@@ -39,8 +39,8 @@ function initialize_object($module)
 		case 'news':
 					$objeto=new news();
 					break;
-		case 'contact':
-					$objeto=new contact();
+		case 'contacts':
+					$objeto=new contacts();
 					break;
 		case 'products':
 					$objeto=new products();

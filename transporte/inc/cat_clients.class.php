@@ -11,6 +11,9 @@ class cat_clients{
 	var $id_cat_client;
 	var $name;
 	var $descrip;
+	var $search;
+	var $search_query;
+
 //BBDD name vars
 	var $db_name;
 	var $db_ip;
@@ -23,6 +26,7 @@ class cat_clients{
 	var $ddbb_id_cat_client='id_cat_client';
   	var $ddbb_name='name';
   	var $ddbb_descrip='descrip';
+	var $ddbb_search='search';
 	var $db;
 	var $result;  	
 //variables complementarias	
@@ -56,31 +60,50 @@ class cat_clients{
 		$this->fields_list->add($this->ddbb_name, $this->name, 'varchar', 50,0,1);
 		$this->fields_list->add($this->ddbb_descrip, $this->descrip, 'varchar', 255,0);
 		
-	/*	//se puede acceder a los vehiculos por numero de campo o por nombre de campo
-		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
-		//crea una nueva conexin con una bbdd (mysql)
-		$this->db = NewADOConnection($this->db_type);
-		//le dice que no salgan los errores de conexin de la ddbb por pantalla
-		$this->db->debug=false;
-		//realiza una conexin permanente con la bbdd
-		$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
-		//mete la consulta
-		$this->sql="SELECT * FROM ".$this->table_prefix.$this->table_name;
-		//la ejecuta y guarda los resultados
-		$this->result = $this->db->Execute($this->sql);
-		//si falla 
-		if ($this->result === false){
-			$error=1;
-			return 0;
-		}  
-		$this->db->close();*/
 		
 		return $this->get_list_cat_clients();	 
 		
 	}
 	
 	function get_list_cat_clients (){
-		//se puede acceder a los usuarios por numero de campo o por nombre de campo
+		if (isset($_POST['submit_cat_clients_search']))
+		{
+			//Obtener datos del formulario de búsqueda
+			$this->get_fields_from_search_post();
+			
+			//Generar consulta
+			if($this->search_query[0]=='\\')
+			{	
+				//Guardar consulta para no modificar la variable 
+				//que se mande denuevo al formulario
+				$query =  $this->search_query;
+				
+				//Se va creando la nueva query que se mandará mas tarde 
+				//al formulario (se busca la siquiente ocurrencia de comillas)
+				$query = substr ($this->search_query, 2);
+				
+				switch($this->search_query[1])
+				{
+					case '"':
+								$cadena = substr ($this->search_query, 2, stripos($query, '"'));	
+								//Preparar la cadena para volver a mostrarla sin caracteres de PHP
+								$this->search_query = stripslashes($cadena);
+								
+								break;
+					case '\'':	
+								$cadena = substr ($this->search_query, 2, stripos($query, '\''));
+								//Preparar la cadena para volver a mostrarla sin caracteres de PHP
+								$this->search_query = stripslashes($cadena);
+													
+								break;
+					default: break;
+				}
+			}			
+			//Crear query
+			$my_search = new search();
+			$query = $my_search->get_query($this->search_query, FALSE, $this->search, $this->fields_list);
+		}	
+		//Buscar los empleados de la empresa en la que se está y coincidencia en id con los id de emps en drivers
 		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
 		//crea una nueva conexin con una bbdd (mysql)
 		$this->db = NewADOConnection($this->db_type);
@@ -89,7 +112,10 @@ class cat_clients{
 		//realiza una conexin permanente con la bbdd
 		$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
 		//mete la consulta
-		$this->sql="SELECT * FROM ".$this->table_prefix.$this->table_name;
+		if($query != "")
+			$this->sql="SELECT * FROM ".$this->table_prefix.$this->table_name." WHERE ".$query;
+		else
+			$this->sql="SELECT * FROM ".$this->table_prefix.$this->table_name;
 		//la ejecuta y guarda los resultados
 		$this->result = $this->db->Execute($this->sql);
 		//si falla 
@@ -119,7 +145,12 @@ class cat_clients{
 		$this->db->close();
 		
 		return $this->num;
+	}
 	
+	function get_fields_from_search_post(){
+		//Cogemos los campos principales de búsqueda
+		$this->search_query=$_POST[$this->ddbb_search];
+		return 0;
 	}
 	
 	function read($id){
@@ -468,6 +499,7 @@ class cat_clients{
 									break;
 						case 'list':
 									$tpl=$this->listar($tpl);
+									$tpl->assign("objeto",$this);
 									break;
 						case 'modify':
 									/*
@@ -516,6 +548,7 @@ class cat_clients{
 						default:
 									$this->method='list';
 									$tpl=$this->listar($tpl);
+									$tpl->assign("objeto",$this);
 									break;
 					}
 				$tpl->assign('plantilla','cat_clients_'.$this->method.'.tpl');					
