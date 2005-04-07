@@ -520,6 +520,9 @@ class emps{
 				return -1;
 			}
 			else{
+				$this->come=$this->fields_list->change_date($this->come,"en");
+				$this->birthday=$this->fields_list->change_date($this->birthday,"en");
+				$this->license=$this->fields_list->change_date($this->license,"en");
 				$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
 				//crea una nueva conexin con una bbdd (mysql)
 				$this->db = NewADOConnection($this->db_type);

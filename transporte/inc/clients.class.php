@@ -73,6 +73,9 @@ class clients{
   	var $fields_list;
   	var $error;
 	var $method;
+	var $table_names_modify=array();
+	var $table_names_delete=array("contacts");
+
   	//constructor
 	function clients(){
 		//coge las variables globales del fichero config.inc.php
@@ -113,11 +116,16 @@ class clients{
 		$this->fields_list->add($this->ddbb_id_pay_type, $this->id_pay_type, 'int', 11,0);
 		$this->fields_list->add($this->ddbb_payday, $this->payday, 'date', 11,0);
 	
+		$this->search[0]= 'name';
+		$this->search[1]= 'full_name';
+		$this->search[2]= 'cif_nif';
+		$this->search[3]= 'phone';
+		
 		return $this;	 
 		
 	}
 	
-	function get_list_clients (){
+	function get_list_clients ($id_corp){
 		
 		if (isset($_POST['submit_clients_search']))
 		{
@@ -166,9 +174,10 @@ class clients{
 		$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
 		//mete la consulta
 		if($query != "")
-			$this->sql="SELECT * FROM ".$this->table_prefix.$this->table_name." WHERE ".$query;
+			$this->sql="SELECT * FROM ".$this->table_prefix.$this->table_name." WHERE (".$query.") AND id_corp = ".$id_corp;
 		else
-			$this->sql="SELECT * FROM ".$this->table_prefix.$this->table_name;
+			$this->sql="SELECT * FROM ".$this->table_prefix.$this->table_name." WHERE id_corp = ".$id_corp;
+			
 		//la ejecuta y guarda los resultados
 		$this->result = $this->db->Execute($this->sql);
 		//si falla 
@@ -214,6 +223,7 @@ class clients{
 	function get_fields_from_search_post(){
 		//Cogemos los campos principales de búsqueda
 		$this->search_query=$_POST[$this->ddbb_search];
+		
 		return 0;
 	}
 	
@@ -298,7 +308,7 @@ class clients{
 		$tabla_listado = new table(true);
 		$per = new permissions();
 		$per->get_permissions_list('clients');
-		if (!$this->get_list_clients())
+		if (!$this->get_list_clients($_SESSION['ident_corp']))
 		{
 			$cadena=$cadena.$tabla_listado->tabla_vacia('clients', $per->add);
 			$variables=$tabla_listado->nombres_variables;
@@ -401,16 +411,21 @@ class clients{
 							
 									break;
 						case 'view':		
-									if($_SESSION['super'] || $_SESSION['admin'])
-									{
-										$_SESSION['ident_corp'] = $_GET['id'];
-									}							
+									$_SESSION['id_client']=$_GET['id'];						
 									$tpl=$this->view($_GET['id'],$tpl);
 									break;
 						default:
-									$this->method='list';
-									$tpl=$this->listar($tpl);
-									$tpl->assign("objeto",$this);
+									if($_SESSION['ident_corp'] != 0)
+									{
+										$this->method='list';
+										$tpl=$this->listar($tpl);
+										$tpl->assign("objeto",$this);	
+									}
+									else
+									{
+										$tpl->assign('plantilla','error_corp.tpl');	
+										return $tpl;
+									}	
 									break;
 					}
 				$tpl->assign('plantilla','clients_'.$this->method.'.tpl');					
@@ -600,17 +615,69 @@ class clients{
 	}
 	
 	function make_remove($id){
-		
-		//Borramos los contactos. Esto se irá haciendo con todos los módulos directamente
-		//relacionados con la empresa que se este borrando.
-		/*$conctactos=new contacts();
-		$listado=$contactos->belong_corp($id);
-		if (is_array($listado)){
-			for ($i=0;$i<count($listado);$i++){
-				$contactos->remove($listado[$i]["id_corp"]);
+		//modificamos todos aquellos registros en los que hay un id_user;
+		for ($i=0;$i<count($this->table_names_modify);$i++){
+			$this->modify_all_id_client($id,$this->table_names_modify[$i]);
+		}
+		//borramos todos aquellos registros en los que hay un id_user;		
+		for ($i=0;$i<count($this->table_names_delete);$i++){
+			$this->delete_all_id_client($id,$this->table_names_delete[$i]);
+		}
+	}
+	
+	function modify_all_id_client($id,$table){
+			$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
+			//crea una nueva conexión con una bbdd (mysql)
+			$this->db = NewADOConnection($this->db_type);
+			//le dice que no salgan los errores de conexión de la ddbb por pantalla
+			$this->db->debug=false;
+			//realiza una conexión permanente con la bbdd
+			$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
+			//mete la consulta para coger los campos de la bbdd
+			//calcula la consulta de borrado.
+			$this->sql="UPDATE ".$table. " SET id_client = 0 WHERE id_client = ".$id;
+			//la ejecuta y guarda los resultados
+			$this->result = $this->db->Execute($this->sql);
+			//si falla 
+			if ($this->db->Affected_Rows() == 0){
+				$this->error=1;
+				$this->db->close();
+				return 0;
+			}else{
+			
+				$this->error=0;
+				$this->db->close();
+				return 1;
+				
 			}
-		}*/
-		//Fin Borrado contactos	
+	}
+	
+	function delete_all_id_client($id,$table){
+		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
+			//crea una nueva conexión con una bbdd (mysql)
+			$this->db = NewADOConnection($this->db_type);
+			//le dice que no salgan los errores de conexión de la ddbb por pantalla
+			$this->db->debug=false;
+			//realiza una conexión permanente con la bbdd
+			$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
+			//mete la consulta para coger los campos de la bbdd
+			//calcula la consulta de borrado.
+
+			$this->sql="DELETE FROM ".$table. " WHERE id_client = ".$id;
+			//la ejecuta y guarda los resultados
+			$this->result = $this->db->Execute($this->sql);
+			//si falla 
+			if ($this->db->Affected_Rows() == 0){
+				$this->error=1;
+				$this->db->close();
+				return 0;
+			}else{
+			
+				$this->error=0;
+				$this->db->close();
+				return 1;
+				
+			}
 	}
 	
 	function modify()
@@ -729,10 +796,10 @@ class clients{
 			// Leemos la empresa y se lo pasamos a la plantilla
 			$this->read($id);
 			$tpl->assign('objeto',$this);
-			
+			$_SESSION['id_client']=$this->id_client;
 			
 			//listado de contactos
-			/*$tabla_contactos = new table(false);
+			$tabla_contactos = new table(false);
 			
 			$contactos = new contacts();
 
@@ -753,79 +820,35 @@ class clients{
 		
 				$variables_contactos=$tabla_contactos->nombres_variables;
 			}
-			*/
-			/*
-			//Productos
-			$products= new products(false);
-			$tabla_productos = new table (false);
-			if ($products->get_list_products_corps($_SESSION['ident_corp'])==0)
-			{				
-				$per = new permissions();
-				$per->get_permissions_list('corps');
-				$cadena=$cadena.$tabla_productos->tabla_vacia('products',$per->add);
-				$variables_products=$tabla_productos->nombres_variables;
-			}
-			else
-			{	
-				$per = new permissions();
-				$per->get_permissions_list('corps');							
-				$cadena=$cadena.$tabla_productos->make_tables('products',$products->products_list,array('Nombre',20,'Nombre Web',40),array('id_product', 'name','name_web'),10,$per->permissions_module,$per->add);		
-				$variables_products=$tabla_productos->nombres_variables;
-			}
 			
-			//servicios
-			$services= new services(false);
-			$tabla_servicios = new table (false);
-			if ($services->get_list_services_corp($_SESSION['ident_corp'])==0)
-			{				
-				$per = new permissions();
-				$per->get_permissions_list('corps');
-				$cadena=$cadena.$tabla_servicios->tabla_vacia('services',$per->add);
-				$variables_services=$tabla_servicios->nombres_variables;
-			}
-			else
-			{	
-				$per = new permissions();
-				$per->get_permissions_list('corps');							
-				$cadena=$cadena.$tabla_servicios->make_tables('services',$services->services_list,array('Nombre',20,'Nombre Web',40),array('id_service', 'name','name_web'),10,$per->permissions_module,$per->add);		
-				$variables_services=$tabla_servicios->nombres_variables;
-			}
-						
-			//Rellenamos de forma provisional las variables con un "no se puede mostrar"
 			
-			$clients = new table(false);
 			$facturaspen= new table(false);
 			$facturascob= new table(false);
-			$gestionalm= new table(false);
-			$partes= new table(false);
+			$albaranes= new table(false);
+			$partes= new table(false);			
 			
-			$cadena=$cadena.$clients->dont_show('clients');
 			$cadena=$cadena.$facturaspen->dont_show('facturaspen');
 			$cadena=$cadena.$facturascob->dont_show('facturascob');
-			$cadena=$cadena.$gestionalm->dont_show('gestionalm');
+			$cadena=$cadena.$albaranes->dont_show('albaranes');
 			$cadena=$cadena.$partes->dont_show('partes');
 			
-			$variables_clients=$clients->nombres_variables;
+			
 			$variables_facturaspen=$facturaspen->nombres_variables;
 			$variables_facturascob=$facturascobs->nombres_variables;
-			$variables_gestionalm=$gestionalm->nombres_variables;
+			$variables_albaranes=$albaranes->nombres_variables;
 			$variables_partes=$partes->nombres_variables;
 			
-			*/
+			
 			
 			$i=0;
-			while($i<(count($variables_contactos)))//+count($variables_clients)+count($variables_facturaspen)+count($variables_facturascob)+count($variables_products)+count($variables_services)+count($variables_gestionalm)+count($variables_partes)))
+			while($i<(count($variables_contactos)+count($variables_facturaspen)+count($variables_facturascob)+count($variables_products)+count($variables_services)+count($variables_albaranes)+count($variables_partes)))
 			{
 				for($j=0;$j<count($variables_contactos);$j++)
 				{
 					$variables[$i]=$variables_contactos[$j];
 					$i++;
 				}
-		/*		for($j=0;$j<count($variables_clients);$j++)
-				{
-					$variables[$i]=$variables_clients[$j];
-					$i++;
-				}
+				
 				for($j=0;$j<count($variables_facturaspen);$j++)
 				{
 					$variables[$i]=$variables_facturaspen[$j];
@@ -836,26 +859,17 @@ class clients{
 					$variables[$i]=$variables_facturascob[$j];
 					$i++;
 				}
-				for($j=0;$j<count($variables_products);$j++)
+				
+				for($j=0;$j<count($variables_albaranes);$j++)
 				{
-					$variables[$i]=$variables_products[$j];
-					$i++;
-				}
-				for($j=0;$j<count($variables_services);$j++)
-				{
-					$variables[$i]=$variables_services[$j];
-					$i++;
-				}
-				for($j=0;$j<count($variables_gestionalm);$j++)
-				{
-					$variables[$i]=$variables_gestionalm[$j];
+					$variables[$i]=$variables_albaranes[$j];
 					$i++;
 				}
 				for($j=0;$j<count($variables_partes);$j++)
 				{
 					$variables[$i]=$variables_partes[$j];
 					$i++;
-				}	*/			
+				}				
 			}
 			
 			//Se comprueba si hay permiso para borrar o modificar

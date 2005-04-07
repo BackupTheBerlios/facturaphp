@@ -751,22 +751,37 @@ class corps{
 				$cadena=$cadena.$tabla_servicios->make_tables('services',$services->services_list,array('Nombre',20,'Nombre Web',40),array('id_service', 'name','name_web'),10,$per->permissions_module,$per->add);		
 				$variables_services=$tabla_servicios->nombres_variables;
 			}
-						
-			//Rellenamos de forma provisional las variables con un "no se puede mostrar"
+					
 			
-			$clients = new table(false);
+			//clientes
+			$clients= new clients(false);
+			$tabla_clientes = new table (false);
+			if ($clients->get_list_clients($_SESSION['ident_corp'])==0)
+			{				
+				$per = new permissions();
+				$per->get_permissions_list('clients');
+				$cadena=$cadena.$tabla_clientes->tabla_vacia('clients',$per->add);
+				$variables_clients=$tabla_clientes->nombres_variables;
+			}
+			else
+			{	
+				$per = new permissions();
+				$per->get_permissions_list('corps');							
+				$cadena=$cadena.$tabla_clientes->make_tables('clients',$clients->clients_list,array('Nombre',20,'Nombre Completo',40,'Tel&eacute;fono',20),array('id_client', 'name','full_name','phone'),10,$per->permissions_module,$per->add);		
+				$variables_clients=$tabla_clientes->nombres_variables;
+			}	
+			//Rellenamos de forma provisional las variables con un "no se puede mostrar"			
+			
 			$facturaspen= new table(false);
 			$facturascob= new table(false);
 			$gestionalm= new table(false);
 			$partes= new table(false);
 			
-			$cadena=$cadena.$clients->dont_show('clients');
 			$cadena=$cadena.$facturaspen->dont_show('facturaspen');
 			$cadena=$cadena.$facturascob->dont_show('facturascob');
 			$cadena=$cadena.$gestionalm->dont_show('gestionalm');
 			$cadena=$cadena.$partes->dont_show('partes');
 			
-			$variables_clients=$clients->nombres_variables;
 			$variables_facturaspen=$facturaspen->nombres_variables;
 			$variables_facturascob=$facturascobs->nombres_variables;
 			$variables_gestionalm=$gestionalm->nombres_variables;

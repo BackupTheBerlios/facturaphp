@@ -60,6 +60,8 @@ class cat_clients{
 		$this->fields_list->add($this->ddbb_name, $this->name, 'varchar', 50,0,1);
 		$this->fields_list->add($this->ddbb_descrip, $this->descrip, 'varchar', 255,0);
 		
+		$this->search[0]= 'name';
+		$this->search[1]= 'descrip';
 		
 		return $this->get_list_cat_clients();	 
 		

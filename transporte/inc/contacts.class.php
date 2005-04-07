@@ -66,7 +66,7 @@ class contacts{
 	var $method;
 	var $category;
 	var $table_names_modify=array();
-	var $table_names_delete=array("holydays","rel_contacts_cats",);
+	var $table_names_delete=array();
   	//constructor
 	function contacts(){
 		//coge las variables globales del fichero config.inc.php
@@ -197,6 +197,8 @@ class contacts{
 	
 	function get_fields_from_search_post(){
 		//Cogemos los campos principales de búsqueda
+		$this->client=$_POST['client'];		
+		$_SESSION['id_client']=$this->client;
 		$this->search_query=$_POST[$this->ddbb_search];
 		return 0;
 	}	
@@ -388,7 +390,7 @@ class contacts{
 				return -1;
 			}
 			else{
-							$this->birthday=$this->fields_list->change_date($this->birthday,"en");
+				$this->birthday=$this->fields_list->change_date($this->birthday,"en");
 				$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
 				//crea una nueva conexin con una bbdd (mysql)
 				$this->db = NewADOConnection($this->db_type);
@@ -403,7 +405,7 @@ class contacts{
 				//si falla 
 				if ($this->result === false){
 					$this->error=1;
-					$this->db->close();
+					$this->db->close();					
 					return 0;
 				}
 				//rellenamos el array con los datos de los atributos de la clase
@@ -426,7 +428,6 @@ class contacts{
 				//calculamos la sql de insercin respecto a los atributos
 				$this->sql = $this->db->GetUpdateSQL($this->result, $record);
 				//insertamos el registro
-				
 				$this->db->Execute($this->sql);
 				//si se ha insertado una fila
 				$Affected_Rows=$this->db->Affected_Rows();
@@ -859,25 +860,32 @@ class contacts{
 
 	function listar($tpl)
 	{
+		if (isset($_POST['client'])){
+			$this->client=$_POST['client'];		
+			$_SESSION['id_client']=$this->client;
+		}
 		if(!isset($_SESSION['id_client'])){
-			$client=0;
+			$this->client=0;
 		}
 		else{
-			$client=$_SESSION['id_client'];
+			$this->client=$_SESSION['id_client'];
 		}
-		$num = $this->get_list_contacts($client);
+		$num = $this->get_list_contacts($this->client);
 	
 		$tabla_listado = new table(true);
 		$per = new permissions();
 		$per->get_permissions_list('contacts');
 		if ($num==0)
 		{
+			if ($this->client==0){
+				$per->add=false;				
+			}
 			$cadena=''.$cadena.$tabla_listado->tabla_vacia('contacts', $per->add);
 			$variables=$tabla_listado->nombres_variables;
 		}
 		else
-		{	
-			$cadena=''.$tabla_listado->make_tables('contacts',$this->contacts_list,array('Nombre',20,'Primer Apellido',20,'Segundo Apellido',20),array($this->ddbb_id_contact, $this->ddbb_name,$this->ddbb_last_name,$this->ddbb_last_name2),10,$per->permissions_module,$per->add);
+		{			
+			$cadena=''.$tabla_listado->make_tables('contacts',$this->contacts_list,array('Nombre',30,'Primer Apellido',20,'Segundo Apellido',20),array($this->ddbb_id_contact, $this->ddbb_name,$this->ddbb_last_name,$this->ddbb_last_name2),10,$per->permissions_module,$per->add);
 			$variables=$tabla_listado->nombres_variables;	
 		}				
 		$tpl->assign('variables',$variables);
@@ -887,7 +895,7 @@ class contacts{
 	
 	
 	function calculate_tpl($method, $tpl)
-	{
+	{	
 		$this->method=$method;
 		switch($method){
 				case 'add':	
@@ -902,7 +910,10 @@ class contacts{
 										break;
 								default: //Si se ha añadido
 										$this->method="list";
-										$tpl=$this->listar($tpl);										
+										$clients=new clients();
+										$tpl=$this->listar($tpl);
+										$clients->get_list_clients($_SESSION['ident_corp']);
+										$tpl->assign("clients",$clients->clients_list);	;
 										$tpl->assign("message","&nbsp;<br>Contacto a&ntilde;adido correctamente<br>&nbsp;");
 										break;
 							}							
@@ -910,15 +921,16 @@ class contacts{
 							break;
 							
 				case 'list':
+							$clients=new clients();
 							$tpl=$this->listar($tpl);
+							$clients->get_list_clients($_SESSION['ident_corp']);
+							$tpl->assign("clients",$clients->clients_list);	
 							$tpl->assign("objeto",$this);	
 							break;
 				case 'modify':
 							
 							
 							$this->read($_GET['id']);
-							
-						
 							$return=$this->modify();
 							switch ($return){										
 								case 0: //por defecto																					
@@ -931,7 +943,11 @@ class contacts{
 										break;
 								default: //Si se ha añadido
 										$this->method="list";
-										$tpl=$this->listar($tpl);										
+										$clients=new clients();
+										$tpl=$this->listar($tpl);
+										$clients->get_list_clients($_SESSION['ident_corp']);
+										$tpl->assign("clients",$clients->clients_list);	
+										$tpl->assign("objeto",$this);
 										$tpl->assign("message","&nbsp;<br>Contacto modificado correctamente<br>&nbsp;");
 										break;
 							}
@@ -946,7 +962,10 @@ class contacts{
 							else{
 								$this->contacts_list="";
 								$this->method="list";
+								$clients=new clients();
 								$tpl=$this->listar($tpl);
+								$clients->get_list_clients($_SESSION['ident_corp']);
+								$tpl->assign("clients",$clients->clients_list);	
 								$tpl->assign("message","&nbsp;<br>Contacto borrado correctamente<br>&nbsp;");
 							}
 							$tpl->assign("objeto",$this);
@@ -959,7 +978,10 @@ class contacts{
 							if($_SESSION['ident_corp'] != 0)
 							{
 								$this->method='list';
+								$clients=new clients();
 								$tpl=$this->listar($tpl);
+								$clients->get_list_clients($_SESSION['ident_corp']);
+								$tpl->assign("clients",$clients->clients_list);	
 								$tpl->assign("objeto",$this);	
 							}
 							else
@@ -980,7 +1002,7 @@ class contacts{
 		$this->last_name2=htmlentities($_POST[$this->ddbb_last_name2]);
 		$this->birthday=$_POST[$this->ddbb_birthday];
 		$this->address=htmlentities($_POST[$this->ddbb_address]);
-		$this->id_client=$_SESSION['ident_corp'];
+		$this->id_client=$_SESSION['id_client'];
 		$this->city=htmlentities($_POST[$this->ddbb_city]);
 		$this->state=htmlentities($_POST[$this->ddbb_state]);
 		$this->country=htmlentities($_POST[$this->ddbb_country]);
