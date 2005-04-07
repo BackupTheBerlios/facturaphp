@@ -152,7 +152,7 @@
 					$variable=$variable.'</select></td>';
 					
 					// BUSQUEDA
-					$variable=$variable.'<td width=\\"40%\\" align=\\"right\\"><form action=\\"index.php?module=&method=view&id=&search=\\"><img src=\\"pics/buscar.gif\\"><input class=\\"textoMenu\\ type=\\"text\\" name\\"'.$var_js.'\\" id=\\"'.$var_js.'\\"> <input type=\\"submit\\" class=\\"botones\\" value=\\"Buscar\\"></form></td>';
+					$variable=$variable.'<td width=\\"40%\\" align=\\"right\\"><form method=\\"post\\" action=\\"index.php?module='.$var_js.'&method=list\\"><img src=\\"pics/buscar.gif\\"><input class=\\"textoMenu\\ type=\\"text\\" name=\\"search\\" id=\\"search\\"> <input type=\\"submit\\" class=\\"botones\\" value=\\"Buscar\\" name=\\"submit_'.$var_js.'_search\\"></form></td>';
 					
 					// FIN
 					$variable=$variable.'</tr></table>';
