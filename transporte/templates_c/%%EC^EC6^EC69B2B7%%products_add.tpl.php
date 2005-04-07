@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.3, created on 2005-03-15 10:53:49
+<?php /* Smarty version 2.6.3, created on 2005-04-07 09:46:32
          compiled from products_add.tpl */ ?>
 <td valign="top">
 <?php $_smarty_tpl_vars = $this->_tpl_vars;
@@ -75,6 +75,14 @@ unset($_smarty_tpl_vars);
 "><font class="error"><?php echo $this->_tpl_vars['error_minimun_stock']; ?>
 </font></td>
 				</tr>
+				<tr>
+						<td width="125" align="right" class="CampoFormulario">Descripcion:</td>
+						<td rowspan="2" ><textarea name="<?php echo $this->_tpl_vars['objeto']->ddbb_descrip; ?>
+" class="textoMenu" id="<?php echo $this->_tpl_vars['objeto']->ddbb_descrip; ?>
+"><?php echo $this->_tpl_vars['objeto']->descrip; ?>
+</textarea> <font class="error"><?php echo $this->_tpl_vars['error_descrip']; ?>
+</font></td>
+					</tr>
 				<tr>
 				 	<td width="125px" class="CampoFormulario" >Imagen:</td>
 					<td><input type="file" class="textoMenu" name="<?php echo $this->_tpl_vars['objeto']->ddbb_path_photo; ?>

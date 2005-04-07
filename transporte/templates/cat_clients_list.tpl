@@ -14,25 +14,25 @@
 			  </table>
 			  <table width="100%">
 			  <tr><td class="message" align="center">{$message}</td></tr>
-			  <tr><td valign="top"><form method="post" action="index.php?module=cat_clients&method=list">
+			  <tr><td valign="top"><form method="post" action="index.php?module=cat_clients&method=list" name="form_searchs">
 			  	<table width="250px" align="center">
 				 <tr>
-					  <td colspan="2" class="cabeceraCampoFormulario">Criterios de b&uacute;squeda:</td>
+					  <td colspan="2" class="cabeceraCampoFormulario">B&uacute;squeda:</td>
 				  </tr>
 				  <tr>
-				  		<td width="125px" class="CampoFormulario" >B&uacute;squeda:</td>
-						<td ><input type="text" id="{$objeto->ddbb_search}" name="{$objeto->ddbb_search}" value="{$objeto->search_query}" class="textoMenu"></td>
-				  </tr>			 
+						<td  width="125px" align="right" class="CampoFormulario">Introduzca su b&uacute;squeda:</td>
+						<td><input type="text" id="{$objeto->ddbb_search}" name="{$objeto->ddbb_search}" value="{$objeto->search_query}" class="textoMenu"></td>
+				  </tr>
 				  <tr>
 						<td width="125" class="CampoFormulario">Nº de Registros por p&aacute;gina:</td>
-						<td><select name="Registros">
+						<td><select name="Registros" >
 						  <option selected>10</option>
 						  <option>30</option>
 						  <option>50</option>
 						</select></td>
 				 </tr>
 				 <tr>
-				 	<td align="center" colspan="2"><input type="submit" value="Buscar" name="Submit" class="botones"></td>
+				 	<td align="center" colspan="2"><input type="submit" value="Buscar" name="submit_cat_clients_search" class="botones"></td>
 				 </tr>
 				  </table>
 				</form><br>

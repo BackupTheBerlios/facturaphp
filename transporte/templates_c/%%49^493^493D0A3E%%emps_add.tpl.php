@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.3, created on 2005-03-29 12:07:18
+<?php /* Smarty version 2.6.3, created on 2005-04-07 09:45:01
          compiled from emps_add.tpl */ ?>
 <td valign="top">
 <script>
@@ -229,6 +229,25 @@ $this->_sections['indice']['last']       = ($this->_sections['indice']['iteratio
 </option>						 
 						  <?php endfor; endif; ?>
 						</select></td>
+				 </tr>
+				 <tr>
+						<td width="125" class="CampoFormulario" nowrap>Expedici&oacute;n de carnet de conducir:</td>
+						<td > 
+							<input class="textoMenu" type="text" id="<?php echo $this->_tpl_vars['objeto']->ddbb_license; ?>
+" name="<?php echo $this->_tpl_vars['objeto']->ddbb_license; ?>
+"  value="<?php echo $this->_tpl_vars['objeto']->license; ?>
+" size="15" maxlength="99" class="textfield">
+                                    <script type="text/javascript">
+                                    
+                    <!--
+                    document.write('<a title="Calendario" href="javascript:openCalendar(\'lang=es-utf-8&amp;server=1\', \'form_central\', \'<?php echo $this->_tpl_vars['objeto']->ddbb_license; ?>
+\', \'date\')"><img class="calendar" valign="center" src="pics/calendar.png" alt="Calendario"/></a>');
+                    //-->
+                    </script>
+		    
+						<font class="error"><?php echo $this->_tpl_vars['error_birthday']; ?>
+</font>
+						</td>
 				 </tr>
 				 <tr>
 						<td width="125" class="CampoFormulario" nowrap>Fecha de alta:</td>

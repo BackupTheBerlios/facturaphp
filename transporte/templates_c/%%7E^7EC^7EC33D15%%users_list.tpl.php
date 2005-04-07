@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.3, created on 2004-11-15 17:54:43
+<?php /* Smarty version 2.6.3, created on 2005-04-07 09:43:10
          compiled from users_list.tpl */ ?>
 <td valign="top">
 <?php echo $this->_tpl_vars['cadena']; ?>
@@ -22,33 +22,16 @@ unset($_smarty_tpl_vars);
 			  <table width="100%">
 			  <tr><td class="message" align="center"><?php echo $this->_tpl_vars['message']; ?>
 </td></tr>
-			  <tr><td valign="top"><form method="post" action="index.php?module=users&method=list">
+			  <tr><td valign="top"><form method="post" action="index.php?module=users&method=list" name="form_searchs">
 			  	<table width="250px" align="center">
 				 <tr>
-					  <td colspan="2" class="cabeceraCampoFormulario">Criterios de b&uacute;squeda:</td>
+					  <td colspan="2" class="cabeceraCampoFormulario">B&uacute;squeda:</td>
 				  </tr>
-					 <tr>
-						<td width="125px" class="CampoFormulario">Login:</td>
-						<td > <input type="text" id="<?php echo $this->_tpl_vars['objeto']->ddbb_login; ?>
-" name="<?php echo $this->_tpl_vars['objeto']->ddbb_login; ?>
-" class="textoMenu"></td>
-				  </tr>
-				  <tr>
-						<td width="125px" align="right" class="CampoFormulario">Nombre:</td>
-						<td> <input type="text" id="<?php echo $this->_tpl_vars['objeto']->ddbb_name; ?>
-" name="<?php echo $this->_tpl_vars['objeto']->ddbb_name; ?>
-" class="textoMenu"></td>
-				</tr>
 					<tr>
-						<td width="125px" class="CampoFormulario" >Primer apellido:</td>
-						<td > <input type="text" id="<?php echo $this->_tpl_vars['objeto']->ddbb_last_name; ?>
-" name="<?php echo $this->_tpl_vars['objeto']->ddbb_last_name; ?>
-" class="textoMenu"></td>
-				  </tr>
-				  <tr>
-						<td width="125px" class="CampoFormulario" >Segundo apellido:</td>
-						<td > <input type="text" id="<?php echo $this->_tpl_vars['objeto']->ddbb_last_name2; ?>
-" name="<?php echo $this->_tpl_vars['objeto']->ddbb_last_name2; ?>
+						<td  width="125px" align="right" class="CampoFormulario">Introduzca su b&uacute;squeda:</td>
+						<td ><input type="text" id="<?php echo $this->_tpl_vars['objeto']->ddbb_search; ?>
+" name="<?php echo $this->_tpl_vars['objeto']->ddbb_search; ?>
+" value="<?php echo $this->_tpl_vars['objeto']->search_query; ?>
 " class="textoMenu"></td>
 				  </tr>
 				    <tr>
@@ -60,7 +43,7 @@ unset($_smarty_tpl_vars);
 						</select></td>
 				 </tr>
 				 <tr>
-				 	<td align="center" colspan="2"><input type="submit" value="Buscar" name="Submit" class="botones"></td>
+				 	<td align="center" colspan="2"><input type="submit" value="Buscar" name="submit_users_search" class="botones"></td>
 				 </tr>
 				  </table>
 				</form><br>

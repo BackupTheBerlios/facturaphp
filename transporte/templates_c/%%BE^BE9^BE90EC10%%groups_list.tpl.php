@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.3, created on 2004-11-05 18:26:56
+<?php /* Smarty version 2.6.3, created on 2005-04-07 19:09:25
          compiled from groups_list.tpl */ ?>
 <td valign="top">
 <?php echo $this->_tpl_vars['cadena']; ?>
@@ -26,21 +26,16 @@ unset($_smarty_tpl_vars);
 			<table width="250px" align="center">
 
 					 <tr>
-					  <td colspan="2" class="cabeceraCampoFormulario">Criterios de b&uacute;squeda:</td>
+					  <td colspan="2" class="cabeceraCampoFormulario">B&uacute;squeda:</td>
 				  </tr>
 					<tr>
-						<td width="125" align="right" class="CampoFormulario" nowrap>Nombre:</td>
-						<td > <input type="text" id="<?php echo $this->_tpl_vars['objeto']->ddbb_name; ?>
-" name="<?php echo $this->_tpl_vars['objeto']->ddbb_name; ?>
-" class="textoMenu"></td>
-					</tr>
-					<tr>
-						<td width="125" class="CampoFormulario">Nombre web: </td>
-						<td > <input type="password" id="<?php echo $this->_tpl_vars['objeto']->ddbb_name_web; ?>
-" name="<?php echo $this->_tpl_vars['objeto']->ddbb_name_web; ?>
+						<td  width="125px" align="right" class="CampoFormulario">Introduzca su b&uacute;squeda:</td>
+						<td ><input type="text" id="<?php echo $this->_tpl_vars['objeto']->ddbb_search; ?>
+" name="<?php echo $this->_tpl_vars['objeto']->ddbb_search; ?>
+" value="<?php echo $this->_tpl_vars['objeto']->search_query; ?>
 " class="textoMenu"></td>
 				  </tr>
-				    <tr>
+				  <tr>
 						<td width="125" class="CampoFormulario">Nº de Registros por p&aacute;gina:</td>
 						<td><select name="Registros">
 						  <option selected>10</option>
@@ -49,7 +44,7 @@ unset($_smarty_tpl_vars);
 						</select></td>
 				 </tr>
 				 <tr>
-				 	<td align="center" colspan="2"><input type="submit" value="Buscar" name="Submit" class="botones"></td>
+				 	<td align="center" colspan="2"><input type="submit" value="Buscar" name="submit_groups_search" class="botones"></td>
 				 </tr>
 				  </table>
 				</table>				</form><br>

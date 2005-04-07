@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.3, created on 2005-03-09 14:44:29
+<?php /* Smarty version 2.6.3, created on 2005-04-07 09:48:27
          compiled from cat_servs_modify.tpl */ ?>
 <td valign="top">
 <form method="post" action="index.php?module=cat_servs&method=modify&id=<?php echo $this->_tpl_vars['objeto']->id_cat_serv; ?>
@@ -11,7 +11,7 @@
 						<td width="7%">
 						 <img src="pics/usuariosico.png" width="32" height="32">
 						</td>
-						<td width="93%" valign="middle"  nowrap>A&ntilde;adir Catego&iacute;a de Servicio</td>
+						<td width="93%" valign="middle"  nowrap>Modificar Categor&iacute;a de Servicio</td>
 			  </tr>
 		  </table>
 						<br>
@@ -38,7 +38,7 @@
 "></input></td>	
 				  </tr>
 					 <tr>
-						<td width="125px" align="right" class="CampoFormulario">Categoria Padre:</td>
+						<td width="125px" align="right" class="CampoFormulario">Categor&iacute;a Padre:</td>
 						<td> <select id="<?php echo $this->_tpl_vars['objeto']->ddbb_id_parent_cat; ?>
 " name="<?php echo $this->_tpl_vars['objeto']->ddbb_id_parent_cat; ?>
 ">

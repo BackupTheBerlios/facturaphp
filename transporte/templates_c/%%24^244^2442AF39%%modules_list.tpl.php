@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.3, created on 2004-11-17 10:50:24
+<?php /* Smarty version 2.6.3, created on 2005-04-06 11:16:51
          compiled from modules_list.tpl */ ?>
 <td valign="top">
 <?php echo $this->_tpl_vars['cadena']; ?>
@@ -25,24 +25,13 @@ unset($_smarty_tpl_vars);
 			  <tr><td valign="top"><form method="post" action="index.php?module=modules&method=list">
 			  	<table width="250px" align="center">
 				 <tr>
-					  <td colspan="2" class="cabeceraCampoFormulario">Criterios de b&uacute;squeda:</td>
+					  <td colspan="2" class="cabeceraCampoFormulario">B&uacute;squeda:</td>
 				  </tr>
-					 <tr>
-						<td width="125px" class="CampoFormulario">Nombre Web:</td>
-						<td > <input type="text" id="<?php echo $this->_tpl_vars['objeto']->ddbb_name_web; ?>
-" name="<?php echo $this->_tpl_vars['objeto']->ddbb_name_web; ?>
-" class="textoMenu"></td>
-				  </tr>
-				  <tr>
-						<td width="125px" align="right" class="CampoFormulario">Nombre:</td>
-						<td> <input type="text" id="<?php echo $this->_tpl_vars['objeto']->ddbb_name; ?>
-" name="<?php echo $this->_tpl_vars['objeto']->ddbb_name; ?>
-" class="textoMenu"></td>
-				</tr>
 					<tr>
-						<td width="125px" class="CampoFormulario" >Ruta:</td>
-						<td > <input type="text" id="<?php echo $this->_tpl_vars['objeto']->ddbb_path; ?>
-" name="<?php echo $this->_tpl_vars['objeto']->ddbb_path; ?>
+						<td  width="125px" align="right" class="CampoFormulario">Introduzca su b&uacute;squeda:</td>
+						<td ><input type="text" id="<?php echo $this->_tpl_vars['objeto']->ddbb_search; ?>
+" name="<?php echo $this->_tpl_vars['objeto']->ddbb_search; ?>
+" value="<?php echo $this->_tpl_vars['objeto']->search_query; ?>
 " class="textoMenu"></td>
 				  </tr>				  
 				    <tr>
@@ -54,7 +43,7 @@ unset($_smarty_tpl_vars);
 						</select></td>
 				 </tr>
 				 <tr>
-				 	<td align="center" colspan="2"><input type="submit" value="Buscar" name="Submit" class="botones"></td>
+				 	<td align="center" colspan="2"><input type="submit" value="Buscar" name="submit_modules_search" class="botones"></td>
 				 </tr>
 				  </table>
 				</form><br>

@@ -1,9 +1,6 @@
 <td valign="top">
 
-	{php}
-		echo $this->_tpl_vars['cadena'];
-	{/php}
-
+	{$cadena}
 {include file=capas.tpl}
 
 	  <table width="100%" cellpadding="0" cellspacing="0"  bgcolor="#000000">

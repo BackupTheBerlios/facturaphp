@@ -1,7 +1,13 @@
+<?php /* Smarty version 2.6.3, created on 2005-04-07 19:17:00
+         compiled from cat_clients_list.tpl */ ?>
 <td valign="top">
-{$cadena}
-	
-{include file=capas.tpl}
+<?php echo $this->_tpl_vars['cadena']; ?>
+
+<?php $_smarty_tpl_vars = $this->_tpl_vars;
+$this->_smarty_include(array('smarty_include_tpl_file' => "capas.tpl", 'smarty_include_vars' => array()));
+$this->_tpl_vars = $_smarty_tpl_vars;
+unset($_smarty_tpl_vars);
+ ?>
 
 	  <table width="100%" cellpadding="0" cellspacing="0"  bgcolor="#000000">
 						<tr Class="CabeceraModulo">
@@ -10,19 +16,23 @@
                           <!--<img src="pics/usuariosico.png" width="32" height="32">-->
 						</td>
 						<td width="93%" valign="middle"  nowrap>
-						  Buscar clientes </td>
+						  Buscar clientes</td>
 				</tr>
 			  </table>
 			  <table width="100%">
-			   <tr><td class="message" align="center">{$message}</td></tr>
-			  <tr><td valign="top"><form method="post" action="index.php?module=clients&method=list" name="form_searchs">
+			  <tr><td class="message" align="center"><?php echo $this->_tpl_vars['message']; ?>
+</td></tr>
+			  <tr><td valign="top"><form method="post" action="index.php?module=cat_clients&method=list" name="form_searchs">
 			  	<table width="250px" align="center">
 				 <tr>
 					  <td colspan="2" class="cabeceraCampoFormulario">B&uacute;squeda:</td>
 				  </tr>
 				  <tr>
 						<td  width="125px" align="right" class="CampoFormulario">Introduzca su b&uacute;squeda:</td>
-						<td><input type="text" id="{$objeto->ddbb_search}" name="{$objeto->ddbb_search}" value="{$objeto->search_query}" class="textoMenu"></td>
+						<td><input type="text" id="<?php echo $this->_tpl_vars['objeto']->ddbb_search; ?>
+" name="<?php echo $this->_tpl_vars['objeto']->ddbb_search; ?>
+" value="<?php echo $this->_tpl_vars['objeto']->search_query; ?>
+" class="textoMenu"></td>
 				  </tr>
 				  <tr>
 						<td width="125" class="CampoFormulario">Nº de Registros por p&aacute;gina:</td>
@@ -33,7 +43,7 @@
 						</select></td>
 				 </tr>
 				 <tr>
-				 	<td align="center" colspan="2"><input type="submit" value="Buscar" name="submit_clients_search" class="botones"></td>
+				 	<td align="center" colspan="2"><input type="submit" value="Buscar" name="submit_cat_clients_search" class="botones"></td>
 				 </tr>
 				  </table>
 				</form><br>
@@ -41,8 +51,7 @@
 						
 					</div>	
 					 <script>	
-					  	document.getElementById("divMostrar").innerHTML = clients_1;
+					  	document.getElementById("divMostrar").innerHTML = cat_clients_1;
 					  </script>
-				  
 			  </td></tr></table>
-	  </td>
+	  </td>
