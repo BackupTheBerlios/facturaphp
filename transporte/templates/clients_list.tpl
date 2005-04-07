@@ -10,12 +10,12 @@
                           <!--<img src="pics/usuariosico.png" width="32" height="32">-->
 						</td>
 						<td width="93%" valign="middle"  nowrap>
-						  Buscar empresas </td>
+						  Buscar clientes </td>
 				</tr>
 			  </table>
 			  <table width="100%">
 			   <tr><td class="message" align="center">{$message}</td></tr>
-			  <tr><td valign="top"><form method="post" action="index.php?module=corps&method=list" name="form_searchs">
+			  <tr><td valign="top"><form method="post" action="index.php?module=clients&method=list" name="form_searchs">
 			  	<table width="250px" align="center">
 				 <tr>
 					  <td colspan="2" class="cabeceraCampoFormulario">B&uacute;squeda:</td>
@@ -41,7 +41,7 @@
 						
 					</div>	
 					 <script>	
-					  	document.getElementById("divMostrar").innerHTML = corps_1;
+					  	document.getElementById("divMostrar").innerHTML = clients_1;
 					  </script>
 				  
 			  </td></tr></table>
