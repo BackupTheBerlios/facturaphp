@@ -696,8 +696,8 @@ class clients{
 			$tpl->assign('objeto',$this);
 			
 			
-			//listado de empleados
-			$tabla_contactos = new table(false);
+			//listado de contactos
+			/*$tabla_contactos = new table(false);
 			
 			$contactos = new contacts();
 
@@ -718,7 +718,7 @@ class clients{
 		
 				$variables_contactos=$tabla_contactos->nombres_variables;
 			}
-
+			*/
 			/*
 			//Productos
 			$products= new products(false);
@@ -757,40 +757,36 @@ class clients{
 			}
 						
 			//Rellenamos de forma provisional las variables con un "no se puede mostrar"
-			
-			$clients = new table(false);
-			$facturaspen= new table(false);
-			$facturascob= new table(false);
-			$gestionalm= new table(false);
-			$partes= new table(false);
-			
-			$cadena=$cadena.$clients->dont_show('clients');
-			$cadena=$cadena.$facturaspen->dont_show('facturaspen');
-			$cadena=$cadena.$facturascob->dont_show('facturascob');
-			$cadena=$cadena.$gestionalm->dont_show('gestionalm');
-			$cadena=$cadena.$partes->dont_show('partes');
-			
-			$variables_clients=$clients->nombres_variables;
-			$variables_facturaspen=$facturaspen->nombres_variables;
-			$variables_facturascob=$facturascobs->nombres_variables;
-			$variables_gestionalm=$gestionalm->nombres_variables;
-			$variables_partes=$partes->nombres_variables;
-			
 			*/
 			
+			$facturaspen= new table(false);
+			$facturascob= new table(false);
+			$albaranes= new table(false);
+			$partes= new table(false);
+			
+		
+			$cadena=$cadena.$facturaspen->dont_show('facturaspen');
+			$cadena=$cadena.$facturascob->dont_show('facturascob');
+			$cadena=$cadena.$albaranes->dont_show('albaranes');
+			$cadena=$cadena.$partes->dont_show('partes');
+			
+		
+			$variables_facturaspen=$facturaspen->nombres_variables;
+			$variables_facturascob=$facturascobs->nombres_variables;
+			$variables_albaranes=$albaranes->nombres_variables;
+			$variables_partes=$partes->nombres_variables;
+			
+
+			
 			$i=0;
-			while($i<(count($variables_contactos)))//+count($variables_clients)+count($variables_facturaspen)+count($variables_facturascob)+count($variables_products)+count($variables_services)+count($variables_gestionalm)+count($variables_partes)))
+			while($i<(count($variables_contactos)+count($variables_clients)+count($variables_facturaspen)+count($variables_facturascob)+count($variables_products)+count($variables_services)+count($variables_albaranes)+count($variables_partes)))
 			{
 				for($j=0;$j<count($variables_contactos);$j++)
 				{
 					$variables[$i]=$variables_contactos[$j];
 					$i++;
-				}
-		/*		for($j=0;$j<count($variables_clients);$j++)
-				{
-					$variables[$i]=$variables_clients[$j];
-					$i++;
-				}
+				}		
+				
 				for($j=0;$j<count($variables_facturaspen);$j++)
 				{
 					$variables[$i]=$variables_facturaspen[$j];
@@ -811,16 +807,16 @@ class clients{
 					$variables[$i]=$variables_services[$j];
 					$i++;
 				}
-				for($j=0;$j<count($variables_gestionalm);$j++)
+				for($j=0;$j<count($variables_albaranes);$j++)
 				{
-					$variables[$i]=$variables_gestionalm[$j];
+					$variables[$i]=$variables_albaranes[$j];
 					$i++;
 				}
 				for($j=0;$j<count($variables_partes);$j++)
 				{
 					$variables[$i]=$variables_partes[$j];
 					$i++;
-				}	*/			
+				}	
 			}
 			
 			//Se comprueba si hay permiso para borrar o modificar
