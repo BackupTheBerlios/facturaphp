@@ -77,7 +77,36 @@ class cat_servs{
 		{
 			//Obtener datos del formulario de búsqueda
 			$this->get_fields_from_search_post();
-						
+					
+			//Generar consulta
+			if($this->search_query[0]=='\\')
+			{	
+				//Guardar consulta para no modificar la variable 
+				//que se mande denuevo al formulario
+				$query =  $this->search_query;
+				
+				//Se va creando la nueva query que se mandará mas tarde 
+				//al formulario (se busca la siquiente ocurrencia de comillas)
+				$query = substr ($this->search_query, 2);
+				
+				switch($this->search_query[1])
+				{
+					case '"':
+								$cadena = substr ($this->search_query, 2, stripos($query, '"'));	
+								//Preparar la cadena para volver a mostrarla sin caracteres de PHP
+								$this->search_query = stripslashes($cadena);
+								
+								break;
+					case '\'':	
+								$cadena = substr ($this->search_query, 2, stripos($query, '\''));
+								//Preparar la cadena para volver a mostrarla sin caracteres de PHP
+								$this->search_query = stripslashes($cadena);
+													
+								break;
+					default: break;
+				}
+			}
+				
 			//Crear query
 			$my_search = new search();
 			$query = $my_search->get_query($this->search_query, FALSE, $this->search, $this->fields_list);
