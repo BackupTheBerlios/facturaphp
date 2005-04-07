@@ -1070,10 +1070,10 @@ class modules{
 				$i++;
 			}
 		}		
-		echo "module methods";
-		print_r(module_methods);
-		echo "<br>module_meth";
-		print_r(module_meth);
+
+
+
+
 		return 0;
 	}	
 	
@@ -1141,18 +1141,18 @@ class modules{
 				
 		
 		//Borramos
-		print_r($borrados);
+
 		
 		for($i=0;$i<count($borrados);$i++){
 			$this->delete_per_group_user_methods('per_user_methods',$borrados[$i]['id_method'],'id_method');	
 			$this->delete_per_group_user_methods('per_group_methods',$borrados[$i]['id_method'],'id_method');	
 			$this->delete_per_group_user_methods('methods',$borrados[$i]['id_method'],'id_method');	
-			echo "hola desde borrados";
+
 		}
 		//Añadimos los nuevos
 		
 		for	($i=0;$i<count($nuevos);$i++){
-			echo "hola desde nuevos";
+
 			$method = new methods();
 			$method->id_module=$this->id_module;
 			$method->name=$nuevos[$i]["name"];
