@@ -10,7 +10,7 @@
                           <!--<img src="pics/usuariosico.png" width="32" height="32">-->
 						</td>
 						<td width="93%" valign="middle"  nowrap>
-						  Buscar empleados </td>
+						  Buscar contactos </td>
 				</tr>
 			  </table>
 			  <table width="100%">

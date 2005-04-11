@@ -523,7 +523,7 @@ class cat_prods{
 	function view_prods($id){
 		
 			$product = new products();	
-			$product->get_list_products();			
+			$product->get_list_products($_SESSION['ident_corp']);			
 				$result=$product->verify_products($id);
 				$this->productos="";
 				if ($result!=0){

@@ -81,9 +81,9 @@
 					  </tr>
 					  <tr>
 					  	<td width="50%" align="center">
-					<img src="pics/pestagna-modulessobre.gif" width="71" height="23"  name="boton" id="drivers" onClick="Ocultar(this,'drivers_1')"> 					</td>
+					<img src="pics/pestagna-driverssobre.gif" width="71" height="23"  name="boton" id="drivers" onClick="Ocultar(this,'drivers_1')"> 					</td>
 					  	<td width="50%"  align="center">
-					<img src="pics/pestagna-group_users.gif" width="71" height="23" id="laborers" name="boton" onClick="Ocultar(this,'laborers_1')">
+					<img src="pics/pestagna-laborers.gif" width="71" height="23" id="laborers" name="boton" onClick="Ocultar(this,'laborers_1')">
 						</td>
 					  	
 					  </tr>
