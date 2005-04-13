@@ -822,7 +822,7 @@ class clients{
 				$per = new permissions();
 				$per->get_permissions_list('clients');
 							
-				$cadena=$cadena.$tabla_contactos->make_tables('contacts',$contactos->contacts_list,array('Nombre',20,'Primer Apellido',20,'Segundo Apellido',20),array('id_contact', 'name','last_name','last_name2'),10,$per->permissions_module,$per->add);
+				$cadena=$cadena.$tabla_contactos->make_tables('contacts',$contactos->contacts_list,array('Nombre',20,'Primer Apellido',20,'Segundo Apellido',20),array('id_contact', 'name','last_name','last_name2'),$_SESSION['num_regs'],$per->permissions_module,$per->add);
 		
 				$variables_contactos=$tabla_contactos->nombres_variables;
 			}
