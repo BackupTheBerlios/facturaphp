@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 -- 
 -- Servidor: localhost
--- Tiempo de generación: 13-04-2005 a las 12:21:06
+-- Tiempo de generación: 13-04-2005 a las 11:55:18
 -- Versión del servidor: 4.0.24
 -- Versión de PHP: 4.3.10-10
 -- 
@@ -155,12 +155,15 @@ CREATE TABLE IF NOT EXISTS `clients` (
   `id_pay_type` int(11) NOT NULL default '0',
   `payday` date NOT NULL default '0000-00-00',
   PRIMARY KEY  (`id_client`)
-) TYPE=MyISAM AUTO_INCREMENT=1 ;
+) TYPE=MyISAM AUTO_INCREMENT=5 ;
 
 -- 
 -- Volcar la base de datos para la tabla `clients`
 -- 
 
+INSERT INTO `clients` VALUES (2, 1, 2, 'pepe', 'pepe', '23423', 'sfdadsf', 'bads', 'bads', 'sdgf', 'sfdgsfdg', 'ggsaf', 'fgfd', 'ggg', 'sdfgsf', 'dsgfsfgd', 'sgfsfdg', 'sgf', 'asdfaf', 0, '0000-00-00');
+INSERT INTO `clients` VALUES (3, 1, 2, 'cliente 2', 'Cliente 2 S.L.', 'afdadsf', 'adsf', 'adfs', 'adfs', 'fafd', 'afd', 'afda', 'dfadsf', 'adsfadf', 'adfsa', 'fdafds', 'afdsa', 'adfasfd', 'fdsadfs', 0, '0000-00-00');
+INSERT INTO `clients` VALUES (4, 1, 3, 'cliente 3', 'cliente 3 S.L.', 'asdfad', 'fasdf', 'adfadsf', 'fdasdf', 'dfadfasfd', 'adsfadsf', 'fasdf', 'asdfasdf', 'asfas', 'asdfadsf', 'adsfa', 'adsfa', 'dfasfdafds', 'adfsadfasdfadsf', 0, '2005-04-28');
 
 -- --------------------------------------------------------
 
@@ -186,12 +189,14 @@ CREATE TABLE IF NOT EXISTS `contacts` (
   `country` varchar(50) NOT NULL default '',
   PRIMARY KEY  (`id_contact`),
   KEY `id_client` (`id_client`)
-) TYPE=MyISAM AUTO_INCREMENT=1 ;
+) TYPE=MyISAM AUTO_INCREMENT=4 ;
 
 -- 
 -- Volcar la base de datos para la tabla `contacts`
 -- 
 
+INSERT INTO `contacts` VALUES (2, 3, 'luis', 'apoidfj', 'odfjpaojid', '2005-04-22', 'adfadf', 'adfadfadf', 'dfafds', 'adfa', 'adfadfaf', 'adfadfadf', 'adfadfadfa', 'adfadfadf', 'adfafdadfa');
+INSERT INTO `contacts` VALUES (3, 2, 'antonio', 'ppadpfoiajdf', 'dpfaoifja', '2005-04-22', 'afdadaf', 'fad', 'adfadfa', 'adfsasdfdf', 'adfadsf', 'adfadfa', 'fdafddfafa', 'adfadfafad', 'fadfadsfa');
 
 -- --------------------------------------------------------
 
@@ -554,7 +559,7 @@ CREATE TABLE IF NOT EXISTS `modules` (
   `order` int(10) unsigned NOT NULL default '0',
   PRIMARY KEY  (`id_module`),
   UNIQUE KEY `nombre` (`name`)
-) TYPE=MyISAM AUTO_INCREMENT=42 ;
+) TYPE=MyISAM AUTO_INCREMENT=45 ;
 
 -- 
 -- Volcar la base de datos para la tabla `modules`
@@ -575,19 +580,22 @@ INSERT INTO `modules` VALUES (12, 'services', 'Servicios', 'index.php?module=ser
 INSERT INTO `modules` VALUES (13, 'vehicles_gestion', 'Gesti&oacute;n de veh&iacute;culos', '', 1, 0, -2, 40);
 INSERT INTO `modules` VALUES (14, 'cat_vehicles', 'Categor&iacute;as de veh&iacute;culos', 'index.php?module=cat_vehicles', 1, 0, 19, 42);
 INSERT INTO `modules` VALUES (15, 'drivers', 'Conductores', 'index.php?module=drivers', 1, 0, 13, 43);
-INSERT INTO `modules` VALUES (16, 'contact', 'Contacto', 'index.php?module=contact', 1, 1, 0, 4);
+INSERT INTO `modules` VALUES (16, 'contacts', 'Contactos', 'index.php?module=contacts', 1, 0, 42, 4);
 INSERT INTO `modules` VALUES (17, 'sessions', 'Sesiones', 'index.php?module=sessions', 1, 0, 18, 13);
 INSERT INTO `modules` VALUES (18, 'access_gestion', 'Acceso', '', 1, 0, -2, 10);
 INSERT INTO `modules` VALUES (19, 'vehicles', 'Veh&iacute;culos de la empresa', 'index.php?module=vehicles', 1, 0, 13, 41);
-INSERT INTO `modules` VALUES (29, 'modules_gestion', 'MÃ³dulos', '', 1, 1, -2, 20);
+INSERT INTO `modules` VALUES (29, 'modules_gestion', 'Módulos', '', 1, 1, -2, 20);
 INSERT INTO `modules` VALUES (30, 'cat_prods', 'Categor&iacute;as de Productos', 'index.php?module=cat_prods', 1, 0, 11, 0);
-INSERT INTO `modules` VALUES (31, 'laborers', 'Peones de carga', 'index.php?module=laborers', 1, 0, 13, 44);
+INSERT INTO `modules` VALUES (31, 'laborers', 'Peones', 'index.php?module=laborers', 1, 0, 13, 44);
 INSERT INTO `modules` VALUES (32, 'stock_gestion', 'Gesti&oacute;n de stock', '', 1, 0, -2, 50);
 INSERT INTO `modules` VALUES (33, 'vendors', 'Proveedores', 'index.php?module=vendors', 1, 0, 32, 51);
 INSERT INTO `modules` VALUES (34, 'corps_gestion', 'Empresas', '', 1, 0, -2, 30);
 INSERT INTO `modules` VALUES (35, 'products_gestion', 'Ges. Productos', '', 1, 0, -2, 0);
 INSERT INTO `modules` VALUES (36, 'services_gestion', 'Ges. Servicios', '', 1, 0, -2, 0);
 INSERT INTO `modules` VALUES (37, 'cat_servs', 'Categor&iacute;as de Servicios', 'index.php?module=cat_servs', 1, 0, 12, 0);
+INSERT INTO `modules` VALUES (43, 'cat_clients', 'Categor&iacute;as de clientes', 'index.php?module=cat_clients', 1, 0, 42, 0);
+INSERT INTO `modules` VALUES (42, 'clients_gestion', 'Ges. Clientes', 'index.php?module=clients', 1, 0, -2, 0);
+INSERT INTO `modules` VALUES (44, 'clients', 'Clientes', 'index.php?module=clients', 1, 0, 42, 0);
 
 -- --------------------------------------------------------
 
@@ -945,16 +953,14 @@ CREATE TABLE IF NOT EXISTS `sessions` (
   `id_user` int(11) NOT NULL default '0',
   `up` datetime NOT NULL default '0000-00-00 00:00:00',
   `down` datetime default '0000-00-00 00:00:00',
+  `expire` int(25) NOT NULL default '0',
   PRIMARY KEY  (`id_session`)
-) TYPE=MyISAM AUTO_INCREMENT=4 ;
+) TYPE=MyISAM AUTO_INCREMENT=7 ;
 
 -- 
 -- Volcar la base de datos para la tabla `sessions`
 -- 
 
-INSERT INTO `sessions` VALUES (1, '13e3dd22f19bcf73e0f32cc8c01f38a6', 1, '2005-03-18 17:00:22', '2005-03-18 17:28:55');
-INSERT INTO `sessions` VALUES (2, '38673e46d14ba0a18c09ab037f32e717', 1, '2005-03-18 17:29:01', '2005-03-18 17:58:51');
-INSERT INTO `sessions` VALUES (3, '676eafcea7ec1888d09b1de472246e60', 1, '2005-03-18 17:58:55', '0000-00-00 00:00:00');
 
 -- --------------------------------------------------------
 
