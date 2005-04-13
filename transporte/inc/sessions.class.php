@@ -62,26 +62,7 @@ class sessions{
 		$this->fields_list->add($this->ddbb_up, $this->up, 'datetime',11,0);
 		$this->fields_list->add($this->ddbb_down, $this->down, 'datetime',11,0);
 		$this->fields_list->add($this->ddbb_expire, $this->expire, 'int',25,0);
-		//print_r($this);
-		//se puede acceder a las sesiones por numero de campo o por nombre de campo
-/*		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
-		//crea una nueva conexi—n con una bbdd (mysql)
-		$this->db = NewADOConnection($this->db_type);
-		//le dice que no salgan los errores de conexi—n de la ddbb por pantalla
-		$this->db->debug=false;
-		//realiza una conexi—n permanente con la bbdd
-		$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
-		//mete la consulta
-		$this->sql="SELECT * FROM ".$this->table_prefix.$this->table_name;
-		//la ejecuta y guarda los resultados
-		$this->result = $this->db->Execute($this->sql);
-		//si falla 
-		if ($this->result === false){
-			$error=1;
-			return 0;
-		}  
-		$this->db->close();
-*/		
+		
 		return $this;	 
 		
 	}
@@ -430,7 +411,6 @@ class sessions{
 		}else {
 			//devolvemos 0 ya que no se ha insertado el registro
 			$this->error=-1;
-			print "FALLA";
 			$this->db->close();
 			return 0;
 		}
@@ -440,6 +420,14 @@ class sessions{
 
 
 	function listar($tpl){
+			
+		if (isset($_POST['submit_sessions_reg']))
+		{
+			//Se toma el número de registros y se guarda en varable de sesión
+			//que se cumpla en todos los accesos del usuario
+			$_SESSION['num_regs']= $_POST['regs'];
+			
+		}	
 		$num = $this->get_list_sessions();
 		$tabla_listado = new table(true);			
 		$per = new permissions();
@@ -463,7 +451,7 @@ class sessions{
 		}
 		else
 		{
-			$cadena=''.$tabla_listado->make_tables('sessions',$this->sessions_list,array('Usuario',20, 'Fecha/Hora conexión', 20, 'Fecha/Hora desconexión', 20),array($this->ddbb_id_session,$this->ddbb_name, $this->ddbb_up, $this->ddbb_down),10,$permisos,false);
+			$cadena=''.$tabla_listado->make_tables('sessions',$this->sessions_list,array('Usuario',20, 'Fecha/Hora conexión', 20, 'Fecha/Hora desconexión', 20),array($this->ddbb_id_session,$this->ddbb_name, $this->ddbb_up, $this->ddbb_down),$_SESSION['num_regs'],$permisos,false);
 			$variables=$tabla_listado->nombres_variables;
 		}		
 		$tpl->assign('variables',$variables);

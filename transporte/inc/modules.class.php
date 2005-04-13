@@ -1033,6 +1033,13 @@ class modules{
 	}
 	
 	function listar($tpl){
+		if (isset($_POST['submit_modules_reg']))
+		{
+			//Se toma el número de registros y se guarda en varable de sesión
+			//que se cumpla en todos los accesos del usuario
+			$_SESSION['num_regs']= $_POST['regs'];
+			
+		}
 		$num = $this->get_list_modules();
 		$tabla_listado = new table(true);
 		$per = new permissions();

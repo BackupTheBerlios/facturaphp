@@ -1035,7 +1035,7 @@ class vehicles{
 				}
 				else
 				{	
-					$cadena=$cadena.$tabla_listado_drivers->make_tables('drivers',$conductor->drivers_list,array('Nombre',20,'Primer Apellido',20,'Segundo Apellido',20),array($conductor->ddbb_id_driver, $conductor->ddbb_name, $conductor->ddbb_last_name, $conductor->ddbb_last_name2),10,array(),false);
+					$cadena=$cadena.$tabla_listado_drivers->make_tables('drivers',$conductor->drivers_list,array('Nombre',20,'Primer Apellido',20,'Segundo Apellido',20),array($conductor->ddbb_id_driver, $conductor->ddbb_name, $conductor->ddbb_last_name, $conductor->ddbb_last_name2),$_SESSION['num_regs'],array(),false);
 					$variables_drivers=$tabla_listado_drivers->nombres_variables;	
 				}				
 			}
@@ -1062,7 +1062,7 @@ class vehicles{
 				}
 				else
 				{	
-					$cadena=$cadena.$tabla_listado_laborers->make_tables('laborers',$peon->laborers_list,array('Nombre',20,'Primer Apellido',20,'Segundo Apellido',20),array($peon->ddbb_id_laborer, $peon->ddbb_name, $peon->ddbb_last_name, $peon->ddbb_last_name2),10,array(),false);
+					$cadena=$cadena.$tabla_listado_laborers->make_tables('laborers',$peon->laborers_list,array('Nombre',20,'Primer Apellido',20,'Segundo Apellido',20),array($peon->ddbb_id_laborer, $peon->ddbb_name, $peon->ddbb_last_name, $peon->ddbb_last_name2),$_SESSION['num_regs'],array(),false);
 					$variables_laborers=$tabla_listado_laborers->nombres_variables;	
 				}	
 			}
@@ -1094,6 +1094,13 @@ class vehicles{
 	}
 	
 	function listar($tpl){
+		if (isset($_POST['submit_vehicles_reg']))
+		{
+			//Se toma el número de registros y se guarda en varable de sesión
+			//que se cumpla en todos los accesos del usuario
+			$_SESSION['num_regs']= $_POST['regs'];
+			
+		}
 		$num = $this->get_list_vehicles($_SESSION['ident_corp']);
 		$tabla_listado = new table(true);			
 		$per = new permissions();
@@ -1105,7 +1112,7 @@ class vehicles{
 		}
 		else
 		{
-			$cadena=''.$tabla_listado->make_tables('vehicles',$this->vehicles_list,array('Alias',40,'Matr&iacute;cula',40),array($this->ddbb_id_vehicle,$this->ddbb_alias,$this->ddbb_number_plate),10,$per->permissions_module,$per->add);
+			$cadena=''.$tabla_listado->make_tables('vehicles',$this->vehicles_list,array('Alias',40,'Matr&iacute;cula',40),array($this->ddbb_id_vehicle,$this->ddbb_alias,$this->ddbb_number_plate),$_SESSION['num_regs'],$per->permissions_module,$per->add);
 			$variables=$tabla_listado->nombres_variables;
 		}		
 		$tpl->assign('variables',$variables);

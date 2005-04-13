@@ -1032,7 +1032,7 @@ class emps{
 						} 
 					}
 								
-					$cadena=$cadena.$tabla_vacaciones->make_tables('holydays',$this->holydays_list,array('Fecha de baja',25,'Fecha de alta',25,'Motivo',25),array('id_holy','gone','come','ill'),10,$permisos,$per->add);
+					$cadena=$cadena.$tabla_vacaciones->make_tables('holydays',$this->holydays_list,array('Fecha de baja',25,'Fecha de alta',25,'Motivo',25),array('id_holy','gone','come','ill'),$_SESSION['num_regs'],$permisos,$per->add);
 					$variables_vacaciones=$tabla_vacaciones->nombres_variables;
 				}
 			}
@@ -1105,6 +1105,13 @@ class emps{
 
 	function listar($tpl)
 	{
+		if (isset($_POST['submit_corps_reg']))
+		{
+			//Se toma el número de registros y se guarda en varable de sesión
+			//que se cumpla en todos los accesos del usuario
+			$_SESSION['num_regs']= $_POST['regs'];
+			
+		}
 		$num = $this->get_list_emps($_SESSION['ident_corp']);
 	
 		$tabla_listado = new table(true);
@@ -1117,7 +1124,7 @@ class emps{
 		}
 		else
 		{	
-			$cadena=''.$tabla_listado->make_tables('emps',$this->emps_list,array('Nombre',20,'Primer Apellido',20,'Segundo Apellido',20),array($this->ddbb_id_emp, $this->ddbb_name,$this->ddbb_last_name,$this->ddbb_last_name2),10,$per->permissions_module,$per->add);
+			$cadena=''.$tabla_listado->make_tables('emps',$this->emps_list,array('Nombre',20,'Primer Apellido',20,'Segundo Apellido',20),array($this->ddbb_id_emp, $this->ddbb_name,$this->ddbb_last_name,$this->ddbb_last_name2),$_SESSION['num_regs'],$per->permissions_module,$per->add);
 			$variables=$tabla_listado->nombres_variables;	
 		}				
 		$tpl->assign('variables',$variables);

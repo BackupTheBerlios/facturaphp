@@ -62,6 +62,7 @@ class cat_clients{
 		
 		$this->search[0]= 'name';
 		$this->search[1]= 'descrip';
+
 		
 		return $this->get_list_cat_clients();	 
 		

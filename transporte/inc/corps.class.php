@@ -283,7 +283,13 @@ class corps{
 	}
 	
 	function listar($tpl){
-
+		if (isset($_POST['submit_corps_reg']))
+		{
+			//Se toma el número de registros y se guarda en varable de sesión
+			//que se cumpla en todos los accesos del usuario
+			$_SESSION['num_regs']= $_POST['regs'];
+			
+		}
 		$tabla_listado = new table(true);
 		$per = new permissions();
 		$per->get_permissions_list('corps');
@@ -294,7 +300,7 @@ class corps{
 		}
 		else
 		{
-			$cadena=''.$tabla_listado->make_tables('corps',$this->corps_list,array('Nombre',20,'Nombre completo',20,'CIF|NIF',20,'Telefono',20),array($this->ddbb_id_corp,$this->ddbb_name,$this->ddbb_full_name,$this->ddbb_cif_nif,$this->ddbb_phone),20,$per->permissions_module,$per->add);
+			$cadena=''.$tabla_listado->make_tables('corps',$this->corps_list,array('Nombre',20,'Nombre completo',20,'CIF|NIF',20,'Telefono',20),array($this->ddbb_id_corp,$this->ddbb_name,$this->ddbb_full_name,$this->ddbb_cif_nif,$this->ddbb_phone),$_SESSION['num_regs'],$per->permissions_module,$per->add);
 			$variables=$tabla_listado->nombres_variables;		
 		}		
 		$tpl->assign('variables',$variables);
@@ -710,7 +716,7 @@ class corps{
 				$per = new permissions();
 				$per->get_permissions_list('corps');
 							
-				$cadena=$cadena.$tabla_empleados->make_tables('emps',$empleados->emps_list,array('Nombre',20,'Primer Apellido',20,'Segundo Apellido',20),array('id_emp', 'name','last_name','last_name2'),10,$per->permissions_module,$per->add);
+				$cadena=$cadena.$tabla_empleados->make_tables('emps',$empleados->emps_list,array('Nombre',20,'Primer Apellido',20,'Segundo Apellido',20),array('id_emp', 'name','last_name','last_name2'),$_SESSION['num_regs'],$per->permissions_module,$per->add);
 		
 				$variables_empleados=$tabla_empleados->nombres_variables;
 			}
@@ -730,7 +736,7 @@ class corps{
 			{	
 				$per = new permissions();
 				$per->get_permissions_list('corps');							
-				$cadena=$cadena.$tabla_productos->make_tables('products',$products->products_list,array('Nombre',20,'Nombre Web',40),array('id_product', 'name','name_web'),10,$per->permissions_module,$per->add);		
+				$cadena=$cadena.$tabla_productos->make_tables('products',$products->products_list,array('Nombre',20,'Nombre Web',40),array('id_product', 'name','name_web'),$_SESSION['num_regs'],$per->permissions_module,$per->add);		
 				$variables_products=$tabla_productos->nombres_variables;
 			}
 			
@@ -748,10 +754,9 @@ class corps{
 			{	
 				$per = new permissions();
 				$per->get_permissions_list('corps');							
-				$cadena=$cadena.$tabla_servicios->make_tables('services',$services->services_list,array('Nombre',20,'Nombre Web',40),array('id_service', 'name','name_web'),10,$per->permissions_module,$per->add);		
+				$cadena=$cadena.$tabla_servicios->make_tables('services',$services->services_list,array('Nombre',20,'Nombre Web',40),array('id_service', 'name','name_web'),$_SESSION['num_regs'],$per->permissions_module,$per->add);		
 				$variables_services=$tabla_servicios->nombres_variables;
 			}
-					
 			
 			//clientes
 			$clients= new clients(false);

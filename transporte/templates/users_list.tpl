@@ -24,15 +24,18 @@
 						<td ><input type="text" id="{$objeto->ddbb_search}" name="{$objeto->ddbb_search}" value="{$objeto->search_query}" class="textoMenu"></td>
 				  </tr>
 				    <tr>
+				 	<td colspan="2"><input type="submit" value="Buscar" name="submit_users_search" class="botones"></td>
+				 </tr>
+			    <tr>
 						<td width="125" class="CampoFormulario">Nº de Registros por p&aacute;gina:</td>
-						<td><select name="Registros">
+						<td><select name="regs">
 						  <option selected>10</option>
 						  <option>30</option>
 						  <option>50</option>
 						</select></td>
 				 </tr>
-				 <tr>
-				 	<td align="center" colspan="2"><input type="submit" value="Buscar" name="submit_users_search" class="botones"></td>
+				  <tr>
+				 	<td colspan="2"><input type="submit" value="Cambiar nº de registros" name="submit_users_reg" class="botones"></td>
 				 </tr>
 				  </table>
 				</form><br>

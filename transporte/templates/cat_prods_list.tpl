@@ -17,7 +17,7 @@
 			  <tr><td valign="top"><form method="post" action="index.php?module=cat_prods&method=list">
 			  	<table width="250px" align="center">
 				 <tr>
-					  <td colspan="2" class="cabeceraCampoFormulario">Criterios de b&uacute;squeda:</td>
+					  <td colspan="2" class="cabeceraCampoFormulario">B&uacute;squeda:</td>
 				  </tr>
 					
 				   <tr>
@@ -26,17 +26,20 @@
 				  </tr>
 				
 				    <tr>
+				 	<td colspan="2"><input type="submit" value="Buscar" name="submit_cat_prods_search" class="botones"></td>
+				 </tr>
+			    <tr>
 						<td width="125" class="CampoFormulario">Nº de Registros por p&aacute;gina:</td>
-						<td><select name="Registros">
+						<td><select name="regs">
 						  <option selected>10</option>
 						  <option>30</option>
 						  <option>50</option>
 						</select></td>
 				 </tr>
-				 <tr>
-				 	<td align="center" colspan="2"><input type="submit" value="Buscar" name="submit_cat_prods_search" class="botones"></td>
+				  <tr>
+				 	<td colspan="2"><input type="submit" value="Cambiar nº de registros" name="submit_cat_prods_reg" class="botones"></td>
 				 </tr>
-				  </table>
+								  </table>
 				</form><br>
 				  <div name="divMostrar" id="divMostrar" >
 						

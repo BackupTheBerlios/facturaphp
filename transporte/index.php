@@ -102,6 +102,8 @@ if(!isset($_SESSION['user']))
 		
 		//Inicia empresas a 0 (no se conoce empresa con la que se quiere trabajar)
 		$_SESSION['ident_corp'] = 0;
+		//Inicia el nº de registros a la hora de listar
+		$_SESSION['num_regs']=10;
 		
 		//Se crea coockie
 		if(!isset($_COOKIE[session_name()]))

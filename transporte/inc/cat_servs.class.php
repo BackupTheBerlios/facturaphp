@@ -614,6 +614,13 @@ class cat_servs{
 	}
 	
 	function listar($tpl){
+		if (isset($_POST['submit_cat_servs_reg']))
+		{
+			//Se toma el número de registros y se guarda en varable de sesión
+			//que se cumpla en todos los accesos del usuario
+			$_SESSION['num_regs']= $_POST['regs'];
+			
+		}
 		$num = $this->get_list_cat_servs();
 		$tabla_listado = new table(true);
 		$per = new permissions();
@@ -625,7 +632,7 @@ class cat_servs{
 		}
 		else
 		{	
-			$cadena=''.$tabla_listado->make_tables('cat_servs',$this->cat_servs_list,array('Nombre',20,'Descripci&oacute;n',60),array($this->ddbb_id_cat_serv,$this->ddbb_name,$this->ddbb_descrip),10,$per->permissions_module,$per->add);
+			$cadena=''.$tabla_listado->make_tables('cat_servs',$this->cat_servs_list,array('Nombre',20,'Descripci&oacute;n',60),array($this->ddbb_id_cat_serv,$this->ddbb_name,$this->ddbb_descrip),$_SESSION['num_regs'],$per->permissions_module,$per->add);
 			$variables=$tabla_listado->nombres_variables;
 		}		
 		$tpl->assign('variables',$variables);

@@ -967,7 +967,7 @@ class users{
 					}
 					
 						
-					$cadena=$cadena.$tabla_modulos->make_tables('modules',$permissions,array('Nombre del modulo',20,'Métodos en los que se tiene permiso',120),array('id_module','name', 'methods'),10,null,false);
+					$cadena=$cadena.$tabla_modulos->make_tables('modules',$permissions,array('Nombre del modulo',20,'Métodos en los que se tiene permiso',120),array('id_module','name', 'methods'),$_SESSION['num_regs'],null,false);
 					$variables_modulos=$tabla_modulos->nombres_variables;
 				}
 			}
@@ -999,7 +999,7 @@ class users{
 					if($per->permissions_module[$i] == 'delete')
 						$per_delete = array('delete');
 								
-					$cadena=$cadena.$tabla_grupos->make_tables('group_users',$this->groups_list,array('Nombre de grupo',75),array('id_group','name_web'),10,/*$per_delete*/array(),/*$per->add*/false);
+					$cadena=$cadena.$tabla_grupos->make_tables('group_users',$this->groups_list,array('Nombre de grupo',75),array('id_group','name_web'),$_SESSION['num_regs'],array(),false);
 					$variables_grupos=$tabla_grupos->nombres_variables;
 				}
 			}
@@ -1036,6 +1036,13 @@ class users{
 	}
 	
 	function listar($tpl){
+		if (isset($_POST['submit_users_reg']))
+		{
+			//Se toma el número de registros y se guarda en varable de sesión
+			//que se cumpla en todos los accesos del usuario
+			$_SESSION['num_regs']= $_POST['regs'];
+			
+		}
 		$num = $this->get_list_users();
 		$tabla_listado = new table(true);
 		$per = new permissions();
@@ -1047,7 +1054,7 @@ class users{
 		}
 		else
 		{	
-			$cadena=''.$tabla_listado->make_tables('users',$this->users_list,array('Login',20,'Nombre',20,'Primer Apellido',20,'Segundo Apellido',20),array($this->ddbb_id_user,$this->ddbb_login,$this->ddbb_name,$this->ddbb_last_name,$this->ddbb_last_name2),10,$per->permissions_module,$per->add);
+			$cadena=''.$tabla_listado->make_tables('users',$this->users_list,array('Login',20,'Nombre',20,'Primer Apellido',20,'Segundo Apellido',20),array($this->ddbb_id_user,$this->ddbb_login,$this->ddbb_name,$this->ddbb_last_name,$this->ddbb_last_name2),$_SESSION['num_regs'],$per->permissions_module,$per->add);
 			$variables=$tabla_listado->nombres_variables;
 		}		
 		$tpl->assign('variables',$variables);

@@ -283,7 +283,13 @@ class vendors{
 	}
 	
 	function listar($tpl){
-
+		if (isset($_POST['submit_vendors_reg']))
+		{
+			//Se toma el número de registros y se guarda en varable de sesión
+			//que se cumpla en todos los accesos del usuario
+			$_SESSION['num_regs']= $_POST['regs'];
+			
+		}
 		$tabla_listado = new table(true);
 		$per = new permissions();
 		$per->get_permissions_list('vendors');
@@ -294,7 +300,7 @@ class vendors{
 		}
 		else
 		{
-			$cadena=''.$tabla_listado->make_tables('vendors',$this->vendors_list,array('Nombre',20,'Nombre completo',20,'CIF|NIF',20,'Telefono',20),array($this->ddbb_id_vendor,$this->ddbb_name,$this->ddbb_full_name,$this->ddbb_cif_nif,$this->ddbb_phone),20,$per->permissions_module,$per->add);
+			$cadena=''.$tabla_listado->make_tables('vendors',$this->vendors_list,array('Nombre',20,'Nombre completo',20,'CIF|NIF',20,'Telefono',20),array($this->ddbb_id_vendor,$this->ddbb_name,$this->ddbb_full_name,$this->ddbb_cif_nif,$this->ddbb_phone),$_SESSION['num_regs'],$per->permissions_module,$per->add);
 			$variables=$tabla_listado->nombres_variables;		
 		}		
 		$tpl->assign('variables',$variables);

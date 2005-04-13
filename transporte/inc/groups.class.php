@@ -610,7 +610,7 @@ class groups{
 					}
 					
 						
-					$cadena=$cadena.$tabla_modulos->make_tables('modules',$permissions,array('Nombre del modulo',20,'Métodos en los que se tiene permiso',120),array('id_module','name', 'methods'),10,null,false);
+					$cadena=$cadena.$tabla_modulos->make_tables('modules',$permissions,array('Nombre del modulo',20,'Métodos en los que se tiene permiso',120),array('id_module','name', 'methods'),$_SESSION['num_regs'],null,false);
 					$variables_modulos=$tabla_modulos->nombres_variables;
 				}
 			}
@@ -645,6 +645,13 @@ class groups{
 	}
 	
 	function listar($tpl){
+		if (isset($_POST['submit_groups_reg']))
+		{
+			//Se toma el número de registros y se guarda en varable de sesión
+			//que se cumpla en todos los accesos del usuario
+			$_SESSION['num_regs']= $_POST['regs'];
+			
+		}
 		$num = $this->get_list_groups();
 		
 		$per = new permissions();
@@ -657,7 +664,7 @@ class groups{
 		}
 		else
 		{	
-			$cadena=''.$tabla_listado->make_tables('groups',$this->groups_list,array('Nombre',40,'Nombre Web',40),array($this->ddbb_id_group,$this->ddbb_name,$this->ddbb_name_web),10,$per->permissions_module,$per->add);
+			$cadena=''.$tabla_listado->make_tables('groups',$this->groups_list,array('Nombre',40,'Nombre Web',40),array($this->ddbb_id_group,$this->ddbb_name,$this->ddbb_name_web),$_SESSION['num_regs'],$per->permissions_module,$per->add);
 			$variables=$tabla_listado->nombres_variables;
 		}		
 		$tpl->assign('variables',$variables);

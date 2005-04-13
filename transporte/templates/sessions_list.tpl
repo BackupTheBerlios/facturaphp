@@ -14,8 +14,28 @@
 						<td width="93%" valign="middle"  nowrap>
 						  Listado sesiones </td>
 				</tr>
+				 
 			  </table>
-			  <table width="100%">
+			   <table width="100%">
+			  <tr><td valign="top"><form method="post" action="index.php?module=sessions&method=list" name="form_searchs">
+			  	
+			  	<table width="250px" align="center">
+				    <tr>
+						<td width="125" class="CampoFormulario">Nº de Registros por p&aacute;gina:</td>
+						<td><select name="regs">
+						  <option selected>10</option>
+						  <option>30</option>
+						  <option>50</option>
+						</select></td>
+				 </tr>
+				 <tr>
+				 	<td colspan="2"><input type="submit" value="Cambiar nº de registros" name="submit_sessions_reg" class="botones"></td>
+				 </tr>
+				  </table>
+				</form><br>
+				 </tr></table>
+			  
+			  <table width="100%>
 			  <tr><td class="message" align="center">{$message}</td></tr>
 			  <tr><td valign="top"><form method="post" action="index.php?module=sessions&method=list">
 			  	

@@ -468,6 +468,13 @@ class cat_vehicles{
 	}
 	
 	function listar($tpl){
+		if (isset($_POST['submit_cat_vehicles_reg']))
+		{
+			//Se toma el número de registros y se guarda en varable de sesión
+			//que se cumpla en todos los accesos del usuario
+			$_SESSION['num_regs']= $_POST['regs'];
+			
+		}
 		$num = $this->get_list_cat_vehicles();
 		$tabla_listado = new table(true);			
 		$per = new permissions();
@@ -479,7 +486,7 @@ class cat_vehicles{
 		}
 		else
 		{
-			$cadena=''.$tabla_listado->make_tables('cat_vehicles',$this->cat_vehicles_list,array('Nombre',80),array($this->ddbb_id_cat_vehicle,$this->ddbb_name_web),10,$per->permissions_module,$per->add);
+			$cadena=''.$tabla_listado->make_tables('cat_vehicles',$this->cat_vehicles_list,array('Nombre',80),array($this->ddbb_id_cat_vehicle,$this->ddbb_name_web),$_SESSION['num_regs'],$per->permissions_module,$per->add);
 			$variables=$tabla_listado->nombres_variables;
 		}		
 		$tpl->assign('variables',$variables);

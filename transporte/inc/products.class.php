@@ -186,6 +186,13 @@ class products{
 	}
 	
 	function listar($tpl){
+		if (isset($_POST['submit_products_reg']))
+		{
+			//Se toma el número de registros y se guarda en varable de sesión
+			//que se cumpla en todos los accesos del usuario
+			$_SESSION['num_regs']= $_POST['regs'];
+			
+		}
 		$num = $this->get_list_products($_SESSION['ident_corp']);
 		$tabla_listado = new table(true);
 		$per = new permissions();
@@ -197,7 +204,7 @@ class products{
 		}
 		else
 		{	
-			$cadena=''.$tabla_listado->make_tables('products',$this->products_list,array('Nombre',40,'Nombre Web',40),array($this->ddbb_id_product,$this->ddbb_name,$this->ddbb_name_web),10,$per->permissions_module,$per->add);
+			$cadena=''.$tabla_listado->make_tables('products',$this->products_list,array('Nombre',40,'Nombre Web',40),array($this->ddbb_id_product,$this->ddbb_name,$this->ddbb_name_web),$_SESSION['num_regs'],$per->permissions_module,$per->add);
 			$variables=$tabla_listado->nombres_variables;
 		}		
 		$tpl->assign('variables',$variables);

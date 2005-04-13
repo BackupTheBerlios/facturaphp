@@ -724,7 +724,7 @@ class drivers{
 			}
 			else
 			{	
-				$cadena=''.$tabla_listado->make_tables('drivers',$this->vehicles_list,array('Alias del vehículo',60,'Fecha de asignacion',20),array($this->ddbb_id_driver, $this->ddbb_alias, 'fecha_cambiada'),10,$permisos,$per->add);
+				$cadena=''.$tabla_listado->make_tables('drivers',$this->vehicles_list,array('Alias del vehículo',60,'Fecha de asignacion',20),array($this->ddbb_id_driver, $this->ddbb_alias, 'fecha_cambiada'),$_SESSION['num_regs'],$permisos,$per->add);
 				$variables=$tabla_listado->nombres_variables;	
 			}				
 			$tpl->assign('variables',$variables);
@@ -736,6 +736,13 @@ class drivers{
 	
 	function listar($tpl)
 	{
+		if (isset($_POST['submit_drivers_reg']))
+		{
+			//Se toma el número de registros y se guarda en varable de sesión
+			//que se cumpla en todos los accesos del usuario
+			$_SESSION['num_regs']= $_POST['regs'];
+			
+		}
 		$num = $this->get_list_drivers();
 		$tabla_listado = new table(true);
 		$per = new permissions();
@@ -754,7 +761,7 @@ class drivers{
 		}
 		else
 		{	
-			$cadena=''.$tabla_listado->make_tables('drivers',$this->drivers_list,array('Nombre',20,'Primer Apellido',20,'Segundo Apellido',20),array($this->ddbb_id_driver, $this->ddbb_name, $this->ddbb_last_name, $this->ddbb_last_name2),10,$per_vi_del,$per->add);
+			$cadena=''.$tabla_listado->make_tables('drivers',$this->drivers_list,array('Nombre',20,'Primer Apellido',20,'Segundo Apellido',20),array($this->ddbb_id_driver, $this->ddbb_name, $this->ddbb_last_name, $this->ddbb_last_name2),$_SESSION['num_regs'],$per_vi_del,$per->add);
 			$variables=$tabla_listado->nombres_variables;	
 		}				
 		$tpl->assign('variables',$variables);
