@@ -1094,7 +1094,7 @@ class vehicles{
 	}
 	
 	function listar($tpl){
-		if (isset($_POST['submit_vehicles_reg']))
+		if (isset($_POST['submit_vehicles_search']))
 		{
 			//Se toma el número de registros y se guarda en varable de sesión
 			//que se cumpla en todos los accesos del usuario
@@ -1169,6 +1169,7 @@ class vehicles{
 						case 'list':
 									$tpl=$this->listar($tpl);
 									$tpl->assign("objeto",$this);
+									$tpl->assign("registro",$_SESSION['num_regs']);
 									break;
 						case 'modify':/*
 									$this->read($_GET['id']);
@@ -1252,6 +1253,7 @@ class vehicles{
 										$this->method='list';
 										$tpl=$this->listar($tpl);
 										$tpl->assign("objeto",$this);
+										$tpl->assign("registro",$_SESSION['num_regs']);
 									}
 									else
 									{

@@ -626,7 +626,7 @@ class cat_prods{
 	}
 	
 	function listar($tpl){
-		if (isset($_POST['submit_cat_prods_reg']))
+		if (isset($_POST['submit_cat_prods_search']))
 		{
 			//Se toma el número de registros y se guarda en varable de sesión
 			//que se cumpla en todos los accesos del usuario
@@ -707,6 +707,7 @@ class cat_prods{
 						case 'list':
 									$tpl=$this->listar($tpl);
 									$tpl->assign("objeto",$this);
+									$tpl->assign("registro",$_SESSION['num_regs']);
 									break;
 						case 'modify':
 									$this->read($_GET['id']);				
@@ -755,6 +756,7 @@ class cat_prods{
 									$this->method='list';
 									$tpl=$this->listar($tpl);
 									$tpl->assign("objeto",$this);
+									$tpl->assign("registro",$_SESSION['num_regs']);
 									break;
 					}
 

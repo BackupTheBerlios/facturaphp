@@ -1105,7 +1105,7 @@ class emps{
 
 	function listar($tpl)
 	{
-		if (isset($_POST['submit_corps_reg']))
+		if (isset($_POST['submit_corps_search']))
 		{
 			//Se toma el número de registros y se guarda en varable de sesión
 			//que se cumpla en todos los accesos del usuario
@@ -1178,6 +1178,7 @@ class emps{
 				case 'list':
 							$tpl=$this->listar($tpl);
 							$tpl->assign("objeto",$this);	
+							$tpl->assign("registro",$_SESSION['num_regs']);
 							break;
 				case 'modify':
 							/*
@@ -1274,7 +1275,8 @@ class emps{
 							{
 								$this->method='list';
 								$tpl=$this->listar($tpl);
-								$tpl->assign("objeto",$this);	
+								$tpl->assign("objeto",$this);
+								$tpl->assign("registro",$_SESSION['num_regs']);	
 							}
 							else
 							{

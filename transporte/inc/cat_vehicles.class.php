@@ -468,7 +468,7 @@ class cat_vehicles{
 	}
 	
 	function listar($tpl){
-		if (isset($_POST['submit_cat_vehicles_reg']))
+		if (isset($_POST['submit_cat_vehicles_search']))
 		{
 			//Se toma el número de registros y se guarda en varable de sesión
 			//que se cumpla en todos los accesos del usuario
@@ -519,6 +519,7 @@ class cat_vehicles{
 						case 'list':
 									$tpl=$this->listar($tpl);
 									$tpl->assign("objeto",$this);
+									$tpl->assign("registro",$_SESSION['num_regs']);
 									break;
 						case 'modify':
 									/*
@@ -568,6 +569,7 @@ class cat_vehicles{
 									$this->method='list';
 									$tpl=$this->listar($tpl);
 									$tpl->assign("objeto",$this);
+									$tpl->assign("registro",$_SESSION['num_regs']);
 									break;
 					}
 				$tpl->assign('plantilla','cat_vehicles_'.$this->method.'.tpl');					

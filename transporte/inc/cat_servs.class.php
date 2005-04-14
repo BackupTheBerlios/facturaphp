@@ -614,7 +614,7 @@ class cat_servs{
 	}
 	
 	function listar($tpl){
-		if (isset($_POST['submit_cat_servs_reg']))
+		if (isset($_POST['submit_cat_servs_search']))
 		{
 			//Se toma el número de registros y se guarda en varable de sesión
 			//que se cumpla en todos los accesos del usuario
@@ -694,6 +694,7 @@ class cat_servs{
 						case 'list':
 									$tpl=$this->listar($tpl);
 									$tpl->assign("objeto",$this);
+									$tpl->assign("registro",$_SESSION['num_regs']);									
 									break;
 						case 'modify':
 									$this->read($_GET['id']);
@@ -741,6 +742,7 @@ class cat_servs{
 									$this->method='list';
 									$tpl=$this->listar($tpl);
 									$tpl->assign("objeto",$this);
+									$tpl->assign("registro",$_SESSION['num_regs']);
 									break;
 					}
 

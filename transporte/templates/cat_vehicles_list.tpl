@@ -24,20 +24,18 @@
 						<td  width="125px" align="right" class="CampoFormulario">Introduzca su b&uacute;squeda:</td>
 						<td><input type="text" id="{$objeto->ddbb_search}" name="{$objeto->ddbb_search}" value="{$objeto->search_query}" class="textoMenu"></td>
 				  </tr>
-				<tr>
-				 	<td colspan="2"><input type="submit" value="Buscar" name="submit_cat_vehicles_search" class="botones"></td>
-				 </tr>
 			    <tr>
 						<td width="125" class="CampoFormulario">Nº de Registros por p&aacute;gina:</td>
 						<td><select name="regs">
-						  <option selected>10</option>
-						  <option>30</option>
-						  <option>50</option>
+						   <option {if $registro == 10}selected{/if}>10</option>
+						  <option {if $registro == 30}selected{/if}>30</option>
+						  <option {if $registro == 50}selected{/if}>50</option>
 						</select></td>
 				 </tr>
 				  <tr>
-				 	<td colspan="2"><input type="submit" value="Cambiar nº de registros" name="submit_cat_vehicles_reg" class="botones"></td>
-				 </tr>  </table>
+				 	<td colspan="2" align="center"><input type="submit" value="Buscar" name="submit_cat_vehicles_search" class="botones"></td>
+				 </tr>
+				   </table>
 				</form><br>
 				  <div name="divMostrar" id="divMostrar" >
 						
