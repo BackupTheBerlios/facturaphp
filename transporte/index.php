@@ -272,6 +272,9 @@ if($_SESSION['expire'] == 0)
 		else
 		{
 			$module_name=$_GET['module'];
+			
+			//Comprobación del método
+			
 		}	
 	}
 
