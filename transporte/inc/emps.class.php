@@ -122,11 +122,11 @@ class emps{
 		//print_r($this);
 		//se puede acceder a los usuarios por numero de campo o por nombre de campo
 /*		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
-		//crea una nueva conexi—n con una bbdd (mysql)
+		//crea una nueva conexiï¿½n con una bbdd (mysql)
 		$this->db = NewADOConnection($this->db_type);
-		//le dice que no salgan los errores de conexi—n de la ddbb por pantalla
+		//le dice que no salgan los errores de conexiï¿½n de la ddbb por pantalla
 		$this->db->debug=false;
-		//realiza una conexi—n permanente con la bbdd
+		//realiza una conexiï¿½n permanente con la bbdd
 		$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
 		//mete la consulta
 		$this->sql="SELECT * FROM ".$this->table_prefix.$this->table_name;
@@ -149,7 +149,7 @@ class emps{
 	{
 		if (isset($_POST['submit_emps_search']))
 		{
-			//Obtener datos del formulario de búsqueda
+			//Obtener datos del formulario de bï¿½squeda
 			$this->get_fields_from_search_post();
 					
 			//Generar consulta
@@ -159,7 +159,7 @@ class emps{
 				//que se mande denuevo al formulario
 				$query =  $this->search_query;
 				
-				//Se va creando la nueva query que se mandará mas tarde 
+				//Se va creando la nueva query que se mandarï¿½ mas tarde 
 				//al formulario (se busca la siquiente ocurrencia de comillas)
 				$query = substr ($this->search_query, 2);
 				
@@ -185,7 +185,7 @@ class emps{
 			$my_search = new search();
 			$query = $my_search->get_query($this->search_query, FALSE, $this->search, $this->fields_list);
 		}	
-		//Buscar los empleados de la empresa en la que se está y coincidencia en id con los id de emps en drivers
+		//Buscar los empleados de la empresa en la que se estï¿½ y coincidencia en id con los id de emps en drivers
 		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
 		//crea una nueva conexin con una bbdd (mysql)
 		$this->db = NewADOConnection($this->db_type);
@@ -240,7 +240,7 @@ class emps{
 	}
 	
 	function get_fields_from_search_post(){
-		//Cogemos los campos principales de búsqueda
+		//Cogemos los campos principales de bï¿½squeda
 		$this->search_query=$_POST[$this->ddbb_search];
 		return 0;
 	}	
@@ -251,7 +251,7 @@ class emps{
 		
 		//Miramos a ver si esta definida el "submit_add" y si no lo esta, pasamos directamente a mostrar la plantilla
 		if (!isset($_POST['submit_add'])){
-			//Mostrar plantilla vacía	
+			//Mostrar plantilla vacï¿½a	
 			if((!isset($_POST['existUser']))||($_POST['existUser']=="new")){
 				$this->obj_user=new users();
 				$this->obj_user->get_list_users();
@@ -328,7 +328,7 @@ class emps{
 				return -1;
 			}
 		    else{
-				$this->come=$this->fields_list->change_date($this->come,"en");
+			//	$this->come=$this->fields_list->change_date($this->come,"en");
 				$this->birthday=$this->fields_list->change_date($this->birthday,"en");
 				$this->license=$this->fields_list->change_date($this->license,"en");
 				//Si todo es correcto si meten los datos
@@ -422,6 +422,7 @@ class emps{
 	function add_holyday($id){
 		$holyday=new holydays();
 		$holyday->id_emp=$id;
+		$holyday->is_emps=true;
 		$holyday->ill=2;
 		$holyday->come=$this->come;
 		$holyday->emps_modify = true;
@@ -520,7 +521,7 @@ class emps{
 				return -1;
 			}
 			else{
-				$this->come=$this->fields_list->change_date($this->come,"en");
+				//$this->come=$this->fields_list->change_date($this->come,"en");
 				$this->birthday=$this->fields_list->change_date($this->birthday,"en");
 				$this->license=$this->fields_list->change_date($this->license,"en");
 				$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
@@ -572,7 +573,7 @@ class emps{
 				$Affected_Rows=$this->db->Affected_Rows();
 				/*Al hacer la modificacion de categorias y vacaciones antes del siguiente "if"
 				 se debe de guardar en una variable el contenido de las filas afectadas y hacer
-				 la condicion del if con esa variable ya que al hacer las modificaciones ese valor varía.
+				 la condicion del if con esa variable ya que al hacer las modificaciones ese valor varï¿½a.
 				*/
 				
 				$return_category=$this->modify_category($this->id_emp);
@@ -583,7 +584,7 @@ class emps{
 					//capturammos el id de la linea insertada
 					$this->db->close();
 					
-					//Modificar variable de sesión con tabla de permisos
+					//Modificar variable de sesiï¿½n con tabla de permisos
 					$permisos = new permissions();
 					$_SESSION['permisos_user_modules'] = $permisos->get_per_user_modules();
 					$_SESSION['permisos_user_methods'] = $permisos->get_per_user_methods();
@@ -614,6 +615,7 @@ class emps{
 	function modify_holyday($id){
 		$holyday=new holydays();
 		$return=$holyday->get_come($id);
+		$holyday->is_emps=true;
 		
 		if ($return==0){
 			return $this->add_holyday($id);
@@ -635,11 +637,11 @@ class emps{
 			//HAY QUE VERIFICAR EN LAS COMPROBACIONES QUE NO SE ELIMINE EL MISMO USUARIO
 			//QUE ESTA CONECTADO EN ESTE MOMENTO.
 			$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
-			//crea una nueva conexión con una bbdd (mysql)
+			//crea una nueva conexiï¿½n con una bbdd (mysql)
 			$this->db = NewADOConnection($this->db_type);
-			//le dice que no salgan los errores de conexión de la ddbb por pantalla
+			//le dice que no salgan los errores de conexiï¿½n de la ddbb por pantalla
 			$this->db->debug=false;
-			//realiza una conexión permanente con la bbdd
+			//realiza una conexiï¿½n permanente con la bbdd
 			$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
 			//mete la consulta para coger los campos de la bbdd
 			//calcula la consulta de borrado.
@@ -676,11 +678,11 @@ class emps{
 	
 	function modify_all_id_emp($id,$table){
 			$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
-			//crea una nueva conexión con una bbdd (mysql)
+			//crea una nueva conexiï¿½n con una bbdd (mysql)
 			$this->db = NewADOConnection($this->db_type);
-			//le dice que no salgan los errores de conexión de la ddbb por pantalla
+			//le dice que no salgan los errores de conexiï¿½n de la ddbb por pantalla
 			$this->db->debug=false;
-			//realiza una conexión permanente con la bbdd
+			//realiza una conexiï¿½n permanente con la bbdd
 			$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
 			//mete la consulta para coger los campos de la bbdd
 			//calcula la consulta de borrado.
@@ -703,11 +705,11 @@ class emps{
 	
 	function delete_all_id_emp($id,$table){
 		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
-			//crea una nueva conexión con una bbdd (mysql)
+			//crea una nueva conexiï¿½n con una bbdd (mysql)
 			$this->db = NewADOConnection($this->db_type);
-			//le dice que no salgan los errores de conexión de la ddbb por pantalla
+			//le dice que no salgan los errores de conexiï¿½n de la ddbb por pantalla
 			$this->db->debug=false;
-			//realiza una conexión permanente con la bbdd
+			//realiza una conexiï¿½n permanente con la bbdd
 			$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
 			//mete la consulta para coger los campos de la bbdd
 			//calcula la consulta de borrado.
@@ -770,7 +772,7 @@ class emps{
 	function get_user_corps($id_user)
 	{
 	
-		//Se pasa como parámetro el login del usuario que se conectó a la sesión, esto se hace desde index.php
+		//Se pasa como parï¿½metro el login del usuario que se conectï¿½ a la sesiï¿½n, esto se hace desde index.php
 		
 
 		//coge las variables globales del fichero config.inc.php
@@ -784,11 +786,11 @@ class emps{
 		$this->table_prefix=$TABLE_PREFIX;
 		//A partir de este id, se busca dentro de emps todos los empleados que contenga el id_user y sus correspondientes id_corp
 		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
-		//crea una nueva conexi—n con una bbdd (mysql)
+		//crea una nueva conexiï¿½n con una bbdd (mysql)
 		$this->db = NewADOConnection($this->db_type);
-		//le dice que no salgan los errores de conexi—n de la ddbb por pantalla
+		//le dice que no salgan los errores de conexiï¿½n de la ddbb por pantalla
 		$this->db->debug=false;
-		//realiza una conexi—n permanente con la bbdd
+		//realiza una conexiï¿½n permanente con la bbdd
 		$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
 		//mete la consulta
 		$this->sql="SELECT `id_corp` FROM `emps` WHERE `id_user` =".$id_user;
@@ -803,7 +805,7 @@ class emps{
 		}  
 		//$this->corps_list[0][$this->ddbb_id_user] = $id_user;
 		
-		//Con el id_corp se podrá obtener el nombre de cada empresa en la trabaja id_user
+		//Con el id_corp se podrï¿½ obtener el nombre de cada empresa en la trabaja id_user
 		$this->num_corps=0;
 		$i = 0;
 		while (!$this->result->EOF) 
@@ -822,7 +824,7 @@ class emps{
 				return 0;
 			}  
 /*		
-			//Si hay más de un empleado con mismo login en la empresa evitamos que salga más de una vez, 
+			//Si hay mï¿½s de un empleado con mismo login en la empresa evitamos que salga mï¿½s de una vez, 
 			//para ello por cada empresa nueva se incrementa en uno su contador
 			$temp[$this->num_corps][$this->ddbb_id_corp] = $id_corp;
 			$temp[$this->num_corps]['name'] = $this->result1->fields['name'];
@@ -884,11 +886,11 @@ class emps{
 
 		//se puede acceder a los usuarios por numero de campo o por nombre de campo
 		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
-		//crea una nueva conexi—n con una bbdd (mysql)
+		//crea una nueva conexiï¿½n con una bbdd (mysql)
 		$this->db = NewADOConnection($this->db_type);
-		//le dice que no salgan los errores de conexi—n de la ddbb por pantalla
+		//le dice que no salgan los errores de conexiï¿½n de la ddbb por pantalla
 		$this->db->debug=false;
-		//realiza una conexi—n permanente con la bbdd
+		//realiza una conexiï¿½n permanente con la bbdd
 		$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
 		//mete la consulta
 		$this->sql="SELECT * FROM `emps` WHERE `id_emp`= \"".$id."\"";
@@ -934,7 +936,7 @@ class emps{
 		Cosas que faltan por hacer:
 			De forma general, mirar los permisos del usuario que vaya a acceder aqui, para saber si tiene permisos de borrar editar ver etc...
 			Averiguar como pasar el numero de registros, si va a ser a grupos a grupos, si va a ser a modulos, a modulos
-			Order By (y mantener la búsqueda en el caso de que hubiera hecha una y averiguar la "pestaña" a la que hace referencia)
+			Order By (y mantener la bï¿½squeda en el caso de que hubiera hecha una y averiguar la "pestaï¿½a" a la que hace referencia)
 			Busquedas
 	*/
 			$cadena='';			
@@ -1002,7 +1004,7 @@ class emps{
 		
 			$mensaje = null;
 			$mensaje[0]['id_mensaje'] = 1;
-			$mensaje[0]['mes'] = "Sentimos informarle de que no tiene permiso para acceder a esta información";
+			$mensaje[0]['mes'] = "Sentimos informarle de que no tiene permiso para acceder a esta informaciï¿½n";
 			
 			$cadena="";
 			$tabla_vacaciones = new table(false);
@@ -1107,7 +1109,7 @@ class emps{
 	{
 		if (isset($_POST['submit_corps_search']))
 		{
-			//Se toma el número de registros y se guarda en varable de sesión
+			//Se toma el nï¿½mero de registros y se guarda en varable de sesiï¿½n
 			//que se cumpla en todos los accesos del usuario
 			$_SESSION['num_regs']= $_POST['regs'];
 			
@@ -1144,7 +1146,7 @@ class emps{
 							switch ($return){										
 								case 0: //por defecto												
 									break;
-								case -1: //Errores al intentar añadir datos
+								case -1: //Errores al intentar aï¿½adir datos
 										for ($i=0;$i<count($this->fields_list->array_error);$i+=2){
 											$tpl->assign("error_".$this->fields_list->array_error[$i],$this->fields_list->array_error[$i+1]);
 										}		
@@ -1157,7 +1159,7 @@ class emps{
 										}
 										$tpl->assign("radio",$this->radiobutton);
 										break;
-								default: //Si se ha añadido
+								default: //Si se ha aï¿½adido
 										$this->method="list";
 										$tpl=$this->listar($tpl);										
 										$tpl->assign("message","&nbsp;<br>Empleado a&ntilde;adido correctamente<br>&nbsp;");
@@ -1226,7 +1228,7 @@ class emps{
 									$this->birthday=$this->fields_list->change_date($this->birthday,"es");
 									$this->license=$this->fields_list->change_date($this->license,"es");
 									break;
-								case -1: //Errores al intentar añadir datos
+								case -1: //Errores al intentar aï¿½adir datos
 										for ($i=0;$i<count($this->fields_list->array_error);$i+=2){
 											$tpl->assign("error_".$this->fields_list->array_error[$i],$this->fields_list->array_error[$i+1]);
 										}		
@@ -1239,7 +1241,7 @@ class emps{
 										}
 										$tpl->assign("radio",$this->radiobutton);
 										break;
-								default: //Si se ha añadido
+								default: //Si se ha aï¿½adido
 										$this->method="list";
 										$tpl=$this->listar($tpl);										
 										$tpl->assign("message","&nbsp;<br>Empleado modificado correctamente<br>&nbsp;");

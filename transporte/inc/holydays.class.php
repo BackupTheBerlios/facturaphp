@@ -36,6 +36,7 @@ class holydays{
   	var $fields_list;
   	var $error;
 	var $method;
+	var $is_emps=false;
   	//constructor
 	function holydays(){
 		//coge las variables globales del fichero config.inc.php
@@ -55,7 +56,7 @@ class holydays{
 		************************/
 		$this->fields_list= new fields();
 		$this->fields_list->add($this->ddbb_id_holy, $this->id_holy, 'int', 11,0);
-		$this->fields_list->add($this->ddbb_id_emp, $this->id_emp, 'varchar', 11,0);
+		$this->fields_list->add($this->ddbb_id_emp, $this->id_emp, 'int', 11,0);
 		$this->fields_list->add($this->ddbb_gone, $this->gone, 'date', 20,0,1);
 		$this->fields_list->add($this->ddbb_come, $this->come, 'date', 20,0,1);		
 		$this->fields_list->add($this->ddbb_ill, $this->ill, 'tinyint', 3,0);		
@@ -63,11 +64,11 @@ class holydays{
 		//print_r($this);
 		//se puede acceder a los usuarios por numero de campo o por nombre de campo
 	/*	$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
-		//crea una nueva conexi—n con una bbdd (mysql)
+		//crea una nueva conexiï¿½n con una bbdd (mysql)
 		$this->db = NewADOConnection($this->db_type);
-		//le dice que no salgan los errores de conexi—n de la ddbb por pantalla
+		//le dice que no salgan los errores de conexiï¿½n de la ddbb por pantalla
 		$this->db->debug=false;
-		//realiza una conexi—n permanente con la bbdd
+		//realiza una conexiï¿½n permanente con la bbdd
 		$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
 		//mete la consulta
 		$this->sql="SELECT * FROM ".$this->table_prefix.$this->table_name;
@@ -87,11 +88,11 @@ class holydays{
 	function get_list_holydays (){
 		//se puede acceder a los usuarios por numero de campo o por nombre de campo
 		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
-		//crea una nueva conexi—n con una bbdd (mysql)
+		//crea una nueva conexiï¿½n con una bbdd (mysql)
 		$this->db = NewADOConnection($this->db_type);
-		//le dice que no salgan los errores de conexi—n de la ddbb por pantalla
+		//le dice que no salgan los errores de conexiï¿½n de la ddbb por pantalla
 		$this->db->debug=false;
-		//realiza una conexi—n permanente con la bbdd
+		//realiza una conexiï¿½n permanente con la bbdd
 		$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
 		//mete la consulta
 		$this->sql="SELECT * FROM ".$this->table_prefix.$this->table_name;
@@ -154,11 +155,11 @@ class holydays{
 	
 		//se puede acceder a los usuarios por numero de campo o por nombre de campo
 		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
-		//crea una nueva conexi—n con una bbdd (mysql)
+		//crea una nueva conexiï¿½n con una bbdd (mysql)
 		$this->db = NewADOConnection($this->db_type);
-		//le dice que no salgan los errores de conexi—n de la ddbb por pantalla
+		//le dice que no salgan los errores de conexiï¿½n de la ddbb por pantalla
 		$this->db->debug=false;
-		//realiza una conexi—n permanente con la bbdd
+		//realiza una conexiï¿½n permanente con la bbdd
 		$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
 		//mete la consulta
 		$this->sql="SELECT * FROM ".$this->table_prefix.$this->table_name." WHERE ".$this->ddbb_id_holy."= \"".$id."\"";
@@ -185,7 +186,7 @@ class holydays{
 	
 	function add(){
 			if (!isset($_POST['submit_add'])){
-			//Mostrar plantilla vacía	
+			//Mostrar plantilla vacia	
 			//pasarle a la plantilla los modulos y grupos con sus respectivos checkbox a checked false
 			//Modulos
 			
@@ -195,8 +196,11 @@ class holydays{
 		else{
 						
 			//Introducir los datos de post.
-			$this->get_fields_from_post();	
-						
+	
+			if ($this->is_emps==false){
+				$this->get_fields_from_post();	
+				$this->fields_list->modify_value($this->ddbb_gone,$this->gone);
+			}	
 			//Validacion
 			
 			//Modificamos los todos los valores del objeto fields con los nuevos datos del objeto product, exceptuando path_photo que eso se deberia hacer mediante la clase upload.
@@ -204,7 +208,7 @@ class holydays{
 			$this->id_holy=0;
 			$this->fields_list->modify_value($this->ddbb_id_holy,$this->id_holy);
 			$this->fields_list->modify_value($this->ddbb_id_emp,$this->id_emp);
-			$this->fields_list->modify_value($this->ddbb_gone,$this->gone);
+			
 			$this->fields_list->modify_value($this->ddbb_come,$this->come);
 			$this->fields_list->modify_value($this->ddbb_ill,$this->ill);
 			$this->fields_list->modify_value($this->ddbb_descrip,$this->descrip);
@@ -214,9 +218,11 @@ class holydays{
 			//En caso de que la validacion haya sido fallida se muestra la plantilla
 			//con los campos erroneos marcados con un *
 			//$return=true; //Para pruebas dejar esta linea sin comentar
-			
+			echo "el come es:".$this->come;
 			if (!$return){
 				//Mostrar plantilla con datos erroneos
+				print_r($this->fields_list->array_error);
+				echo "erroooor";
 				return -1;
 			}
 			else{
@@ -225,11 +231,11 @@ class holydays{
 				$this->come=$this->fields_list->change_date($this->come,"en");
 				
 				$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
-				//crea una nueva conexi—n con una bbdd (mysql)
+				//crea una nueva conexiï¿½n con una bbdd (mysql)
 				$this->db = NewADOConnection($this->db_type);
-				//le dice que no salgan los errores de conexi—n de la ddbb por pantalla
+				//le dice que no salgan los errores de conexiï¿½n de la ddbb por pantalla
 				$this->db->debug=false;
-				//realiza una conexi—n permanente con la bbdd
+				//realiza una conexiï¿½n permanente con la bbdd
 				$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
 				//mete la consulta para coger los campos de la bbdd
 				$this->sql="SELECT * FROM ".$this->table_prefix.$this->table_name. " WHERE ".$this->ddbb_id_holy." = -1" ;
@@ -248,10 +254,11 @@ class holydays{
 				$record[$this->ddbb_ill]=$this->ill;
 				$record[$this->ddbb_come]=$this->come;
 				$record[$this->ddbb_descrip]=$this->descrip;
-				//calculamos la sql de inserci—n respecto a los atributos
+				//calculamos la sql de inserciï¿½n respecto a los atributos
 				$this->sql = $this->db->GetInsertSQL($this->result, $record);
 				//print($this->sql);
 				//insertamos el registro
+				echo "esto".$this->sql;
 				$this->db->Execute($this->sql);
 				//si se ha insertado una fila
 				if($this->db->Insert_ID()>=0){
@@ -260,6 +267,7 @@ class holydays{
 					//print("<pre>::".$this->id_holy."::</pre>");
 					//devolvemos el id de la tabla ya que todo ha ido bien
 					$this->db->close();
+					
 					return $this->id_holy;
 				}else {
 					//devolvemos 0 ya que no se ha insertado el registro
@@ -279,11 +287,11 @@ class holydays{
 			}
 			else{
 		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
-		//crea una nueva conexi—n con una bbdd (mysql)
+		//crea una nueva conexiï¿½n con una bbdd (mysql)
 		$this->db = NewADOConnection($this->db_type);
-		//le dice que no salgan los errores de conexi—n de la ddbb por pantalla
+		//le dice que no salgan los errores de conexiï¿½n de la ddbb por pantalla
 		$this->db->debug=false;
-		//realiza una conexi—n permanente con la bbdd
+		//realiza una conexiï¿½n permanente con la bbdd
 		$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
 		//mete la consulta para coger los campos de la bbdd
 		//calcula la consulta de borrado.
@@ -307,20 +315,22 @@ class holydays{
 	
 	function modify(){
 	if (!isset($_POST['submit_modify'])){
-			//Ponemos la fecha en formato español
+			//Ponemos la fecha en formato espaï¿½ol
 			$this->gone=$this->fields_list->change_date($this->gone,"es");
 			$this->come=$this->fields_list->change_date($this->come,"es");
 			return 0;
 		}
 		else{
 			//Introducir los datos de post.
-			$this->get_fields_from_post();
-			/***Validación***/
+			if ($this->is_emps==false){
+				$this->get_fields_from_post();	
+				$this->fields_list->modify_value($this->ddbb_gone,$this->gone);
+			}	
+			/***Validaciï¿½n***/
 			//Modificamos los valores de la lista fields ya
 			//que se han modificado.
 			$this->fields_list->modify_value($this->ddbb_id_holy,$this->id_holy);
 			$this->fields_list->modify_value($this->ddbb_id_emp,$this->id_emp);
-			$this->fields_list->modify_value($this->ddbb_gone,$this->gone);
 			$this->fields_list->modify_value($this->ddbb_come,$this->come);
 			$this->fields_list->modify_value($this->ddbb_ill,$this->ill);
 			$this->fields_list->modify_value($this->ddbb_descrip,$this->descrip);
@@ -340,11 +350,11 @@ class holydays{
 				$this->gone=$this->fields_list->change_date($this->gone,"en");
 				$this->come=$this->fields_list->change_date($this->come,"en");
 				$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
-				//crea una nueva conexi—n con una bbdd (mysql)
+				//crea una nueva conexiï¿½n con una bbdd (mysql)
 				$this->db = NewADOConnection($this->db_type);
-				//le dice que no salgan los errores de conexi—n de la ddbb por pantalla
+				//le dice que no salgan los errores de conexiï¿½n de la ddbb por pantalla
 				$this->db->debug=false;
-				//realiza una conexi—n permanente con la bbdd
+				//realiza una conexiï¿½n permanente con la bbdd
 				$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
 				//mete la consulta para coger los campos de la bbdd
 				$this->sql="SELECT * FROM ".$this->table_prefix.$this->table_name. " WHERE ".$this->ddbb_id_holy." = \"".$this->id_holy."\"" ;
@@ -364,7 +374,7 @@ class holydays{
 				$record[$this->ddbb_ill]=$this->ill;
 				$record[$this->ddbb_come]=$this->come;
 				$record[$this->ddbb_descrip]=$this->descrip;
-				//calculamos la sql de inserci—n respecto a los atributos
+				//calculamos la sql de inserciï¿½n respecto a los atributos
 				$this->sql = $this->db->GetUpdateSQL($this->result, $record);
 				//insertamos el registro
 				$this->db->Execute($this->sql);
@@ -407,12 +417,12 @@ class holydays{
 									switch ($return){										
 										case 0: //por defecto												
 												break;
-										case -1: //Errores al intentar añadir datos
+										case -1: //Errores al intentar aï¿½adir datos
 												for ($i=0;$i<count($this->fields_list->array_error);$i+=2){
 													$tpl->assign("error_".$this->fields_list->array_error[$i],$this->fields_list->array_error[$i+1]);
 												}												
 												break;
-										default: //Si se ha añadido
+										default: //Si se ha aï¿½adido
 												$this->method="emps_view";																				
 												$tpl->assign("message","&nbsp;<br>Baja a&ntilde;adida correctamente<br>&nbsp;");			
 												$tpl=$empleado->view($this->id_emp,$tpl);																	
@@ -440,12 +450,12 @@ class holydays{
 									switch ($return){										
 										case 0: //por defecto												
 												break;
-										case -1: //Errores al intentar añadir datos
+										case -1: //Errores al intentar aï¿½adir datos
 												for ($i=0;$i<count($this->fields_list->array_error);$i+=2){
 													$tpl->assign("error_".$this->fields_list->array_error[$i],$this->fields_list->array_error[$i+1]);
 												}												
 												break;
-										default: //Si se ha añadido
+										default: //Si se ha aï¿½adido
 												$this->method="emps_view";																				
 												$tpl->assign("message","&nbsp;<br>Baja/Alta modificada correctamente<br>&nbsp;");			
 												$tpl=$empleado->view($this->id_emp,$tpl);		
@@ -554,8 +564,8 @@ class holydays{
 	
 	
 	function get_come($id){
-		$gone="0000-00-00";
-		
+		$ill=2;
+		//ill ==2 es la nueva alta
 		//se puede acceder a los usuarios por numero de campo o por nombre de campo
 		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
 		//crea una nueva conexin con una bbdd (mysql)
@@ -565,7 +575,7 @@ class holydays{
 		//realiza una conexin permanente con la bbdd
 		$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
 		//mete la consulta
-		$this->sql='SELECT * FROM '.$this->table_name.'  WHERE `'.$this->ddbb_id_emp.'` = \''.$id.'\' AND `'.$this->ddbb_gone.'` = \''.$gone.'\' LIMIT 1';
+		$this->sql='SELECT * FROM '.$this->table_name.'  WHERE `'.$this->ddbb_id_emp.'` = \''.$id.'\' AND `'.$this->ddbb_ill.'` = \''.$ill.'\' LIMIT 1';
 		//la ejecuta y guarda los resultados
 		$this->result = $this->db->Execute($this->sql);
 		if ($this->result === false){

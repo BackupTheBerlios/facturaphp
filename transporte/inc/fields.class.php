@@ -209,8 +209,8 @@ class fields{
 				 
 					else{
 						if(($a%4 != 0) && ($m == 2) && ($d > 28)){	   
-							$format="El año $a no es bisiesto y ha introducido $d-02";
-							$resultado = ''; // Año no bisiesto y es febrero y el dia es mayor a 28
+							$format="El aï¿½o $a no es bisiesto y ha introducido $d-02";
+							$resultado = ''; // Aï¿½o no bisiesto y es febrero y el dia es mayor a 28
 						}
 						else{
 							if (((($m == 4) || ($m == 6) || ($m == 9) || ($m==11)) && ($d>30)) || (($m==2) && ($d>29))){
@@ -232,11 +232,11 @@ class fields{
 	}
 	
 	function change_date($date,$format){
-		//La única validación de datos que se hace aquí es que 
+		//La ï¿½nica validaciï¿½n de datos que se hace aquï¿½ es que 
 		//la fecha ya este en el formato especificado
 		switch ($format){
 			case "es":
-						if (stripos($date,"-")!=2){
+						if (strpos($date,"-")!=2){
 							$anno=substr($date,0,4);
 							$mes=substr($date,5,2);
 							$dia=substr($date,8,2);
@@ -246,7 +246,7 @@ class fields{
 							return $date;
 						}
 			case "en":
-						if (stripos($date,"-")!=4){
+						if (strpos($date,"-")!=4){
 							$anno = substr($date,6,4);
 							$mes = substr($date,3,2);
 							$dia = substr($date,0,2);
@@ -262,7 +262,7 @@ class fields{
 	
 	function compare_passwd($original,$retyped){
 		if(strcmp(html_entity_decode($original),html_entity_decode($retyped))!=0){
-			array_push($this->array_error,"retype","Error *: Las contraseñas no coinciden");
+			array_push($this->array_error,"retype","Error *: Las contraseï¿½as no coinciden");
 			return false;
 		}
 		else
