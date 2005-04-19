@@ -21,7 +21,7 @@
 	
 */
 	//**************************************************************
-	//Configuración De Dani (Windows)
+	//Configuraciï¿½n De Dani (Windows)
 	
 	/*$DDBB_NAME="transporte";
 	$DDBB_USER="root";
@@ -32,20 +32,7 @@
 	$DDBB_PORT="3306";
 	$INSTALL_DIR="D:\\Archivos de programa\\EasyPHP1-7\\www\\transporte\\";*/
 	//**************************************************************
-	//Configuración De Dani (Windows-PORTATIL)
-	
-	$DDBB_NAME="transporte";
-	$DDBB_USER="root";
-	$DDBB_PASS="";
-	$IP_DDBB="localhost";
-	$TABLE_PREFIX="";
-	$DDBB_TYPE="mysql";
-	$DDBB_PORT="3306";
-	$INSTALL_DIR="C:\\wamp\\www\\transporte\\";
-	
-	//$INSTALL_DIR="C:/wamp/www/transporte/";
-	//**************************************************************
-	//Configuración De Dani (Linux)
+	//Configuraciï¿½n De Dani (Windows-PORTATIL)
 /*	
 	$DDBB_NAME="transporte";
 	$DDBB_USER="root";
@@ -54,10 +41,23 @@
 	$TABLE_PREFIX="";
 	$DDBB_TYPE="mysql";
 	$DDBB_PORT="3306";
-	$INSTALL_DIR="/var/www/transporte/";	*/
+	$INSTALL_DIR="C:\\wamp\\www\\transporte\\";
+	*/
+	//$INSTALL_DIR="C:/wamp/www/transporte/";
+	//**************************************************************
+	//Configuraciï¿½n De Dani (Linux)
+
+	$DDBB_NAME="transporte";
+	$DDBB_USER="root";
+	$DDBB_PASS="";
+	$IP_DDBB="localhost";
+	$TABLE_PREFIX="";
+	$DDBB_TYPE="mysql";
+	$DDBB_PORT="3306";
+	$INSTALL_DIR="/var/www/transporte/";	
 	
 	//**************************************************************
-	//Configuración De Rocío (Linux)
+	//Configuraciï¿½n De Rocï¿½o (Linux)
 	/*	
 	$DDBB_NAME="transporte";
 	$DDBB_USER="root";
