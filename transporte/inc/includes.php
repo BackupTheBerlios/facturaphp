@@ -50,5 +50,4 @@ require_once('rel_prods_cats.class.php');
 require_once('rel_servs_cats.class.php');
 require_once('cat_servs.class.php');
 require_once('cat_clients.class.php');
-//require_once('laborers.class.php');
 ?>

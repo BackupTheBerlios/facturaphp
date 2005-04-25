@@ -1,7 +1,7 @@
 <?php
 //Comprueba si existe la bbdd
-//si no existe la bbdd va a la instalación
-//aqui debe de irse a la instalación de la aplicación
+//si no existe la bbdd va a la instalaciï¿½n
+//aqui debe de irse a la instalaciï¿½n de la aplicaciï¿½n
 //si existe la bbdd ya puede conectarse con lo que sea
 
 //inicia o retoma una sesion
@@ -25,10 +25,10 @@ $nav_bar="::Gesti&oacute;n::";
 $tpl= new template;
 	
 
-//Comprobar si la sesión debe caducar
+//Comprobar si la sesiï¿½n debe caducar
 if(isset($_SESSION['max_page_time'])&& time() >= $_SESSION['max_page_time'])
 {
-	//Desconectar al usuario porque caducó su sesión
+	//Desconectar al usuario porque caducï¿½ su sesiï¿½n
 	$session=new sessions();
 	$session->unregister();
 	unset($_COOKIE[session_name()]);
@@ -36,7 +36,7 @@ if(isset($_SESSION['max_page_time'])&& time() >= $_SESSION['max_page_time'])
 	session_destroy();
 	session_start();
 		
-	//Se recalcula los módulos públicos para el menú
+	//Se recalcula los mï¿½dulos pï¿½blicos para el menï¿½
 	$menu = new menu();
 	$_SESSION['public_modules'] = $menu->table_modules(0);
 		
@@ -53,7 +53,7 @@ $session = new sessions();
 $session->comprobar_conectados();
 
 
-/******************************************* Identificación de usuario ***************************************************/
+/******************************************* Identificaciï¿½n de usuario ***************************************************/
 
 //comprueba si existe el usuario en la sesion
 if(!isset($_SESSION['user']))
@@ -69,12 +69,22 @@ if(!isset($_SESSION['user']))
 		//registra la variable de sesion user con el nombre de usuario
 		$_SESSION['user']=$_POST['user'];
 		
-		//Se toma el identificador del usuario para ahorrar cálculos
+		//Se toma el identificador del usuario para ahorrar cï¿½lculos
 		$_SESSION['ident_user'] = $post_user->get_id($_SESSION['user']);
+		
+		//ComprobaciÃ³n de usuario normal o cliente
+		if($post_user->is_client($_SESSION['ident_user'])==1)
+			$_SESSION['client']=1;
+		else
+			$_SESSION['client']=0;
+		
+			
+			
+			
 		$_SESSION['queries']= new log_methods();
 		$_SESSION['queries']->id_user = $_SESSION['ident_user'];
 		
-		//Se busca registro de la sesión (ya se conoce al usuario)
+		//Se busca registro de la sesiï¿½n (ya se conoce al usuario)
 		$session=new sessions();
 		$_SESSION['ident_sesion'] = $session->register();
 
@@ -102,7 +112,7 @@ if(!isset($_SESSION['user']))
 		
 		//Inicia empresas a 0 (no se conoce empresa con la que se quiere trabajar)
 		$_SESSION['ident_corp'] = 0;
-		//Inicia el nº de registros a la hora de listar
+		//Inicia el nï¿½ de registros a la hora de listar
 		$_SESSION['num_regs']=10;
 		
 		//Se crea coockie
@@ -122,11 +132,11 @@ if(!isset($_SESSION['user']))
   		}
   		 else
    		{
-			print "aquí tamos";
+			print "aquï¿½ tamos";
      		print getenv('REMOTE_ADDR');
    		}
 */
-		//Al iniciar sesión no ha podido expirar esta aún
+		//Al iniciar sesiï¿½n no ha podido expirar esta aï¿½n
 		$_SESSION['expire']=0;
 		
 		
@@ -141,17 +151,17 @@ if(!isset($_SESSION['user']))
 		Para acceder a cualquier tabla se hace de la siguiente manera
 		$_SESSION['nombre_tabla'][id_user/id_group][id_module/id_method]
 		
-		Comprobar en el caso de que no esté en la lista y escribir en su caso un 0
+		Comprobar en el caso de que no estï¿½ en la lista y escribir en su caso un 0
 		if(!isset($_SESSION['permisos_group_methods'][9][21]))
 			print "permisos 0";
 		else
 			print "permisos ".$_SESSION['permisos_group_methods'][9][21];
 			
 		Ahora siempre que se necesite buscar algo se puede acceder de esta manera o creando un bucle 
-		que recorra los identificadores y compruebe si está o no en la lista y su valor
+		que recorra los identificadores y compruebe si estï¿½ o no en la lista y su valor
 		*/
 
-		//Se crea el menú de usuario	
+		//Se crea el menï¿½ de usuario	
 		$_SESSION['modules_list'] = $menu->table_modules(-2);
 		
 		//como el usuario esta validado asigna su nombre a la plantilla
@@ -162,7 +172,7 @@ if(!isset($_SESSION['user']))
 	
 		
 		//inicializa la plantilla principal de empresas a las que pertenece el usuario
-		//El usuario está logeado y se le presenta la plantilla de las empresas con las que trabaja
+		//El usuario estï¿½ logeado y se le presenta la plantilla de las empresas con las que trabaja
 		$index_template="index.tpl";	
 		
 		
@@ -201,7 +211,7 @@ else
 		session_destroy();
 		session_start();
 		
-		//Se recalcula los módulos públicos para el menú
+		//Se recalcula los mï¿½dulos pï¿½blicos para el menï¿½
 		$menu = new menu();
 		$_SESSION['public_modules'] = $menu->table_modules(0);
 		
@@ -233,7 +243,7 @@ if(isset($_GET['module']))
 	$module=$_GET['module'];
 }
 
-//Operaciones con módulos
+//Operaciones con mï¿½dulos
 if(isset($_SESSION['user']) && isset($_GET['module']))
 {
 	$module_name=$_GET['module'];
@@ -241,11 +251,11 @@ if(isset($_SESSION['user']) && isset($_GET['module']))
 	//Se comprueba si se pasa de nuevo a elegir empresa
 	if((!isset($_GET['method'])&&($_GET['module'] =='user_corps')))
 	{
-		//registra la variable de sesion ident_corp con el identificador nulo para diferenciar en los menús
+		//registra la variable de sesion ident_corp con el identificador nulo para diferenciar en los menï¿½s
 		$_SESSION['ident_corp']=0;
 	}
 	
-	//Se indica si se trabaja con una empresa, con cuál se está trabajando
+	//Se indica si se trabaja con una empresa, con cuï¿½l se estï¿½ trabajando
 	//Se comprueba si estan eligiendo empresa
 	if(isset($_GET['method'])&&(($_GET['module']=='user_corps')&&($_GET['method']=='select')))
 	{	
@@ -254,40 +264,33 @@ if(isset($_SESSION['user']) && isset($_GET['module']))
 	}	
 }
 
-/********************************* Comprobación de permisos sobre módulo y método **********************************************/
-//Comprobar si no expiró la sesion
+/********************************* Comprobaciï¿½n de permisos sobre mï¿½dulo y mï¿½todo **********************************************/
+//Comprobar si no expirï¿½ la sesion
 if($_SESSION['expire'] == 0)
 {
 	$modules=new modules();
 	//2 opciones:
-	//- El usuario no está logeado pero el módulo es público, en cuyo caso no habría problema
-	//- El usuario está logeado pero intenta entrar en un móudlo donde no tiene permisos
+	//- El usuario no estï¿½ logeado pero el mï¿½dulo es pï¿½blico, en cuyo caso no habrï¿½a problema
+	//- El usuario estï¿½ logeado pero intenta entrar en un mï¿½udlo donde no tiene permisos
 	if(!isset($_SESSION['user']) && isset($_GET['module'])&&($_GET['module']!='user_corps'))
 	{
-		//Se comprueba si el modulo es público, sino es así se indica el error
+		//Se comprueba si el modulo es pï¿½blico, sino es asï¿½ se indica el error
 		if($modules->is_public_module($_GET['module']) == 0)
-		{
 			$module_name = 'error';
-		}
 		else
-		{
 			$module_name=$_GET['module'];
-			
-			//Comprobación del método
-			
-		}	
 	}
 
-	//Se comprueba que el usuario tenga permisos sobre el módulo que aparece en la barra de direccion
+	//Se comprueba que el usuario tenga permisos sobre el mï¿½dulo que aparece en la barra de direccion
 	if(isset($_SESSION['user']) && isset($_GET['module']))
 	{
 		if((!$_SESSION['super']) && (!$_SESSION['admin']))
 		{
-			//Se comprueba si el modulo es público si es así se deja no hay problema, pero sino se tendrá que saber si tiene o no acceso a él
+			//Se comprueba si el modulo es pï¿½blico si es asï¿½ se deja no hay problema, pero sino se tendrï¿½ que saber si tiene o no acceso a ï¿½l
 			if($modules->is_public_module($_GET['module']) == 0)
 			{
 				$permiso = new permissions_modules();
-		
+	
 				//Se prepara para poder investigar los permisos en el modulo
 				if (!isset($_GET['method']))
 				{
@@ -306,7 +309,7 @@ if($_SESSION['expire'] == 0)
 					}
 				}
 			}
-		}
+		}	
 		else
 		if($_SESSION['admin'] && (!$_SESSION['super']) && ($_GET['module'] == 'modules' || $_GET['module'] == 'methods'))
 		{
@@ -316,12 +319,12 @@ if($_SESSION['expire'] == 0)
 }
 else
 {
-	//Expiró la sesión
+	//Expirï¿½ la sesiï¿½n
 	$module_name = 'expire';	
 	$_SESSION['expire'] = 0;
 }
 		
-/*************************** Preparación de la plantilla a mostrar ***************************************************/
+/*************************** Preparaciï¿½n de la plantilla a mostrar ***************************************************/
 
 //inicializar el objeto que corresponda
 //en el caso de que no haya modulo definido se deja la plantilla por defecto
@@ -338,7 +341,7 @@ $session= new sessions();
 $num_sessions=$session->conectados();
 $tpl->assign('num_sessions',$num_sessions);
 
-//calcula la barra de navegaci—n y titulo de la pagina
+//calcula la barra de navegaciï¿½n y titulo de la pagina
 if ($objeto===null)
 {
 	$nav_bar='Gesti&oacute;n';
@@ -362,7 +365,7 @@ else
 	$tpl=$objeto->calculate_tpl($method,$tpl);
 	
 	
-	//Se obtiene el nombre de la empresa en la que se está trabajando
+	//Se obtiene el nombre de la empresa en la que se estï¿½ trabajando
 	if($_SESSION['ident_corp']==0)
 	{
 		$corp = "";
@@ -382,10 +385,10 @@ else
 	
 }
 
-//pasa las variables de la presentaci—n a la plantilla dependiente del objeto
+//pasa las variables de la presentaciï¿½n a la plantilla dependiente del objeto
 $tpl->assign('title',$title);
 $tpl->assign('nav_bar',$nav_bar);
-//Antes de ir a la plantilla se registra la hora máxima a la que puede estar el usuario en esa página
+//Antes de ir a la plantilla se registra la hora mï¿½xima a la que puede estar el usuario en esa pï¿½gina
 $_SESSION['max_page_time'] = time()+1200;
 
 //Guardar en bbdd fecha de expiracion

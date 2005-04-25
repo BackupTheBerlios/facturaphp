@@ -25,11 +25,11 @@
 						<td><input type="text" id="{$objeto->ddbb_search}" name="{$objeto->ddbb_search}" value="{$objeto->search_query}" class="textoMenu"></td>
 				  </tr>
 				  <tr>
-						<td width="125" class="CampoFormulario">Nº de Registros por p&aacute;gina:</td>
+						<td width="125" class="CampoFormulario">Nï¿½ de Registros por p&aacute;gina:</td>
 						<td><select name="Registros" >
-						  <option selected>10</option>
-						  <option>30</option>
-						  <option>50</option>
+						   <option {if $registro == 10}selected{/if}>10</option>
+						  <option {if $registro == 30}selected{/if}>30</option>
+						  <option {if $registro == 50}selected{/if}>50</option>
 						</select></td>
 				 </tr>
 				 <tr>

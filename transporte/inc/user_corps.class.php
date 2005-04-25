@@ -33,7 +33,7 @@ var $emp;
 				
 								$my_corp = new corps();
 								$tpl = $my_corp->view($_SESSION['ident_corp'],$tpl);
-								$tpl->assign('plantilla','corps_view.tpl');	
+								$tpl->assign('plantilla','group_users_list.tpl');	
 								break;
 				default:
 								$method='list';

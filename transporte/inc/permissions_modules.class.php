@@ -12,7 +12,7 @@ class permissions_modules{
 
 //internal vars	
 	var $num_methods; //Numero de metodos que contiene el modulo
-	var $methods;	//Lista de metodos del modulo en cuestión
+	var $methods;	//Lista de metodos del modulo en cuestiï¿½n
 	var $id_module;   //Id del modulo
 	var $module_name; //Nombre del modulo
 	var $web_name;
@@ -20,7 +20,7 @@ class permissions_modules{
 	var $publico;
 	var $parent;
 	var $active;
-	//var $list_methods; No hace falta porque la lista de metodos por módulo la encontraremos con el numero de metodos listando los nombres que aparecen en cada campo de per_module_methods
+	//var $list_methods; No hace falta porque la lista de metodos por mï¿½dulo la encontraremos con el numero de metodos listando los nombres que aparecen en cada campo de per_module_methods
 	
 //
 	var $per_modules;
@@ -63,11 +63,11 @@ class permissions_modules{
 	function validate_per_group_module ($id_group, $id_module)
 	{		
 		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
-		//crea una nueva conexi—n con una bbdd (mysql)
+		//crea una nueva conexiï¿½n con una bbdd (mysql)
 		$this->db = NewADOConnection($this->db_type);
-		//le dice que no salgan los errores de conexi—n de la ddbb por pantalla
+		//le dice que no salgan los errores de conexiï¿½n de la ddbb por pantalla
 		$this->db->debug=false;
-		//realiza una conexi—n permanente con la bbdd
+		//realiza una conexiï¿½n permanente con la bbdd
 		$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
 	
 		//mete la consulta
@@ -92,11 +92,11 @@ class permissions_modules{
 	{	
 
 		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
-		//crea una nueva conexi—n con una bbdd (mysql)
+		//crea una nueva conexiï¿½n con una bbdd (mysql)
 		$this->db = NewADOConnection($this->db_type);
-		//le dice que no salgan los errores de conexi—n de la ddbb por pantalla
+		//le dice que no salgan los errores de conexiï¿½n de la ddbb por pantalla
 		$this->db->debug=false;
-		//realiza una conexi—n permanente con la bbdd
+		//realiza una conexiï¿½n permanente con la bbdd
 		$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
 		
 		//mete la consulta
@@ -124,11 +124,11 @@ class permissions_modules{
 		
 		//se puede acceder a los usuarios por numero de campo o por nombre de campo
 		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
-		//crea una nueva conexi—n con una bbdd (mysql)
+		//crea una nueva conexiï¿½n con una bbdd (mysql)
 		$this->db = NewADOConnection($this->db_type);
-		//le dice que no salgan los errores de conexi—n de la ddbb por pantalla
+		//le dice que no salgan los errores de conexiï¿½n de la ddbb por pantalla
 		$this->db->debug=false;
-		//realiza una conexi—n permanente con la bbdd
+		//realiza una conexiï¿½n permanente con la bbdd
 		$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
 
 		$this->sql='SELECT `id_user` FROM `users` WHERE `login`='."\"".$user."\"";
@@ -159,7 +159,7 @@ class permissions_modules{
 		
 		$id_module=$this->result->fields['id_module'];
 	
-		//Si el metodo no es una cadena vacía se busca su id
+		//Si el metodo no es una cadena vacï¿½a se busca su id
 		if($method_name != "")
 		{
 
@@ -184,20 +184,20 @@ class permissions_modules{
 		$num_groups = $users->get_groups($id_user); 
 		
 		
-		//Se comprueba si el usuario tiene permisos en el módulo
+		//Se comprueba si el usuario tiene permisos en el mï¿½dulo
 		//$per = $this->validate_per_user_module($id_user, $id_module);
 		$per = $_SESSION['permisos_user_modules'][$id_user][$id_module];
 
 		
 		if($per == true)//Si ya hay permiso no hace falta seguir
 		{
-			//Se busca si también tiene permisos en el metodo indicado
-			if($method_name == "")//Si no se pasó ningún metodo se devuelve el permiso en el modulo
+			//Se busca si tambiï¿½n tiene permisos en el metodo indicado
+			if($method_name == "")//Si no se pasï¿½ ningï¿½n metodo se devuelve el permiso en el modulo
 			{
 				//print "Usuario con permisos de usuario y no se ha indicado metodo";
 				return 1;
 			}
-			//Si hay metodo se busca el permiso del usuario en él
+			//Si hay metodo se busca el permiso del usuario en ï¿½l
 			$method = new permissions_methods();
 			//$per = $method->validate_per_user_method($id_user, $id_method);
 			$per = $_SESSION['permisos_user_methods'][$id_user][$id_method];
@@ -242,13 +242,13 @@ class permissions_modules{
 				{
 				
 					//return 1;
-					//Se busca si también tiene permisos en el metodo indicado
-					if($method_name == "")//Si no se pasó ningún metodo se devuelve el permiso en el modulo
+					//Se busca si tambiï¿½n tiene permisos en el metodo indicado
+					if($method_name == "")//Si no se pasï¿½ ningï¿½n metodo se devuelve el permiso en el modulo
 					{
 						//print "Usuario con permisos de grupo y no se ha indicado metodo";
 						return 1;
 					}
-					//Si hay metodo se busca el permiso del usuario en él
+					//Si hay metodo se busca el permiso del usuario en ï¿½l
 					$method = new permissions_methods();
 				//	$per = $method->validate_per_user_method($id_user, $id_method);
 					$per = $_SESSION['permisos_user_methods'][$id_user][$id_method];
@@ -292,9 +292,9 @@ class permissions_modules{
 	}
 
 
-	//Función que indicará para qué tiene permisos un usuario (ya sea por los grupos a los que pertenece o por él mísmo)
-	//Para ello se hará un listado de modulos_metodos_permiso en cada metodo de cada modulo
-	//Se usará una lista de permissions que contendrá por cada id_modulo (indice de la lista) el metodo (nombre e id de este) y permiso
+	//Funciï¿½n que indicarï¿½ para quï¿½ tiene permisos un usuario (ya sea por los grupos a los que pertenece o por ï¿½l mï¿½smo)
+	//Para ello se harï¿½ un listado de modulos_metodos_permiso en cada metodo de cada modulo
+	//Se usarï¿½ una lista de permissions que contendrï¿½ por cada id_modulo (indice de la lista) el metodo (nombre e id de este) y permiso
 	//El nombre del modulo se puede obtener gracias al id_modulo desde la lista de modulos (modules->modules_list[$module_num]['name'])
 	//
 	function validate_per_module($id_user)
@@ -312,7 +312,7 @@ class permissions_modules{
 		$num = 0;
 
 		
-		//Se comprueba si el usuario tiene permisos en el módulo
+		//Se comprueba si el usuario tiene permisos en el mï¿½dulo
 		//$result = $this->validate_per_user_module($id_user, $this->id_module);
 		$result = $_SESSION['permisos_user_modules'][$id_user][$this->id_module];
 		
@@ -344,7 +344,7 @@ class permissions_modules{
 		for ($metodo_num = 0; $metodo_num < $this->num_methods; $metodo_num++) 
 		{
 			//Como se tiene el numero de metodos de este modulo, entonces se puede ver nombre e identificador en $this->per_methods[$metodo_num]->name
-			//Así será mas fácil recorrer la matriz, y no hay problemas de pasar un hash a smarty ya que no los acepta
+			//Asï¿½ serï¿½ mas fï¿½cil recorrer la matriz, y no hay problemas de pasar un hash a smarty ya que no los acepta
 
 			$this->per_methods[$metodo_num] = new permissions_methods();
 			$this->per_methods[$metodo_num]->id_method = $modules->module_methods[$metodo_num]['id_method'];
@@ -379,7 +379,7 @@ class permissions_modules{
 		$num = 0;
 	
 		
-		//Se comprueba si el usuario tiene permisos en el módulo
+		//Se comprueba si el usuario tiene permisos en el mï¿½dulo
 			
 		//$result = $this->validate_per_user_module($id_user, $this->id_module);
 		$result = $_SESSION['permisos_user_modules'][$id_user][$this->id_module];
@@ -399,7 +399,7 @@ class permissions_modules{
 		for ($metodo_num = 0; $metodo_num < $this->num_methods; $metodo_num++) 
 		{
 			//Como se tiene el numero de metodos de este modulo, entonces se puede ver nombre e identificador en $this->per_methods[$metodo_num]->name
-			//Así será mas fácil recorrer la matriz, y no hay problemas de pasar un hash a smarty ya que no los acepta
+			//Asï¿½ serï¿½ mas fï¿½cil recorrer la matriz, y no hay problemas de pasar un hash a smarty ya que no los acepta
 
 			$this->per_methods[$metodo_num] = new permissions_methods();
 			$this->per_methods[$metodo_num]->id_method = $modules->module_methods[$metodo_num]['id_method'];
@@ -417,7 +417,7 @@ class permissions_modules{
 		}		
 	}
 
-	//Esta funcion hace lo mismo que validate_per_module pero su función es para grupos.
+	//Esta funcion hace lo mismo que validate_per_module pero su funciï¿½n es para grupos.
 	
 	function validate_per_module_for_group($id_group)
 	{
@@ -444,7 +444,7 @@ class permissions_modules{
 		for ($metodo_num = 0; $metodo_num < $this->num_methods; $metodo_num++) 
 		{
 			//Como se tiene el numero de metodos de este modulo, entonces se puede ver nombre e identificador en $this->per_methods[$metodo_num]->name
-			//Así será mas fácil recorrer la matriz, y no hay problemas de pasar un hash a smarty ya que no los acepta
+			//Asï¿½ serï¿½ mas fï¿½cil recorrer la matriz, y no hay problemas de pasar un hash a smarty ya que no los acepta
 
 			$this->per_methods[$metodo_num] = new permissions_methods();
 			$this->per_methods[$metodo_num]->id_method = $modules->module_methods[$metodo_num]['id_method'];
@@ -478,7 +478,7 @@ class permissions_modules{
 		$num = 0;
 	
 		
-		//Se comprueba si el usuario tiene permisos en el módulo
+		//Se comprueba si el usuario tiene permisos en el mï¿½dulo
 		//$result = $this->validate_per_user_module($id_user, $id_module);
 		$result = $_SESSION['permisos_user_modules'][$id_user][$id_module];
 	
@@ -504,6 +504,18 @@ class permissions_modules{
 			}
 		}
 		return $this->per;
+	}
+
+	function validate_per_type_user($name)
+	{
+		if($_SESSION['client']==1)
+		{
+			//Comprobar si tipo coincide con el mÃ³dulo
+		}
+		else
+		{ 
+			//Comprobar tipo con mÃ³dulo
+		}
 	}
 	
 }

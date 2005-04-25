@@ -53,27 +53,8 @@ class group_users{
 		$this->fields_list->add($this->ddbb_id_group, $this->id_group, 'int', 11,0);
 		$this->fields_list->add($this->ddbb_id_user, $this->id_user, 'int', 11,0);
 		$this->fields_list->add($this->ddbb_up, $this->up, 'date',11,0);
-		//print_r($this);
-		//se puede acceder a los grupos por numero de campo o por nombre de campo
-	/*	$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
-		//crea una nueva conexin con una bbdd (mysql)
-		$this->db = NewADOConnection($this->db_type);
-		//le dice que no salgan los errores de conexin de la ddbb por pantalla
-		$this->db->debug=false;
-		//realiza una conexin permanente con la bbdd
-		$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
-		//mete la consulta
-		$this->sql="SELECT * FROM ".$this->table_prefix.$this->table_name;
-		//la ejecuta y guarda los resultados
-		$this->result = $this->db->Execute($this->sql);
-		//si falla 
-		if ($this->result === false){
-			$error=1;
-			return 0;
-		}  
-		$this->db->close();*/
-		
-		return $this/*->get_list_group_users()*/;	 
+	
+		return $this;	 
 		
 	}
 	
@@ -114,6 +95,93 @@ class group_users{
 	
 	}
 	
+	function calculate_tpl($method, $tpl)
+	{
+		
+		switch($method)
+		{
+				case 'select':	
+								$_SESSION['ident_group']=$_GET['id'];
+								$my_corp = new corps();
+								$tpl = $my_corp->view($_SESSION['ident_corp'],$tpl);
+								$tpl->assign('plantilla','corps_view.tpl');	
+								break;
+				default:
+								$method='list';
+								$tpl=$this->listar($tpl);
+	//Empieza comentado
+/*								if($_SESSION['super'] || $_SESSION['admin'])
+								{
+									$tpl->assign('plantilla','user_corps_'.$method.'.tpl');	
+								}
+								else
+								{
+								Fin comentado
+									if($num_corps == 1)
+									{
+										$_SESSION['ident_corp'] = $this->emp->corps_list[0]['id_corp'];
+										$my_corp = new corps();
+										$tpl = $my_corp->view($_SESSION['ident_corp'],$tpl);
+										$tpl->assign('plantilla','corps_view.tpl');	
+										
+									}
+									else
+										$tpl->assign('plantilla','user_corps_'.$method.'.tpl');	
+							Empieza comentado			
+								}*/
+								//Fin cometnado
+								break;
+		}
+			
+		
+		return $tpl;
+	}
+	
+	
+	function listar($tpl)
+	{
+		$tabla_listado = new table(true);
+		//Empieza comentado
+		if($_SESSION['super'] || $_SESSION['admin'])
+		{
+			$my_group = new groups();
+			$my_group->get_list_groups();
+			$cadena=''.$tabla_listado->make_tables('user_groups',$my_group->groups_list,array('Nombre',50),array('id_group','name'),10,array('select'),false);
+			$variables=$tabla_listado->nombres_variables;		
+			$tpl->assign('variables',$variables);
+			$tpl->assign('cadena',$cadena);		
+			return $tpl;
+			
+		}
+		
+		//Fin comentado
+		$cadena=''.$tabla_listado->make_tables('user_groups',$this->emp->groups_list,array('Nombre',50),array('id_group','name'),10,array('select'),false);
+		$variables=$tabla_listado->nombres_variables;		
+		$tpl->assign('variables',$variables);
+		$tpl->assign('cadena',$cadena);		
+		return $tpl;
+	}
+	
+	function bar($method,$group){		
+		if ($group != ""){
+			$group='<a href="index.php?module=groups&method=view&id='.$_SESSION['ident_group'].'">'.$group.' ::';
+		}
+		$nav_bar = 'Zona privada :: '.$group.' <a href="index.php?module=user_groups">Usuario grupos</a>';
+		$nav_bar=$nav_bar;
+		return $nav_bar;
+	}	
+
+	function title($method,$group)
+	{
+		if ($group != "")
+		{
+			$group=$group." ::";
+		}
+		$title = "Zona Privada :: $group Usuario grupos";
+		$title=$title;		
+		return $title;
+	}		
+
 	function get_add_form(){
 	
 		

@@ -21,15 +21,15 @@
 			  	
 			  	<table width="250px" align="center">
 				    <tr>
-						<td width="125" class="CampoFormulario">Nº de Registros por p&aacute;gina:</td>
+						<td width="125" class="CampoFormulario">Nï¿½ de Registros por p&aacute;gina:</td>
 						<td><select name="regs">
-						  <option selected>10</option>
-						  <option>30</option>
-						  <option>50</option>
+						  <option {if $registro == 10}selected{/if}>10</option>
+						  <option {if $registro == 30}selected{/if}>30</option>
+						  <option {if $registro == 50}selected{/if}>50</option>
 						</select></td>
 				 </tr>
 				 <tr>
-				 	<td colspan="2"><input type="submit" value="Cambiar nº de registros" name="submit_sessions_reg" class="botones"></td>
+				 	<td colspan="2"><input type="submit" value="Cambiar nï¿½ de registros" name="submit_sessions_reg" class="botones"></td>
 				 </tr>
 				  </table>
 				</form><br>

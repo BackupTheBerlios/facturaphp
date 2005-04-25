@@ -129,7 +129,7 @@ class clients{
 		
 		if (isset($_POST['submit_clients_search']))
 		{
-			//Obtener datos del formulario de búsqueda
+			//Obtener datos del formulario de bï¿½squeda
 			$this->get_fields_from_search_post();
 			
 			//Generar consulta
@@ -139,7 +139,7 @@ class clients{
 				//que se mande denuevo al formulario
 				$query =  $this->search_query;
 				
-				//Se va creando la nueva query que se mandará mas tarde 
+				//Se va creando la nueva query que se mandarï¿½ mas tarde 
 				//al formulario (se busca la siquiente ocurrencia de comillas)
 				$query = substr ($this->search_query, 2);
 				
@@ -164,7 +164,7 @@ class clients{
 			$my_search = new search();
 			$query = $my_search->get_query($this->search_query, FALSE, $this->search, $this->fields_list);
 		}	
-		//Buscar los empleados de la empresa en la que se está y coincidencia en id con los id de emps en drivers
+		//Buscar los empleados de la empresa en la que se estï¿½ y coincidencia en id con los id de emps en drivers
 		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
 		//crea una nueva conexin con una bbdd (mysql)
 		$this->db = NewADOConnection($this->db_type);
@@ -221,7 +221,7 @@ class clients{
 	}
 	
 	function get_fields_from_search_post(){
-		//Cogemos los campos principales de búsqueda
+		//Cogemos los campos principales de bï¿½squeda
 		$this->search_query=$_POST[$this->ddbb_search];
 		
 		return 0;
@@ -258,11 +258,11 @@ class clients{
 	
 		//se puede acceder a los usuarios por numero de campo o por nombre de campo
 		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
-		//crea una nueva conexi—n con una bbdd (mysql)
+		//crea una nueva conexiï¿½n con una bbdd (mysql)
 		$this->db = NewADOConnection($this->db_type);
-		//le dice que no salgan los errores de conexi—n de la ddbb por pantalla
+		//le dice que no salgan los errores de conexiï¿½n de la ddbb por pantalla
 		$this->db->debug=false;
-		//realiza una conexi—n permanente con la bbdd
+		//realiza una conexiï¿½n permanente con la bbdd
 		$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
 		//mete la consulta
 		$this->sql="SELECT * FROM ".$this->table_prefix.$this->table_name." WHERE ".$this->ddbb_id_client."= \"".$id."\"";
@@ -304,9 +304,9 @@ class clients{
 	}
 	
 	function listar($tpl){
-		if (isset($_POST['submit_clients_reg']))
+		if (isset($_POST['submit_clients_search']))
 		{
-			//Se toma el número de registros y se guarda en varable de sesión
+			//Se toma el nï¿½mero de registros y se guarda en varable de sesiï¿½n
 			//que se cumpla en todos los accesos del usuario
 			$_SESSION['num_regs']= $_POST['regs'];
 			
@@ -345,12 +345,12 @@ class clients{
 										case 0: //por defecto
 												
 												break;
-										case -1: //Errores al intentar añadir datos
+										case -1: //Errores al intentar aï¿½adir datos
 												for ($i=0;$i<count($this->fields_list->array_error);$i+=2){
 													$tpl->assign("error_".$this->fields_list->array_error[$i],$this->fields_list->array_error[$i+1]);
 												}
 												break;
-										default: //Si se ha añadido
+										default: //Si se ha aï¿½adido
 												$this->method="list";
 												$tpl=$this->listar($tpl);										
 												$tpl->assign("message","&nbsp;<br>Cliente a&ntilde;adido correctamente<br>&nbsp;");
@@ -368,6 +368,7 @@ class clients{
 						case 'list':
 									$tpl=$this->listar($tpl);
 									$tpl->assign("objeto",$this);
+									$tpl->assign("registro",$_SESSION['num_regs']);
 									break;
 						case 'modify':
 
@@ -377,12 +378,12 @@ class clients{
 										case 0: //por defecto
 												$this->payday=$this->fields_list->change_date($this->payday,"es");
 												break;
-										case -1: //Errores al intentar añadir datos
+										case -1: //Errores al intentar aï¿½adir datos
 												for ($i=0;$i<count($this->fields_list->array_error);$i+=2){
 													$tpl->assign("error_".$this->fields_list->array_error[$i],$this->fields_list->array_error[$i+1]);
 												}
 												break;
-										default: //Si se ha añadido
+										default: //Si se ha aï¿½adido
 												$this->method="list";
 												$tpl=$this->listar($tpl);										
 												$tpl->assign("message","&nbsp;<br>Cliente modificado correctamente<br>&nbsp;");
@@ -426,6 +427,7 @@ class clients{
 										$this->method='list';
 										$tpl=$this->listar($tpl);
 										$tpl->assign("objeto",$this);	
+										$tpl->assign("registro",$_SESSION['num_regs']);
 									}
 									else
 									{
@@ -444,7 +446,7 @@ class clients{
 	}
 	function add(){
 			if (!isset($_POST['submit_add'])){
-			//Mostrar plantilla vacía	
+			//Mostrar plantilla vacï¿½a	
 
 			return 0;
 		}
@@ -495,11 +497,11 @@ class clients{
 			
 			$this->payday=$this->fields_list->change_date($this->payday,"en");
 			$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
-			//crea una nueva conexi—n con una bbdd (mysql)
+			//crea una nueva conexiï¿½n con una bbdd (mysql)
 			$this->db = NewADOConnection($this->db_type);
-			//le dice que no salgan los errores de conexi—n de la ddbb por pantalla
+			//le dice que no salgan los errores de conexiï¿½n de la ddbb por pantalla
 			$this->db->debug=false;
-			//realiza una conexi—n permanente con la bbdd
+			//realiza una conexiï¿½n permanente con la bbdd
 			$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
 			//mete la consulta para coger los campos de la bbdd
 			$this->sql="SELECT * FROM ".$this->table_prefix.$this->table_name. " WHERE ".$this->ddbb_id_client." = -1" ;
@@ -533,7 +535,7 @@ class clients{
 			$record[$this->ddbb_payday]=$this->payday;
 			$record[$this->ddbb_id_pay_type]=$this->id_pay_type;
 			$record[$this->ddbb_id_cat_client]=$this->id_cat_client;
-			//calculamos la sql de inserci—n respecto a los atributos
+			//calculamos la sql de inserciï¿½n respecto a los atributos
 			$this->sql = $this->db->GetInsertSQL($this->result, $record);
 			//print($this->sql);
 			//insertamos el registro
@@ -593,11 +595,11 @@ class clients{
 			}
 			else{
 		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
-		//crea una nueva conexi—n con una bbdd (mysql)
+		//crea una nueva conexiï¿½n con una bbdd (mysql)
 		$this->db = NewADOConnection($this->db_type);
-		//le dice que no salgan los errores de conexi—n de la ddbb por pantalla
+		//le dice que no salgan los errores de conexiï¿½n de la ddbb por pantalla
 		$this->db->debug=false;
-		//realiza una conexi—n permanente con la bbdd
+		//realiza una conexiï¿½n permanente con la bbdd
 		$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
 		//mete la consulta para coger los campos de la bbdd
 		//calcula la consulta de borrado.
@@ -633,11 +635,11 @@ class clients{
 	
 	function modify_all_id_client($id,$table){
 			$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
-			//crea una nueva conexión con una bbdd (mysql)
+			//crea una nueva conexiï¿½n con una bbdd (mysql)
 			$this->db = NewADOConnection($this->db_type);
-			//le dice que no salgan los errores de conexión de la ddbb por pantalla
+			//le dice que no salgan los errores de conexiï¿½n de la ddbb por pantalla
 			$this->db->debug=false;
-			//realiza una conexión permanente con la bbdd
+			//realiza una conexiï¿½n permanente con la bbdd
 			$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
 			//mete la consulta para coger los campos de la bbdd
 			//calcula la consulta de borrado.
@@ -660,11 +662,11 @@ class clients{
 	
 	function delete_all_id_client($id,$table){
 		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
-			//crea una nueva conexión con una bbdd (mysql)
+			//crea una nueva conexiï¿½n con una bbdd (mysql)
 			$this->db = NewADOConnection($this->db_type);
-			//le dice que no salgan los errores de conexión de la ddbb por pantalla
+			//le dice que no salgan los errores de conexiï¿½n de la ddbb por pantalla
 			$this->db->debug=false;
-			//realiza una conexión permanente con la bbdd
+			//realiza una conexiï¿½n permanente con la bbdd
 			$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
 			//mete la consulta para coger los campos de la bbdd
 			//calcula la consulta de borrado.
@@ -689,7 +691,7 @@ class clients{
 	function modify()
 	{
 		if (!isset($_POST['submit_modify'])){
-			//Mostrar plantilla vacía		
+			//Mostrar plantilla vacï¿½a		
 			return 0;
 		}
 		else{
@@ -729,11 +731,11 @@ class clients{
 			else{
 		$this->payday=$this->fields_list->change_date($this->payday,"en");
 		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
-		//crea una nueva conexi—n con una bbdd (mysql)
+		//crea una nueva conexiï¿½n con una bbdd (mysql)
 		$this->db = NewADOConnection($this->db_type);
-		//le dice que no salgan los errores de conexi—n de la ddbb por pantalla
+		//le dice que no salgan los errores de conexiï¿½n de la ddbb por pantalla
 		$this->db->debug=false;
-		//realiza una conexi—n permanente con la bbdd
+		//realiza una conexiï¿½n permanente con la bbdd
 		$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
 		//mete la consulta para coger los campos de la bbdd
 		$this->sql="SELECT * FROM ".$this->table_prefix.$this->table_name. " WHERE ".$this->ddbb_id_client." = \"".$this->id_client."\"" ;
@@ -768,7 +770,7 @@ class clients{
 		$record[$this->ddbb_payday]=$this->payday;
 		$record[$this->ddbb_id_pay_type]=$this->id_pay_type;
 		$record[$this->ddbb_id_cat_client]=$this->id_cat_client;
-		//calculamos la sql de inserci—n respecto a los atributos
+		//calculamos la sql de inserciï¿½n respecto a los atributos
 		$this->sql = $this->db->GetUpdateSQL($this->result, $record);
 		//insertamos el registro
 		$this->db->Execute($this->sql);
@@ -793,7 +795,7 @@ class clients{
 		Cosas que faltan por hacer:
 			De forma general, mirar los permisos del usuario que vaya a acceder aqui, para saber si tiene permisos de borrar editar ver etc...
 			Averiguar como pasar el numero de registros, si va a ser a grupos a grupos, si va a ser a modulos, a modulos
-			Order By (y mantener la búsqueda en el caso de que hubiera hecha una y averiguar la "pestaña" a la que hace referencia)
+			Order By (y mantener la bï¿½squeda en el caso de que hubiera hecha una y averiguar la "pestaï¿½a" a la que hace referencia)
 			Busquedas
 	*/
 			

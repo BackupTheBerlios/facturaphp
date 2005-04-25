@@ -70,11 +70,11 @@ class sessions{
 	function get_list_sessions (){
 	
 		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
-		//crea una nueva conexi—n con una bbdd (mysql)
+		//crea una nueva conexiï¿½n con una bbdd (mysql)
 		$this->db = NewADOConnection($this->db_type);
-		//le dice que no salgan los errores de conexi—n de la ddbb por pantalla
+		//le dice que no salgan los errores de conexiï¿½n de la ddbb por pantalla
 		$this->db->debug=false;
-		//realiza una conexi—n permanente con la bbdd
+		//realiza una conexiï¿½n permanente con la bbdd
 		$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
 		//mete la consulta
 		$this->sql="SELECT * FROM ".$this->table_prefix.$this->table_name;
@@ -99,7 +99,7 @@ class sessions{
 			$usuario->read_fields($this->sessions_list[$this->num][$this->ddbb_id_user]);
 			$this->sessions_list[$this->num][$this->ddbb_name] = $usuario->full_name;
 
-			//Modificación del formato de las fechas para la presentación
+			//Modificaciï¿½n del formato de las fechas para la presentaciï¿½n
 	    	list($anno,$mes,$dia,$hora,$minutos,$segundos)=sscanf($this->sessions_list[$this->num][$this->ddbb_up],"%d-%d-%d %d:%d:%d");
 			
 			if($mes < 10)
@@ -175,11 +175,11 @@ class sessions{
 	function comprobar_conectados()
 	{
 		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
-		//crea una nueva conexi—n con una bbdd (mysql)
+		//crea una nueva conexiï¿½n con una bbdd (mysql)
 		$this->db = NewADOConnection($this->db_type);
-		//le dice que no salgan los errores de conexi—n de la ddbb por pantalla
+		//le dice que no salgan los errores de conexiï¿½n de la ddbb por pantalla
 		$this->db->debug=false;
-		//realiza una conexi—n permanente con la bbdd
+		//realiza una conexiï¿½n permanente con la bbdd
 		$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
 		//mete la consulta
 		$expire = time();
@@ -218,11 +218,11 @@ class sessions{
 	
 	function read($id){
 		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
-		//crea una nueva conexi—n con una bbdd (mysql)
+		//crea una nueva conexiï¿½n con una bbdd (mysql)
 		$this->db = NewADOConnection($this->db_type);
-		//le dice que no salgan los errores de conexi—n de la ddbb por pantalla
+		//le dice que no salgan los errores de conexiï¿½n de la ddbb por pantalla
 		$this->db->debug=false;
-		//realiza una conexi—n permanente con la bbdd
+		//realiza una conexiï¿½n permanente con la bbdd
 		$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
 		//mete la consulta
 		$this->sql="SELECT * FROM ".$this->table_prefix.$this->table_name." WHERE ".$this->ddbb_id_session."= \"".$id."\"";
@@ -252,11 +252,11 @@ class sessions{
 	function add(){
 	
 		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
-		//crea una nueva conexi—n con una bbdd (mysql)
+		//crea una nueva conexiï¿½n con una bbdd (mysql)
 		$this->db = NewADOConnection($this->db_type);
-		//le dice que no salgan los errores de conexi—n de la ddbb por pantalla
+		//le dice que no salgan los errores de conexiï¿½n de la ddbb por pantalla
 		$this->db->debug=false;
-		//realiza una conexi—n permanente con la bbdd
+		//realiza una conexiï¿½n permanente con la bbdd
 		$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
 		//mete la consulta para coger los campos de la bbdd
 		$this->sql="SELECT * FROM ".$this->table_prefix.$this->table_name. " WHERE ".$this->ddbb_id_session." = -1" ;
@@ -274,7 +274,7 @@ class sessions{
 		$record[$this->ddbb_id_user]=$this->id_user;
 		$record[$this->ddbb_up]=$this->up;
 		$record[$this->ddbb_down]=$this->down;		
-		//calculamos la sql de inserci—n respecto a los atributos
+		//calculamos la sql de inserciï¿½n respecto a los atributos
 		$this->sql = $this->db->GetInsertSQL($this->result, $record);
 		//print($this->sql);
 		//insertamos el registro
@@ -298,11 +298,11 @@ class sessions{
 	function remove($id){
 	
 		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
-		//crea una nueva conexi—n con una bbdd (mysql)
+		//crea una nueva conexiï¿½n con una bbdd (mysql)
 		$this->db = NewADOConnection($this->db_type);
-		//le dice que no salgan los errores de conexi—n de la ddbb por pantalla
+		//le dice que no salgan los errores de conexiï¿½n de la ddbb por pantalla
 		$this->db->debug=false;
-		//realiza una conexi—n permanente con la bbdd
+		//realiza una conexiï¿½n permanente con la bbdd
 		$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
 		//mete la consulta para coger los campos de la bbdd
 		//calcula la consulta de borrado.
@@ -327,11 +327,11 @@ class sessions{
 	function modify(){
 
 		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
-		//crea una nueva conexi—n con una bbdd (mysql)
+		//crea una nueva conexiï¿½n con una bbdd (mysql)
 		$this->db = NewADOConnection($this->db_type);
-		//le dice que no salgan los errores de conexi—n de la ddbb por pantalla
+		//le dice que no salgan los errores de conexiï¿½n de la ddbb por pantalla
 		$this->db->debug=false;
-		//realiza una conexi—n permanente con la bbdd
+		//realiza una conexiï¿½n permanente con la bbdd
 		$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
 		//mete la consulta para coger los campos de la bbdd
 		$this->sql="SELECT * FROM ".$this->table_prefix.$this->table_name. " WHERE ".$this->ddbb_id_session." = \"".$_SESSION['ident_sesion']."\"" ;
@@ -351,7 +351,7 @@ class sessions{
 		$record[$this->ddbb_up]=$this->up;
 		$record[$this->ddbb_down]=$this->down;		
 		$record[$this->ddbb_expire]=$this->expire;
-		//calculamos la sql de inserci—n respecto a los atributos
+		//calculamos la sql de inserciï¿½n respecto a los atributos
 		$this->sql = $this->db->GetUpdateSQL($this->result, $record);
 		//insertamos el registro
 		$this->db->Execute($this->sql);
@@ -374,11 +374,11 @@ class sessions{
 	function modify_other(){
 
 		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
-		//crea una nueva conexi—n con una bbdd (mysql)
+		//crea una nueva conexiï¿½n con una bbdd (mysql)
 		$this->db = NewADOConnection($this->db_type);
-		//le dice que no salgan los errores de conexi—n de la ddbb por pantalla
+		//le dice que no salgan los errores de conexiï¿½n de la ddbb por pantalla
 		$this->db->debug=false;
-		//realiza una conexi—n permanente con la bbdd
+		//realiza una conexiï¿½n permanente con la bbdd
 		$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
 		//mete la consulta para coger los campos de la bbdd
 		$this->sql="SELECT * FROM ".$this->table_prefix.$this->table_name. " WHERE ".$this->ddbb_id_session." = \"".$this->id_session."\"" ;
@@ -398,7 +398,7 @@ class sessions{
 		$record[$this->ddbb_up]=$this->up;
 		$record[$this->ddbb_down]=$this->down;		
 		$record[$this->ddbb_expire]=$this->expire;
-		//calculamos la sql de inserci—n respecto a los atributos
+		//calculamos la sql de inserciï¿½n respecto a los atributos
 		$this->sql = $this->db->GetUpdateSQL($this->result, $record);
 		//insertamos el registro
 		$this->db->Execute($this->sql);
@@ -423,7 +423,7 @@ class sessions{
 			
 		if (isset($_POST['submit_sessions_reg']))
 		{
-			//Se toma el número de registros y se guarda en varable de sesión
+			//Se toma el nï¿½mero de registros y se guarda en varable de sesiï¿½n
 			//que se cumpla en todos los accesos del usuario
 			$_SESSION['num_regs']= $_POST['regs'];
 			
@@ -433,7 +433,7 @@ class sessions{
 		$per = new permissions();
 		$per->get_permissions_list('sessions');
 		
-		//Toda persona con permso podrá modificar o borrar los datos del conductor, podrá hacerlo
+		//Toda persona con permso podrï¿½ modificar o borrar los datos del conductor, podrï¿½ hacerlo
 		$j=0;
 		for ($i=0;$i<count($per->permissions_module);$i++)
 		{
@@ -451,7 +451,7 @@ class sessions{
 		}
 		else
 		{
-			$cadena=''.$tabla_listado->make_tables('sessions',$this->sessions_list,array('Usuario',20, 'Fecha/Hora conexión', 20, 'Fecha/Hora desconexión', 20),array($this->ddbb_id_session,$this->ddbb_name, $this->ddbb_up, $this->ddbb_down),$_SESSION['num_regs'],$permisos,false);
+			$cadena=''.$tabla_listado->make_tables('sessions',$this->sessions_list,array('Usuario',20, 'Fecha/Hora conexiï¿½n', 20, 'Fecha/Hora desconexiï¿½n', 20),array($this->ddbb_id_session,$this->ddbb_name, $this->ddbb_up, $this->ddbb_down),$_SESSION['num_regs'],$permisos,false);
 			$variables=$tabla_listado->nombres_variables;
 		}		
 		$tpl->assign('variables',$variables);
@@ -509,7 +509,7 @@ class sessions{
 			$usuario->read_fields($this->conectados_list[$this->num][$this->ddbb_id_user]);			
 			$this->conectados_list[$this->num][$this->ddbb_name] = $usuario->full_name;
 
-			//Modificación del formato de las fechas para la presentación
+			//Modificaciï¿½n del formato de las fechas para la presentaciï¿½n
 			list($anno,$mes,$dia,$hora,$minutos,$segundos)=sscanf($this->conectados_list[$this->num][$this->ddbb_up],"%d-%d-%d %d:%d:%d");
 			
 			if($mes < 10)
@@ -539,7 +539,7 @@ class sessions{
 		$usuario->read($id_user);
 		$this->conectados_list[$this->num][$this->ddbb_name] = $usuario->name." ".$usuario->last_name." ".$usuario->last_name2;
 
-		//Modificación del formato de las fechas para la presentación
+		//Modificaciï¿½n del formato de las fechas para la presentaciï¿½n
 		
 			list($anno,$mes,$dia,$hora,$minutos,$segundos)=sscanf($this->conectados_list[$this->num][$this->ddbb_up],"%d-%d-%d %d:%d:%d");
 			
@@ -585,6 +585,7 @@ class sessions{
 				switch($method){		
 						case 'list':
 									$tpl=$this->listar($tpl);
+									$tpl->assign("registro",$_SESSION['num_regs']);
 									break;
 						case 'delete':
 									$this->read($_GET['id']);
@@ -602,6 +603,7 @@ class sessions{
 						default:
 									$this->method='list';
 									$tpl=$this->listar($tpl);
+									$tpl->assign("registro",$_SESSION['num_regs']);
 									break;
 					}
 				$tpl->assign('plantilla','sessions_'.$this->method.'.tpl');					

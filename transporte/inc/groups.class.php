@@ -37,7 +37,7 @@ class groups{
   	var $num;
   	var $fields_list;
   	var $error;
-	var $belong; //<- Esta variable se usara desde users.class.php la cual nos dira si el checkbox de los modelos modify o add estan a 1 o a 0 para grupos. Por defecto estará a 0.
+	var $belong; //<- Esta variable se usara desde users.class.php la cual nos dira si el checkbox de los modelos modify o add estan a 1 o a 0 para grupos. Por defecto estarï¿½ a 0.
 	var $per_modules;
 	var $num_modules;
 	var $users_list;
@@ -80,7 +80,7 @@ class groups{
 	function get_list_groups (){
 		if (isset($_POST['submit_groups_search']))
 		{
-			//Obtener datos del formulario de búsqueda
+			//Obtener datos del formulario de bï¿½squeda
 			$this->get_fields_from_search_post();
 
 			//Generar consulta
@@ -90,7 +90,7 @@ class groups{
 				//que se mande denuevo al formulario
 				$query =  $this->search_query;
 				
-				//Se va creando la nueva query que se mandará mas tarde 
+				//Se va creando la nueva query que se mandarï¿½ mas tarde 
 				//al formulario (se busca la siquiente ocurrencia de comillas)
 				$query = substr ($this->search_query, 2);
 				
@@ -116,7 +116,7 @@ class groups{
 			$my_search = new search();
 			$query = $my_search->get_query($this->search_query, FALSE, $this->search, $this->fields_list);
 		}	
-		//Buscar los empleados de la empresa en la que se está y coincidencia en id con los id de emps en drivers
+		//Buscar los empleados de la empresa en la que se estï¿½ y coincidencia en id con los id de emps en drivers
 		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
 		//crea una nueva conexin con una bbdd (mysql)
 		$this->db = NewADOConnection($this->db_type);
@@ -160,10 +160,39 @@ class groups{
 	}
 	
 	function get_fields_from_search_post(){
-		//Cogemos los campos principales de búsqueda
+		//Cogemos los campos principales de bï¿½squeda
 		$this->search_query=$_POST[$this->ddbb_search];
 		return 0;
 	}	
+	
+	function get_id ($name)
+	{
+		//Buscar los empleados de la empresa en la que se estï¿½ y coincidencia en id con los id de emps en drivers
+		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
+		//crea una nueva conexin con una bbdd (mysql)
+		$this->db = NewADOConnection($this->db_type);
+		//le dice que no salgan los errores de conexin de la ddbb por pantalla
+		$this->db->debug=false;
+		//realiza una conexin permanente con la bbdd
+		$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
+		//mete la consulta
+		$this->sql='SELECT id_group FROM '.$this->table_prefix.$this->table_name.' WHERE name = "\"'.$name.'"\"';
+		
+		//la ejecuta y guarda los resultados
+		$this->result = $this->db->Execute($this->sql);
+		//si falla 
+		if ($this->result === false)
+		{
+			$this->error=1;
+			$this->db->close();
+
+			return 0;
+		}  
+		
+		
+		$this->db->close();
+		return $this->result->fields['id_group'];
+	}
 	
 	function get_add_form(){
 	
@@ -230,7 +259,7 @@ class groups{
 		for ($modulo_num = 0; $modulo_num < $this->num_modules; $modulo_num++) 
 		{
 			//Como se tiene el numero de modulos entonces se puede ver nombre e identificador en $this->modules->modules_list
-			//Así será mas fácil recorrer la matriz, y no hay problemas de pasar un hash a smarty ya que no los acepta
+			//Asï¿½ serï¿½ mas fï¿½cil recorrer la matriz, y no hay problemas de pasar un hash a smarty ya que no los acepta
 			$this->per_modules[$modulo_num] = new permissions_modules();
 			$this->per_modules[$modulo_num]->id_module = $this->modules->modules_list[$modulo_num]['id_module'];
 			$this->per_modules[$modulo_num]->module_name = $this->modules->modules_list[$modulo_num]['name'];
@@ -281,11 +310,11 @@ class groups{
 	
 		//se puede acceder a los gruposs por numero de campo o por nombre de campo
 		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
-		//crea una nueva conexi—n con una bbdd (mysql)
+		//crea una nueva conexiï¿½n con una bbdd (mysql)
 		$this->db = NewADOConnection($this->db_type);
-		//le dice que no salgan los errores de conexi—n de la ddbb por pantalla
+		//le dice que no salgan los errores de conexiï¿½n de la ddbb por pantalla
 		$this->db->debug=false;
-		//realiza una conexi—n permanente con la bbdd
+		//realiza una conexiï¿½n permanente con la bbdd
 		$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
 		//mete la consulta
 		$this->sql="SELECT * FROM ".$this->table_prefix.$this->table_name." WHERE ".$this->ddbb_id_group."= \"".$id."\"";
@@ -302,7 +331,7 @@ class groups{
 			$this->name_web=$this->result->fields[$this->ddbb_name_web];
 			$this->descrip=$this->result->fields[$this->ddbb_descrip];
 			$this->belong=0;//Variable para los checkbox, por defecto a 0.	
-			//Una vez sabído el identificador de grupo, se puede pedir que realice su lista de permisos
+			//Una vez sabï¿½do el identificador de grupo, se puede pedir que realice su lista de permisos
 			$this->get_permissions($this->id_group);
 			
 			$this->db->close();
@@ -315,7 +344,7 @@ class groups{
 	function add(){
 		//Miramos a ver si esta definida el "submit_add" y si no lo esta, pasamos directamente a mostrar la plantilla
 		if (!isset($_POST['submit_add'])){
-			//Mostrar plantilla vacía	
+			//Mostrar plantilla vacï¿½a	
 			//pasarle a la plantilla los modulos y grupos con sus respectivos checkbox a checked false
 			//Modulos
 			
@@ -358,11 +387,11 @@ class groups{
 			else{
 				//Si todo es correcto si meten los datos						
 				$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
-				//crea una nueva conexi—n con una bbdd (mysql)
+				//crea una nueva conexiï¿½n con una bbdd (mysql)
 				$this->db = NewADOConnection($this->db_type);
-				//le dice que no salgan los errores de conexi—n de la ddbb por pantalla
+				//le dice que no salgan los errores de conexiï¿½n de la ddbb por pantalla
 				$this->db->debug=false;
-				//realiza una conexi—n permanente con la bbdd
+				//realiza una conexiï¿½n permanente con la bbdd
 				$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
 				//mete la consulta para coger los campos de la bbdd
 				$this->sql="SELECT * FROM ".$this->table_prefix.$this->table_name. " WHERE ".$this->ddbb_id_group." = -1" ;
@@ -379,7 +408,7 @@ class groups{
 				$record[$this->ddbb_name] = $this->name;
 				$record[$this->ddbb_name_web]=$this->name_web;
 				$record[$this->ddbb_descrip]=$this->descrip;
-				//calculamos la sql de inserci—n respecto a los atributos
+				//calculamos la sql de inserciï¿½n respecto a los atributos
 				$this->sql = $this->db->GetInsertSQL($this->result, $record);
 				
 				//print($this->sql);
@@ -412,11 +441,11 @@ class groups{
 			}
 		else{
 			$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
-			//crea una nueva conexi—n con una bbdd (mysql)
+			//crea una nueva conexiï¿½n con una bbdd (mysql)
 			$this->db = NewADOConnection($this->db_type);
-			//le dice que no salgan los errores de conexi—n de la ddbb por pantalla
+			//le dice que no salgan los errores de conexiï¿½n de la ddbb por pantalla
 			$this->db->debug=false;
-			//realiza una conexi—n permanente con la bbdd
+			//realiza una conexiï¿½n permanente con la bbdd
 			$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
 			//mete la consulta para coger los campos de la bbdd
 			//calcula la consulta de borrado.
@@ -440,7 +469,7 @@ class groups{
 		
 	function modify(){
 	if (!isset($_POST['submit_modify'])){
-			//Mostrar plantilla vacía	
+			//Mostrar plantilla vacï¿½a	
 			//pasarle a la plantilla los modulos y grupos con sus respectivos checkbox a checked false
 			$this->checkbox=new permissions_modules;
 			
@@ -477,11 +506,11 @@ class groups{
 			}
 			else{
 				$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
-				//crea una nueva conexi—n con una bbdd (mysql)
+				//crea una nueva conexiï¿½n con una bbdd (mysql)
 				$this->db = NewADOConnection($this->db_type);
-				//le dice que no salgan los errores de conexi—n de la ddbb por pantalla
+				//le dice que no salgan los errores de conexiï¿½n de la ddbb por pantalla
 				$this->db->debug=false;
-				//realiza una conexi—n permanente con la bbdd
+				//realiza una conexiï¿½n permanente con la bbdd
 				$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
 				//mete la consulta para coger los campos de la bbdd
 				$this->sql="SELECT * FROM ".$this->table_prefix.$this->table_name. " WHERE ".$this->ddbb_id_group." = \"".$this->id_group."\"" ;
@@ -499,7 +528,7 @@ class groups{
 				$record[$this->ddbb_name]=$this->name;
 				$record[$this->ddbb_name_web]=$this->name_web;
 				$record[$this->ddbb_descrip]=$this->descrip;		
-				//calculamos la sql de inserci—n respecto a los atributos
+				//calculamos la sql de inserciï¿½n respecto a los atributos
 				$this->sql = $this->db->GetUpdateSQL($this->result, $record);
 				//insertamos el registro
 				$this->db->Execute($this->sql);
@@ -528,7 +557,7 @@ class groups{
 		Cosas que faltan por hacer:
 			De forma general, mirar los permisos del usuario que vaya a acceder aqui, para saber si tiene permisos de borrar editar ver etc...
 			Averiguar como pasar el numero de registros, si va a ser a grupos a grupos, si va a ser a modulos, a modulos
-			Order By (y mantener la búsqueda en el caso de que hubiera hecha una y averiguar la "pestaña" a la que hace referencia)
+			Order By (y mantener la bï¿½squeda en el caso de que hubiera hecha una y averiguar la "pestaï¿½a" a la que hace referencia)
 			Busquedas
 	*/
 
@@ -574,7 +603,7 @@ class groups{
 		
 			$mensaje = null;
 			$mensaje[0]['id_mensaje'] = 1;
-			$mensaje[0]['mes'] = "Sentimos informarle de que no tiene permiso para acceder a esta información";
+			$mensaje[0]['mes'] = "Sentimos informarle de que no tiene permiso para acceder a esta informaciï¿½n";
 			
 			//listado de modulos
 			$tabla_modulos = new table(false);
@@ -610,7 +639,7 @@ class groups{
 					}
 					
 						
-					$cadena=$cadena.$tabla_modulos->make_tables('modules',$permissions,array('Nombre del modulo',20,'Métodos en los que se tiene permiso',120),array('id_module','name', 'methods'),$_SESSION['num_regs'],null,false);
+					$cadena=$cadena.$tabla_modulos->make_tables('modules',$permissions,array('Nombre del modulo',20,'Mï¿½todos en los que se tiene permiso',120),array('id_module','name', 'methods'),$_SESSION['num_regs'],null,false);
 					$variables_modulos=$tabla_modulos->nombres_variables;
 				}
 			}
@@ -647,7 +676,7 @@ class groups{
 	function listar($tpl){
 		if (isset($_POST['submit_groups_search']))
 		{
-			//Se toma el número de registros y se guarda en varable de sesión
+			//Se toma el nï¿½mero de registros y se guarda en varable de sesiï¿½n
 			//que se cumpla en todos los accesos del usuario
 			$_SESSION['num_regs']= $_POST['regs'];
 			
@@ -691,12 +720,12 @@ class groups{
 									switch ($return){										
 										case 0: //por defecto												
 												break;
-										case -1: //Errores al intentar añadir datos
+										case -1: //Errores al intentar aï¿½adir datos
 												for ($i=0;$i<count($this->fields_list->array_error);$i+=2){
 													$tpl->assign("error_".$this->fields_list->array_error[$i],$this->fields_list->array_error[$i+1]);
 												}												
 												break;
-										default: //Si se ha añadido
+										default: //Si se ha aï¿½adido
 												$this->method="list";
 												$tpl=$this->listar($tpl);										
 												$tpl->assign("message","&nbsp;<br>Grupo a&ntilde;adido correctamente<br>&nbsp;");
@@ -727,12 +756,12 @@ class groups{
 									switch ($return){										
 										case 0: //por defecto
 												break;
-										case -1: //Errores al intentar añadir datos
+										case -1: //Errores al intentar aï¿½adir datos
 												for ($i=0;$i<count($this->fields_list->array_error);$i+=2){
 													$tpl->assign("error_".$this->fields_list->array_error[$i],$this->fields_list->array_error[$i+1]);
 												}
 												break;
-										default: //Si se ha añadido
+										default: //Si se ha aï¿½adido
 												$this->method="list";
 												$tpl=$this->listar($tpl);										
 												$tpl->assign("message","&nbsp;<br>Grupo modificado correctamente<br>&nbsp;");
@@ -935,7 +964,7 @@ class groups{
 						}
 					}
 				}
-				else{//En caso de que el permiso sea 0 si existe en la tabla, se modificara el valor, y si no existe no hará nada
+				else{//En caso de que el permiso sea 0 si existe en la tabla, se modificara el valor, y si no existe no harï¿½ nada
 
 					$result=$per_group_modules->verify_group_module($this->id_group,$this->checkbox->per_modules[$i]->id_module);
 
@@ -975,11 +1004,11 @@ class groups{
 	
 	function modify_all_id_group($id,$table){
 			$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
-			//crea una nueva conexión con una bbdd (mysql)
+			//crea una nueva conexiï¿½n con una bbdd (mysql)
 			$this->db = NewADOConnection($this->db_type);
-			//le dice que no salgan los errores de conexión de la ddbb por pantalla
+			//le dice que no salgan los errores de conexiï¿½n de la ddbb por pantalla
 			$this->db->debug=false;
-			//realiza una conexión permanente con la bbdd
+			//realiza una conexiï¿½n permanente con la bbdd
 			$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
 			//mete la consulta para coger los campos de la bbdd
 			//calcula la consulta de borrado.
@@ -1002,11 +1031,11 @@ class groups{
 	
 	function delete_all_id_group($id,$table){
 		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
-			//crea una nueva conexión con una bbdd (mysql)
+			//crea una nueva conexiï¿½n con una bbdd (mysql)
 			$this->db = NewADOConnection($this->db_type);
-			//le dice que no salgan los errores de conexión de la ddbb por pantalla
+			//le dice que no salgan los errores de conexiï¿½n de la ddbb por pantalla
 			$this->db->debug=false;
-			//realiza una conexión permanente con la bbdd
+			//realiza una conexiï¿½n permanente con la bbdd
 			$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
 			//mete la consulta para coger los campos de la bbdd
 			//calcula la consulta de borrado.
