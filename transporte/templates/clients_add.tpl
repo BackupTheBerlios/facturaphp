@@ -1,4 +1,4 @@
-<td valign="top">
+<td valign="top" width="100%">
 <script src="inc/calendar.js" type="text/javascript" language="javascript"></script>
 <form method="post" action="index.php?module=clients&method=add" name="form_central">
 	  	<table align="center" width="100%">

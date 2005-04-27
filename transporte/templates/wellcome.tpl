@@ -1,4 +1,4 @@
-<td valign="top">
+<td valign="top" width=100%>
 <table width="100%" cellpadding="10" cellspacing="10"  bgcolor="#F0FFFF">
 	<tr class="barraNavegacion">
 		<td align="middle" valign="middle"><font color="#000000">Bienvenid@ a esta aplicación</font></td>

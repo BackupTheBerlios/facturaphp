@@ -1,4 +1,4 @@
-<td valign="top">
+<td valign="top" width="100%">
 {include file=capas.tpl}
 <br><br>
 	

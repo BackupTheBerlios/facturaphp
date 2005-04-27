@@ -1,4 +1,4 @@
-<td valign="top">
+<td valign="top" width="100%">
 
 	<table width="100%" cellpadding="0" cellspacing="0"  bgcolor="#000000">
 				<tr Class="CabeceraModulo">

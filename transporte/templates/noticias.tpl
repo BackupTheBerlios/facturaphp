@@ -1,4 +1,4 @@
-<td valign="top">
+<td valign="top"  width="100%">
 	  	<div  class="divCentral" >
 	  	<table width="100%">
 	  			<tr class="Cabecera" valign="middle">

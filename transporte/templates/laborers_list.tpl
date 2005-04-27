@@ -1,4 +1,4 @@
-<td valign="top">
+<td valign="top" width="100%">
 {$cadena}
 	{php}
 		echo $this->_tpl_vars['cadena'];

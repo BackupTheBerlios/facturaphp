@@ -1,4 +1,4 @@
-<td valign="top">
+<td valign="top" width="100%">
 
 <form method="post" action="index.php?module=cat_clients&method=add" name="form_central" enctype="multipart/form-data">
 	  	<table align="center" width="100%">
