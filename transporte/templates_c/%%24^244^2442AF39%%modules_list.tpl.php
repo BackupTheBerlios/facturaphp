@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.3, created on 2005-04-18 19:43:23
+<?php /* Smarty version 2.6.3, created on 2005-04-21 13:14:56
          compiled from modules_list.tpl */ ?>
 <td valign="top">
 <?php echo $this->_tpl_vars['cadena']; ?>
@@ -34,19 +34,16 @@ unset($_smarty_tpl_vars);
 " value="<?php echo $this->_tpl_vars['objeto']->search_query; ?>
 " class="textoMenu"></td>
 				  </tr>				  
-				  <tr>
-				 	<td colspan="2"><input type="submit" value="Buscar" name="submit_modules_search" class="botones"></td>
-				 </tr>
 			    <tr>
 						<td width="125" class="CampoFormulario">Nº de Registros por p&aacute;gina:</td>
 						<td><select name="regs">
-						  <option selected>10</option>
-						  <option>30</option>
-						  <option>50</option>
+						  <option <?php if ($this->_tpl_vars['registro'] == 10): ?>selected<?php endif; ?>>10</option>
+						  <option <?php if ($this->_tpl_vars['registro'] == 30): ?>selected<?php endif; ?>>30</option>
+						  <option <?php if ($this->_tpl_vars['registro'] == 50): ?>selected<?php endif; ?>>50</option>
 						</select></td>
 				 </tr>
-				  <tr>
-				 	<td colspan="2"><input type="submit" value="Cambiar nº de registros" name="submit_modules_reg" class="botones"></td>
+				   <tr>
+				 	<td colspan="2" aling="center" ><input type="submit" value="Buscar" name="submit_modules_search" class="botones"></td>
 				 </tr>
 
 				  </table>

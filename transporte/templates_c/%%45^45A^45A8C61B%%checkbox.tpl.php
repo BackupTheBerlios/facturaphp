@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.3, created on 2005-04-18 16:25:32
+<?php /* Smarty version 2.6.3, created on 2005-04-25 12:21:14
          compiled from checkbox.tpl */ ?>
 <?php echo '
 <script>

@@ -9,6 +9,9 @@ function initialize_object($module)
 		case 'users':
 					$objeto=new users();		
 					break;
+		case 'user_corps':
+					$objeto=new user_corps();		
+					break;
 		case 'user_groups':
 					$objeto=new user_groups();		
 					break;

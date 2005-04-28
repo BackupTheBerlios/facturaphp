@@ -1,7 +1,6 @@
-<?php /* Smarty version 2.6.3, created on 2005-04-21 13:18:46
-         compiled from emps_list.tpl */ ?>
+<?php /* Smarty version 2.6.3, created on 2005-04-21 13:18:56
+         compiled from cat_emps_list.tpl */ ?>
 <td valign="top">
-
 <?php echo $this->_tpl_vars['cadena']; ?>
 
 <?php $_smarty_tpl_vars = $this->_tpl_vars;
@@ -17,18 +16,19 @@ unset($_smarty_tpl_vars);
                           <!--<img src="pics/usuariosico.png" width="32" height="32">-->
 						</td>
 						<td width="93%" valign="middle"  nowrap>
-						  Buscar empleados </td>
+						  Buscar usuarios </td>
 				</tr>
 			  </table>
 			  <table width="100%">
 			  <tr><td class="message" align="center"><?php echo $this->_tpl_vars['message']; ?>
 </td></tr>
-			  <tr><td valign="top"><form method="post" action="index.php?module=emps&method=list">
+			  <tr><td valign="top"><form method="post" action="index.php?module=cat_emps&method=list">
 			  	<table width="250px" align="center">
 				 <tr>
 					  <td colspan="2" class="cabeceraCampoFormulario">B&uacute;squeda:</td>
 				  </tr>
-					  <tr>
+					
+				   <tr>
 						<td  width="125px" align="right" class="CampoFormulario">Introduzca su b&uacute;squeda:</td>
 						<td><input type="text" id="<?php echo $this->_tpl_vars['objeto']->ddbb_search; ?>
 " name="<?php echo $this->_tpl_vars['objeto']->ddbb_search; ?>
@@ -43,16 +43,16 @@ unset($_smarty_tpl_vars);
 						  <option <?php if ($this->_tpl_vars['registro'] == 50): ?>selected<?php endif; ?>>50</option>
 						</select></td>
 				 </tr>
-				  <tr>
-				 	<td colspan="2" align="center"><input type="submit" value="Buscar" name="submit_emps_search" class="botones"></td>
-				 </tr>
-				  </table>
+				 <tr>
+				 	<td colspan="2" align="center"><input type="submit" value="Buscar" name="submit_cat_emps_search" class="botones"></td>
+				 </tr>  
+				 </table>
 				</form><br>
 				  <div name="divMostrar" id="divMostrar" >
 						
 					</div>	
 					 <script>	
-					  	document.getElementById("divMostrar").innerHTML = emps_1;
+					  	document.getElementById("divMostrar").innerHTML = cat_emps_1;
 					  </script>
 				  
 			  </td></tr></table>

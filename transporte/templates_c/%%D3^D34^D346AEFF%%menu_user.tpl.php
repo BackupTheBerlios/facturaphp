@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.3, created on 2005-04-18 16:20:10
+<?php /* Smarty version 2.6.3, created on 2005-04-21 12:47:02
          compiled from menu_user.tpl */ ?>
 		<table width="90%" class="cajaMenu" cellpadding="3" cellspacing="0">
 			<tr>

@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.3, created on 2005-04-18 16:20:03
+<?php /* Smarty version 2.6.3, created on 2005-04-21 12:46:45
          compiled from bottom.tpl */ ?>
 <tr>
 	  <td colspan="2" height="100px" class="piePagina">

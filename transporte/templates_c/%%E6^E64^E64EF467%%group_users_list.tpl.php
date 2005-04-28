@@ -1,5 +1,5 @@
-<?php /* Smarty version 2.6.3, created on 2005-04-21 12:47:03
-         compiled from user_corps_list.tpl */ ?>
+<?php /* Smarty version 2.6.3, created on 2005-04-27 12:48:02
+         compiled from group_users_list.tpl */ ?>
 <td valign="top">
 
 	<?php 
@@ -18,8 +18,6 @@ unset($_smarty_tpl_vars);
 		
 	</div>	
 	 <script>	
-	  	document.getElementById("divMostrar").innerHTML = user_corps_1;
+	  	document.getElementById("divMostrar").innerHTML = group_users_1;
 	  </script>
 </td>
-  
-			

@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.3, created on 2005-04-18 16:20:15
+<?php /* Smarty version 2.6.3, created on 2005-04-21 12:57:56
          compiled from corps_view.tpl */ ?>
 <td valign="top">
 <?php echo $this->_tpl_vars['cadena']; ?>

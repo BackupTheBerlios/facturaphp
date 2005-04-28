@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.3, created on 2005-04-18 16:20:03
+<?php /* Smarty version 2.6.3, created on 2005-04-21 12:46:45
          compiled from wellcome.tpl */ ?>
 <td valign="top">
 <table width="100%" cellpadding="10" cellspacing="10"  bgcolor="#F0FFFF">

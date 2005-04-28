@@ -139,13 +139,19 @@ if(!isset($_SESSION['user']))
 		//Al iniciar sesi�n no ha podido expirar esta a�n
 		$_SESSION['expire']=0;
 		
-		
+	/*ANTERIORES PERMISOS	
 		
 		$permisos = new permissions();
 		$_SESSION['permisos_group_methods'] = $permisos->get_per_group_methods();
 		$_SESSION['permisos_group_modules'] = $permisos->get_per_group_modules();
 		$_SESSION['permisos_user_modules'] = $permisos->get_per_user_modules();
 		$_SESSION['permisos_user_methods'] = $permisos->get_per_user_methods();
+	*/
+	
+		//Calcular permisos
+		$permisos = new permissions();
+		$permissions->get_permissions($_SESSION['ident_user']);
+		$_SESSION['permissions'] = 
 		
 		/*
 		Para acceder a cualquier tabla se hace de la siguiente manera

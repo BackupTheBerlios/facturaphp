@@ -91,7 +91,7 @@ class permissions{
 					$j = 0;
 					for($k = 0; $k < $user->per_modules[$i]->num_methods; $k++)
 					{
-						//Si tiene permiso sobre el metodo se añade al array
+						//Si tiene permiso sobre el metodo se aï¿½ade al array
 						if($user->per_modules[$i]->per_methods[$k]->per == 1)
 						{
 							$this->per_add = false; 
@@ -319,6 +319,47 @@ class permissions{
 		$this->db->close();
 		
 		return $this->per_user_methods;
+	}
+	
+	function get_permissions()
+	{
+		$ADODB_FETCH_MODE = ADODB_FETCH_BOTH;
+		//crea una nueva conexin con una bbdd (mysql)
+		$this->db = NewADOConnection($this->db_type);
+		//le dice que no salgan los errores de conexin de la ddbb por pantalla
+		$this->db->debug=false;
+		//realiza una conexin permanente con la bbdd
+		$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
+		
+		//mete la consulta
+		$this->sql='SELECT * FROM `groups`, `modules`, `group_users`, `methods` WHERE group_user.id_user ='.$_SESSION['ident_user'].' AND module.id_module = methods.id_module';
+		
+		//la ejecuta y guarda los resultados
+		$this->result = $this->db->Execute($this->sql);
+		
+		if ($this->result === false)
+		{
+			$this->error=1;
+			$this->db->close();
+					
+			return false;
+		} 
+
+		while (!$this->result->EOF) {
+			
+			//cogemos los datos 
+			$this->per_user_methods[$this->result->fields[$this->ddbb_id_user]][$this->result->fields[$this->ddbb_id_method]]=$this->result->fields[$this->ddbb_per];
+			
+			//nos movemos hasta el siguiente registro de resultado de la consulta
+			$this->result->MoveNext();
+
+		}
+		$this->db->close();
+		
+		return $this->per_user_methods;
+
+	}
+	
 	}
 }
 ?>

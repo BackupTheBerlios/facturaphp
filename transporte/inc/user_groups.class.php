@@ -9,7 +9,7 @@ require_once ($INSTALL_DIR.'inc/table.class.php');
 require_once ($ADODB_DIR."adodb.inc.php");
 
 
-class user_corps{
+class user_groups{
 				
 //Internas	
 var $emp;
@@ -18,7 +18,7 @@ var $emp;
 
 
   	//constructor
-	function user_corps()
+	function user_groups()
 	{
 		
 	}
@@ -31,9 +31,9 @@ var $emp;
 		{
 				case 'select':	
 				
-								$my_corp = new corps();
-								$tpl = $my_corp->view($_SESSION['ident_corp'],$tpl);
-								$tpl->assign('plantilla','corps_view.tpl');	
+								$my_group = new groups();
+								$tpl = $my_group->view($_SESSION['ident_group'],$tpl);
+								$tpl->assign('plantilla','groups_view.tpl');	
 								break;
 				default:
 								$method='list';
@@ -41,26 +41,26 @@ var $emp;
 								$id_user = $_SESSION['ident_user'];
 								
 								$this->emp = new emps();
-								$num_corps = $this->emp->get_user_corps($id_user);
+								$num_groups = $this->emp->get_user_groups($id_user);
 								$tpl=$this->listar($tpl);
 	//Empieza comentado
 								if($_SESSION['super'] || $_SESSION['admin'])
 								{
-									$tpl->assign('plantilla','user_corps_'.$method.'.tpl');	
+									$tpl->assign('plantilla','user_groups_'.$method.'.tpl');	
 								}
 								else
 								{
 								//Fin comentado
-									if($num_corps == 1)
+									if($num_groups == 1)
 									{
-										$_SESSION['ident_corp'] = $this->emp->corps_list[0]['id_corp'];
-										$my_corp = new corps();
-										$tpl = $my_corp->view($_SESSION['ident_corp'],$tpl);
-										$tpl->assign('plantilla','corps_view.tpl');	
+										$_SESSION['ident_group'] = $this->emp->groups_list[0]['id_group'];
+										$my_group = new groups();
+										$tpl = $my_group->view($_SESSION['ident_group'],$tpl);
+										$tpl->assign('plantilla','groups_view.tpl');	
 										
 									}
 									else
-										$tpl->assign('plantilla','user_corps_'.$method.'.tpl');	
+										$tpl->assign('plantilla','user_groups_'.$method.'.tpl');	
 							//Empieza comentado			
 								}
 								//Fin cometnado
@@ -78,9 +78,9 @@ var $emp;
 		//Empieza comentado
 		if($_SESSION['super'] || $_SESSION['admin'])
 		{
-			$my_corp = new corps();
-			$my_corp->get_list_corps();
-			$cadena=''.$tabla_listado->make_tables('user_corps',$my_corp->corps_list,array('Nombre',50),array('id_corp','name'),10,array('select'),false);
+			$my_group = new groups();
+			$my_group->get_list_groups();
+			$cadena=''.$tabla_listado->make_tables('user_groups',$my_group->groups_list,array('Nombre',50),array('id_group','name'),10,array('select'),false);
 			$variables=$tabla_listado->nombres_variables;		
 			$tpl->assign('variables',$variables);
 			$tpl->assign('cadena',$cadena);		
@@ -89,29 +89,29 @@ var $emp;
 		}
 		
 		//Fin comentado
-		$cadena=''.$tabla_listado->make_tables('user_corps',$this->emp->corps_list,array('Nombre',50),array('id_corp','name'),10,array('select'),false);
+		$cadena=''.$tabla_listado->make_tables('user_groups',$this->emp->groups_list,array('Nombre',50),array('id_group','name'),10,array('select'),false);
 		$variables=$tabla_listado->nombres_variables;		
 		$tpl->assign('variables',$variables);
 		$tpl->assign('cadena',$cadena);		
 		return $tpl;
 	}
 	
-	function bar($method,$corp){		
-		if ($corp != ""){
-			$corp='<a href="index.php?module=corps&method=view&id='.$_SESSION['ident_corp'].'">'.$corp.' ::';
+	function bar($method,$group){		
+		if ($group != ""){
+			$group='<a href="index.php?module=groups&method=view&id='.$_SESSION['ident_group'].'">'.$group.' ::';
 		}
-		$nav_bar = 'Zona privada :: '.$corp.' <a href="index.php?module=user_corps">Usuario empresas</a>';
+		$nav_bar = 'Zona privada :: '.$group.' <a href="index.php?module=user_groups">Usuario grupos</a>';
 		$nav_bar=$nav_bar;
 		return $nav_bar;
 	}	
 
-	function title($method,$corp)
+	function title($method,$group)
 	{
-		if ($corp != "")
+		if ($group != "")
 		{
-			$corp=$corp." ::";
+			$group=$group." ::";
 		}
-		$title = "Zona Privada :: $corp Usuario empresas";
+		$title = "Zona Privada :: $group Usuario grupos";
 		$title=$title;		
 		return $title;
 	}		
