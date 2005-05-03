@@ -139,8 +139,7 @@ if(!isset($_SESSION['user']))
 		//Al iniciar sesi�n no ha podido expirar esta a�n
 		$_SESSION['expire']=0;
 		
-	/*ANTERIORES PERMISOS	
-		
+	/*ANTERIORES PERMISOS			
 		$permisos = new permissions();
 		$_SESSION['permisos_group_methods'] = $permisos->get_per_group_methods();
 		$_SESSION['permisos_group_modules'] = $permisos->get_per_group_modules();
@@ -150,8 +149,7 @@ if(!isset($_SESSION['user']))
 	
 		//Calcular permisos
 		$permisos = new permissions();
-		$permissions->get_permissions($_SESSION['ident_user']);
-		$_SESSION['permissions'] = 
+		$_SESSION['permissions'] = $permisos->get_permissions();
 		
 		/*
 		Para acceder a cualquier tabla se hace de la siguiente manera
@@ -294,7 +292,7 @@ if($_SESSION['expire'] == 0)
 		{
 			//Se comprueba si el modulo es p�blico si es as� se deja no hay problema, pero sino se tendr� que saber si tiene o no acceso a �l
 			if($modules->is_public_module($_GET['module']) == 0)
-			{
+			{/*
 				$permiso = new permissions_modules();
 	
 				//Se prepara para poder investigar los permisos en el modulo
@@ -312,6 +310,32 @@ if($_SESSION['expire'] == 0)
 					if($permiso->validate_per($_SESSION['user'], $_GET['module'], $method) == 0)
 					{
 						$module_name = 'error';	
+					}
+				}
+				*/
+				
+				//Se prepara para poder investigar los permisos en el modulo
+				if (!isset($_GET['method']))
+				{
+					$method_name='list';
+					$method = null;
+				}
+				else
+				{
+					$method_name=$_GET['method'];
+					$method = $method_name; 
+				}
+		
+				if(($_GET['module'] != 'user_corps') &&($method != 'select'))
+				{print 'module = '.$module_name.' method  = '.$method_name.' variable sesion '.$_SESSION['permissions']['$module_name']['$method_name'];
+					if(!isset($_SESSION['permissions']['$module_name']['$method_name']))
+					{
+						$module_name = 'error';
+						$method=null;
+					}
+					else
+					{
+						$method=$_GET['method'];
 					}
 				}
 			}

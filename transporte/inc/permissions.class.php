@@ -332,8 +332,8 @@ class permissions{
 		$this->db->Connect($this->db_ip,$this->db_user,$this->db_passwd,$this->db_name);
 		
 		//mete la consulta
-		$this->sql='SELECT * FROM `groups`, `modules`, `group_users`, `methods` WHERE group_user.id_user ='.$_SESSION['ident_user'].' AND module.id_module = methods.id_module';
-		
+		$this->sql='SELECT modules.name, methods.name FROM `modules` , `group_users` , `methods`, `per_user_methods`, `per_user_modules` WHERE group_users.id_user ='.$_SESSION['ident_user'].' AND modules.id_module = methods.id_module AND group_users.id_group = modules.id_type_module AND per_user_modules.id_user = '.$_SESSION['ident_user'].' AND per_user_methods = '.$_SESSION['ident_user'].' DISTINC';
+
 		//la ejecuta y guarda los resultados
 		$this->result = $this->db->Execute($this->sql);
 		
@@ -348,18 +348,17 @@ class permissions{
 		while (!$this->result->EOF) {
 			
 			//cogemos los datos 
-			$this->per_user_methods[$this->result->fields[$this->ddbb_id_user]][$this->result->fields[$this->ddbb_id_method]]=$this->result->fields[$this->ddbb_per];
-			
+			$permisos[$this->result->fields['modules.name']][$this->result->fields['methods.name']];
 			//nos movemos hasta el siguiente registro de resultado de la consulta
 			$this->result->MoveNext();
 
 		}
 		$this->db->close();
 		
-		return $this->per_user_methods;
+		return $permisos;
 
 	}
 	
-	}
+	
 }
 ?>
